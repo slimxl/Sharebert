@@ -157,11 +157,11 @@ class Explore extends Component {
         {
           ...Platform.select({
             ios: {
-              message: 'Have a look on : ',
+              message: '',
               url: this.state.dataset[this.state.cardNum].URL,
             },
             android: {
-              message: 'Have a look on : \n' +
+              message: 'Look at this : \n' +
                 this.state.dataset[this.state.cardNum].URL,
             },
           }),
