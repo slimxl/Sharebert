@@ -1,1 +1,1 @@
-dir_to_ignore/Sharebert/node_modules
+/Sharebert/node_modules/*
