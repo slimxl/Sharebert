@@ -152,12 +152,18 @@ class Explore extends Component {
   };
 
   shareURL = () => {
+    if (
+      this.state.url ===
+      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+    )
+    {
+      return;
+    }
     try {
       Share.share(
         {
           ...Platform.select({
             ios: {
-              message: '',
               url: this.state.dataset[this.state.cardNum].URL,
             },
             android: {
@@ -241,6 +247,13 @@ class Explore extends Component {
   };
 
   openURL = () => {
+    if (
+      this.state.url ===
+      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+    )
+    {
+      return;
+    }
     try {
       Linking.openURL(this.state.dataset[this.state.cardNum].URL);
     } catch (error) {
