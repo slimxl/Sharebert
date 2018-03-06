@@ -7,8 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-
-import { Google, Facebook } from 'expo';
+import { Google, Facebook,AuthSession } from 'expo';
 var doubleclick = false;
 var userEmail2 = '';
 var userID = 0;
@@ -22,7 +21,7 @@ class LoginScreen extends Component {
     if (location === 'later') {
       name2 = 'Not Logged In';
       userID = 0;
-      
+      userEmail2 = '';
       userPoints = 0;
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
@@ -72,6 +71,56 @@ class LoginScreen extends Component {
       Alert.alert('Oops!', 'Login failed!');
     }
   };
+  
+  _handlePressAsync = async () => {
+    if(doubleclick)
+    {
+      Alert.alert("Hang On!");
+      return;
+    }
+    let redirectUrl = AuthSession.getRedirectUrl();
+
+    // You need to add this url to your authorized redirect urls on your Facebook app
+    console.log({ redirectUrl });
+
+    // NOTICE: Please do not actually request the token on the client (see:
+    // response_type=token in the authUrl), it is not secure. Request a code
+    // instead, and use this flow:
+    // https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/#confirm
+    // The code here is simplified for the sake of demonstration. If you are
+    // just prototyping then you don't need to concern yourself with this and
+    // can copy this example, but be aware that this is not safe in production.
+
+    let result = await AuthSession.startAsync({
+      authUrl:
+        `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
+        `&client_id=${1841427549503210}` +
+        `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
+    });
+
+    if (result.type !== 'success') {
+      alert('Uh oh, something went wrong');
+      return;
+    }
+
+    let accessToken = result.params.access_token;
+    let userInfoResponse = await fetch(
+      `https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture.type(large)`
+    );
+    const userInfo = await userInfoResponse.json();
+    if(userInfo.name!='')
+    {
+      Alert.alert('Logged in!', `Hi ${userInfo.name}!`);
+              userEmail2 = userInfo.email;
+              name2 = userInfo.name;
+              uri2 =
+                'https://graph.facebook.com/' +
+                userInfo.id +
+                '/picture? type=large';
+                this.checkPoints();
+    }
+  };
+
 
   _handleFacebookLogin = async () => {
     if(doubleclick)
@@ -85,7 +134,7 @@ class LoginScreen extends Component {
         type,
         token,
       } = await Facebook.logInWithReadPermissionsAsync(
-        '1201211719949057', // Replace with your own app id in standalone app
+        '1841427549503210', // Replace with your own app id in standalone app
         { permissions: ['public_profile', 'email'] }
       );
 
@@ -123,7 +172,7 @@ class LoginScreen extends Component {
     }
   };
 
-checkPoints = () => {
+  checkPoints = () => {
     if (userEmail2 != '') {
       fetch(
         'https://sharebert.com/ReturnLoginToServerWeb.php?uemail=' +
@@ -165,8 +214,6 @@ checkPoints = () => {
         
     }
   };
-
-
   render() {
     return (
       <View>
@@ -186,7 +233,7 @@ checkPoints = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this._handleFacebookLogin}
+            onPress={this._handlePressAsync}
             style={styles.loginf}>
             <Image
               resizeMode="contain"
