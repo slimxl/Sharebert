@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Sharebert",
+    "description": "No description",
+    "slug": "snack-ByZxBwswM",
+    "privacy": "unlisted",
+    "sdkVersion": "25.0.0",
+    "version": "1.0.12",
+    "orientation": "portrait",
+    "primaryColor": "#ec47ff",
+    "splash": {
+      "image": "./assets/splash.png"
+    },
+    "icon": "https://i.imgur.com/139FgdQ.png",
+    "loading": {
+      "icon": "https://i.imgur.com/139FgdQ.png",
+      "hideExponentText": false
+    },
+    "packagerOpts": {
+      "assetExts": [
+        "ttf",
+        "mp4",
+        "otf",
+        "xml"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.sharebert.sharebert",
+      "supportsTablet": true,
+      "config":
+      {
+          "googleSignIn":
+          {
+            "reservedClientId":"com.googleusercontent.apps.376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m" 
+          }
+      }
+    }
+  }
+}
