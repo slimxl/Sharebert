@@ -141,7 +141,7 @@ class Rewards extends Component {
             </TouchableOpacity>
           )}
         />
-        <Image style={styles.tab} source={require('./assets/tab.png')} />
+        
       </View>
     );
   }

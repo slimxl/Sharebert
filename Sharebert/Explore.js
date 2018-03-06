@@ -469,7 +469,13 @@ class Explore extends Component {
   };
 
   onSwipedRight = () => {
-    likes.push(this.state.dataset[this.state.cardNum - 1]);
+    if (
+      this.state.url !=
+      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+    )
+    {
+      likes.push(this.state.dataset[this.state.cardNum - 1]);
+    }
   };
 
   shareApp() {
@@ -1046,14 +1052,11 @@ const styles = StyleSheet.create({
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
 
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
-
-    // And swap it with the current element.
+    
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
