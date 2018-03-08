@@ -25,12 +25,21 @@ class LoginScreen extends Component {
       userPoints = 0;
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
+
+        this.props.navigation.navigate('Explore', {
+          id: 0,
+          points: 0,
+        });
     }
+    else
+    {
     doubleclick = false;
+    //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
     this.props.navigation.navigate('Explore', {
       id: userID,
       points: userPoints,
     });
+  }
   }
 
   _handleGoogleLogin = async () => {
@@ -39,7 +48,7 @@ class LoginScreen extends Component {
       Alert.alert("Hang On!");
       return;
     }
-    doubleclick = true;
+    
     try {
       const { type, user } = await Google.logInAsync({
         androidStandaloneAppClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
@@ -53,7 +62,7 @@ class LoginScreen extends Component {
         case 'success': {
           Alert.alert('Logged in!', `Hi ${user.name}!`);
           userEmail2 = user.email;
-          
+          doubleclick = true;
           name2 = user.name;
           uri2 = user.photoUrl;
           this.checkPoints();
@@ -110,7 +119,7 @@ class LoginScreen extends Component {
     const userInfo = await userInfoResponse.json();
     if(userInfo.name!='')
     {
-      Alert.alert('Logged in!', `Hi ${userInfo.name}!`);
+     // Alert.alert('Logged in!', `Hi ${userInfo.name}!`);
               userEmail2 = userInfo.email;
               name2 = userInfo.name;
               uri2 =
@@ -128,7 +137,6 @@ class LoginScreen extends Component {
       Alert.alert("Hang On!");
       return;
     }
-    doubleclick = true;
     try {
       const {
         type,
@@ -155,6 +163,7 @@ class LoginScreen extends Component {
                 json.id +
                 '/picture? type=large';
                 this.checkPoints();
+                doubleclick = true;
             })
             .catch(() => {});
           break;
@@ -173,6 +182,7 @@ class LoginScreen extends Component {
   };
 
   checkPoints = () => {
+    
     if (userEmail2 != '') {
       fetch(
         'https://sharebert.com/ReturnLoginToServerWeb.php?uemail=' +
@@ -191,7 +201,6 @@ class LoginScreen extends Component {
             .then(responseData => {
               var test = responseData['Points'];
               userPoints = test;
-              
             })
             .done();
         })
@@ -207,11 +216,16 @@ class LoginScreen extends Component {
             .then(responseData2 => {
               var test = responseData2['id'];
              userID = test;
+             
              this.onSubmitEdit('Login');
             })
             .done();
         
         
+    }
+    else
+    {
+      Alert.alert("no Email");
     }
   };
   render() {
@@ -233,7 +247,7 @@ class LoginScreen extends Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this._handlePressAsync}
+            onPress={this._handleFacebookLogin}
             style={styles.loginf}>
             <Image
               resizeMode="contain"

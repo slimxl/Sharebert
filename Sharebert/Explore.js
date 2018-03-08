@@ -590,7 +590,8 @@ class Explore extends Component {
 
   render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-    
+    userID = this.props.navigation.state.params.id;
+    userPoints = this.props.navigation.state.params.points;
     try {
       return (
         <View style={styles.container}>
