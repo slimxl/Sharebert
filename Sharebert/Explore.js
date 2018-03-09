@@ -204,9 +204,9 @@ class Explore extends Component {
                 .then(response2 => response2.json())
                 .then(responseData2 => {
                   if (responseData2['Points'] != userPoints) {
-                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!");
-      
-                      userPoints= responseData2['Points'];
+                    
+                    userPoints= responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!"+userPoints);
                       this.forceUpdate();
                   }
                 })
@@ -372,6 +372,7 @@ class Explore extends Component {
                 Alert.alert('POINTS OBTAINED',"Nice Swiping!");
 
                   userPoints = responseData2['Points'];
+                  tihs.forceUpdate();
               }
             })
             .done();
@@ -590,8 +591,7 @@ class Explore extends Component {
 
   render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-    userID = this.props.navigation.state.params.id;
-    userPoints = this.props.navigation.state.params.points;
+    
     try {
       return (
         <View style={styles.container}>
