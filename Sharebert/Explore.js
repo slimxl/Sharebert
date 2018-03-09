@@ -6,6 +6,7 @@ import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
 import {
   StyleSheet,
+  AsyncStorage,
   View,
   Text,
   ScrollView,
@@ -498,11 +499,15 @@ class Explore extends Component {
     )
     {
       if(this.state.cardNum!=0)
+      {
       likes.push(this.state.dataset[this.state.cardNum - 1]);
+      this.saveFile();
+      }
       else
       {
         likes.push(this.state.dataset[this.state.cardNum]);
       }
+      
     }
   };
 
@@ -511,6 +516,29 @@ class Explore extends Component {
       Linking.openURL('https://sharebert.com');
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  saveFile=async()=>{
+    console.log('Test');
+    try {
+      await AsyncStorage.setItem('@MySuperStore:key', this.state.dataset[this.state.cardNum-1].Retailer);
+    } catch (error) {
+      // Error saving data
+    }
+
+   
+  }
+
+  getFile=async()=>{
+    try {
+      const value = await AsyncStorage.getItem('@MySuperStore:key');
+      if (value !== null){
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
     }
   }
 
@@ -526,6 +554,7 @@ class Explore extends Component {
         points: userPoints,
       });
     } else if (item === 'Likes') {
+      this.getFile();
       this.props.navigation.navigate('Likes', {
         id: userID,
         points: userPoints,
