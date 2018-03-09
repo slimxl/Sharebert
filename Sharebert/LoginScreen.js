@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
+  AsyncStorage,
   TouchableOpacity,
   Image,
   StyleSheet,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import { Google, Facebook,AuthSession } from 'expo';
 var doubleclick = false;
+var lastlogged = false;
 var userEmail2 = '';
 var userID = 0;
 var name2 = 'Not Logged In';
@@ -41,14 +43,7 @@ class LoginScreen extends Component {
     });
   }
   }
-
-  _handleGoogleLogin = async () => {
-    if(doubleclick)
-    {
-      Alert.alert("Hang On!");
-      return;
-    }
-    
+  _handleFinalGoogleLogin = async () =>{
     try {
       const { type, user } = await Google.logInAsync({
         androidStandaloneAppClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
@@ -65,6 +60,8 @@ class LoginScreen extends Component {
           doubleclick = true;
           name2 = user.name;
           uri2 = user.photoUrl;
+          lastlogged = true;
+          
           this.checkPoints();
           break;
         }
@@ -79,8 +76,71 @@ class LoginScreen extends Component {
     } catch (e) {
       Alert.alert('Oops!', 'Login failed!');
     }
+  }
+  _handleGoogleLogin = () => {
+    if(doubleclick)
+    {
+      Alert.alert("Hang On!");
+      return;
+    }
+    if(!lastlogged)
+    {
+      this._handleFinalGoogleLogin();
+    }
+    else
+    {
+      
+      Alert.alert(
+        'Login as '+name2+"?","",
+        [
+          {
+            text: 'No',
+            onPress: () => {this._handleFinalGoogleLogin()},
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: () => {
+              this.onSubmitEdit("google");
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    }
   };
-  
+  _handleFacebookLogin = () => {
+    if(doubleclick)
+    {
+      Alert.alert("Hang On!");
+      return;
+    }
+    if(!lastlogged)
+    {
+      this._handleFinalFacebookLogin();
+    }
+    else
+    {
+      
+      Alert.alert(
+        'Login as '+name2+"?","",
+        [
+          {
+            text: 'No',
+            onPress: () => {this._handleFinalFacebookLogin()},
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: () => {
+              this.onSubmitEdit("google");
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
   _handlePressAsync = async () => {
     if(doubleclick)
     {
@@ -130,8 +190,47 @@ class LoginScreen extends Component {
     }
   };
 
+  
+  saveFile=async()=>{
+    try {
+      await AsyncStorage.setItem('@MySuperStore:name', name2);
+      await AsyncStorage.setItem('@MySuperStore:email', userEmail2);
+      await AsyncStorage.setItem('@MySuperStore:uri2', uri2);
+      await AsyncStorage.setItem('@MySuperStore:points', userPoints);
+      await AsyncStorage.setItem('@MySuperStore:id', userID); 
+    } catch (error) {
+      // Error saving data
+    }
 
-  _handleFacebookLogin = async () => {
+   
+  }
+
+  getFile=async(type)=>{
+    try {
+      const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
+      if (namesaved !== null){
+        // We have data!!
+        console.log(namesaved);
+        name2 = namesaved;
+        lastlogged = true;
+        if(type === 'Facebook')
+        {
+          this._handleFacebookLogin();
+        }
+        else{
+          this._handleGoogleLogin();
+
+        }
+      }
+    } catch (error) {
+      // Error retrieving data
+      lastlogged = false;
+    }
+  }
+
+
+
+  _handleFinalFacebookLogin = async () => {
     if(doubleclick)
     {
       Alert.alert("Hang On!");
@@ -216,7 +315,7 @@ class LoginScreen extends Component {
             .then(responseData2 => {
               var test = responseData2['id'];
              userID = test;
-             
+             this.saveFile();
              this.onSubmitEdit('Login');
             })
             .done();
@@ -238,7 +337,7 @@ class LoginScreen extends Component {
         />
         <View style={styles.bg}>
           <TouchableOpacity
-            onPress={this._handleGoogleLogin}
+            onPress={this.getFile}
             style={styles.loging}>
             <Image
               resizeMode="contain"
@@ -247,7 +346,7 @@ class LoginScreen extends Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this._handleFacebookLogin}
+            onPress={() => this.getFile('Facebook')}
             style={styles.loginf}>
             <Image
               resizeMode="contain"
