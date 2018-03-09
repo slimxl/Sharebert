@@ -24,6 +24,7 @@ import { Constants } from 'expo';
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
+var toofast = false;
 var datasize = 0;
 var search = false;
 var likes = [];
@@ -204,9 +205,9 @@ class Explore extends Component {
                 .then(response2 => response2.json())
                 .then(responseData2 => {
                   if (responseData2['Points'] != userPoints) {
-                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!");
-      
-                      userPoints= responseData2['Points'];
+                    
+                    userPoints= responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!"+userPoints);
                       this.forceUpdate();
                   }
                 })
@@ -309,6 +310,7 @@ class Explore extends Component {
                 console.log(error);
               }
             }
+            toofast = false;
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -341,6 +343,7 @@ class Explore extends Component {
               data2.push(obj);
               data2.push(obj2);
             }
+            toofast = false;
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -372,6 +375,7 @@ class Explore extends Component {
                 Alert.alert('POINTS OBTAINED',"Nice Swiping!");
 
                   userPoints = responseData2['Points'];
+                  tihs.forceUpdate();
               }
             })
             .done();
@@ -419,6 +423,7 @@ class Explore extends Component {
               console.log(error);
             }
           }
+          toofast = false;
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
@@ -447,6 +452,7 @@ class Explore extends Component {
             obj2['URL'] = responseData['Others'][i]['URL'];
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
           }
+          toofast = false;          
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
@@ -463,9 +469,11 @@ class Explore extends Component {
     if(this.state.cardNum>35)
       {
         Alert.alert("Hold On!","Swiping Too Fast!");
+        toofast = true;
       }
       else
       {
+        toofast = false;
         this.swiper.swipeLeft();
       }
   };
@@ -474,9 +482,11 @@ class Explore extends Component {
     if(this.state.cardNum>35)
     {
       Alert.alert("Hold On!","Swiping Too Fast! ");
+      toofast = true;
     }
     else
     {
+      toofast = false;
       this.swiper.swipeRight();
     }
   };
@@ -487,7 +497,12 @@ class Explore extends Component {
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
     )
     {
+      if(this.state.cardNum!=0)
       likes.push(this.state.dataset[this.state.cardNum - 1]);
+      else
+      {
+        likes.push(this.state.dataset[this.state.cardNum]);
+      }
     }
   };
 
@@ -590,8 +605,7 @@ class Explore extends Component {
 
   render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-    userID = this.props.navigation.state.params.id;
-    userPoints = this.props.navigation.state.params.points;
+    
     try {
       return (
         <View style={styles.container}>

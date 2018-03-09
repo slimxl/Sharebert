@@ -62,7 +62,6 @@ class Likes extends Component {
         {
           ...Platform.select({
             ios: {
-              message: 'Have a look on : ',
               url: item.URL,
             },
             android: {
