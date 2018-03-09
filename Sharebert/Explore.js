@@ -482,9 +482,11 @@ class Explore extends Component {
     if(this.state.cardNum>35)
     {
       Alert.alert("Hold On!","Swiping Too Fast! ");
+      toofast = true;
     }
     else
     {
+      toofast = false;
       this.swiper.swipeRight();
     }
   };
@@ -495,7 +497,12 @@ class Explore extends Component {
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
     )
     {
+      if(this.state.cardNum!=0)
       likes.push(this.state.dataset[this.state.cardNum - 1]);
+      else
+      {
+        likes.push(this.state.dataset[this.state.cardNum]);
+      }
     }
   };
 
