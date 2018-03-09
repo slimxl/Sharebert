@@ -24,6 +24,7 @@ import { Constants } from 'expo';
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
+var toofast = false;
 var datasize = 0;
 var search = false;
 var likes = [];
@@ -309,6 +310,7 @@ class Explore extends Component {
                 console.log(error);
               }
             }
+            toofast = false;
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -341,6 +343,7 @@ class Explore extends Component {
               data2.push(obj);
               data2.push(obj2);
             }
+            toofast = false;
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -420,6 +423,7 @@ class Explore extends Component {
               console.log(error);
             }
           }
+          toofast = false;
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
@@ -448,6 +452,7 @@ class Explore extends Component {
             obj2['URL'] = responseData['Others'][i]['URL'];
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
           }
+          toofast = false;          
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
@@ -464,9 +469,11 @@ class Explore extends Component {
     if(this.state.cardNum>35)
       {
         Alert.alert("Hold On!","Swiping Too Fast!");
+        toofast = true;
       }
       else
       {
+        toofast = false;
         this.swiper.swipeLeft();
       }
   };
