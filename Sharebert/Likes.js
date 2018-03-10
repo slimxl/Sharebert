@@ -134,26 +134,22 @@ class Likes extends Component {
 
   getFile=async(type)=>{
     try {   
+      var likesave;
       if(this.userID !== undefined)
       {
-        const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + this.userID);
-        Alert.alert("Reading Likes for "+ this.userID + "...");
+        likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + this.userID);
       }
       else
       {
-      const likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
-      Alert.alert("Reading Likes for logout...");
+      likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
       }
-        Alert.alert(likesave + "wow");
       if (likesave !== null){
         // We have data!!
         console.log(likesave);
         like = JSON.parse(likesave);
-        Alert.alert(like + "a like");
       }
       else
       {
-        Alert.alert("Likes are null! :(");
       }
     } catch (error) {
       // Error retrieving data
