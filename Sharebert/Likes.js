@@ -17,9 +17,9 @@ import { Constants } from 'expo';
 const backAction = NavigationActions.back({
   key: null
 });
-import { likes } from './Explore';
 var userPoints = 0;
 var userID = 0;
+var like;
 class Likes extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +31,7 @@ class Likes extends Component {
       userPoints: userPoints,
       userID: userID,
     };
+    this.getFile();
 
   }
 
@@ -130,10 +131,44 @@ class Likes extends Component {
     );
   }
 
+  getFile=async(type)=>{
+    try {   
+      if(this.userID !== undefined)
+      {
+        const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + this.userID);
+        Alert.alert("Reading Likes for "+ this.userID + "...");
+      }
+      else
+      {
+      const likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+      Alert.alert("Reading Likes for logout...");
+      }
+        Alert.alert(likesave + "wow");
+      if (likesave !== null){
+        // We have data!!
+        console.log(likesave);
+        like = JSON.parse(likesave);
+        Alert.alert(like + "a like");
+      }
+      else
+      {
+        Alert.alert("Likes are null! :(");
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
+      <TouchableOpacity>
+        onPress={()=>
+        {
+          this.getFile();
+        }}
         <Image style={styles.header} />
+        </TouchableOpacity>
         <Image
           resizeMode="contain"
           style={styles.button}
@@ -154,7 +189,7 @@ class Likes extends Component {
           Likes
         </Text>
         <FlatList
-          data={likes}
+          data={like}
           keyExtractor={(item, index) => index}
           renderItem={({ item, separators }) => (
             <TouchableOpacity

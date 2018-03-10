@@ -501,11 +501,12 @@ class Explore extends Component {
       if(this.state.cardNum!=0)
       {
       likes.push(this.state.dataset[this.state.cardNum - 1]);
-      this.saveFile();
+      this.saveLike();
       }
       else
       {
         likes.push(this.state.dataset[this.state.cardNum]);
+        this.saveLike();
       }
       
     }
@@ -527,6 +528,24 @@ class Explore extends Component {
       // Error saving data
     }
 
+    }
+    saveLike=async()=>{
+      try {
+        Alert.alert("Saving likes for " + this.state.userID);
+        if(this.state.userID !== undefined)
+        {
+          await AsyncStorage.setItem('@MySuperStore:Likes' + this.state.userID, JSON.stringify(likes));
+        }
+        else
+        {
+          await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
+        }
+        const likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+        Alert.alert(likesave);
+      } catch (error) {
+        // Error saving data
+        Alert.alert("Error saving likes!");
+      }
    
   }
 

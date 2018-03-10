@@ -83,13 +83,13 @@ class LoginScreen extends Component {
       Alert.alert("Hang On!");
       return;
     }
-    if(!lastlogged)
+    
+    if(lastlogged === false)
     {
       this._handleFinalGoogleLogin();
     }
     else
     {
-      
       Alert.alert(
         'Login as '+name2+"?","",
         [
@@ -115,7 +115,7 @@ class LoginScreen extends Component {
       Alert.alert("Hang On!");
       return;
     }
-    if(!lastlogged)
+    if(lastlogged === false)
     {
       this._handleFinalFacebookLogin();
     }
@@ -208,11 +208,21 @@ class LoginScreen extends Component {
   getFile=async(type)=>{
     try {
       const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
-      if (namesaved !== null){
+      if (namesaved !== null && namesaved !== undefined && namesaved !== ""){
         // We have data!!
         console.log(namesaved);
         name2 = namesaved;
         lastlogged = true;
+        if(type === 'Facebook')
+        {
+          this._handleFacebookLogin();
+        }
+        else{
+          this._handleGoogleLogin();
+        }
+      }
+      else
+      {
         if(type === 'Facebook')
         {
           this._handleFacebookLogin();
