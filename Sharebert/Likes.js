@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation'
 import {
+  AsyncStorage,
   View,
   Text,
   TouchableOpacity,
@@ -162,11 +163,11 @@ class Likes extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
         onPress={()=>
         {
           this.getFile();
-        }}
+        }}>
         <Image style={styles.header} />
         </TouchableOpacity>
         <Image
