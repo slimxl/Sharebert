@@ -549,6 +549,24 @@ class Explore extends Component {
    
   }
 
+  clearFile=async()=>{
+    try {
+      await AsyncStorage.removeItem('@MySuperStore:name');
+      await AsyncStorage.removeItem('@MySuperStore:email');
+      await AsyncStorage.removeItem('@MySuperStore:uri2');
+      await AsyncStorage.removeItem('@MySuperStore:points');
+      await AsyncStorage.removeItem('@MySuperStore:id'); 
+
+      this.props.navigation.navigate('LoginScreen', {
+        loggedbool2: false,
+        id: 0,
+        points: 0,
+      });
+    } catch (error) {
+      // Error saving data
+    }
+  }
+
   getFile=async()=>{
     try {
       const value = await AsyncStorage.getItem('@MySuperStore:key');
@@ -591,16 +609,15 @@ class Explore extends Component {
       }
     } else if (item === 'Logout') {
       try {
-        this.props.navigation.navigate('LoginScreen', {
-          loggedbool2: false,
-          id: 0,
-          points: 0,
-        });
+        this.clearFile();
+
       } catch (error) {
         console.error(error);
       }
     }
   };
+
+  
 
   updateMenuState(isOpen) {
     this.setState({ isOpen });
