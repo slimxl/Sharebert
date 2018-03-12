@@ -72,6 +72,10 @@ class Explore extends Component {
             obj['URL'] = responseData[i]['URL'];
             obj['ImageURL'] = responseData[i]['ImageURL'];
             obj['Retailer'] = responseData[i]['Website'];
+            if(brands==='Amazon')
+            {
+              obj['Retailer'] = 'Amazon';
+            }
               data2.push(obj);
           }
           toofast = false;
@@ -461,7 +465,7 @@ class Explore extends Component {
   };
 
   catGrab = category => {
-    if (category != '') {
+    if (category != 'All') {
       fetch(
         'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
           category,
@@ -508,7 +512,6 @@ class Explore extends Component {
         })
         .done();
     } else {
-      console.log('All');
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
@@ -529,11 +532,9 @@ class Explore extends Component {
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
-            url: data2[this.state.cardNum].ImageURL,
-            title: data2[this.state.cardNum].Title,
             dataset: data2,
-            cat: true,
-            category: category,
+            category: 'All',
+            cat: false,
           });
         })
         .done();
