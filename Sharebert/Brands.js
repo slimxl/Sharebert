@@ -185,208 +185,207 @@ class Brands extends Component {
     var Brand28 = {};
     Brand28['Term'] = 'The Frye Company';
     Brand28['title'] = 'The Frye Company';
-    Brand28['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand28['image_url'] = require('./assets/brands/frye.jpg');
 
     var Brand29 = {};
     Brand29['Term'] = 'GamesDeal';
     Brand29['title'] = 'GamesDeal';
-    Brand29['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand29['image_url'] = require('./assets/brands/gamesdeal.jpg');
 
     var Brand30 = {};
     Brand30['Term'] = 'Ghirardelli Chocolate';
     Brand30['title'] = 'Ghirardelli Chocolate';
-    Brand30['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand30['image_url'] = require('./assets/brands/ghirardelli.jpg');
 
     var Brand31 = {};
     Brand31['Term'] = 'Glasses.com';
     Brand31['title'] = 'Glasses.com';
-    Brand31['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand31['image_url'] = require('./assets/brands/glasses.jpg');
 
     var Brand32 = {};
     Brand32['Term'] = 'Heidi Klum Intimates';
     Brand32['title'] = 'Heidi Klum Intimates';
-    Brand32['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand32['image_url'] = require('./assets/brands/heidikumintimatews.jpg');
 
     var Brand33 = {};
     Brand33['Term'] = 'Hobbytron';
     Brand33['title'] = 'Hobbytron';
-    Brand33['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand33['image_url'] = require('./assets/brands/hobbytron.jpg');
 
     var Brand34 = {};
     Brand34['Term'] = 'Hotels.com';
     Brand34['title'] = 'Hotels.com';
-    Brand34['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand34['image_url'] = require('./assets/brands/hotels.jpg');
 
     var Brand35 = {};
     Brand35['Term'] = 'Jelly Belly';
     Brand35['title'] = 'Jelly Belly';
-    Brand35['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand35['image_url'] = require('./assets/brands/jellybelly.jpg');
 
     var Brand36 = {};
     Brand36['Term'] = 'Jinx';
     Brand36['title'] = 'Jinx';
-    Brand36['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand36['image_url'] = require('./assets/brands/jinx.jpg');
 
     var Brand37 = {};
     Brand37['Term'] = 'Leatherman';
     Brand37['title'] = 'Leatherman';
-    Brand37['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand37['image_url'] = require('./assets/brands/leatherman.jpg');
 
     var Brand38 = {};
     Brand38['Term'] = 'LivingSocial';
     Brand38['title'] = 'LivingSocial';
-    Brand38['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand38['image_url'] = require('./assets/brands/livingsocial.jpg');
 
     var Brand39 = {};
     Brand39['Term'] = 'Living Tees';
     Brand39['title'] = 'Living Tees';
-    Brand39['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand39['image_url'] = require('./assets/brands/livingtees.jpg');
 
     var Brand40 = {};
     Brand40['Term'] = 'Logitech';
     Brand40['title'] = 'Logitech';
-    Brand40['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand40['image_url'] = require('./assets/brands/logitech.jpg');
 
     var Brand41 = {};
     Brand41['Term'] = 'Modells';
     Brand41['title'] = 'Modells';
-    Brand41['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand41['image_url'] = require('./assets/brands/modellssportinggoods.jpg');
 
     var Brand42 = {};
     Brand42['Term'] = 'Naked Zebra';
     Brand42['title'] = 'Naked Zebra';
-    Brand42['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand42['image_url'] = require('./assets/brands/nakedzebra.jpg');
 
     var Brand43 = {};
     Brand43['Term'] = 'Oakley';
     Brand43['title'] = 'Oakley';
-    Brand43['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand43['image_url'] = require('./assets/brands/oakley.jpg');
 
     var Brand44 = {};
     Brand44['Term'] = 'Otel.com';
     Brand44['title'] = 'Otel.com';
-    Brand44['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand44['image_url'] = require('./assets/brands/otel.jpg');
 
     var Brand45 = {};
     Brand45['Term'] = 'Outdoor Technology';
     Brand45['title'] = 'Outdoor Technology';
-    Brand45['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand45['image_url'] = require('./assets/brands/outdoortech.jpg');
 
     var Brand46 = {};
     Brand46['Term'] = 'Rainier Arms';
     Brand46['title'] = 'Rainier Arms';
-    Brand46['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand46['image_url'] = require('./assets/brands/rainierarms.jpg');
 
     var Brand47 = {};
     Brand47['Term'] = 'RefrigiWear';
     Brand47['title'] = 'RefrigiWear';
-    Brand47['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand47['image_url'] = require('./assets/brands/refrigiwear.jpg');
 
     var Brand48 = {};
     Brand48['Term'] = 'Rite Aid';
     Brand48['title'] = 'Rite Aid';
-    Brand48['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand48['image_url'] = require('./assets/brands/riteaidpharmacy.jpg');
 
     var Brand49 = {};
     Brand49['Term'] = 'Road Runner Sports';
     Brand49['title'] = 'Road Runner Sports';
-    Brand49['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand49['image_url'] = require('./assets/brands/roadrunnersport.jpg');
 
     var Brand50 = {};
     Brand50['Term'] = 'Roses Only';
     Brand50['title'] = 'Roses Only';
-    Brand50['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand50['image_url'] = require('./assets/brands/rosesonly.jpg');
 
     var Brand51 = {};
     Brand51['Term'] = 'Russell Stover Chocolates';
     Brand51['title'] = 'Russell Stover Chocolates';
-    Brand51['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand51['image_url'] = require('./assets/brands/russelstover.jpg');
 
     var Brand52 = {};
     Brand52['Term'] = 'Scholastic';
     Brand52['title'] = 'Scholastic';
-    Brand52['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand52['image_url'] = require('./assets/brands/scholastic.jpg');
 
     var Brand53 = {};
     Brand53['Term'] = 'shopDisney';
     Brand53['title'] = 'shopDisney';
-    Brand53['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand53['image_url'] = require('./assets/brands/shopdisney.jpg');
 
     var Brand54 = {};
     Brand54['Term'] = 'Sleefs';
     Brand54['title'] = 'Sleefs';
-    Brand54['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand54['image_url'] = require('./assets/brands/sleefs.jpg');
 
     var Brand55 = {};
     Brand55['Term'] = 'SnapMade';
     Brand55['title'] = 'SnapMade';
-    Brand55['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand55['image_url'] = require('./assets/brands/snapmade.jpg');
 
     var Brand56 = {};
     Brand56['Term'] = 'Spencers Online';
     Brand56['title'] = 'Spencers Online';
-    Brand56['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand56['image_url'] = require('./assets/brands/spencers.jpg');
 
     var Brand57 = {};
     Brand57['Term'] = 'Spirit Halloween';
     Brand57['title'] = 'Spirit Halloween';
-    Brand57['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand57['image_url'] = require('./assets/brands/spirithalloween.jpg');
 
     var Brand58 = {};
     Brand58['Term'] = 'Spyder';
     Brand58['title'] = 'Spyder';
-    Brand58['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand58['image_url'] = require('./assets/brands/spyder.jpg');
 
     var Brand59 = {};
     Brand59['Term'] = 'State Line Tack';
     Brand59['title'] = 'State Line Tack';
-    Brand59['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand59['image_url'] = require('./assets/brands/statelinetack.jpg');
 
     var Brand60 = {};
     Brand60['Term'] = 'STUBHUB USD';
     Brand60['title'] = 'STUBHUB USD';
-    Brand60['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand60['image_url'] = require('./assets/brands/stubhub.jpg');
 
     var Brand61 = {};
     Brand61['Term'] = 'Sun and Ski';
     Brand61['title'] = 'Sun and Ski';
-    Brand61['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand61['image_url'] = require('./assets/brands/sunandski.jpg');
 
     var Brand62 = {};
     Brand62['Term'] = 'Tactics';
     Brand62['title'] = 'Tactics';
-    Brand62['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand62['image_url'] = require('./assets/brands/tactics.jpg');
 
     var Brand63 = {};
     Brand63['Term'] = 'TicketNetwork';
     Brand63['title'] = 'TicketNetwork';
-    Brand63['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand63['image_url'] = require('./assets/brands/ticketnetwork.jpg');
 
     var Brand64 = {};
     Brand64['Term'] = 'Tillys';
     Brand64['title'] = 'Tillys';
-    Brand64['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand64['image_url'] = require('./assets/brands/tillys.jpg');
 
     var Brand65 = {};
     Brand65['Term'] = 'Timberland';
     Brand65['title'] = 'Timberland';
-    Brand65['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand65['image_url'] = require('./assets/brands/timberland.jpg');
 
     var Brand66 = {};
     Brand66['Term'] = 'Tractor Supply';
     Brand66['title'] = 'Tractor Supply';
-    Brand66['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand66['image_url'] = require('./assets/brands/tractorsupplyco.jpg');
 
     var Brand67 = {};
     Brand67['Term'] = '3V Gear';
     Brand67['title'] = '3V Gear';
-    Brand67['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand67['image_url'] = require('./assets/brands/tvgear.jpg');
 
     brandArr.push(Brand1);
     brandArr.push(Brand2);
     brandArr.push(Brand3);
     brandArr.push(Brand4);
-    brandArr.push(Brand5);
     brandArr.push(Brand6);
     brandArr.push(Brand7);
     brandArr.push(Brand8);
