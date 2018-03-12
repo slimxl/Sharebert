@@ -34,6 +34,7 @@ class Explore extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
+    this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
       isOpen: false,
@@ -612,7 +613,30 @@ class Explore extends Component {
     }
   };
 
-  
+  getOldLikes=async(type)=>{
+    try {   
+      var likesave;
+      if(userID !== undefined)
+      {
+        likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+      }
+      else
+      {
+      likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+      }
+      if (likesave !== null){
+        // We have data!!
+        console.log(likesave);
+        likes = JSON.parse(likesave);
+      }
+      else
+      {
+      }
+      this.forceUpdate();
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
 
   updateMenuState(isOpen) {
     this.setState({ isOpen });
