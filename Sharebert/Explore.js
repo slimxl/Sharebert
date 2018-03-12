@@ -60,7 +60,6 @@ class Explore extends Component {
     if(this.props.navigation.state.params.brands!= undefined)
     {
       brand = this.props.navigation.state.params.brands;
-      console.log(brand)
       fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand='+brand+'&page=10', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
@@ -80,7 +79,6 @@ class Explore extends Component {
           }
           toofast = false;
            search = false;
-           console.log(data2);
           data2 = shuffle(data2);
           this.setState({
             cardNum: this.state.cardNum,
