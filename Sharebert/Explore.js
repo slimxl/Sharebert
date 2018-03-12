@@ -519,10 +519,67 @@ class Explore extends Component {
 
   shareApp() {
     try {
-      Linking.openURL('https://sharebert.com');
+      Share.share(
+        {
+          ...Platform.select({
+            ios: {
+              url: 'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+            },
+            android: {
+              message: 'Look at this : \n' +
+                'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+            },
+          }),
+          title: 'Wow, did you see that?',
+        },
+        {
+          ...Platform.select({
+            ios: {
+              // iOS only:
+              excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+            },
+            android: {
+              // Android only:
+              dialogTitle: 'Share : ' +
+                'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+            },
+          }),
+        }
+      ).then(({action, activityType}) => {
+        if(action === Share.dismissedAction) 
+        {
+            Alert.alert("Hey!","Don't Forget, You Get Points for Sharing The App!");
+        }
+        else
+        {
+          try {
+            if (userID != 0) {
+              fetch(
+                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
+                  userID +
+                  '&type=3',
+                { method: 'GET' }
+              )
+                .then(response2 => response2.json())
+                .then(responseData2 => {
+                  if (responseData2['Points'] != userPoints) {
+                    
+                    userPoints= responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing The App!");
+                    
+                  }
+                })
+                .done();
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        } 
+      });
     } catch (error) {
       console.error(error);
     }
+    
   }
 
   saveFile=async()=>{
