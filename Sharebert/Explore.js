@@ -534,7 +534,7 @@ class Explore extends Component {
         Alert.alert("Saving likes for " + userID);
         if(userID !== undefined||userID!== 0)
         {
-          await AsyncStorage.setItem('@MySuperStore:Likes' + this.state.userID, JSON.stringify(likes));
+          await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
         }
         else
         {
