@@ -870,6 +870,15 @@ class Explore extends Component {
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {})}>
+                <Image
+                  style={styles.catbar}
+                  source={require('./Assett/brands.jpg')}
+                />
+                <Text style={styles.label}>
+                  Brands
+                </Text>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('')}>
                 <Image
                   style={styles.catbar}

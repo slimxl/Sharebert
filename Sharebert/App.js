@@ -5,6 +5,7 @@ import LoginScreen from './LoginScreen';
 import Shipping from './Shipping';
 import Rewards from './Rewards';
 import Likes from './Likes';
+import Brands from './Brands';
 export default class App extends React.Component {
   render() {
     return <AppNavigator />;
@@ -38,6 +39,14 @@ const AppNavigator = StackNavigator(
 
     Likes: {
       screen: Likes,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
+
+    Brands: {
+      screen: Brands,
       navigationOptions: ({ navigation }) => ({
         header: true,
         gesturesEnabled: true,

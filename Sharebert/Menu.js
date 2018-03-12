@@ -77,7 +77,7 @@ export default function Menu({ onItemSelected }) {
       </Text>
 
       <Text onPress={() => onItemSelected('Shipping')} style={styles.item}>
-        Shipping
+        Prize Profile
       </Text>
 
       <Text
