@@ -91,7 +91,7 @@ class LoginScreen extends Component {
     else
     {
       Alert.alert(
-        'Login as '+name2+"?","",
+        'Login as '+name2+"?"+" Points: "+userPoints,"",
         [
           {
             text: 'No',
@@ -212,6 +212,15 @@ class LoginScreen extends Component {
         // We have data!!
         console.log(namesaved);
         name2 = namesaved;
+        const emailsaved = await AsyncStorage.getItem('@MySuperStore:email');
+        userEmail2 = emailsaved;
+        const uri2saved = await AsyncStorage.getItem('@MySuperStore:uri2');
+        uri2 = uri2saved;
+        const pointssaved = await AsyncStorage.getItem('@MySuperStore:points');
+        userPoints = pointssaved;
+        const useridsaved = await AsyncStorage.getItem('@MySuperStore:id');
+        userID = useridsaved;
+
         lastlogged = true;
         if(type === 'Facebook')
         {
