@@ -135,9 +135,9 @@ class Likes extends Component {
   getFile=async(type)=>{
     try {   
       var likesave;
-      if(this.userID !== undefined)
+      if(userID !== undefined)
       {
-        likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + this.userID);
+        likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
       }
       else
       {
@@ -151,6 +151,7 @@ class Likes extends Component {
       else
       {
       }
+      this.forceUpdate();
     } catch (error) {
       // Error retrieving data
     }

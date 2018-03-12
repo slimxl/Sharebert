@@ -498,16 +498,10 @@ class Explore extends Component {
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
     )
     {
-      if(this.state.cardNum!=0)
-      {
+     
       likes.push(this.state.dataset[this.state.cardNum - 1]);
       this.saveLike();
-      }
-      else
-      {
-        likes.push(this.state.dataset[this.state.cardNum]);
-        this.saveLike();
-      }
+
       
     }
   };
@@ -540,8 +534,9 @@ class Explore extends Component {
         {
           await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
         }
-        const likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+        const likesave = await AsyncStorage.getItem('@MySuperStore:Likes'+ userID);
         Alert.alert(likesave);
+        console.log(likes);
       } catch (error) {
         // Error saving data
         Alert.alert("Error saving likes!");
