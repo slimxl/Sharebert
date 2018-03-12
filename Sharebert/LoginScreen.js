@@ -91,7 +91,7 @@ class LoginScreen extends Component {
     else
     {
       Alert.alert(
-        'Login as '+name2+"?"+" Points: "+userID,"",
+        'Login as '+name2+"?","",
         [
           {
             text: 'No',

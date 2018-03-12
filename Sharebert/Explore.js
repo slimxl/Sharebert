@@ -516,7 +516,7 @@ class Explore extends Component {
   }
 
   saveFile=async()=>{
-    console.log('Test');
+    
     try {
       await AsyncStorage.setItem('@MySuperStore:key', this.state.dataset[this.state.cardNum-1].Retailer);
     } catch (error) {
@@ -526,7 +526,7 @@ class Explore extends Component {
     }
     saveLike=async()=>{
       try {
-        Alert.alert("Saving likes for " + userID);
+        
         if(userID !== undefined||userID!== 0)
         {
           await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
@@ -536,8 +536,6 @@ class Explore extends Component {
           await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
         }
         const likesave = await AsyncStorage.getItem('@MySuperStore:Likes'+ userID);
-        Alert.alert(likesave);
-        console.log(likes);
       } catch (error) {
         // Error saving data
         Alert.alert("Error saving likes!");
