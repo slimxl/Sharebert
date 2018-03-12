@@ -702,17 +702,6 @@ class Explore extends Component {
     }
   }
 
-  getFile=async()=>{
-    try {
-      const value = await AsyncStorage.getItem('@MySuperStore:key');
-      if (value !== null){
-        // We have data!!
-        console.log(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  }
 
   onMenuItemSelected = item => {
     this.setState({
@@ -726,7 +715,6 @@ class Explore extends Component {
         points: userPoints,
       });
     } else if (item === 'Likes') {
-      this.getFile();
       this.props.navigation.navigate('Likes', {
         id: userID,
         points: userPoints,

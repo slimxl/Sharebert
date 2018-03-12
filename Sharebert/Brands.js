@@ -514,11 +514,7 @@ class Brands extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <TouchableOpacity
-        onPress={()=>
-        {
-          this.getFile();
-        }}>
+      <TouchableOpacity>
         <Image style={styles.header} />
         </TouchableOpacity>
         <Image
