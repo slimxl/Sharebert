@@ -190,7 +190,14 @@ class LoginScreen extends Component {
     }
   };
 
-  
+  saveNewPoints=async()=>{
+    try {
+      await AsyncStorage.setItem('@MySuperStore:points', userPoints);
+    } catch (error) {
+      // Error saving data
+    }
+  }
+
   saveFile=async()=>{
     try {
       await AsyncStorage.setItem('@MySuperStore:name', name2);
@@ -257,6 +264,7 @@ checkUpdatePoints = () => {
     .then(responseData => {
       var test = responseData['Points'];
       userPoints = test;
+      this.saveNewPoints();
       this.onSubmitEdit('Login');
     })
     .done();
