@@ -906,7 +906,7 @@ class Explore extends Component {
                   Baby
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Books')}>
+              <TouchableOpacity onPress={() => this.catGrab('Book')}>
                 <Image
                   style={styles.catbar}
                   source={require('./Assett/books.jpg')}
