@@ -480,7 +480,14 @@ class Brands extends Component {
     const item = data.item;
     return (
       <View style={styles.item}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => 
+              {
+                this.props.navigation.navigate('Explore', {
+                  id: userID,
+                  points: userPoints,
+                  brands: item.title,
+                })
+              }}>
         {!item.image_url
           ? <View style={styles.itemImage}>
               <Text>No image</Text>
