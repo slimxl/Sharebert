@@ -21,6 +21,7 @@ const backAction = NavigationActions.back({
 var userPoints = 0;
 var userID = 0;
 var like;
+var like2;
 class Likes extends Component {
   constructor(props) {
     super(props);
@@ -67,8 +68,8 @@ class Likes extends Component {
               url: item.URL,
             },
             android: {
-              message: 'Have a look on : \n' +
-                item.URL,
+              message: 'Look at this : \n' +
+              item.URL,
             },
           }),
           title: 'Wow, did you see that?',
@@ -82,33 +83,41 @@ class Likes extends Component {
             android: {
               // Android only:
               dialogTitle: 'Share : ' +
-                item.Title,
+              item.Title,
             },
           }),
         }
-      );
-    } catch (error) {
-      console.error(error);
-    }
-
-    try {
-      if (userID != 0) {
-        Alert.alert('POINTS OBTAINED');
-        fetch(
-          'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
-            userID +
-            '&type=1',
-          { method: 'GET' }
-        )
-          .then(response2 => response2.json())
-          .then(responseData2 => {
-            Alert.alert('POINTS OBTAINED');
-            this.setState({
-              userPoints: responseData2['Points'],
-            });
-          })
-          .done();
-      }
+      ).then(({action, activityType}) => {
+        if(action === Share.dismissedAction) 
+        {
+            Alert.alert("Hey!","Don't Forget, You Get Points for Sharing Products!");
+        }
+        else
+        {
+          try {
+            if (userID != 0) {
+              fetch(
+                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
+                  userID +
+                  '&type=1',
+                { method: 'GET' }
+              )
+                .then(response2 => response2.json())
+                .then(responseData2 => {
+                  if (responseData2['Points'] != userPoints) {
+                    
+                    userPoints= responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!");
+                  
+                  }
+                })
+                .done();
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        } 
+      });
     } catch (error) {
       console.error(error);
     }
@@ -145,8 +154,8 @@ class Likes extends Component {
       }
       if (likesave !== null){
         // We have data!!
-        console.log(likesave);
-        like = JSON.parse(likesave);
+        like2 = JSON.parse(likesave);
+        like = like2.filter(function(n){ return n }); 
       }
       else
       {

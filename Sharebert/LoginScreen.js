@@ -101,7 +101,7 @@ class LoginScreen extends Component {
           {
             text: 'Yes',
             onPress: () => {
-              this.onSubmitEdit("google");
+              this.checkUpdatePoints();
             },
           },
         ],
@@ -133,7 +133,7 @@ class LoginScreen extends Component {
           {
             text: 'Yes',
             onPress: () => {
-              this.onSubmitEdit("google");
+              this.checkUpdatePoints();
             },
           },
         ],
@@ -247,7 +247,20 @@ class LoginScreen extends Component {
     }
   }
 
-
+checkUpdatePoints = () => {
+  fetch(
+    'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+      userEmail2,
+    { method: 'GET' }
+  )
+    .then(response => response.json())
+    .then(responseData => {
+      var test = responseData['Points'];
+      userPoints = test;
+      this.onSubmitEdit('Login');
+    })
+    .done();
+}
 
   _handleFinalFacebookLogin = async () => {
     if(doubleclick)

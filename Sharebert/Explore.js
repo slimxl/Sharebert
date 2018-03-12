@@ -507,9 +507,11 @@ class Explore extends Component {
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
     )
     {
-     
-      likes.push(this.state.dataset[this.state.cardNum - 1]);
-      this.saveLike();
+     if(this.state.dataset[this.state.cardNum - 1].Title!==null)
+     {
+       likes.push(this.state.dataset[this.state.cardNum - 1]);
+       this.saveLike();
+     }
 
       
     }
@@ -632,7 +634,7 @@ class Explore extends Component {
       }
       if (likesave !== null){
         // We have data!!
-        console.log(likesave);
+       
         likes = JSON.parse(likesave);
       }
       else
