@@ -500,7 +500,7 @@ class Brands extends Component {
             </View>
           : <Image
               source={item.image_url}
-              resizeMode={'cover'}
+              resizeMode={'contain'}
               style={styles.itemImage}
             />}
         </TouchableOpacity>
