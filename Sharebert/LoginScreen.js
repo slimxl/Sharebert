@@ -91,7 +91,7 @@ class LoginScreen extends Component {
     else
     {
       Alert.alert(
-        'Login as '+name2+"?"+" Points: "+userID,"",
+        'Login as '+name2+"?","",
         [
           {
             text: 'No',
@@ -101,7 +101,7 @@ class LoginScreen extends Component {
           {
             text: 'Yes',
             onPress: () => {
-              this.onSubmitEdit("google");
+              this.checkUpdatePoints();
             },
           },
         ],
@@ -133,7 +133,7 @@ class LoginScreen extends Component {
           {
             text: 'Yes',
             onPress: () => {
-              this.onSubmitEdit("google");
+              this.checkUpdatePoints();
             },
           },
         ],
@@ -190,7 +190,14 @@ class LoginScreen extends Component {
     }
   };
 
-  
+  saveNewPoints=async()=>{
+    try {
+      await AsyncStorage.setItem('@MySuperStore:points', userPoints);
+    } catch (error) {
+      // Error saving data
+    }
+  }
+
   saveFile=async()=>{
     try {
       await AsyncStorage.setItem('@MySuperStore:name', name2);
@@ -247,7 +254,21 @@ class LoginScreen extends Component {
     }
   }
 
-
+checkUpdatePoints = () => {
+  fetch(
+    'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+      userEmail2,
+    { method: 'GET' }
+  )
+    .then(response => response.json())
+    .then(responseData => {
+      var test = responseData['Points'];
+      userPoints = test;
+      this.saveNewPoints();
+      this.onSubmitEdit('Login');
+    })
+    .done();
+}
 
   _handleFinalFacebookLogin = async () => {
     if(doubleclick)

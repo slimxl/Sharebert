@@ -27,6 +27,7 @@ var userPoints = 0;
 var userID = 0;
 var toofast = false;
 var datasize = 0;
+var searchcount = 0;
 var search = false;
 var likes = [];
 class Explore extends Component {
@@ -273,7 +274,11 @@ class Explore extends Component {
       {
         return;
       }
-      if (
+      if((search===true&&this.state.cardNum>=(searchcount-5))||(this.state.cardNum>30&&search===true))
+      {
+        this.onSubmitEdit();
+      }
+      else if (
         this.state.cat &&
         this.state.category != 'All' &&
         this.state.cardNum >= 20
@@ -313,6 +318,7 @@ class Explore extends Component {
               }
             }
             toofast = false;
+            search = false;            
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -323,7 +329,7 @@ class Explore extends Component {
             });
           })
           .done();
-      } else if (this.state.cardNum >= 30 ||datasize-5===0) {
+      } else if ((this.state.cardNum >= 30 ||datasize-5===0)&&search===false) {
         fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
           .then(response => response.json())
           .then(responseData => {
@@ -346,6 +352,8 @@ class Explore extends Component {
               data2.push(obj2);
             }
             toofast = false;
+           search = false;
+           console.log('Search was reset');      
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -356,7 +364,6 @@ class Explore extends Component {
           })
           .done();
       }
-
       this.setState({
         cardNum: this.state.cardNum + 1,
         url: this.state.dataset[this.state.cardNum].ImageURL,
@@ -377,7 +384,7 @@ class Explore extends Component {
                 Alert.alert('POINTS OBTAINED',"Nice Swiping!");
 
                   userPoints = responseData2['Points'];
-                  tihs.forceUpdate();
+                  this.forceUpdate();
               }
             })
             .done();
@@ -468,6 +475,7 @@ class Explore extends Component {
   };
 
   swipeLeft = () => {
+    
     if(this.state.cardNum>35)
       {
         Alert.alert("Hold On!","Swiping Too Fast!");
@@ -499,9 +507,11 @@ class Explore extends Component {
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
     )
     {
-     
-      likes.push(this.state.dataset[this.state.cardNum - 1]);
-      this.saveLike();
+     if(this.state.dataset[this.state.cardNum - 1].Title!==null)
+     {
+       likes.push(this.state.dataset[this.state.cardNum - 1]);
+       this.saveLike();
+     }
 
       
     }
@@ -516,7 +526,7 @@ class Explore extends Component {
   }
 
   saveFile=async()=>{
-    console.log('Test');
+    
     try {
       await AsyncStorage.setItem('@MySuperStore:key', this.state.dataset[this.state.cardNum-1].Retailer);
     } catch (error) {
@@ -526,7 +536,7 @@ class Explore extends Component {
     }
     saveLike=async()=>{
       try {
-        Alert.alert("Saving likes for " + userID);
+        
         if(userID !== undefined||userID!== 0)
         {
           await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
@@ -536,8 +546,6 @@ class Explore extends Component {
           await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
         }
         const likesave = await AsyncStorage.getItem('@MySuperStore:Likes'+ userID);
-        Alert.alert(likesave);
-        console.log(likes);
       } catch (error) {
         // Error saving data
         Alert.alert("Error saving likes!");
@@ -626,7 +634,7 @@ class Explore extends Component {
       }
       if (likesave !== null){
         // We have data!!
-        console.log(likesave);
+       
         likes = JSON.parse(likesave);
       }
       else
@@ -661,7 +669,9 @@ class Explore extends Component {
         var data2 = [];
         var count = responseData['Amazon'][0][7];
         datasize = count;
-        console.log(count);
+        searchcount = datasize;
+
+        console.log(searchcount);
         for (var i = 0; i < count; i++) {
           var obj = {};
           obj['ASIN'] = responseData['Amazon'][i][0];
