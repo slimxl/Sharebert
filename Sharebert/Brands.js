@@ -89,6 +89,7 @@ class Brands extends Component {
     const item = data.item;
     return (
       <View style={styles.item}>
+      <TouchableOpacity>
         {!item.image_url
           ? <View style={styles.itemImage}>
               <Text>No image</Text>
@@ -101,6 +102,7 @@ class Brands extends Component {
         <Text numberOfLines={3} style={styles.itemTitle}>
           {item.title}
         </Text>
+        </TouchableOpacity>
       </View>
     );
   };
