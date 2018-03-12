@@ -72,7 +72,7 @@ class Explore extends Component {
             obj['URL'] = responseData[i]['URL'];
             obj['ImageURL'] = responseData[i]['ImageURL'];
             obj['Retailer'] = responseData[i]['Website'];
-            if(brands==='Amazon')
+            if(brand==='Amazon')
             {
               obj['Retailer'] = 'Amazon';
             }
