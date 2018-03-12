@@ -28,6 +28,7 @@ var userID = 0;
 var toofast = false;
 var datasize = 0;
 var searchcount = 0;
+var brand = '';
 var search = false;
 var likes = [];
 class Explore extends Component {
@@ -35,6 +36,7 @@ class Explore extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
+   
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
@@ -55,38 +57,72 @@ class Explore extends Component {
       dataset: [],
       inputValue: 'Search',
     };
-    fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
-      .then(response => response.json())
-      .then(responseData => {
-        var data2 = [];
-        for (var i = 0; i < 20; i++) {
-          var obj = {};
-          obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-          obj['Title'] = responseData['Amazon'][i]['Title'];
-          obj['URL'] = responseData['Amazon'][i]['URL'];
-          obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-          obj['Retailer'] = "Amazon";
-
-          var obj2 = {};
-          obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-          obj2['Title'] = responseData['Others'][i]['Title'];
-          obj2['URL'] = responseData['Others'][i]['URL'];
-          obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-          obj2['Retailer'] = responseData['Others'][i]['Website'];
-
-          data2.push(obj);
-          data2.push(obj2);
-        }
-        data2 = shuffle(data2);
-        this.setState({
-          cardNum: this.state.cardNum,
-          url: data2[this.state.cardNum].ImageURL,
-          title: data2[this.state.cardNum].Title,
-          dataset: data2,
-          cat: false,
-        });
-      })
-      .done();
+    if(this.props.navigation.state.params.brands!= undefined)
+    {
+      brand = this.props.navigation.state.params.brands;
+      console.log(brand)
+      fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand='+brand+'&page=10', { method: 'GET' })
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          for (var i = 0; i < 20; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData[i]['ASIN'];
+            obj['Title'] = responseData[i]['Title'];
+            obj['URL'] = responseData[i]['URL'];
+            obj['ImageURL'] = responseData[i]['ImageURL'];
+            obj['Retailer'] = responseData[i]['Website'];
+              data2.push(obj);
+          }
+          toofast = false;
+           search = false;
+           console.log(data2);
+          data2 = shuffle(data2);
+          this.setState({
+            cardNum: this.state.cardNum,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
+            dataset: data2,
+            cat: false,
+          });
+        })
+        .done();
+    }
+    else if(brand === '')
+    {
+      fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          for (var i = 0; i < 20; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
+            obj['Title'] = responseData['Amazon'][i]['Title'];
+            obj['URL'] = responseData['Amazon'][i]['URL'];
+            obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+            obj['Retailer'] = "Amazon";
+  
+            var obj2 = {};
+            obj2['ASIN'] = responseData['Others'][i]['ASIN'];
+            obj2['Title'] = responseData['Others'][i]['Title'];
+            obj2['URL'] = responseData['Others'][i]['URL'];
+            obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+            obj2['Retailer'] = responseData['Others'][i]['Website'];
+  
+            data2.push(obj);
+            data2.push(obj2);
+          }
+          data2 = shuffle(data2);
+          this.setState({
+            cardNum: this.state.cardNum,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
+            dataset: data2,
+            cat: false,
+          });
+        })
+        .done();
+    }
   }
 
   renderCard = () => {
@@ -274,7 +310,34 @@ class Explore extends Component {
       {
         return;
       }
-      if((search===true&&this.state.cardNum>=(searchcount-5))||(this.state.cardNum>30&&search===true))
+      if(brand!==''&&this.state.cardNum>14)
+      {
+        fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand='+brand+'&page=5', { method: 'GET' })
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          for (var i = 0; i < 20; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData[i]['ASIN'];
+            obj['Title'] = responseData[i]['Title'];
+            obj['URL'] = responseData[i]['URL'];
+            obj['ImageURL'] = responseData[i]['ImageURL'];
+            obj['Retailer'] = responseData[i]['Website'];
+              data2.push(obj);
+          }
+          toofast = false;
+           search = false;
+          data2 = shuffle(data2);
+          this.setState({
+            cardNum: 0,
+            dataset: data2,
+            category: '',
+            cat: false,
+          });
+        })
+        .done();
+      }
+      else if((search===true&&this.state.cardNum>=(searchcount-5))||(this.state.cardNum>30&&search===true))
       {
         this.onSubmitEdit();
       }
@@ -398,7 +461,7 @@ class Explore extends Component {
   };
 
   catGrab = category => {
-    if (category != 'All') {
+    if (category != '') {
       fetch(
         'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
           category,
@@ -445,6 +508,7 @@ class Explore extends Component {
         })
         .done();
     } else {
+      console.log('All');
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
@@ -465,9 +529,11 @@ class Explore extends Component {
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
             dataset: data2,
-            category: 'All',
-            cat: false,
+            cat: true,
+            category: category,
           });
         })
         .done();
@@ -475,8 +541,12 @@ class Explore extends Component {
   };
 
   swipeLeft = () => {
-    
-    if(this.state.cardNum>35)
+    if(brand!==''&&this.state.cardNum>16)
+    {
+      Alert.alert("Hold On!","Swiping Too Fast!");
+        toofast = true;
+    }
+    if(this.state.cardNum>35||toofast)
       {
         Alert.alert("Hold On!","Swiping Too Fast!");
         toofast = true;
@@ -489,7 +559,12 @@ class Explore extends Component {
   };
 
   swipeRight = () => {
-    if(this.state.cardNum>35)
+    if(brand!==''&&this.state.cardNum>16)
+    {
+      Alert.alert("Hold On!","Swiping Too Fast!");
+        toofast = true;
+    }
+    if(this.state.cardNum>35||toofast)
     {
       Alert.alert("Hold On!","Swiping Too Fast! ");
       toofast = true;
@@ -870,7 +945,10 @@ class Explore extends Component {
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {})}>
+              <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
+        id: userID,
+        points: userPoints,
+      })}>
                 <Image
                   style={styles.catbar}
                   source={require('./Assett/brands.jpg')}
