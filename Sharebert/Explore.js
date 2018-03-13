@@ -122,8 +122,11 @@ class Explore extends Component {
         })
         .done();
     }
+    if(userID!=0||userID!=undefined||userID!=null)
+    {
 
-    this.checkUpdatePoints();
+      this.checkUpdatePoints();
+    }
   }
 
   renderCard = () => {
