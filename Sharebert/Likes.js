@@ -184,7 +184,12 @@ class Likes extends Component {
         <TouchableOpacity
               onPress={() => 
               {
-                this.props.navigation.dispatch(backAction);
+                //this.props.navigation.dispatch(backAction); //navigate to explore
+
+                this.props.navigation.navigate('Explore', {
+                  id: userID,
+                  points: userPoints,
+                });
               }}>
               <Image
                 style={styles.hamburger}
