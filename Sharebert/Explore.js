@@ -848,7 +848,56 @@ class Explore extends Component {
               />
 
             </TouchableOpacity>
-
+            <Swiper
+              style={styles.swiper}
+              ref={swiper => {
+                this.swiper = swiper;
+              }}
+              onTapCard={this.openURL}
+              disableTopSwipe={true}
+              disableBottomSwipe={true}
+              infinite={true}
+              onSwiped={this.onSwiped}
+              onSwipedRight={this.onSwipedRight}
+              cards={this.state.cards}
+              cardIndex={this.state.cardIndex}
+              cardVerticalMargin={110}
+              onTapCardDeadZone={100}
+              renderCard={this.renderCard}
+              onSwipedAll={this.onSwipedAllCards}
+              showSecondCard={false}
+              backgroundColor={'white'}
+              marginTop={50}
+              
+              overlayLabels={{
+                bottom: {
+                  title: 'BLEAH',
+                  swipeColor: '#9262C2',
+                  backgroundOpacity: '0.75',
+                  fontColor: '#FFF',
+                },
+                left: {
+                  title: 'NOPE',
+                  swipeColor: '#FF6C6C',
+                  backgroundOpacity: '0.75',
+                  fontColor: '#FFF',
+                },
+                right: {
+                  title: 'LIKE',
+                  swipeColor: '#4CCC93',
+                  backgroundOpacity: '0.75',
+                  fontColor: '#FFF',
+                },
+                top: {
+                  title: 'SUPER LIKE',
+                  swipeColor: '#4EB8B7',
+                  backgroundOpacity: '0.75',
+                  fontColor: '#FFF',
+                },
+              }}
+              animateOverlayLabelsOpacity
+              animateCardOpacity
+            />
             <TouchableOpacity
               onPress={this.onSubmitEdit}
               style={{ flexDirection: 'row' }}>
@@ -882,8 +931,8 @@ class Explore extends Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               backgroundColor={'white'}
-              marginTop={-40}
-              height={20}
+              marginTop={-5}
+              height={250}
               >
               {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
@@ -1117,60 +1166,12 @@ class Explore extends Component {
                 </Text>
               </TouchableOpacity>
             </ScrollView>
-            <Swiper
-              style={styles.swiper}
-              ref={swiper => {
-                this.swiper = swiper;
-              }}
-              onTapCard={this.openURL}
-              disableTopSwipe={true}
-              disableBottomSwipe={true}
-              infinite={true}
-              onSwiped={this.onSwiped}
-              onSwipedRight={this.onSwipedRight}
-              cards={this.state.cards}
-              cardIndex={this.state.cardIndex}
-              cardVerticalMargin={110}
-              onTapCardDeadZone={100}
-              renderCard={this.renderCard}
-              onSwipedAll={this.onSwipedAllCards}
-              showSecondCard={false}
-              backgroundColor={'white'}
-              marginTop={50}
-              overlayLabels={{
-                bottom: {
-                  title: 'BLEAH',
-                  swipeColor: '#9262C2',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-                left: {
-                  title: 'NOPE',
-                  swipeColor: '#FF6C6C',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-                right: {
-                  title: 'LIKE',
-                  swipeColor: '#4CCC93',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-                top: {
-                  title: 'SUPER LIKE',
-                  swipeColor: '#4EB8B7',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-              }}
-              animateOverlayLabelsOpacity
-              animateCardOpacity
-            />
+           
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
-                marginTop: '130%',
+                marginTop: '113%',
               }}>
               <TouchableOpacity onPress={this.swipeLeft}>
                 <Image
@@ -1217,6 +1218,7 @@ const styles = StyleSheet.create({
 
   swiper: {
     paddingTop: Constants.statusBarHeight,
+    
   },
   card: {
     flex: 1,
@@ -1294,7 +1296,10 @@ const styles = StyleSheet.create({
     marginTop: -150,
     backgroundColor: '#DCDCDC',
   },
-
+  outer:{
+    marginTop: 50,
+    backgroundColor: 'white',
+  },
   catbar: {
     width: 50,
     height: 50,
