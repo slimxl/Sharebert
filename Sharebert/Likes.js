@@ -27,6 +27,11 @@ class Likes extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
+    if(userPoints===undefined||userID===undefined)
+    {
+      userPoints = 0;
+      userID = 0;
+    }
     this.state = {
       isOpen: false,
       selectedItem: 'Likes',

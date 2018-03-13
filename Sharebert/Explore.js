@@ -122,8 +122,11 @@ class Explore extends Component {
         })
         .done();
     }
+    if(userID!=0||userID!=undefined||userID!=null)
+    {
 
-    this.checkUpdatePoints();
+      this.checkUpdatePoints();
+    }
   }
 
   renderCard = () => {
@@ -269,6 +272,10 @@ class Explore extends Component {
   };
 
   checkUpdatePoints = () => {
+    if(userID===0)
+    {
+      return;
+    }
     fetch(
       'https://biosystematic-addit.000webhostapp.com/RetrievePointsWeb.php?uid=' +
       userID,
