@@ -835,7 +835,7 @@ class Explore extends Component {
               onSwipedRight={this.onSwipedRight}
               cards={this.state.cards}
               cardIndex={this.state.cardIndex}
-              cardVerticalMargin={100}
+              cardVerticalMargin={115}
               onTapCardDeadZone={100}
               renderCard={this.renderCard}
               onSwipedAll={this.onSwipedAllCards}
