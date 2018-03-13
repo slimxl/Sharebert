@@ -841,7 +841,7 @@ class Explore extends Component {
               onSwipedAll={this.onSwipedAllCards}
               showSecondCard={false}
               backgroundColor={'white'}
-              marginTop={75}
+              marginTop={50}
               overlayLabels={{
                 bottom: {
                   title: 'BLEAH',
