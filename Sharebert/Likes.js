@@ -27,8 +27,7 @@ class Likes extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
-    if(userPoints===undefined||userID===undefined)
-    {
+    if (userPoints === undefined || userID === undefined) {
       userPoints = 0;
       userID = 0;
     }
@@ -62,7 +61,7 @@ class Likes extends Component {
   updateMenuState(isOpen) {
     this.setState({ isOpen });
   }
-  
+
   shareURL(item) {
     try {
       Share.share(
@@ -73,7 +72,7 @@ class Likes extends Component {
             },
             android: {
               message: 'Look at this : \n' +
-              item.URL,
+                item.URL,
             },
           }),
           title: 'Wow, did you see that?',
@@ -87,32 +86,30 @@ class Likes extends Component {
             android: {
               // Android only:
               dialogTitle: 'Share : ' +
-              item.Title,
+                item.Title,
             },
           }),
         }
-      ).then(({action, activityType}) => {
-        if(action === Share.dismissedAction) 
-        {
-            Alert.alert("Hey!","Don't Forget, You Get Points for Sharing Products!");
+      ).then(({ action, activityType }) => {
+        if (action === Share.dismissedAction) {
+          Alert.alert("Hey!", "Don't Forget, You Get Points for Sharing Products!");
         }
-        else
-        {
+        else {
           try {
             if (userID != 0) {
               fetch(
-                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
-                  userID +
-                  '&type=1',
+                'https://sharebert.com/DBAwardPoints.php?uid=' +
+                userID +
+                '&type=1',
                 { method: 'GET' }
               )
                 .then(response2 => response2.json())
                 .then(responseData2 => {
                   if (responseData2['Points'] != userPoints) {
-                    
-                    userPoints= responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!");
-                  
+
+                    userPoints = responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+
                   }
                 })
                 .done();
@@ -120,13 +117,13 @@ class Likes extends Component {
           } catch (error) {
             console.error(error);
           }
-        } 
+        }
       });
     } catch (error) {
       console.error(error);
     }
   }
-  
+
   _onPress(item) {
     Alert.alert(
       'Buy Or Share',
@@ -138,31 +135,28 @@ class Likes extends Component {
           style: 'cancel',
         },
         { text: 'Share', onPress: () => this.shareURL(item) },
-        { text: 'Buy', onPress: () => {Linking.openURL(item.URL);} },
-        
+        { text: 'Buy', onPress: () => { Linking.openURL(item.URL); } },
+
       ],
       { cancelable: false }
     );
   }
 
-  getFile=async(type)=>{
-    try { 
+  getFile = async (type) => {
+    try {
       var likesave;
-      if(userID !== undefined)
-      {
+      if (userID !== undefined) {
         likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
       }
-      else
-      {
-      likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+      else {
+        likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
       }
-      if (likesave !== null){
+      if (likesave !== null) {
         // We have data!!
         like2 = JSON.parse(likesave);
-        like = like2.filter(function(n){ return n }); 
+        like = like2.filter(function (n) { return n });
       }
-      else
-      {
+      else {
         like = null;
       }
       this.forceUpdate();
@@ -175,18 +169,17 @@ class Likes extends Component {
     return (
       <View style={styles.container}>
 
-      <TouchableOpacity
-        onPress={()=>
-        {
-          this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-          }));
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
+              id: userID,
+              points: userPoints,
+            }));
+          }}>
 
-        <Image style={styles.header} />
-        <Text style = {styles.headertext}>
-              Tap to Explore
+          <Image style={styles.header} />
+          <Text style={styles.headertext}>
+            Tap to Explore
               </Text>
         </TouchableOpacity>
         <Image
@@ -195,21 +188,20 @@ class Likes extends Component {
           source={require('./Logo.png')}
         />
         <TouchableOpacity
-              onPress={() => 
-              {
-                //this.props.navigation.dispatch(backAction); //navigate to explore
+          onPress={() => {
+            //this.props.navigation.dispatch(backAction); //navigate to explore
 
-                this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
-                  id: userID,
-                  points: userPoints,
-                }));
-              }}>
-              <Image
-                style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
-              />
-            </TouchableOpacity>
-              
+            this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
+              id: userID,
+              points: userPoints,
+            }));
+          }}>
+          <Image
+            style={styles.hamburger}
+            source={require('./purplemenuicon.png')}
+          />
+        </TouchableOpacity>
+
         <Text style={styles.title}>
           Things You Like
         </Text>
@@ -224,7 +216,7 @@ class Likes extends Component {
               <View style={{ backgroundColor: 'white' }}>
                 <Text style={styles.text}>{item.Title}</Text>
                 <Image
-                resizeMode={'contain'}
+                  resizeMode={'contain'}
                   style={styles.image}
                   source={{
                     uri: item.ImageURL,
@@ -241,15 +233,31 @@ class Likes extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
+    ...Platform.select({
+      ios: {
+        marginTop: Constants.statusBarHeight,
+      },
+      android: {
+        marginTop: 80,
+      },
+    }),
+
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
   hamburger: {
+    ...Platform.select({
+      ios: {
+        marginTop: -47,
+      },
+      android: {
+        marginTop: -10,
+      },
+    }),
     width: 30,
     height: 23,
     marginLeft: 10,
-    marginTop: -47,
+    
     backgroundColor: 'transparent',
     padding: 0,
   },
@@ -259,7 +267,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#34495e',
   },
-image: {
+  image: {
+    
     width: 100,
     height: 100,
     marginTop: -50,
@@ -273,12 +282,19 @@ image: {
     padding: 20,
   },
   header: {
+    ...Platform.select({
+      ios: {
+        marginTop: -47,
+      },
+      android: {
+        marginTop: -10,
+      },
+    }),
     width: '100%',
     height: 40,
     backgroundColor: '#DCDCDC',
-    marginTop: 0,
   },
-text: {
+  text: {
     textAlign: 'left',
     fontSize: 12,
     marginTop: 40,
@@ -286,12 +302,12 @@ text: {
     backgroundColor: 'transparent',
   },
   headertext:
-  {
-    textAlign: 'center',
-    fontSize: 17,
-    marginTop: -32,
-    marginLeft: 130,
-    backgroundColor: 'transparent',
-  },
+    {
+      textAlign: 'center',
+      fontSize: 17,
+      marginTop: -32,
+      marginLeft: 130,
+      backgroundColor: 'transparent',
+    },
 });
 export default Likes;
