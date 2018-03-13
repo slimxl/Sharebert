@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   header: {
     ...Platform.select({
       ios: {
-        marginTop: -47,
+        marginTop: 0,
       },
       android: {
         marginTop: -10,

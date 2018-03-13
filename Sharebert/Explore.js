@@ -59,7 +59,7 @@ class Explore extends Component {
     };
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
-      fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
+      fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           var data2 = [];
@@ -234,7 +234,7 @@ class Explore extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://sharebert.com/DBAwardPoints.php?uid=' +
+                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=1',
                 { method: 'GET' }
@@ -244,7 +244,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!" + userPoints);
                     this.forceUpdate();
                   }
                 })
@@ -277,7 +277,7 @@ class Explore extends Component {
       return;
     }
     fetch(
-      'https://sharebert.com/RetrievePointsWeb.php?uid=' +
+      'https://biosystematic-addit.000webhostapp.com/RetrievePointsWeb.php?uid=' +
       userID,
       { method: 'GET' }
     )
@@ -326,7 +326,7 @@ class Explore extends Component {
         return;
       }
       if (brand !== '' && this.state.cardNum > 14) {
-        fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
+        fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
           .then(response => response.json())
           .then(responseData => {
             var data2 = [];
@@ -360,7 +360,7 @@ class Explore extends Component {
         this.state.cardNum >= 20
       ) {
         fetch(
-          'https://sharebert.com/Categoriesios.php?page=5&cat=' +
+          'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
           this.state.category,
           { method: 'GET' }
         )
@@ -449,7 +449,7 @@ class Explore extends Component {
       try {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
           fetch(
-            'https://sharebert.com/DBAwardPoints.php?uid=' +
+            'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
             userID +
             '&type=2',
             { method: 'GET' }
@@ -477,7 +477,7 @@ class Explore extends Component {
     brand = '';
     if (category != 'All') {
       fetch(
-        'https://sharebert.com/Categoriesios.php?page=5&cat=' +
+        'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
         category,
         { method: 'GET' }
       )
@@ -631,7 +631,7 @@ class Explore extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://sharebert.com/DBAwardPoints.php?uid=' +
+                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=3',
                 { method: 'GET' }
@@ -774,7 +774,7 @@ class Explore extends Component {
       return;
     }
     fetch(
-      'https://sharebert.com/APISEARCH.php?keyword=' +
+      'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
       this.state.inputValue.toString() +
       '&page=1',
       { method: 'GET' }
@@ -822,32 +822,6 @@ class Explore extends Component {
             menu={menu}
             isOpen={this.state.isOpen}
             onChange={isOpen => this.updateMenuState(isOpen)}>
-           
-            <Image style={styles.bg} />
-            <Text style={styles.text2}>
-              {userPoints + '\n'} Points
-              </Text>
-            <TouchableOpacity onPress={this.shareApp}>
-              <TouchableOpacity onPress={this.shareApp}>
-                <Image
-                  resizeMode="contain"
-                  style={styles.button}
-                  source={require('./Logo.png')}
-                />
-              </TouchableOpacity>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({
-                  isOpen: true,
-                });
-              }}>
-              <Image
-                style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
-              />
-
-            </TouchableOpacity>
             <Swiper
               style={styles.swiper}
               ref={swiper => {
@@ -861,14 +835,13 @@ class Explore extends Component {
               onSwipedRight={this.onSwipedRight}
               cards={this.state.cards}
               cardIndex={this.state.cardIndex}
-              cardVerticalMargin={120}
+              cardVerticalMargin={125}
               onTapCardDeadZone={100}
               renderCard={this.renderCard}
               onSwipedAll={this.onSwipedAllCards}
               showSecondCard={false}
               backgroundColor={'white'}
               marginTop={50}
-              
               overlayLabels={{
                 bottom: {
                   title: 'BLEAH',
@@ -898,6 +871,32 @@ class Explore extends Component {
               animateOverlayLabelsOpacity
               animateCardOpacity
             />
+            <Image style={styles.bg} />
+            <Text style={styles.text2}>
+              {userPoints + '\n'} Points
+              </Text>
+            <TouchableOpacity onPress={this.shareApp}>
+              <TouchableOpacity onPress={this.shareApp}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.button}
+                  source={require('./Logo.png')}
+                />
+              </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({
+                  isOpen: true,
+                });
+              }}>
+              <Image
+                style={styles.hamburger}
+                source={require('./purplemenuicon.png')}
+              />
+
+            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={this.onSubmitEdit}
               style={{ flexDirection: 'row' }}>
@@ -923,7 +922,7 @@ class Explore extends Component {
                 height: 44,
                 padding: 8,
                 marginTop: -40,
-                marginLeft: 200,
+                marginLeft: 215,
               }}
             />
 
@@ -932,8 +931,20 @@ class Explore extends Component {
               showsHorizontalScrollIndicator={false}
               backgroundColor={'white'}
               marginTop={-5}
-              height={10}
+              height={1}
               >
+              {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
+        id: userID,
+        points: userPoints,
+      })}>
+                <Image
+                  style={styles.catbar}
+                  source={require('./Assett/brands.jpg')}
+                />
+                <Text style={styles.label}>
+                  Brands
+                </Text>
+              </TouchableOpacity> */}
               <TouchableOpacity onPress={() => this.catGrab('')}>
                 <Image
                   style={styles.catbar}
@@ -1154,7 +1165,7 @@ class Explore extends Component {
                 </Text>
               </TouchableOpacity>
             </ScrollView>
-           
+
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -1206,7 +1217,6 @@ const styles = StyleSheet.create({
 
   swiper: {
     paddingTop: Constants.statusBarHeight,
-    
   },
   card: {
     flex: 1,
@@ -1284,10 +1294,7 @@ const styles = StyleSheet.create({
     marginTop: -150,
     backgroundColor: '#DCDCDC',
   },
-  outer:{
-    marginTop: 50,
-    backgroundColor: 'white',
-  },
+
   catbar: {
     width: 50,
     height: 50,
