@@ -169,6 +169,7 @@ class Likes extends Component {
   render() {
     return (
       <View style={styles.container}>
+
       <TouchableOpacity
         onPress={()=>
         {
@@ -177,7 +178,11 @@ class Likes extends Component {
             points: userPoints,
           }));
         }}>
+
         <Image style={styles.header} />
+        <Text style = {styles.headertext}>
+              Tap to Explore
+              </Text>
         </TouchableOpacity>
         <Image
           resizeMode="contain"
@@ -198,8 +203,8 @@ class Likes extends Component {
                 style={styles.hamburger}
                 source={require('./purplemenuicon.png')}
               />
-
             </TouchableOpacity>
+              
         <Text style={styles.title}>
           Things You Like
         </Text>
@@ -238,7 +243,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 23,
     marginLeft: 10,
-    marginTop: -48,
+    marginTop: -47,
     backgroundColor: 'transparent',
     padding: 0,
   },
@@ -256,7 +261,7 @@ image: {
   button: {
     width: 100,
     height: 70,
-    marginTop: -55,
+    marginTop: -44,
     marginLeft: 60,
     backgroundColor: 'transparent',
     padding: 20,
@@ -272,6 +277,14 @@ text: {
     fontSize: 12,
     marginTop: 40,
     marginLeft: 110,
+    backgroundColor: 'transparent',
+  },
+  headertext:
+  {
+    textAlign: 'center',
+    fontSize: 17,
+    marginTop: -32,
+    marginLeft: 130,
     backgroundColor: 'transparent',
   },
 });
