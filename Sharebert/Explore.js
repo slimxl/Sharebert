@@ -841,7 +841,7 @@ class Explore extends Component {
               onSwipedAll={this.onSwipedAllCards}
               showSecondCard={false}
               backgroundColor={'white'}
-              marginTop={30}
+              marginTop={100}
               overlayLabels={{
                 bottom: {
                   title: 'BLEAH',
@@ -930,6 +930,7 @@ class Explore extends Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               backgroundColor={'white'}
+              marginTop={-5}
               >
               {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
