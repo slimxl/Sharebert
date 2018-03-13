@@ -480,6 +480,7 @@ class Explore extends Component {
   };
 
   catGrab = category => {
+    brand = '';
     if (category != 'All') {
       fetch(
         'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
