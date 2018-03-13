@@ -197,7 +197,7 @@ class LoginScreen extends Component {
     } catch (error) {
       // Error saving data
     }
-  }
+  };
 
   saveFile=async()=>{
     try {
@@ -211,7 +211,7 @@ class LoginScreen extends Component {
     }
 
    
-  }
+  };
 
   getFile=async(type)=>{
     try {
@@ -253,9 +253,9 @@ class LoginScreen extends Component {
       // Error retrieving data
       lastlogged = false;
     }
-  }
+  };
 
-checkUpdatePoints = () => {
+  checkUpdatePoints = () => {
   fetch(
     'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
       userEmail2,
@@ -269,7 +269,7 @@ checkUpdatePoints = () => {
       this.onSubmitEdit('Login');
     })
     .done();
-}
+  };
 
   _handleFinalFacebookLogin = async () => {
     if(doubleclick)

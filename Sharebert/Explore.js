@@ -861,7 +861,7 @@ class Explore extends Component {
               onSwipedRight={this.onSwipedRight}
               cards={this.state.cards}
               cardIndex={this.state.cardIndex}
-              cardVerticalMargin={110}
+              cardVerticalMargin={120}
               onTapCardDeadZone={100}
               renderCard={this.renderCard}
               onSwipedAll={this.onSwipedAllCards}
@@ -923,7 +923,7 @@ class Explore extends Component {
                 height: 44,
                 padding: 8,
                 marginTop: -40,
-                marginLeft: 215,
+                marginLeft: 200,
               }}
             />
 
@@ -932,20 +932,8 @@ class Explore extends Component {
               showsHorizontalScrollIndicator={false}
               backgroundColor={'white'}
               marginTop={-5}
-              height={250}
+              height={10}
               >
-              {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
-        id: userID,
-        points: userPoints,
-      })}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/brands.jpg')}
-                />
-                <Text style={styles.label}>
-                  Brands
-                </Text>
-              </TouchableOpacity> */}
               <TouchableOpacity onPress={() => this.catGrab('')}>
                 <Image
                   style={styles.catbar}
