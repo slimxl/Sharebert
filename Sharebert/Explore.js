@@ -1258,12 +1258,14 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: 'transparent',
     padding: 30,
+    marginBottom: 20,
   },
   button3: {
     width: 8,
     height: 8,
     backgroundColor: 'transparent',
     padding: 20,
+    marginBottom: 20,    
   },
   hamburger: {
     width: 30,
