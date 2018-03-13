@@ -66,7 +66,7 @@ class Shipping extends Component {
    if(userID !=0)
    {
      fetch(
-            'https://biosystematic-addit.000webhostapp.com/ShipGet.php?uid=' +
+            'https://sharebert.com/ShipGet.php?uid=' +
               userID,
             { method: 'GET' }
           )
@@ -100,7 +100,7 @@ class Shipping extends Component {
   
   sendData = () => {
     fetch(
-            'https://biosystematic-addit.000webhostapp.com/ShipSend2.php?uid=' +
+            'https://sharebert.com/ShipSend2.php?uid=' +
               +userID +'&'+
               'uname='+user.Name +'&'+
               'uem='+user.Email +'&'+

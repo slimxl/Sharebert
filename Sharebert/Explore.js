@@ -59,7 +59,7 @@ class Explore extends Component {
     };
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
-      fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
+      fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           var data2 = [];
@@ -234,7 +234,7 @@ class Explore extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
+                'https://sharebert.com/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=1',
                 { method: 'GET' }
@@ -244,7 +244,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!" + userPoints);
+                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     this.forceUpdate();
                   }
                 })
@@ -277,7 +277,7 @@ class Explore extends Component {
       return;
     }
     fetch(
-      'https://biosystematic-addit.000webhostapp.com/RetrievePointsWeb.php?uid=' +
+      'https://sharebert.com/RetrievePointsWeb.php?uid=' +
       userID,
       { method: 'GET' }
     )
@@ -326,7 +326,7 @@ class Explore extends Component {
         return;
       }
       if (brand !== '' && this.state.cardNum > 14) {
-        fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
+        fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
           .then(response => response.json())
           .then(responseData => {
             var data2 = [];
@@ -360,7 +360,7 @@ class Explore extends Component {
         this.state.cardNum >= 20
       ) {
         fetch(
-          'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
+          'https://sharebert.com/Categoriesios.php?page=5&cat=' +
           this.state.category,
           { method: 'GET' }
         )
@@ -449,7 +449,7 @@ class Explore extends Component {
       try {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
           fetch(
-            'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
+            'https://sharebert.com/DBAwardPoints.php?uid=' +
             userID +
             '&type=2',
             { method: 'GET' }
@@ -477,7 +477,7 @@ class Explore extends Component {
     brand = '';
     if (category != 'All') {
       fetch(
-        'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
+        'https://sharebert.com/Categoriesios.php?page=5&cat=' +
         category,
         { method: 'GET' }
       )
@@ -631,7 +631,7 @@ class Explore extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
+                'https://sharebert.com/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=3',
                 { method: 'GET' }
@@ -774,7 +774,7 @@ class Explore extends Component {
       return;
     }
     fetch(
-      'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
+      'https://sharebert.com/APISEARCH.php?keyword=' +
       this.state.inputValue.toString() +
       '&page=1',
       { method: 'GET' }
