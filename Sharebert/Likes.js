@@ -224,6 +224,7 @@ class Likes extends Component {
               <View style={{ backgroundColor: 'white' }}>
                 <Text style={styles.text}>{item.Title}</Text>
                 <Image
+                resizeMode={'contain'}
                   style={styles.image}
                   source={{
                     uri: item.ImageURL,
