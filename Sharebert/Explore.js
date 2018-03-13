@@ -835,7 +835,7 @@ class Explore extends Component {
               onSwipedRight={this.onSwipedRight}
               cards={this.state.cards}
               cardIndex={this.state.cardIndex}
-              cardVerticalMargin={110}
+              cardVerticalMargin={100}
               onTapCardDeadZone={100}
               renderCard={this.renderCard}
               onSwipedAll={this.onSwipedAllCards}
@@ -931,6 +931,7 @@ class Explore extends Component {
               showsHorizontalScrollIndicator={false}
               backgroundColor={'white'}
               marginTop={-5}
+              height={1}
               >
               {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
@@ -1169,7 +1170,7 @@ class Explore extends Component {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
-                marginTop: '105%',
+                marginTop: '113%',
               }}>
               <TouchableOpacity onPress={this.swipeLeft}>
                 <Image
