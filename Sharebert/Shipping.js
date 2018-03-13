@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LoginScreen from './LoginScreen';
 import {
   View,
+  AsyncStorage,
   Text,
   TouchableOpacity,
   Image,
@@ -145,6 +146,14 @@ class Shipping extends Component {
     }
     
     
+  };
+
+  clearLikes = async() =>{
+    await AsyncStorage.removeItem('@MySuperStore:Likes'+userID);
+    Alert.alert("Likes Cleared!");
+    const value = await AsyncStorage.getItem('@MySuperStore:Likes'+userID);
+    console.log('likes'+ value);
+    this.forceUpdate();
   };
 
   render() {
@@ -365,6 +374,12 @@ class Shipping extends Component {
             <TouchableOpacity onPress={this.saveForm}>
             <Text style={styles.paragraph2}>
               SAVE 
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.clearLikes}>
+            <Text style={styles.paragraph2}>
+              Clear Likes 
             </Text>
           </TouchableOpacity>
             

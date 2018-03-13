@@ -34,7 +34,6 @@ class Likes extends Component {
       userID: userID,
     };
     this.getFile();
-
   }
 
   onMenuItemSelected = item => {
@@ -142,7 +141,7 @@ class Likes extends Component {
   }
 
   getFile=async(type)=>{
-    try {   
+    try { 
       var likesave;
       if(userID !== undefined)
       {
@@ -159,6 +158,7 @@ class Likes extends Component {
       }
       else
       {
+        like = null;
       }
       this.forceUpdate();
     } catch (error) {
@@ -172,7 +172,10 @@ class Likes extends Component {
       <TouchableOpacity
         onPress={()=>
         {
-          this.getFile();
+          this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
+            id: userID,
+            points: userPoints,
+          }));
         }}>
         <Image style={styles.header} />
         </TouchableOpacity>
@@ -186,10 +189,10 @@ class Likes extends Component {
               {
                 //this.props.navigation.dispatch(backAction); //navigate to explore
 
-                this.props.navigation.navigate('Explore', {
+                this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
                   id: userID,
                   points: userPoints,
-                });
+                }));
               }}>
               <Image
                 style={styles.hamburger}
@@ -198,7 +201,7 @@ class Likes extends Component {
 
             </TouchableOpacity>
         <Text style={styles.title}>
-          Likes
+          Things You Like
         </Text>
         <FlatList
           data={like}

@@ -125,6 +125,8 @@ class Explore extends Component {
         })
         .done();
     }
+
+    this.checkUpdatePoints();
   }
 
   renderCard = () => {
@@ -274,6 +276,21 @@ class Explore extends Component {
       });
     }
   };
+
+  checkUpdatePoints = () => {
+    fetch(
+      'https://biosystematic-addit.000webhostapp.com/RetrievePointsWeb.php?uid=' +
+        userID,
+      { method: 'GET' }
+    )
+      .then(response => response.json())
+      .then(responseData => {
+        var test = responseData['Points'];
+        userPoints = test;
+        this.forceUpdate();
+      })
+      .done();
+    };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
     this.setState(

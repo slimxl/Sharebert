@@ -41,7 +41,7 @@ const AppNavigator = StackNavigator(
       screen: Likes,
       navigationOptions: ({ navigation }) => ({
         header: true,
-        gesturesEnabled: true,
+        gesturesEnabled: false,
       }),
     },
 
