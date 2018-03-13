@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Google, Facebook,AuthSession } from 'expo';
 var doubleclick = false;
-var lastlogged = false;
+var lastlogged = true;
 var userEmail2 = '';
 var userID = 0;
 var name2 = 'Not Logged In';
@@ -19,6 +19,10 @@ var uri2 =
   'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
 class LoginScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.getData();
+  }
   onSubmitEdit(location) {
     if (location === 'later') {
       name2 = 'Not Logged In';
@@ -85,7 +89,7 @@ class LoginScreen extends Component {
       return;
     }
     
-    if(lastlogged === false)
+    if(lastlogged === false||name2==='Not Logged In')
     {
       this._handleFinalGoogleLogin();
     }
@@ -209,13 +213,38 @@ class LoginScreen extends Component {
     } catch (error) {
       // Error saving data
     }
-
-   
   };
 
+  componentWillMount() {
+    AsyncStorage.getItem('@MySuperStore:name').then((namesaved) => {
+      console.log(namesaved);
+
+    });
+  };
+
+  getData=async()=>{
+    const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
+      console.log(namesaved);
+      if (namesaved !== null && namesaved !== undefined && namesaved !== ""){
+        // We have data!!
+        console.log(namesaved);
+        name2 = namesaved;
+        const emailsaved = await AsyncStorage.getItem('@MySuperStore:email');
+        userEmail2 = emailsaved;
+        const uri2saved = await AsyncStorage.getItem('@MySuperStore:uri2');
+        uri2 = uri2saved;
+        const pointssaved = await AsyncStorage.getItem('@MySuperStore:points');
+        userPoints = pointssaved;
+        const useridsaved = await AsyncStorage.getItem('@MySuperStore:id');
+        userID = useridsaved;
+
+        lastlogged = true;
+      }
+  }
   getFile=async(type)=>{
     try {
       const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
+      console.log(namesaved);
       if (namesaved !== null && namesaved !== undefined && namesaved !== ""){
         // We have data!!
         console.log(namesaved);
@@ -253,7 +282,7 @@ class LoginScreen extends Component {
       // Error retrieving data
       lastlogged = false;
     }
-  };
+  }
 
   checkUpdatePoints = () => {
   fetch(
