@@ -272,6 +272,10 @@ class Explore extends Component {
   };
 
   checkUpdatePoints = () => {
+    if(userID===0)
+    {
+      return;
+    }
     fetch(
       'https://biosystematic-addit.000webhostapp.com/RetrievePointsWeb.php?uid=' +
       userID,
