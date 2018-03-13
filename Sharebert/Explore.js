@@ -841,6 +841,7 @@ class Explore extends Component {
               onSwipedAll={this.onSwipedAllCards}
               showSecondCard={false}
               backgroundColor={'white'}
+              marginTop={30}
               overlayLabels={{
                 bottom: {
                   title: 'BLEAH',
@@ -927,7 +928,9 @@ class Explore extends Component {
 
             <ScrollView
               horizontal={true}
-              showsHorizontalScrollIndicator={false}>
+              showsHorizontalScrollIndicator={false}
+              backgroundColor={'white'}
+              >
               {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
         points: userPoints,
@@ -1165,7 +1168,7 @@ class Explore extends Component {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
-                marginTop: '125%',
+                marginTop: '105%',
               }}>
               <TouchableOpacity onPress={this.swipeLeft}>
                 <Image
@@ -1218,7 +1221,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: '#f427f3',
-    marginTop: 20,
     justifyContent: 'center',
     backgroundColor: 'white',
   },
@@ -1248,7 +1250,7 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
     height: 30,
-    marginTop: -40,
+    marginTop: -35,
     marginLeft: 60,
     backgroundColor: 'transparent',
     padding: 20,
