@@ -36,7 +36,7 @@ class Explore extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
-   
+
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
@@ -57,10 +57,9 @@ class Explore extends Component {
       dataset: [],
       inputValue: 'Search',
     };
-    if(this.props.navigation.state.params.brands!= undefined)
-    {
+    if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
-      fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand='+brand+'&page=10', { method: 'GET' })
+      fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           var data2 = [];
@@ -71,14 +70,13 @@ class Explore extends Component {
             obj['URL'] = responseData[i]['URL'];
             obj['ImageURL'] = responseData[i]['ImageURL'];
             obj['Retailer'] = responseData[i]['Website'];
-            if(brand==='Amazon')
-            {
+            if (brand === 'Amazon') {
               obj['Retailer'] = 'Amazon';
             }
-              data2.push(obj);
+            data2.push(obj);
           }
           toofast = false;
-           search = false;
+          search = false;
           data2 = shuffle(data2);
           this.setState({
             cardNum: this.state.cardNum,
@@ -90,8 +88,7 @@ class Explore extends Component {
         })
         .done();
     }
-    else if(brand === '')
-    {
+    else if (brand === '') {
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
@@ -103,14 +100,14 @@ class Explore extends Component {
             obj['URL'] = responseData['Amazon'][i]['URL'];
             obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
             obj['Retailer'] = "Amazon";
-  
+
             var obj2 = {};
             obj2['ASIN'] = responseData['Others'][i]['ASIN'];
             obj2['Title'] = responseData['Others'][i]['Title'];
             obj2['URL'] = responseData['Others'][i]['URL'];
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
             obj2['Retailer'] = responseData['Others'][i]['Website'];
-  
+
             data2.push(obj);
             data2.push(obj2);
           }
@@ -150,21 +147,18 @@ class Explore extends Component {
       );
     } else {
       var imageURL2 = this.state.dataset[this.state.cardNum].ImageURL;
-      if(this.state.dataset[this.state.cardNum].ImageURL.includes('tillys'))
-      {
-        
-        imageURL2 = imageURL2.substring(0,imageURL2.indexOf('?'));
-        
-          
+      if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
+
+        imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
+
+
       }
-      var retailfinal ='';
-      if(this.state.dataset[this.state.cardNum].Retailer==='shopDisney')
-      {
+      var retailfinal = '';
+      if (this.state.dataset[this.state.cardNum].Retailer === 'shopDisney') {
         retailfinal = 'Paid Partnership with Disney';
       }
-      else
-      {
-        retailfinal = "From "+this.state.dataset[this.state.cardNum].Retailer
+      else {
+        retailfinal = "From " + this.state.dataset[this.state.cardNum].Retailer
       }
       return (
         <View style={styles.card}>
@@ -176,7 +170,7 @@ class Explore extends Component {
           </Text>
           <Image2
             resizeMode="contain"
-            indicator={ProgressBar} 
+            indicator={ProgressBar}
             style={styles.image}
 
             source={{
@@ -199,8 +193,7 @@ class Explore extends Component {
     if (
       this.state.url ===
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
-    )
-    {
+    ) {
       return;
     }
     try {
@@ -230,28 +223,26 @@ class Explore extends Component {
             },
           }),
         }
-      ).then(({action, activityType}) => {
-        if(action === Share.dismissedAction) 
-        {
-            Alert.alert("Hey!","Don't Forget, You Get Points for Sharing Products!");
+      ).then(({ action, activityType }) => {
+        if (action === Share.dismissedAction) {
+          Alert.alert("Hey!", "Don't Forget, You Get Points for Sharing Products!");
         }
-        else
-        {
+        else {
           try {
             if (userID != 0) {
               fetch(
                 'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
-                  userID +
-                  '&type=1',
+                userID +
+                '&type=1',
                 { method: 'GET' }
               )
                 .then(response2 => response2.json())
                 .then(responseData2 => {
                   if (responseData2['Points'] != userPoints) {
-                    
-                    userPoints= responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing!"+userPoints);
-                      this.forceUpdate();
+
+                    userPoints = responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!" + userPoints);
+                    this.forceUpdate();
                   }
                 })
                 .done();
@@ -259,13 +250,13 @@ class Explore extends Component {
           } catch (error) {
             console.error(error);
           }
-        } 
+        }
       });
     } catch (error) {
       console.error(error);
     }
-    
-    
+
+
   };
   swipeBack = () => {
     if (!this.state.isSwipingBack) {
@@ -280,7 +271,7 @@ class Explore extends Component {
   checkUpdatePoints = () => {
     fetch(
       'https://biosystematic-addit.000webhostapp.com/RetrievePointsWeb.php?uid=' +
-        userID,
+      userID,
       { method: 'GET' }
     )
       .then(response => response.json())
@@ -290,7 +281,7 @@ class Explore extends Component {
         this.forceUpdate();
       })
       .done();
-    };
+  };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
     this.setState(
@@ -309,8 +300,7 @@ class Explore extends Component {
     if (
       this.state.url ===
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
-    )
-    {
+    ) {
       return;
     }
     try {
@@ -325,39 +315,36 @@ class Explore extends Component {
       if (
         this.state.url ===
         'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
-      )
-      {
+      ) {
         return;
       }
-      if(brand!==''&&this.state.cardNum>14)
-      {
-        fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand='+brand+'&page=5', { method: 'GET' })
-        .then(response => response.json())
-        .then(responseData => {
-          var data2 = [];
-          for (var i = 0; i < 20; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData[i]['ASIN'];
-            obj['Title'] = responseData[i]['Title'];
-            obj['URL'] = responseData[i]['URL'];
-            obj['ImageURL'] = responseData[i]['ImageURL'];
-            obj['Retailer'] = responseData[i]['Website'];
+      if (brand !== '' && this.state.cardNum > 14) {
+        fetch('https://biosystematic-addit.000webhostapp.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
+          .then(response => response.json())
+          .then(responseData => {
+            var data2 = [];
+            for (var i = 0; i < 20; i++) {
+              var obj = {};
+              obj['ASIN'] = responseData[i]['ASIN'];
+              obj['Title'] = responseData[i]['Title'];
+              obj['URL'] = responseData[i]['URL'];
+              obj['ImageURL'] = responseData[i]['ImageURL'];
+              obj['Retailer'] = responseData[i]['Website'];
               data2.push(obj);
-          }
-          toofast = false;
-           search = false;
-          data2 = shuffle(data2);
-          this.setState({
-            cardNum: 0,
-            dataset: data2,
-            category: '',
-            cat: false,
-          });
-        })
-        .done();
+            }
+            toofast = false;
+            search = false;
+            data2 = shuffle(data2);
+            this.setState({
+              cardNum: 0,
+              dataset: data2,
+              category: '',
+              cat: false,
+            });
+          })
+          .done();
       }
-      else if((search===true&&this.state.cardNum>=(searchcount-5))||(this.state.cardNum>30&&search===true))
-      {
+      else if ((search === true && this.state.cardNum >= (searchcount - 5)) || (this.state.cardNum > 30 && search === true)) {
         this.onSubmitEdit();
       }
       else if (
@@ -367,7 +354,7 @@ class Explore extends Component {
       ) {
         fetch(
           'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
-            this.state.category,
+          this.state.category,
           { method: 'GET' }
         )
           .then(response => response.json())
@@ -400,7 +387,7 @@ class Explore extends Component {
               }
             }
             toofast = false;
-            search = false;            
+            search = false;
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -411,7 +398,7 @@ class Explore extends Component {
             });
           })
           .done();
-      } else if ((this.state.cardNum >= 30 ||datasize-5===0)&&search===false) {
+      } else if ((this.state.cardNum >= 30 || datasize - 5 === 0) && search === false) {
         fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
           .then(response => response.json())
           .then(responseData => {
@@ -434,8 +421,8 @@ class Explore extends Component {
               data2.push(obj2);
             }
             toofast = false;
-           search = false;
-           console.log('Search was reset');      
+            search = false;
+            console.log('Search was reset');
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -456,17 +443,17 @@ class Explore extends Component {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
           fetch(
             'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
-              userID +
-              '&type=2',
+            userID +
+            '&type=2',
             { method: 'GET' }
           )
             .then(response2 => response2.json())
             .then(responseData2 => {
               if (responseData2['Points'] != userPoints) {
-                Alert.alert('POINTS OBTAINED',"Nice Swiping!");
+                Alert.alert('POINTS OBTAINED', "Nice Swiping!");
 
-                  userPoints = responseData2['Points'];
-                  this.forceUpdate();
+                userPoints = responseData2['Points'];
+                this.forceUpdate();
               }
             })
             .done();
@@ -484,7 +471,7 @@ class Explore extends Component {
     if (category != 'All') {
       fetch(
         'https://biosystematic-addit.000webhostapp.com/Categoriesios.php?page=5&cat=' +
-          category,
+        category,
         { method: 'GET' }
       )
         .then(response => response.json())
@@ -544,7 +531,7 @@ class Explore extends Component {
             obj2['URL'] = responseData['Others'][i]['URL'];
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
           }
-          toofast = false;          
+          toofast = false;
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
@@ -558,36 +545,30 @@ class Explore extends Component {
   };
 
   swipeLeft = () => {
-    if(brand!==''&&this.state.cardNum>16)
-    {
-      Alert.alert("Hold On!","Swiping Too Fast!");
-        toofast = true;
+    if (brand !== '' && this.state.cardNum > 16) {
+      Alert.alert("Hold On!", "Swiping Too Fast!");
+      toofast = true;
     }
-    if(this.state.cardNum>35||toofast)
-      {
-        Alert.alert("Hold On!","Swiping Too Fast!");
-        toofast = true;
-      }
-      else
-      {
-        toofast = false;
-        this.swiper.swipeLeft();
-      }
+    if (this.state.cardNum > 35 || toofast) {
+      Alert.alert("Hold On!", "Swiping Too Fast!");
+      toofast = true;
+    }
+    else {
+      toofast = false;
+      this.swiper.swipeLeft();
+    }
   };
 
   swipeRight = () => {
-    if(brand!==''&&this.state.cardNum>16)
-    {
-      Alert.alert("Hold On!","Swiping Too Fast!");
-        toofast = true;
-    }
-    if(this.state.cardNum>35||toofast)
-    {
-      Alert.alert("Hold On!","Swiping Too Fast! ");
+    if (brand !== '' && this.state.cardNum > 16) {
+      Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    else
-    {
+    if (this.state.cardNum > 35 || toofast) {
+      Alert.alert("Hold On!", "Swiping Too Fast! ");
+      toofast = true;
+    }
+    else {
       toofast = false;
       this.swiper.swipeRight();
     }
@@ -597,15 +578,13 @@ class Explore extends Component {
     if (
       this.state.url !=
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
-    )
-    {
-     if(this.state.dataset[this.state.cardNum - 1].Title!==null)
-     {
-       likes.push(this.state.dataset[this.state.cardNum - 1]);
-       this.saveLike();
-     }
+    ) {
+      if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
+        likes.push(this.state.dataset[this.state.cardNum - 1]);
+        this.saveLike();
+      }
 
-      
+
     }
   };
 
@@ -637,28 +616,26 @@ class Explore extends Component {
             },
           }),
         }
-      ).then(({action, activityType}) => {
-        if(action === Share.dismissedAction) 
-        {
-            Alert.alert("Hey!","Don't Forget, You Get Points for Sharing The App!");
+      ).then(({ action, activityType }) => {
+        if (action === Share.dismissedAction) {
+          Alert.alert("Hey!", "Don't Forget, You Get Points for Sharing The App!");
         }
-        else
-        {
+        else {
           try {
             if (userID != 0) {
               fetch(
                 'https://biosystematic-addit.000webhostapp.com/DBAwardPoints.php?uid=' +
-                  userID +
-                  '&type=3',
+                userID +
+                '&type=3',
                 { method: 'GET' }
               )
                 .then(response2 => response2.json())
                 .then(responseData2 => {
                   if (responseData2['Points'] != userPoints) {
-                    
-                    userPoints= responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED',"Thanks for Sharing The App!");
-                    
+
+                    userPoints = responseData2['Points'];
+                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing The App!");
+
                   }
                 })
                 .done();
@@ -666,49 +643,47 @@ class Explore extends Component {
           } catch (error) {
             console.error(error);
           }
-        } 
+        }
       });
     } catch (error) {
       console.error(error);
     }
-    
+
   }
 
-  saveFile=async()=>{
-    
+  saveFile = async () => {
+
     try {
-      await AsyncStorage.setItem('@MySuperStore:key', this.state.dataset[this.state.cardNum-1].Retailer);
+      await AsyncStorage.setItem('@MySuperStore:key', this.state.dataset[this.state.cardNum - 1].Retailer);
     } catch (error) {
       // Error saving data
     }
 
-    }
-    saveLike=async()=>{
-      try {
-        
-        if(userID !== undefined||userID!== 0)
-        {
-          await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
-        }
-        else
-        {
-          await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
-        }
-        const likesave = await AsyncStorage.getItem('@MySuperStore:Likes'+ userID);
-      } catch (error) {
-        // Error saving data
-        Alert.alert("Error saving likes!");
+  }
+  saveLike = async () => {
+    try {
+
+      if (userID !== undefined || userID !== 0) {
+        await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
       }
-   
+      else {
+        await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
+      }
+      const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+    } catch (error) {
+      // Error saving data
+      Alert.alert("Error saving likes!");
+    }
+
   }
 
-  clearFile=async()=>{
+  clearFile = async () => {
     try {
       await AsyncStorage.removeItem('@MySuperStore:name');
       await AsyncStorage.removeItem('@MySuperStore:email');
       await AsyncStorage.removeItem('@MySuperStore:uri2');
       await AsyncStorage.removeItem('@MySuperStore:points');
-      await AsyncStorage.removeItem('@MySuperStore:id'); 
+      await AsyncStorage.removeItem('@MySuperStore:id');
 
       this.props.navigation.navigate('LoginScreen', {
         loggedbool2: false,
@@ -758,24 +733,21 @@ class Explore extends Component {
     }
   };
 
-  getOldLikes=async(type)=>{
-    try {   
+  getOldLikes = async (type) => {
+    try {
       var likesave;
-      if(userID !== undefined)
-      {
+      if (userID !== undefined) {
         likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
       }
-      else
-      {
-      likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+      else {
+        likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
       }
-      if (likesave !== null){
+      if (likesave !== null) {
         // We have data!!
-       
+
         likes = JSON.parse(likesave);
       }
-      else
-      {
+      else {
       }
       this.forceUpdate();
     } catch (error) {
@@ -787,18 +759,17 @@ class Explore extends Component {
     this.setState({ isOpen });
   }
 
- onSubmitEdit = () => {
-  Keyboard.dismiss();
-   if(this.state.inputValue.toString()==='')
-   {
-     Alert.alert("Blank Search!");
-     Keyboard.dismiss();
-     return;
-   }
+  onSubmitEdit = () => {
+    Keyboard.dismiss();
+    if (this.state.inputValue.toString() === '') {
+      Alert.alert("Blank Search!");
+      Keyboard.dismiss();
+      return;
+    }
     fetch(
       'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
-        this.state.inputValue.toString() +
-        '&page=1',
+      this.state.inputValue.toString() +
+      '&page=1',
       { method: 'GET' }
     )
       .then(response => response.json())
@@ -836,7 +807,7 @@ class Explore extends Component {
 
   render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-    
+
     try {
       return (
         <View style={styles.container}>
@@ -894,7 +865,7 @@ class Explore extends Component {
             />
             <Image style={styles.bg} />
             <Text style={styles.text2}>
-                {userPoints + '\n'} Points
+              {userPoints + '\n'} Points
               </Text>
             <TouchableOpacity onPress={this.shareApp}>
               <TouchableOpacity onPress={this.shareApp}>
@@ -930,7 +901,7 @@ class Explore extends Component {
               textAlign="left"
               onSubmitEditing={this.onSubmitEdit}
               value={this.state.inputValue}
-              autoFocus={false} 
+              autoFocus={false}
               onFocus={() => {
                 this.setState({
                   inputValue: "",
@@ -950,7 +921,7 @@ class Explore extends Component {
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
+              {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
         points: userPoints,
       })}>
@@ -961,7 +932,7 @@ class Explore extends Component {
                 <Text style={styles.label}>
                   Brands
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity onPress={() => this.catGrab('')}>
                 <Image
                   style={styles.catbar}
@@ -1169,7 +1140,18 @@ class Explore extends Component {
                   Women
                 </Text>
               </TouchableOpacity>
-
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+                id: userID,
+                points: userPoints,
+              })}>
+                <Image
+                  style={styles.catbar}
+                  source={require('./Assett/brands.jpg')}
+                />
+                <Text style={styles.label}>
+                  Brands
+                </Text>
+              </TouchableOpacity>
             </ScrollView>
 
             <TouchableOpacity
@@ -1249,7 +1231,7 @@ const styles = StyleSheet.create({
   retail: {
     textAlign: 'center',
     fontSize: 15,
-    color:'#ec47ff',
+    color: '#ec47ff',
     backgroundColor: 'transparent',
   },
   image: {
@@ -1327,7 +1309,7 @@ function shuffle(array) {
 
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
-    
+
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
