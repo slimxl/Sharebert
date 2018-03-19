@@ -180,7 +180,7 @@ class Explore extends Component {
               uri: imageURL2,
             }}
           />
-          <Text style={styles.text}>
+          <Text numberOfLines={2} style={styles.text}>
             {this.state.dataset[this.state.cardNum].Title}
           </Text>
           <Text style={styles.retail}>
