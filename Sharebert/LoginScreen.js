@@ -452,6 +452,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
+    marginTop: -50,
   },
   later: {
     flex: 1,

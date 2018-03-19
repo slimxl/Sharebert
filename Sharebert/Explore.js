@@ -146,8 +146,8 @@ class Explore extends Component {
             }}
           />
           <ActivityIndicator size="small" />
-
-        </View>
+          </View>
+          
       );
     } else {
       var imageURL2 = this.state.dataset[this.state.cardNum].ImageURL;
@@ -878,7 +878,10 @@ class Explore extends Component {
             />
             <Image style={styles.bg} />
             <Text style={styles.text2}>
-              {userPoints + '\n'} Points
+              {userPoints + '\n'}
+              </Text>
+              <Text style={styles.pointsText}>
+              Points
               </Text>
             <TouchableOpacity onPress={this.shareApp}>
               <TouchableOpacity onPress={this.shareApp}>
@@ -1226,8 +1229,8 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     borderRadius: 2,
-    borderWidth: 1,
-    borderColor: '#f427f3',
+    borderWidth: 2,
+    borderColor: '#f2efef',
     justifyContent: 'center',
     backgroundColor: 'white',
   },
@@ -1237,6 +1240,15 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 15,
     color: '#f427f3',
+    backgroundColor: 'transparent',
+  },
+  pointsText: {
+    marginRight: 10,
+    marginTop: -20,
+    textAlign: 'right',
+    fontSize: 15,
+    color: '#552f7a',
+    fontWeight: 'bold',
     backgroundColor: 'transparent',
   },
   text: {
