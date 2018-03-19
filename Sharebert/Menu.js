@@ -38,11 +38,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 70,
     top: 20,
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
   item: {
     fontSize: 17,
     fontWeight: '300',
     paddingTop: 10,
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
 });
 
