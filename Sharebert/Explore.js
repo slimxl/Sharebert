@@ -932,7 +932,7 @@ class Explore extends Component {
               marginTop={-5}
               height={1}
               >
-              {/* <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
+              { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
         points: userPoints,
       })}>
@@ -943,7 +943,7 @@ class Explore extends Component {
                 <Text style={styles.label}>
                   Brands
                 </Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity> }
               <TouchableOpacity onPress={() => this.catGrab('All')}>
                 <Image
                   style={styles.catbar}
@@ -1151,10 +1151,11 @@ class Explore extends Component {
                   Women
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+              {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
                 id: userID,
                 points: userPoints,
               })}>
+              
                 <Image
                   style={styles.catbar}
                   source={require('./Assett/brands.jpg')}
@@ -1162,7 +1163,7 @@ class Explore extends Component {
                 <Text style={styles.label}>
                   Brands
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </ScrollView>
 
             <TouchableOpacity
