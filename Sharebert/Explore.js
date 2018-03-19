@@ -323,6 +323,7 @@ class Explore extends Component {
   };
 
   onSwiped = () => {
+    console.log(this.state.cardNum+2>=this.state.dataset.length);
     try {
       if (
         this.state.url ===
@@ -330,7 +331,8 @@ class Explore extends Component {
       ) {
         return;
       }
-      if (brand !== '' && this.state.cardNum > 14) {
+      if (brand !== "" && (this.state.cardNum+11>=this.state.dataset.length)) {
+        console.log('brand reset')
         fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
           .then(response => response.json())
           .then(responseData => {
@@ -362,11 +364,11 @@ class Explore extends Component {
       else if (
         this.state.cat &&
         this.state.category != 'All' &&
-        (this.state.cardNum+10)>=this.state.dataset.length
-      ) {
+        (this.state.cardNum+10)>=this.state.dataset.length) {
         console.log('reset cat');
         this.catGrab(this.state.category);
-      } else if ((this.state.cardNum+10>=this.state.dataset.length) && search === false&&this.state.cat===false) {
+      } 
+      else if ((this.state.cardNum+10>=this.state.dataset.length) && search === false&&this.state.cat===false) {
         console.log('Search was reset');
         fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
           .then(response => response.json())
