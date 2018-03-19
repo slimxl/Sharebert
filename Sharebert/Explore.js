@@ -36,7 +36,6 @@ class Explore extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
-
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
@@ -56,6 +55,7 @@ class Explore extends Component {
       data: [],
       dataset: [],
       inputValue: 'Search',
+      color: "#ff2eff",
     };
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
@@ -127,6 +127,7 @@ class Explore extends Component {
 
       this.checkUpdatePoints();
     }
+    
   }
 
   renderCard = () => {
@@ -165,22 +166,26 @@ class Explore extends Component {
       }
       return (
         <View style={styles.card}>
-          <Text style={styles.text}>
-            {this.state.dataset[this.state.cardNum].Title}
-          </Text>
-          <Text style={styles.retail}>
-            {retailfinal}
-          </Text>
+
           <Image2
             resizeMode="contain"
             indicator={ProgressBar}
+            indicatorProps={{
+              color: '#ff2eff',
+              unfilledColor: 'rgba(200, 200, 200, 0.2)'
+            }}
             style={styles.image}
 
             source={{
               uri: imageURL2,
             }}
           />
-
+          <Text style={styles.text}>
+            {this.state.dataset[this.state.cardNum].Title}
+          </Text>
+          <Text style={styles.retail}>
+            {retailfinal}
+          </Text>
         </View>
       );
     }
@@ -814,7 +819,7 @@ class Explore extends Component {
 
   render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-
+    
     try {
       return (
         <View style={styles.container}>
@@ -902,7 +907,7 @@ class Explore extends Component {
               style={{ flexDirection: 'row' }}>
               <Image
                 style={styles.search}
-                source={require('./magnifyer.png')}
+                source={require('./assets/icons/search-icon2.png')}
               />
             </TouchableOpacity>
             <TextInput
@@ -1242,7 +1247,7 @@ const styles = StyleSheet.create({
   retail: {
     textAlign: 'center',
     fontSize: 15,
-    color: '#ec47ff',
+    color: 'black',
     backgroundColor: 'transparent',
   },
   image: {
@@ -1292,7 +1297,7 @@ const styles = StyleSheet.create({
     height: 190,
     width: '100%',
     marginTop: -150,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#dee6ee',
   },
 
   catbar: {

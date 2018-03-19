@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { Google, Facebook,AuthSession } from 'expo';
+import { Google, Facebook,AuthSession, Font } from 'expo';
 var doubleclick = false;
 var lastlogged = true;
 var userEmail2 = '';
@@ -22,6 +22,9 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.getData();
+    Font.loadAsync({
+      'Montserrat': require('./assets/fonts/Montserrat.otf'),
+    });
   }
   onSubmitEdit(location) {
     if (location === 'later') {

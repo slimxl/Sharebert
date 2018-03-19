@@ -14,7 +14,7 @@ import {
   Platform,
 } from 'react-native';
 
-import { Constants } from 'expo';
+import { Constants, Font } from 'expo';
 const backAction = NavigationActions.back({
   key: null
 });
@@ -262,10 +262,12 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   title: {
+    fontFamily: "Montserrat",
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#34495e',
+    color: '#ff2eff',
+    marginTop: -15,
   },
   image: {
     
@@ -292,7 +294,7 @@ const styles = StyleSheet.create({
     }),
     width: '100%',
     height: 40,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#dee6ee',
   },
   text: {
     textAlign: 'left',

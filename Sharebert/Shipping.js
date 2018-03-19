@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     height: 190,
     width: '100%',
     marginTop: -150,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#dee6ee',
   },
 });
 export default Shipping;

@@ -558,7 +558,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   hamburger: {
     width: 30,
@@ -569,10 +569,12 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   title: {
+    fontFamily: "Montserrat",
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#34495e',
+    color: '#ff2eff',
+    marginTop: -15,
   },
 image: {
     width: 100,
@@ -632,7 +634,7 @@ image: {
   header: {
     width: '100%',
     height: 40,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#dee6ee',
     marginTop: 0,
   },
 text: {
