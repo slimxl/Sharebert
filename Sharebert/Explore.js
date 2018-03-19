@@ -362,55 +362,12 @@ class Explore extends Component {
       else if (
         this.state.cat &&
         this.state.category != 'All' &&
-        this.state.cardNum >= 20
+        (this.state.cardNum+10)>=this.state.dataset.length
       ) {
-        fetch(
-          'https://sharebert.com/Categoriesios.php?page=5&cat=' +
-          this.state.category,
-          { method: 'GET' }
-        )
-          .then(response => response.json())
-          .then(responseData => {
-            var data2 = [];
-            for (var i = 0; i < 20; i++) {
-              try {
-                var obj = {};
-                obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-                obj['Title'] = responseData['Amazon'][i]['Title'];
-                obj['URL'] = responseData['Amazon'][i]['URL'];
-                obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-                obj['Retailer'] = "Amazon";
-
-                var obj2 = {};
-                obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-                obj2['Title'] = responseData['Others'][i]['Title'];
-                obj2['URL'] = responseData['Others'][i]['URL'];
-                obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-                obj2['Retailer'] = responseData['Others'][i]['Website'];
-
-                if (obj['ASIN'] === obj2['ASIN']) {
-                  data2.push(obj);
-                } else {
-                  data2.push(obj);
-                  data2.push(obj2);
-                }
-              } catch (error) {
-                console.log(error);
-              }
-            }
-            toofast = false;
-            search = false;
-            data2 = shuffle(data2);
-            this.setState({
-              cardNum: 0,
-              url: data2[this.state.cardNum].ImageURL,
-              title: data2[this.state.cardNum].Title,
-              dataset: data2,
-              cat: true,
-            });
-          })
-          .done();
-      } else if ((this.state.cardNum >= 30 || datasize - 5 === 0) && search === false) {
+        console.log('reset cat');
+        this.catGrab(this.state.category);
+      } else if ((this.state.cardNum+10>=this.state.dataset.length) && search === false&&this.state.cat===false) {
+        console.log('Search was reset');
         fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
           .then(response => response.json())
           .then(responseData => {
@@ -422,7 +379,7 @@ class Explore extends Component {
               obj['URL'] = responseData['Amazon'][i]['URL'];
               obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
               obj['Retailer'] = "Amazon";
-
+ 
               var obj2 = {};
               obj2['ASIN'] = responseData['Others'][i]['ASIN'];
               obj2['Title'] = responseData['Others'][i]['Title'];
@@ -434,7 +391,6 @@ class Explore extends Component {
             }
             toofast = false;
             search = false;
-            console.log('Search was reset');
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
@@ -450,7 +406,7 @@ class Explore extends Component {
         url: this.state.dataset[this.state.cardNum].ImageURL,
         title: this.state.dataset[this.state.cardNum].Title,
       });
-
+ 
       try {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
           fetch(
@@ -463,7 +419,7 @@ class Explore extends Component {
             .then(responseData2 => {
               if (responseData2['Points'] != userPoints) {
                 Alert.alert('POINTS OBTAINED', "Nice Swiping!");
-
+ 
                 userPoints = responseData2['Points'];
                 this.forceUpdate();
               }
@@ -477,9 +433,11 @@ class Explore extends Component {
       console.error(error);
     }
   };
+ 
 
   catGrab = category => {
     brand = '';
+    var data2 = [];
     if (category != 'All') {
       fetch(
         'https://sharebert.com/Categoriesios.php?page=5&cat=' +
@@ -488,7 +446,6 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          var data2 = [];
           for (var i = 0; i < 20; i++) {
             try {
               var obj = {};
@@ -503,7 +460,6 @@ class Explore extends Component {
               obj2['URL'] = responseData['Others'][i]['URL'];
               obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
               obj2['Retailer'] = responseData['Others'][i]['Website'];
-              console.log(obj2);
               if (obj['ASIN'] === obj2['ASIN']) {
                 data2.push(obj2);
               } else {
@@ -515,15 +471,44 @@ class Explore extends Component {
             }
           }
           toofast = false;
+         
           data2 = shuffle(data2);
-          this.setState({
-            cardNum: 0,
-            url: data2[this.state.cardNum].ImageURL,
-            title: data2[this.state.cardNum].Title,
-            dataset: data2,
-            cat: true,
-            category: category,
-          });
+          fetch(
+            'https://sharebert.com/APISEARCH.php?keyword=' +
+            category +
+            '&page=1',
+            { method: 'GET' }
+          )
+            .then(response => response.json())
+            .then(responseData => {
+              var count = responseData['Amazon'][0][7];
+              datasize = count;
+              searchcount = datasize;
+              console.log(data2.length);
+              console.log(searchcount);
+              for (var i = 0; i < count; i++) {
+                var obj = {};
+                obj['ASIN'] = responseData['Amazon'][i][0];
+                obj['Title'] = responseData['Amazon'][i][1];
+                obj['URL'] = responseData['Amazon'][i][3];
+                obj['ImageURL'] = responseData['Amazon'][i][4];
+                obj['Retailer'] = 'Amazon';
+                data2.push(obj);
+              }
+ 
+              data2 = shuffle(data2);
+              this.setState({
+                cardNum: 0,
+                url: data2[this.state.cardNum].ImageURL,
+                title: data2[this.state.cardNum].Title,
+                dataset: data2,
+                cat: true,
+                category: category,
+              });
+              console.log(this.state.dataset.length);
+            })
+            .done();
+ 
         })
         .done();
     } else {
@@ -554,14 +539,16 @@ class Explore extends Component {
         })
         .done();
     }
+ 
+   
   };
-
+ 
   swipeLeft = () => {
     if (brand !== '' && this.state.cardNum > 16) {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    if (this.state.cardNum > 35 || toofast) {
+    if ((this.state.cardNum+10>=this.state.dataset.length) || toofast) {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
@@ -576,7 +563,7 @@ class Explore extends Component {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    if (this.state.cardNum > 35 || toofast) {
+    if ((this.state.cardNum+10>=this.state.dataset.length) || toofast) {
       Alert.alert("Hold On!", "Swiping Too Fast! ");
       toofast = true;
     }
