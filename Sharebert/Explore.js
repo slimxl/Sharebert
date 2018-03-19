@@ -446,6 +446,7 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
+          console.log('Grabbing Cat');
           for (var i = 0; i < 20; i++) {
             try {
               var obj = {};
@@ -515,7 +516,6 @@ class Explore extends Component {
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
-          var data2 = [];
           for (var i = 0; i < 20; i++) {
             var obj = {};
             obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
@@ -527,7 +527,11 @@ class Explore extends Component {
             obj2['Title'] = responseData['Others'][i]['Title'];
             obj2['URL'] = responseData['Others'][i]['URL'];
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+            data2.push(obj);
+            data2.push(obj2);
+            
           }
+          console.log(data2.length);
           toofast = false;
           data2 = shuffle(data2);
           this.setState({
@@ -940,7 +944,7 @@ class Explore extends Component {
                   Brands
                 </Text>
               </TouchableOpacity> */}
-              <TouchableOpacity onPress={() => this.catGrab('')}>
+              <TouchableOpacity onPress={() => this.catGrab('All')}>
                 <Image
                   style={styles.catbar}
                   source={require('./Assett/all.jpg')}
