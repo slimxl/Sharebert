@@ -168,9 +168,6 @@ class Shipping extends Component {
                 source={require('./Logo.png')}
               />
             </TouchableOpacity>
-            <Text style={styles.text2}>
-              {userPoints + '\n'} Points
-            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity

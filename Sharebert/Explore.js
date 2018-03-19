@@ -162,7 +162,7 @@ class Explore extends Component {
         retailfinal = 'Paid Partnership with Disney';
       }
       else {
-        retailfinal = "From " + this.state.dataset[this.state.cardNum].Retailer
+        retailfinal = this.state.dataset[this.state.cardNum].Retailer
       }
       return (
         <View style={styles.card}>
@@ -184,7 +184,7 @@ class Explore extends Component {
             {this.state.dataset[this.state.cardNum].Title}
           </Text>
           <Text style={styles.retail}>
-            {retailfinal}
+            From <Text style= {{color: '#ff2eff'}}>{retailfinal}</Text>
           </Text>
         </View>
       );
@@ -548,7 +548,7 @@ class Explore extends Component {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    if ((this.state.cardNum+10>=this.state.dataset.length) || toofast) {
+    if ((this.state.cardNum+8>=this.state.dataset.length) || toofast) {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
@@ -563,7 +563,7 @@ class Explore extends Component {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    if ((this.state.cardNum+10>=this.state.dataset.length) || toofast) {
+    if ((this.state.cardNum+8>=this.state.dataset.length) || toofast) {
       Alert.alert("Hold On!", "Swiping Too Fast! ");
       toofast = true;
     }
@@ -1234,7 +1234,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
     textAlign: 'right',
     fontSize: 15,
-    color: '#552f7a',
+    color: '#863fba',
     fontWeight: 'bold',
     backgroundColor: 'transparent',
   },
@@ -1244,6 +1244,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   retail: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: 'black',
+    backgroundColor: 'transparent',
+  },
+  retail2: {
     textAlign: 'center',
     fontSize: 15,
     color: 'black',
