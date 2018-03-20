@@ -932,7 +932,7 @@ class Explore extends Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
-              backgroundColor={'white'}
+              backgroundColor={'transparent'}
               marginTop={-10}
               height={1}
               >
@@ -944,9 +944,6 @@ class Explore extends Component {
                   style={styles.catbars}
                   source={require('./assets/Category/brands.png')}
                 />
-                <Text style={styles.label}>
-                  Brands
-                </Text>
               </TouchableOpacity> }
               <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
@@ -1146,38 +1143,6 @@ class Explore extends Component {
               </TouchableOpacity> */}
             </ScrollView>
 
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: '113%',
-              }}>
-              <TouchableOpacity onPress={this.swipeLeft}>
-                <Image
-                  style={styles.button2}
-                  source={require('./dislikebutton.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.shareURL}>
-                <Image
-                  style={styles.button3}
-                  source={require('./sharebutton.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.openURL}>
-                <Image
-                  style={styles.button3}
-                  source={require('./greenbuybutton.png')}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.swipeRight}>
-                <Image
-                  style={styles.button2}
-                  source={require('./heart_button.png')}
-                />
-              </TouchableOpacity>
-            </TouchableOpacity>
               <TouchableOpacity onPress={this.swipeRight}>
                 <Image
                   style={styles.button2}
@@ -1421,6 +1386,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
+  icon: {
+    width: 35,
+    height: 30,
+    backgroundColor: "transparent"
+},
   text2: {
     marginRight: 10,
     marginTop: -40,
@@ -1531,7 +1501,9 @@ const styles = StyleSheet.create({
     backgroundColor:'transparent',
     resizeMode: 'contain',
   },
-
+  tabBar: {
+    backgroundColor: '#dee6ee',
+},
   label: {
     width: 50,
     height: 25,
@@ -1642,6 +1614,23 @@ function shuffle(array) {
 }
 export default TabNavigator({
   Explore: { screen: Explore },
-  Likes: { screen: Likes },
-});
+  Likes: { screen: Likes,
+    navigationOptions: ({ navigation }) => ({
+      title: "Likes",
+      tabBarIcon: () => (
+        <Image
+          source={require('./assets/footer/likes.png')}
+          style={styles.icon}
+        />
+      )
+    }) },
+},
+{
+tabBarOptions: {
+  activeTintColor: '#ff2eff',
+
+  style: styles.tabBar,
+}
+}
+);
 export { likes };
