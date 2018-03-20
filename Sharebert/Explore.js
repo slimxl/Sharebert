@@ -930,14 +930,15 @@ class Explore extends Component {
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
+              indicatorStyle={'black'}
               backgroundColor={'white'}
-              marginTop={-5}
+              marginTop={-10}
               height={1}
               >
               { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
         points: userPoints,
-      })}>
+              })}>
                 <Image
                   style={styles.catbar}
                   source={require('./Assett/brands.jpg')}
@@ -955,79 +956,55 @@ class Explore extends Component {
                   All
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('accessor')}>
+              <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/accessories.jpg')}
+                  source={require('./assets/Category/womens.png')}
                 />
-                <Text style={styles.labelShort}>
-                  Accessories
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Apparel')}>
+              <TouchableOpacity onPress={() => this.catGrab('men')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/apparel.jpg')}
+                  source={require('./assets/Category/mens.png')}
                 />
-                <Text style={styles.label}>
-                  Apparel
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Baby')}>
+              <TouchableOpacity onPress={() => this.catGrab('girls')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/baby.jpg')}
+                  source={require('./assets/Category/girls.png')}
                 />
-                <Text style={styles.label}>
-                  Baby
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('books')}>
+              <TouchableOpacity onPress={() => this.catGrab('baby')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/books.jpg')}
+                  source={require('./assets/Category/baby.png')}
                 />
-                <Text style={styles.label}>
-                  Books
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Boy')}>
+              <TouchableOpacity onPress={() => this.catGrab('pet')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/boys.jpg')}
+                  source={require('./assets/Category/pet.png')}
                 />
-                <Text style={styles.label}>
-                  Boys
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Electronics')}>
+              <TouchableOpacity onPress={() => this.catGrab('gift')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/electronics.jpg')}
+                  source={require('./assets/Category/gifts.png')}
                 />
-                <Text style={styles.labelShort}>
-                  Electronics
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('game')}>
+              <TouchableOpacity onPress={() => this.catGrab('groceries')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/gaming.jpg')}
+                  source={require('./assets/Category/groceries.png')}
                 />
-                <Text style={styles.label}>
-                  Gaming
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Gift')}>
+              <TouchableOpacity onPress={() => this.catGrab('travel')}>
                 <Image
                   style={styles.catbar}
-                  source={require('./Assett/gifts.jpg')}
+                  source={require('./assets/Category/travel.png')}
                 />
-                <Text style={styles.label}>
-                  Gifts
-                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Girl')}>
+              {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
                 <Image
                   style={styles.catbar}
                   source={require('./Assett/girls.jpg')}
@@ -1152,7 +1129,7 @@ class Explore extends Component {
                 <Text style={styles.label}>
                   Women
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
                 id: userID,
                 points: userPoints,
@@ -1313,11 +1290,13 @@ const styles = StyleSheet.create({
   },
 
   catbar: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 88,
     marginLeft: 13,
     marginRight: 13,
-    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    //backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    backgroundColor:'transparent',
+    resizeMode: 'contain',
   },
 
   label: {
