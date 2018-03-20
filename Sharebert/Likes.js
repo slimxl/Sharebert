@@ -232,7 +232,7 @@ class Likes extends Component {
   }
 }
 
-const styless = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {
