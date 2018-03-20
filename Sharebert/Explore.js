@@ -524,11 +524,15 @@ class Explore extends Component {
             obj['Title'] = responseData['Amazon'][i]['Title'];
             obj['URL'] = responseData['Amazon'][i]['URL'];
             obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+            obj['Retailer'] = "Amazon";
+
             var obj2 = {};
             obj2['ASIN'] = responseData['Others'][i]['ASIN'];
             obj2['Title'] = responseData['Others'][i]['Title'];
             obj2['URL'] = responseData['Others'][i]['URL'];
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+            obj2['Retailer'] = responseData['Others'][i]['Website'];
+
             data2.push(obj);
             data2.push(obj2);
             
