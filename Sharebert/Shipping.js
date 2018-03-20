@@ -128,6 +128,11 @@ class Shipping extends Component {
      this.props.navigation.pop();
   };
   saveForm = () =>{
+    if(this.state.email==='')
+    {
+      Alert.alert('No Email!','Try Again!');
+      return;
+    }
     if(userID != 0)
     {
     Alert.alert("User Data Confirmation",
