@@ -27,6 +27,7 @@ class Likes extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
+    uri = this.props.navigation.state.params.uri;
     if (userPoints === undefined || userID === undefined) {
       userPoints = 0;
       userID = 0;
@@ -231,7 +232,7 @@ class Likes extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styless = StyleSheet.create({
   container: {
     ...Platform.select({
       ios: {

@@ -35,7 +35,7 @@ class LoginScreen extends Component {
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
-        this.props.navigation.navigate('Likes', {
+        this.props.navigation.navigate('Explore', {
           id: 0,
           points: 0,
         });
@@ -44,9 +44,10 @@ class LoginScreen extends Component {
     {
     doubleclick = false;
     //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
-    this.props.navigation.navigate('Likes', {
+    this.props.navigation.navigate('Explore', {
       id: userID,
       points: userPoints,
+      uri: uri2,
     });
   }
   }
