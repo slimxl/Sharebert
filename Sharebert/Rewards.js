@@ -44,7 +44,6 @@ class Rewards extends Component {
       })
       .done();
   }
-
   _onPress(item) {
     Alert.alert(
       'Buy Or Share',

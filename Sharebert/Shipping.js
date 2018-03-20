@@ -8,6 +8,7 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  Linking,
   TextInput,
   Picker,
   Dimensions,
@@ -16,7 +17,7 @@ import {
 
 import { Constants } from 'expo';
 const { width } = 10;
-
+var loggedin = 'Log Out'
 var userID =  0;
 var userPoints = 0;
 var user = {};
@@ -48,6 +49,10 @@ class Shipping extends Component {
       zip: '',
       language: 0,
     };
+    if(userID===0)
+    {
+      loggedin = 'Log In';
+    }
   }
 
   onMenuItemSelected = item => {
@@ -152,6 +157,14 @@ class Shipping extends Component {
     
     
   };
+
+  clearFile = () => {
+      this.props.navigation.navigate('LoginScreen', {
+        loggedbool2: false,
+        id: 0,
+        points: 0,
+      });
+  }
 
   clearLikes = async() =>{
     await AsyncStorage.removeItem('@MySuperStore:Likes'+userID);
@@ -378,6 +391,20 @@ class Shipping extends Component {
               SAVE 
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{Linking.openURL('https://sharebert.com/privacy-policy/');}}>
+            <Text style={styles.paragraph2}>
+              Privacy Policy 
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=>{
+            this.clearFile();
+          }}>
+            <Text style={styles.paragraph2}>
+              {loggedin}
+            </Text>
+          </TouchableOpacity>
+
 
           <TouchableOpacity onPress={this.clearLikes}>
             <Text style={styles.paragraph2}>
