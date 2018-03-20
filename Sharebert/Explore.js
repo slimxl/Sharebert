@@ -944,22 +944,13 @@ class Explore extends Component {
         points: userPoints,
               })}>
                 <Image
-                  style={styles.catbar}
-                  source={require('./Assett/brands.jpg')}
+                  style={styles.catbars}
+                  source={require('./assets/Category/brands.png')}
                 />
                 <Text style={styles.label}>
                   Brands
                 </Text>
               </TouchableOpacity> }
-              <TouchableOpacity onPress={() => this.catGrab('All')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/all.jpg')}
-                />
-                <Text style={styles.label}>
-                  All
-                </Text>
-              </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
                   style={styles.catbar}
@@ -1007,6 +998,15 @@ class Explore extends Component {
                   style={styles.catbars}
                   source={require('./assets/Category/travel.png')}
                 />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.catGrab('All')}>
+                <Image
+                  style={styles.catbars}
+                  source={require('./assets/Category/random.png')}
+                />
+                <Text style={styles.label}>
+                  All
+                </Text>
               </TouchableOpacity>
               {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
                 <Image
@@ -1181,8 +1181,14 @@ class Explore extends Component {
                 />
               </TouchableOpacity>
             </TouchableOpacity>
-          </SideMenu>
+              <TouchableOpacity onPress={this.swipeRight}>
+                <Image
+                  style={styles.button2}
+                />
+            </TouchableOpacity>
 
+          </SideMenu>
+          
         </View>
       );
     } catch (error) {
@@ -1293,6 +1299,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#dee6ee',
   },
 
+  footer: {
+    height: 190,
+    width: '100%',
+    marginTop: -150,
+    backgroundColor: '#dee6ee',
+  },
   catbar: {
     width: 60,
     height: 88,
