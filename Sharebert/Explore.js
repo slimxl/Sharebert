@@ -932,9 +932,9 @@ class Explore extends Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
-              backgroundColor={'transparent'}
+              backgroundColor={'white'}
               marginTop={-10}
-              height={1}
+              height={50}
               >
               { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
