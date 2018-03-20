@@ -927,14 +927,14 @@ class Explore extends Component {
                 marginLeft: 215,
               }}
             />
-
+<View>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
               backgroundColor={'white'}
               marginTop={-10}
-              height={50}
+              height={80}
               >
               { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
@@ -1142,6 +1142,7 @@ class Explore extends Component {
                 </Text>
               </TouchableOpacity> */}
             </ScrollView>
+            </View>
 
               <TouchableOpacity onPress={this.swipeRight}>
                 <Image
