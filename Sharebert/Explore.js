@@ -968,31 +968,31 @@ class Explore extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('men')}>
                 <Image
-                  style={styles.catbar}
+                  style={styles.catbars}
                   source={require('./assets/Category/mens.png')}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('girls')}>
                 <Image
-                  style={styles.catbar}
+                  style={styles.catbars}
                   source={require('./assets/Category/girls.png')}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('baby')}>
                 <Image
-                  style={styles.catbar}
+                  style={styles.catbars}
                   source={require('./assets/Category/baby.png')}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('pet')}>
                 <Image
-                  style={styles.catbar}
+                  style={styles.catbars}
                   source={require('./assets/Category/pet.png')}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('gift')}>
                 <Image
-                  style={styles.catbar}
+                  style={styles.catbars}
                   source={require('./assets/Category/gifts.png')}
                 />
               </TouchableOpacity>
@@ -1004,7 +1004,7 @@ class Explore extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('travel')}>
                 <Image
-                  style={styles.catbar}
+                  style={styles.catbars}
                   source={require('./assets/Category/travel.png')}
                 />
               </TouchableOpacity>
@@ -1298,6 +1298,16 @@ const styles = StyleSheet.create({
     height: 88,
     marginLeft: 13,
     marginRight: 13,
+    //backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    backgroundColor:'transparent',
+    resizeMode: 'contain',
+  },
+  catbars: {
+    width: 60,
+    height: 60,
+    marginLeft: 13,
+    marginRight: 13,
+    marginTop: 13,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor:'transparent',
     resizeMode: 'contain',
