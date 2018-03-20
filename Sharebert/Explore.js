@@ -1302,7 +1302,8 @@ const styles = StyleSheet.create({
   footer: {
     height: 190,
     width: '100%',
-    marginTop: -150,
+    position: "absolute",
+    bottom: 0,
     backgroundColor: '#dee6ee',
   },
   catbar: {
