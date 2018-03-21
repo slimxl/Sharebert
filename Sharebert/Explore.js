@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper'; // Version can be specified in package.json
 import SideMenu from 'react-native-side-menu'; // Version can be specified in package.json
 import Image2 from 'react-native-image-progress';
+import TimerMixin from 'react-timer-mixin';
 import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
 import {
@@ -21,23 +22,41 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-
+import * as Animatable from 'react-native-animatable';
 import { Constants } from 'expo';
 import { uri2 } from './LoginScreen';
-
 
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
 var toofast = false;
+const fadeIn = {
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+};
+const fadeOut = {
+  from: {
+    opacity: 1,
+  },
+  to: {
+    opacity: 0,
+  },
+};
+var UserStringLike = '';
 var datasize = 0;
 var searchcount = 0;
 var brand = '';
 var search = false;
 var likes = [];
+var randoUsersLikes = [];
 class Explore extends Component {
   constructor(props) {
     super(props);
+    mixins: [TimerMixin];
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
     this.getOldLikes();
@@ -126,13 +145,47 @@ class Explore extends Component {
         })
         .done();
     }
-    if(userID!=0||userID!=undefined||userID!=null)
-    {
+    if (userID != 0 || userID != undefined || userID != null) {
 
       this.checkUpdatePoints();
     }
-  }
+    this.grabRandoLikes();
 
+
+
+  }
+  componentDidMount() {
+
+    this.interval = setInterval(() => {
+      if(randoUsersLikes.length>0)
+       this.getNewUser();
+
+    }, 15000); //8 seconds
+
+}
+  grabRandoLikes = async () => {
+    var data2 = [];
+    fetch('https://biosystematic-addit.000webhostapp.com/UserLikes.php?page=5', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        for (var i = 0; i < 20; i++) {
+          var obj2 = {};
+          obj2['User_Name'] = responseData['Users'][i]['User_Name'];
+          obj2['ASIN'] = responseData['Products'][i]['ASIN'];
+          obj2['Title'] = responseData['Products'][i]['Title'];
+          obj2['URL'] = responseData['Products'][i]['URL'];
+          obj2['ImageURL'] = responseData['Products'][i]['ImageURL'];
+          obj2['Retailer'] = responseData['Products'][i]['Website'];
+          data2.push(obj2);
+          randoUsersLikes = data2;
+         
+        }
+        UserStringLike = randoUsersLikes[0].User_Name+ " liked "+ randoUsersLikes[0].Title;
+        console.log(UserStringLike);
+      })
+      .done();
+      
+  };
   renderCard = () => {
     if (
       this.state.url ===
@@ -149,8 +202,8 @@ class Explore extends Component {
             }}
           />
           <ActivityIndicator size="small" />
-          </View>
-          
+        </View>
+
       );
     } else {
       var imageURL2 = this.state.dataset[this.state.cardNum].ImageURL;
@@ -187,7 +240,7 @@ class Explore extends Component {
             {this.state.dataset[this.state.cardNum].Title}
           </Text>
           <Text style={styles.retail}>
-            From <Text style= {{color: '#ff2eff'}}>{retailfinal}</Text>
+            From <Text style={{ color: '#ff2eff' }}>{retailfinal}</Text>
           </Text>
         </View>
       );
@@ -280,8 +333,7 @@ class Explore extends Component {
   };
 
   checkUpdatePoints = () => {
-    if(userID===0)
-    {
+    if (userID === 0) {
       return;
     }
     fetch(
@@ -326,7 +378,7 @@ class Explore extends Component {
   };
 
   onSwiped = () => {
-    console.log(this.state.cardNum+2>=this.state.dataset.length);
+    console.log(this.state.cardNum + 2 >= this.state.dataset.length);
     try {
       if (
         this.state.url ===
@@ -334,7 +386,7 @@ class Explore extends Component {
       ) {
         return;
       }
-      if (brand !== "" && (this.state.cardNum+11>=this.state.dataset.length)) {
+      if (brand !== "" && (this.state.cardNum + 11 >= this.state.dataset.length)) {
         console.log('brand reset')
         fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
           .then(response => response.json())
@@ -367,11 +419,11 @@ class Explore extends Component {
       else if (
         this.state.cat &&
         this.state.category != 'All' &&
-        (this.state.cardNum+10)>=this.state.dataset.length) {
+        (this.state.cardNum + 10) >= this.state.dataset.length) {
         console.log('reset cat');
         this.catGrab(this.state.category);
-      } 
-      else if ((this.state.cardNum+10>=this.state.dataset.length) && search === false&&this.state.cat===false) {
+      }
+      else if ((this.state.cardNum + 10 >= this.state.dataset.length) && search === false && this.state.cat === false) {
         console.log('Search was reset');
         fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
           .then(response => response.json())
@@ -384,7 +436,7 @@ class Explore extends Component {
               obj['URL'] = responseData['Amazon'][i]['URL'];
               obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
               obj['Retailer'] = "Amazon";
- 
+
               var obj2 = {};
               obj2['ASIN'] = responseData['Others'][i]['ASIN'];
               obj2['Title'] = responseData['Others'][i]['Title'];
@@ -411,7 +463,7 @@ class Explore extends Component {
         url: this.state.dataset[this.state.cardNum].ImageURL,
         title: this.state.dataset[this.state.cardNum].Title,
       });
- 
+
       try {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
           fetch(
@@ -424,7 +476,7 @@ class Explore extends Component {
             .then(responseData2 => {
               if (responseData2['Points'] != userPoints) {
                 Alert.alert('POINTS OBTAINED', "Nice Swiping!");
- 
+
                 userPoints = responseData2['Points'];
                 this.forceUpdate();
               }
@@ -438,7 +490,7 @@ class Explore extends Component {
       console.error(error);
     }
   };
- 
+
 
   catGrab = category => {
     brand = '';
@@ -477,7 +529,7 @@ class Explore extends Component {
             }
           }
           toofast = false;
-         
+
           data2 = shuffle(data2);
           fetch(
             'https://sharebert.com/APISEARCH.php?keyword=' +
@@ -501,7 +553,7 @@ class Explore extends Component {
                 obj['Retailer'] = 'Amazon';
                 data2.push(obj);
               }
- 
+
               data2 = shuffle(data2);
               this.setState({
                 cardNum: 0,
@@ -514,7 +566,7 @@ class Explore extends Component {
               console.log(this.state.dataset.length);
             })
             .done();
- 
+
         })
         .done();
     } else {
@@ -538,7 +590,7 @@ class Explore extends Component {
 
             data2.push(obj);
             data2.push(obj2);
-            
+
           }
           console.log(data2.length);
           toofast = false;
@@ -552,16 +604,16 @@ class Explore extends Component {
         })
         .done();
     }
- 
-   
+
+
   };
- 
+
   swipeLeft = () => {
     if (brand !== '' && this.state.cardNum > 16) {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    if ((this.state.cardNum+8>=this.state.dataset.length) || toofast) {
+    if ((this.state.cardNum + 8 >= this.state.dataset.length) || toofast) {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
@@ -576,7 +628,7 @@ class Explore extends Component {
       Alert.alert("Hold On!", "Swiping Too Fast!");
       toofast = true;
     }
-    if ((this.state.cardNum+8>=this.state.dataset.length) || toofast) {
+    if ((this.state.cardNum + 8 >= this.state.dataset.length) || toofast) {
       Alert.alert("Hold On!", "Swiping Too Fast! ");
       toofast = true;
     }
@@ -817,106 +869,113 @@ class Explore extends Component {
     this.setState({ inputValue });
   };
 
+  getNewUser = () =>{
+    var RandomNumber = Math.floor(Math.random() * 18) + 1 ;
+    if(randoUsersLikes.length>0)
+    UserStringLike = randoUsersLikes[RandomNumber].User_Name+ " liked "+ randoUsersLikes[RandomNumber].Title;
+    console.log(UserStringLike);
+  }
+  handleTextRef = ref => this.text = ref;
   render() {
-    
+
     try {
       return (
         <View style={styles.container}>
-            <Swiper
-              style={styles.swiper}
-              ref={swiper => {
-                this.swiper = swiper;
-              }}
-              onTapCard={this.openURL}
-              disableTopSwipe={true}
-              disableBottomSwipe={true}
-              infinite={true}
-              onSwiped={this.onSwiped}
-              onSwipedRight={this.onSwipedRight}
-              cards={this.state.cards}
-              cardIndex={this.state.cardIndex}
-              cardVerticalMargin={100}
-              onTapCardDeadZone={100}
-              renderCard={this.renderCard}
-              onSwipedAll={this.onSwipedAllCards}
-              showSecondCard={false}
-              backgroundColor={'white'}
-              marginTop={40}
-              overlayLabels={{
-                bottom: {
-                  title: 'BLEAH',
-                  swipeColor: '#9262C2',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-                left: {
-                  title: 'NOPE',
-                  swipeColor: '#FF6C6C',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-                right: {
-                  title: 'LIKE',
-                  swipeColor: '#4CCC93',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-                top: {
-                  title: 'SUPER LIKE',
-                  swipeColor: '#4EB8B7',
-                  backgroundOpacity: '0.75',
-                  fontColor: '#FFF',
-                },
-              }}
-              animateOverlayLabelsOpacity
-              animateCardOpacity
-            />
-            <Image style={styles.bg} />
-            <Text style={styles.text2}>
-              {userPoints + '\n'}
+          <Swiper
+            style={styles.swiper}
+            ref={swiper => {
+              this.swiper = swiper;
+            }}
+            onTapCard={this.openURL}
+            disableTopSwipe={true}
+            disableBottomSwipe={true}
+            infinite={true}
+            onSwiped={this.onSwiped}
+            onSwipedRight={this.onSwipedRight}
+            cards={this.state.cards}
+            cardIndex={this.state.cardIndex}
+            cardVerticalMargin={100}
+            onTapCardDeadZone={100}
+            renderCard={this.renderCard}
+            onSwipedAll={this.onSwipedAllCards}
+            showSecondCard={false}
+            backgroundColor={'white'}
+            marginTop={40}
+            overlayLabels={{
+              bottom: {
+                title: 'BLEAH',
+                swipeColor: '#9262C2',
+                backgroundOpacity: '0.75',
+                fontColor: '#FFF',
+              },
+              left: {
+                title: 'NOPE',
+                swipeColor: '#FF6C6C',
+                backgroundOpacity: '0.75',
+                fontColor: '#FFF',
+              },
+              right: {
+                title: 'LIKE',
+                swipeColor: '#4CCC93',
+                backgroundOpacity: '0.75',
+                fontColor: '#FFF',
+              },
+              top: {
+                title: 'SUPER LIKE',
+                swipeColor: '#4EB8B7',
+                backgroundOpacity: '0.75',
+                fontColor: '#FFF',
+              },
+            }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+          />
+          <Image style={styles.bg} />
+          <Text style={styles.text2}>
+            {userPoints + '\n'}
+          </Text>
+          <Text style={styles.pointsText}>
+            Points
               </Text>
-              <Text style={styles.pointsText}>
-              Points
-              </Text>
+          <TouchableOpacity onPress={this.shareApp}>
             <TouchableOpacity onPress={this.shareApp}>
-              <TouchableOpacity onPress={this.shareApp}>
-                <Image
-                  resizeMode="contain"
-                  style={styles.button}
-                  source={require('./Logo.png')}
-                />
-              </TouchableOpacity>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={this.onSubmitEdit}
-              style={{ flexDirection: 'row' }}>
               <Image
-                style={styles.search}
-                source={require('./assets/icons/search-icon2.png')}
+                resizeMode="contain"
+                style={styles.button}
+                source={require('./Logo.png')}
               />
             </TouchableOpacity>
-            <TextInput
-              textAlign="left"
-              onSubmitEditing={this.onSubmitEdit}
-              value={this.state.inputValue}
-              autoFocus={false}
-              onFocus={() => {
-                this.setState({
-                  inputValue: "",
-                });
-              }}
-              onChangeText={this._handleTextChange}
-              placeholderTextColor={'#4c515b'}
-              style={{
-                width: 120,
-                height: 44,
-                padding: 8,
-                marginTop: -40,
-                marginLeft: 20,
-              }}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={this.onSubmitEdit}
+            style={{ flexDirection: 'row' }}>
+            <Image
+              style={styles.search}
+              source={require('./assets/icons/search-icon2.png')}
             />
-<View>
+          </TouchableOpacity>
+          <TextInput
+            textAlign="left"
+            onSubmitEditing={this.onSubmitEdit}
+            value={this.state.inputValue}
+            autoFocus={false}
+            onFocus={() => {
+              this.setState({
+                inputValue: "",
+              });
+            }}
+            onChangeText={this._handleTextChange}
+            placeholderTextColor={'#4c515b'}
+            style={{
+              width: 120,
+              height: 44,
+              padding: 8,
+              marginTop: -40,
+              marginLeft: 20,
+            }}
+          />
+          <View>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -924,16 +983,16 @@ class Explore extends Component {
               backgroundColor={'white'}
               marginTop={-5}
               height={75}
-              >
-              { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
-        id: userID,
-        points: userPoints,
+            >
+              {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+                id: userID,
+                points: userPoints,
               })}>
                 <Image
                   style={styles.catbars}
                   source={require('./assets/Category/brands.png')}
                 />
-              </TouchableOpacity> }
+              </TouchableOpacity>}
               <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
                   style={styles.catbar}
@@ -1131,58 +1190,60 @@ class Explore extends Component {
                 </Text>
               </TouchableOpacity> */}
             </ScrollView>
-            </View>
-              <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-                <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')}/>
-                  <Text style={styles.footerShareText}>
-                    <Text style={{fontWeight: 'bold', color: 'black', fontSize: 12,}}>
-                        Share{' '}
-                      </Text>
-                    to earn free points!
+          </View>
+          {/* <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+            <Text style={styles.footerShareText}>
+              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
+                Share{' '}
+              </Text>
+              to earn free points!
                   </Text>
-              </TouchableOpacity>
+          </TouchableOpacity> */}
+          <TouchableOpacity style={styles.footerItem}>
+          <Animatable.Text animation="fadeIn" iterationCount='infinite' delay={300} duration = {15000} style={styles.footerShareText} ref={this.handleTextRef}>{UserStringLike}</Animatable.Text>
+          </TouchableOpacity>
+          <Image style={styles.footer} />
 
-              <Image style={styles.footer}/>
-              
-              <TouchableOpacity style={styles.footerItem} 
-              // onPress={() => this.props.navigation.navigate('Explore', {
-              //   id: userID,
-              //   points: userPoints,
-              // })}
-              >
-              <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
+          <TouchableOpacity style={styles.footerItem}
+          // onPress={() => this.props.navigation.navigate('Explore', {
+          //   id: userID,
+          //   points: userPoints,
+          // })}
+          >
+            <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
-                </Image>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.footerItem} 
-              onPress={() => this.props.navigation.navigate('Likes', {
-                id: userID,
-                points: userPoints,
-              })}>
-              <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+            </Image>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerItem}
+            onPress={() => this.props.navigation.navigate('Likes', {
+              id: userID,
+              points: userPoints,
+            })}>
+            <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
-                </Image>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.footerRewards} 
-              onPress={() => this.props.navigation.navigate('Rewards', {
-                id: userID,
-                points: userPoints,
-              })}>
-              <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+            </Image>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerRewards}
+            onPress={() => this.props.navigation.navigate('Rewards', {
+              id: userID,
+              points: userPoints,
+            })}>
+            <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
-                </Image>
-              </TouchableOpacity>
+            </Image>
+          </TouchableOpacity>
 
-              <TouchableOpacity style={styles.footerProfile} 
-              onPress={() => this.props.navigation.navigate('Shipping', {
-                id: userID,
-                points: userPoints,
-              })}>
-              <Image style={styles.profileBut} resizeMode={"contain"} source={{uri: uri2}}>
+          <TouchableOpacity style={styles.footerProfile}
+            onPress={() => this.props.navigation.navigate('Shipping', {
+              id: userID,
+              points: userPoints,
+            })}>
+            <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
-                </Image>
-              </TouchableOpacity>
-              </View>
+            </Image>
+          </TouchableOpacity>
+        </View>
       );
     } catch (error) {
       console.error(error);
@@ -1266,7 +1327,7 @@ const styles = StyleSheet.create({
     height: 8,
     backgroundColor: 'transparent',
     padding: 20,
-    marginBottom: 20,    
+    marginBottom: 20,
   },
   search: {
     width: 20,
@@ -1284,27 +1345,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#dee6ee',
   },
   exploreBut:
-  {
-    height: 25,
-    width: 25,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    marginLeft: Dimensions.get('window').width/16,
-    marginBottom: 5,    
-    backgroundColor: 'transparent',
-  },
+    {
+      height: 25,
+      width: 25,
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      marginLeft: Dimensions.get('window').width / 16,
+      marginBottom: 5,
+      backgroundColor: 'transparent',
+    },
   likesBut:
-  {
-    height: 25,
-    width: 25,
-    marginLeft: Dimensions.get('window').width/3.3, 
-    marginBottom: 5,           
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    backgroundColor: 'transparent',
-  },
+    {
+      height: 25,
+      width: 25,
+      marginLeft: Dimensions.get('window').width / 3.3,
+      marginBottom: 5,
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      backgroundColor: 'transparent',
+    },
   footerRewards: {
     position: "absolute",
     bottom: 0,
@@ -1312,16 +1373,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   rewardsBut:
-  {
-    height: 25,
-    width: 25,
-    marginRight: Dimensions.get('window').width/3.3,
-    marginBottom: 5,        
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: 'transparent',
-  },
+    {
+      height: 25,
+      width: 25,
+      marginRight: Dimensions.get('window').width / 3.3,
+      marginBottom: 5,
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      backgroundColor: 'transparent',
+    },
   footerProfile: {
     position: "absolute",
     bottom: 0,
@@ -1329,17 +1390,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   profileBut:
-  {
-    height: 25,
-    width: 25,
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    marginRight: Dimensions.get('window').width/16,
-    marginBottom: 5,    
-    borderRadius: 12,
-    backgroundColor: 'transparent',
-  },
+    {
+      height: 25,
+      width: 25,
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      marginRight: Dimensions.get('window').width / 16,
+      marginBottom: 5,
+      borderRadius: 12,
+      backgroundColor: 'transparent',
+    },
 
   footer: {
     height: 40,
@@ -1353,7 +1414,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'transparent',
   },
-
+  footerItem2: {
+    position: "absolute",
+    bottom: 0,
+    height: 30,
+    backgroundColor: 'transparent',
+  },
   footerShare: {
     height: 30,
     width: 30,
@@ -1378,7 +1444,7 @@ const styles = StyleSheet.create({
     marginLeft: 13,
     marginRight: 13,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
     resizeMode: 'contain',
   },
   catbars: {
@@ -1388,7 +1454,7 @@ const styles = StyleSheet.create({
     marginRight: 13,
     marginTop: 13,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
     resizeMode: 'contain',
   },
 
