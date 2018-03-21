@@ -841,7 +841,7 @@ class Explore extends Component {
               onSwipedAll={this.onSwipedAllCards}
               showSecondCard={false}
               backgroundColor={'white'}
-              marginTop={50}
+              marginTop={40}
               overlayLabels={{
                 bottom: {
                   title: 'BLEAH',
@@ -1132,6 +1132,16 @@ class Explore extends Component {
               </TouchableOpacity> */}
             </ScrollView>
             </View>
+              <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+                <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')}/>
+                  <Text style={styles.footerShareText}>
+                    <Text style={{fontWeight: 'bold', color: 'black', fontSize: 12,}}>
+                        Share{' '}
+                      </Text>
+                    to earn free points!
+                  </Text>
+              </TouchableOpacity>
+
               <Image style={styles.footer}/>
               
               <TouchableOpacity style={styles.footerItem} 
@@ -1191,7 +1201,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   card: {
-    flex: 1,
+    flex: 0.9,
     borderRadius: 2,
     borderWidth: 2,
     borderColor: '#f2efef',
@@ -1342,6 +1352,25 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     backgroundColor: 'transparent',
+  },
+
+  footerShare: {
+    height: 30,
+    width: 30,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: -23,
+    marginLeft: Dimensions.get('window').width / 4,
+  },
+  footerShareText: {
+    height: 30,
+    width: 200,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: 70,
+    marginLeft: Dimensions.get('window').width / 2.8,
+    color: '#747475',
+    fontSize: 12,
   },
   catbar: {
     width: 60,
