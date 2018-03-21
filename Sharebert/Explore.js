@@ -820,10 +820,6 @@ class Explore extends Component {
     try {
       return (
         <View style={styles.container}>
-          <SideMenu
-            menu={menu}
-            isOpen={this.state.isOpen}
-            onChange={isOpen => this.updateMenuState(isOpen)}>
             <Swiper
               style={styles.swiper}
               ref={swiper => {
@@ -930,14 +926,14 @@ class Explore extends Component {
                 marginLeft: 215,
               }}
             />
-
+<View>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
               backgroundColor={'white'}
               marginTop={-10}
-              height={1}
+              height={75}
               >
               { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
         id: userID,
@@ -947,9 +943,6 @@ class Explore extends Component {
                   style={styles.catbars}
                   source={require('./assets/Category/brands.png')}
                 />
-                <Text style={styles.label}>
-                  Brands
-                </Text>
               </TouchableOpacity> }
               <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
@@ -1148,47 +1141,45 @@ class Explore extends Component {
                 </Text>
               </TouchableOpacity> */}
             </ScrollView>
+            </View>
+              <Image style={styles.footer}/>
+              <TouchableOpacity style={styles.footerItem} 
+              onPress={() => this.props.navigation.navigate('Explore', {
+                id: userID,
+                points: userPoints,
+              })}>
+              <Image style={styles.exploreBut} source={require('./assets/menu/explore.png')}>
 
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: '113%',
-              }}>
-              <TouchableOpacity onPress={this.swipeLeft}>
-                <Image
-                  style={styles.button2}
-                  source={require('./dislikebutton.png')}
-                />
+                </Image>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.shareURL}>
-                <Image
-                  style={styles.button3}
-                  source={require('./sharebutton.png')}
-                />
+              <TouchableOpacity style={styles.footerItem} 
+              onPress={() => this.props.navigation.navigate('Likes', {
+                id: userID,
+                points: userPoints,
+              })}>
+              <Image style={styles.likesBut} source={require('./assets/menu/likes.png')}>
+
+                </Image>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.openURL}>
-                <Image
-                  style={styles.button3}
-                  source={require('./greenbuybutton.png')}
-                />
+              <TouchableOpacity style={styles.footerRewards} 
+              onPress={() => this.props.navigation.navigate('Rewards', {
+                id: userID,
+                points: userPoints,
+              })}>
+              <Image style={styles.rewardsBut} source={require('./assets/menu/rewards.png')}>
+
+                </Image>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={this.swipeRight}>
-                <Image
-                  style={styles.button2}
-                  source={require('./heart_button.png')}
-                />
-              </TouchableOpacity>
-            </TouchableOpacity>
-              <TouchableOpacity onPress={this.swipeRight}>
-                <Image
-                  style={styles.button2}
-                />
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.footerProfile} 
+              onPress={() => this.props.navigation.navigate('Shipping', {
+                id: userID,
+                points: userPoints,
+              })}>
+              <Image style={styles.profileBut} source={require('./assets/menu/rewards.png')}>
 
-          </SideMenu>
-          
+                </Image>
+              </TouchableOpacity>
         </View>
       );
     } catch (error) {
@@ -1298,13 +1289,68 @@ const styles = StyleSheet.create({
     marginTop: -150,
     backgroundColor: '#dee6ee',
   },
+  exploreBut:
+  {
+    height: 35,
+    width: 35,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'transparent',
+  },
+  likesBut:
+  {
+    height: 35,
+    width: 35,
+    marginLeft: 55,    
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'transparent',
+  },
+  footerRewards: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
+  rewardsBut:
+  {
+    height: 35,
+    width: 35,
+    marginRight: 55,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
+  footerProfile: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
+  profileBut:
+  {
+    height: 35,
+    width: 35,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
 
   footer: {
-    height: 190,
+    height: 40,
     width: '100%',
     position: "absolute",
     bottom: 0,
     backgroundColor: '#dee6ee',
+  },
+  footerItem: {
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: 'transparent',
   },
   catbar: {
     width: 60,
