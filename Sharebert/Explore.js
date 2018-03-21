@@ -19,9 +19,13 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
+  Dimensions,
 } from 'react-native';
 
 import { Constants } from 'expo';
+import { uri2 } from './LoginScreen';
+
+
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
@@ -127,7 +131,6 @@ class Explore extends Component {
 
       this.checkUpdatePoints();
     }
-    
   }
 
   renderCard = () => {
@@ -686,23 +689,23 @@ class Explore extends Component {
 
   }
 
-  clearFile = async () => {
-    try {
-      await AsyncStorage.removeItem('@MySuperStore:name');
-      await AsyncStorage.removeItem('@MySuperStore:email');
-      await AsyncStorage.removeItem('@MySuperStore:uri2');
-      await AsyncStorage.removeItem('@MySuperStore:points');
-      await AsyncStorage.removeItem('@MySuperStore:id');
+  // clearFile = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem('@MySuperStore:name');
+  //     await AsyncStorage.removeItem('@MySuperStore:email');
+  //     await AsyncStorage.removeItem('@MySuperStore:uri2');
+  //     await AsyncStorage.removeItem('@MySuperStore:points');
+  //     await AsyncStorage.removeItem('@MySuperStore:id');
 
-      this.props.navigation.navigate('LoginScreen', {
-        loggedbool2: false,
-        id: 0,
-        points: 0,
-      });
-    } catch (error) {
-      // Error saving data
-    }
-  }
+  //     this.props.navigation.navigate('LoginScreen', {
+  //       loggedbool2: false,
+  //       id: 0,
+  //       points: 0,
+  //     });
+  //   } catch (error) {
+  //     // Error saving data
+  //   }
+  // }
 
 
   onMenuItemSelected = item => {
@@ -734,7 +737,7 @@ class Explore extends Component {
       }
     } else if (item === 'Logout') {
       try {
-        this.clearFile();
+        //this.clearFile();
 
       } catch (error) {
         console.error(error);
@@ -815,7 +818,6 @@ class Explore extends Component {
   };
 
   render() {
-    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     
     try {
       return (
@@ -833,7 +835,7 @@ class Explore extends Component {
               onSwipedRight={this.onSwipedRight}
               cards={this.state.cards}
               cardIndex={this.state.cardIndex}
-              cardVerticalMargin={125}
+              cardVerticalMargin={100}
               onTapCardDeadZone={100}
               renderCard={this.renderCard}
               onSwipedAll={this.onSwipedAllCards}
@@ -885,18 +887,6 @@ class Explore extends Component {
                 />
               </TouchableOpacity>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({
-                  isOpen: true,
-                });
-              }}>
-              <Image
-                style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
-              />
-
-            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={this.onSubmitEdit}
@@ -923,7 +913,7 @@ class Explore extends Component {
                 height: 44,
                 padding: 8,
                 marginTop: -40,
-                marginLeft: 215,
+                marginLeft: 20,
               }}
             />
 <View>
@@ -932,7 +922,7 @@ class Explore extends Component {
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
               backgroundColor={'white'}
-              marginTop={-10}
+              marginTop={-5}
               height={75}
               >
               { <TouchableOpacity onPress={() =>  this.props.navigation.navigate('Brands', {
@@ -1143,12 +1133,14 @@ class Explore extends Component {
             </ScrollView>
             </View>
               <Image style={styles.footer}/>
+              
               <TouchableOpacity style={styles.footerItem} 
-              onPress={() => this.props.navigation.navigate('Explore', {
-                id: userID,
-                points: userPoints,
-              })}>
-              <Image style={styles.exploreBut} source={require('./assets/menu/explore.png')}>
+              // onPress={() => this.props.navigation.navigate('Explore', {
+              //   id: userID,
+              //   points: userPoints,
+              // })}
+              >
+              <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
                 </Image>
               </TouchableOpacity>
@@ -1157,7 +1149,7 @@ class Explore extends Component {
                 id: userID,
                 points: userPoints,
               })}>
-              <Image style={styles.likesBut} source={require('./assets/menu/likes.png')}>
+              <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
                 </Image>
               </TouchableOpacity>
@@ -1166,7 +1158,7 @@ class Explore extends Component {
                 id: userID,
                 points: userPoints,
               })}>
-              <Image style={styles.rewardsBut} source={require('./assets/menu/rewards.png')}>
+              <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
                 </Image>
               </TouchableOpacity>
@@ -1176,11 +1168,11 @@ class Explore extends Component {
                 id: userID,
                 points: userPoints,
               })}>
-              <Image style={styles.profileBut} source={require('./assets/menu/rewards.png')}>
+              <Image style={styles.profileBut} resizeMode={"contain"} source={{uri: uri2}}>
 
                 </Image>
               </TouchableOpacity>
-        </View>
+              </View>
       );
     } catch (error) {
       console.error(error);
@@ -1245,10 +1237,10 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   button: {
-    width: 100,
+    width: Dimensions.get('window').width,
     height: 30,
     marginTop: -35,
-    marginLeft: 60,
+    alignItems: 'center',
     backgroundColor: 'transparent',
     padding: 20,
   },
@@ -1266,18 +1258,10 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,    
   },
-  hamburger: {
-    width: 30,
-    height: 23,
-    marginLeft: 10,
-    marginTop: -33,
-    backgroundColor: 'transparent',
-    padding: 0,
-  },
   search: {
     width: 20,
     height: 20,
-    marginLeft: 185,
+    marginLeft: 5,
     marginTop: -30,
     backgroundColor: 'transparent',
     padding: 0,
@@ -1291,18 +1275,21 @@ const styles = StyleSheet.create({
   },
   exploreBut:
   {
-    height: 35,
-    width: 35,
+    height: 25,
+    width: 25,
     position: "absolute",
     bottom: 0,
     left: 0,
+    marginLeft: Dimensions.get('window').width/16,
+    marginBottom: 5,    
     backgroundColor: 'transparent',
   },
   likesBut:
   {
-    height: 35,
-    width: 35,
-    marginLeft: 55,    
+    height: 25,
+    width: 25,
+    marginLeft: Dimensions.get('window').width/3.3, 
+    marginBottom: 5,           
     position: "absolute",
     bottom: 0,
     left: 0,
@@ -1316,9 +1303,10 @@ const styles = StyleSheet.create({
   },
   rewardsBut:
   {
-    height: 35,
-    width: 35,
-    marginRight: 55,
+    height: 25,
+    width: 25,
+    marginRight: Dimensions.get('window').width/3.3,
+    marginBottom: 5,        
     position: "absolute",
     bottom: 0,
     right: 0,
@@ -1332,11 +1320,14 @@ const styles = StyleSheet.create({
   },
   profileBut:
   {
-    height: 35,
-    width: 35,
+    height: 25,
+    width: 25,
     position: "absolute",
     bottom: 0,
     right: 0,
+    marginRight: Dimensions.get('window').width/16,
+    marginBottom: 5,    
+    borderRadius: 12,
     backgroundColor: 'transparent',
   },
 

@@ -38,6 +38,7 @@ class LoginScreen extends Component {
         this.props.navigation.navigate('Likes', {
           id: 0,
           points: 0,
+          uri: uri2,
         });
     }
     else
