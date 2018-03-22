@@ -25,32 +25,16 @@ import {
 import * as Animatable from 'react-native-animatable';
 import { Constants } from 'expo';
 import { uri2 } from './LoginScreen';
-
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
 var toofast = false;
-const fadeIn = {
-  from: {
-    opacity: 0,
-  },
-  to: {
-    opacity: 1,
-  },
-};
-const fadeOut = {
-  from: {
-    opacity: 1,
-  },
-  to: {
-    opacity: 0,
-  },
-};
 var UserStringLike = '';
 var datasize = 0;
 var searchcount = 0;
 var brand = '';
 var search = false;
+var animationBool = false;
 var likes = [];
 var randoUsersLikes = [];
 class Explore extends Component {
@@ -157,10 +141,11 @@ class Explore extends Component {
   componentDidMount() {
 
     this.interval = setInterval(() => {
-      if(randoUsersLikes.length>0)
-       this.getNewUser();
-
-    }, 15000); //8 seconds
+      if(randoUsersLikes.length>0&&!animationBool)
+        animationBool = true;
+        this.getNewUser();
+    }, 16000); //16 seconds
+    animationBool = false;
 
 }
   grabRandoLikes = async () => {
@@ -181,7 +166,6 @@ class Explore extends Component {
          
         }
         UserStringLike = randoUsersLikes[0].User_Name+ " liked "+ randoUsersLikes[0].Title;
-        console.log(UserStringLike);
       })
       .done();
       
@@ -378,7 +362,6 @@ class Explore extends Component {
   };
 
   onSwiped = () => {
-    console.log(this.state.cardNum + 2 >= this.state.dataset.length);
     try {
       if (
         this.state.url ===
@@ -874,6 +857,8 @@ class Explore extends Component {
     if(randoUsersLikes.length>0)
     UserStringLike = randoUsersLikes[RandomNumber].User_Name+ " liked "+ randoUsersLikes[RandomNumber].Title;
     console.log(UserStringLike);
+    animationBool = false;
+    
   }
   handleTextRef = ref => this.text = ref;
   render() {
@@ -1201,7 +1186,7 @@ class Explore extends Component {
                   </Text>
           </TouchableOpacity> */}
           <TouchableOpacity style={styles.footerItem}>
-          <Animatable.Text animation="fadeIn" iterationCount='infinite' delay={300} duration = {15000} style={styles.footerShareText} ref={this.handleTextRef}>{UserStringLike}</Animatable.Text>
+          <Animatable.Text animation="bounceInLeft" iterationCount='infinite' delay={300} duration = {15000} easing='ease-in-out-back' style={styles.footerShareText} ref={this.handleTextRef}>{UserStringLike}</Animatable.Text>
           </TouchableOpacity>
           <Image style={styles.footer} />
 
