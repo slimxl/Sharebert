@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper'; // Version can be specified in package.json
 import SideMenu from 'react-native-side-menu'; // Version can be specified in package.json
 import Image2 from 'react-native-image-progress';
-import TimerMixin from 'react-timer-mixin';
 import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
 import {
@@ -28,25 +27,29 @@ import { uri2 } from './LoginScreen';
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
+var animationz = true;
 var toofast = false;
-var UserStringLike = '';
 var datasize = 0;
 var searchcount = 0;
 var brand = '';
 var search = false;
+var randomPROFILEIMAGE = []; //TO BE REMOVED
+var randomPROFILEIMAGEstrin;
 var animationBool = false;
 var likes = [];
 var randoUsersLikes = [];
 class Explore extends Component {
   constructor(props) {
     super(props);
-    mixins: [TimerMixin];
+    
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
+    randomPROFILEIMAGEstring = 'http://www.lowisko.online-pl.com/index_html_files/0.png';
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
       isOpen: false,
+      UserStringLike: '',
       selectedItem: 'Explore',
       swipedAllCards: false,
       swipeDirection: '',
@@ -64,6 +67,7 @@ class Explore extends Component {
       inputValue: 'Search',
       color: "#ff2eff",
     };
+    this.grabRandoLikes();    
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
@@ -133,21 +137,18 @@ class Explore extends Component {
 
       this.checkUpdatePoints();
     }
-    this.grabRandoLikes();
-
-
+    for (var i = 0; i < 25; i++) {
+      var RandomNumber = Math.floor(Math.random() * (10000 - 5)) + 4;
+      imgUrl = "http://graph.facebook.com/v2.5/" + RandomNumber + "/picture?height=200&height=200";
+      randomPROFILEIMAGE.push(imgUrl);
+    }
+    var RandomNumber = Math.floor(Math.random() * 18) + 1;
+    randomPROFILEIMAGEstring = randomPROFILEIMAGE[RandomNumber];
+    this.getNewUser();
+    setInterval(this.getNewUser, 16000);//every 17 seconds
 
   }
-  componentDidMount() {
-
-    this.interval = setInterval(() => {
-      if(randoUsersLikes.length>0&&!animationBool)
-        animationBool = true;
-        this.getNewUser();
-    }, 16000); //16 seconds
-    animationBool = false;
-
-}
+  
   grabRandoLikes = async () => {
     var data2 = [];
     fetch('https://biosystematic-addit.000webhostapp.com/UserLikes.php?page=5', { method: 'GET' })
@@ -163,12 +164,15 @@ class Explore extends Component {
           obj2['Retailer'] = responseData['Products'][i]['Website'];
           data2.push(obj2);
           randoUsersLikes = data2;
-         
+
         }
-        UserStringLike = randoUsersLikes[0].User_Name+ " liked "+ randoUsersLikes[0].Title;
+        this.setState({
+          UserStringLike: randoUsersLikes[0].User_Name + " liked " + randoUsersLikes[0].Title,
+        });
       })
       .done();
-      
+
+
   };
   renderCard = () => {
     if (
@@ -852,15 +856,21 @@ class Explore extends Component {
     this.setState({ inputValue });
   };
 
-  getNewUser = () =>{
-    var RandomNumber = Math.floor(Math.random() * 18) + 1 ;
-    if(randoUsersLikes.length>0)
-    UserStringLike = randoUsersLikes[RandomNumber].User_Name+ " liked "+ randoUsersLikes[RandomNumber].Title;
-    console.log(UserStringLike);
+  getNewUser = () => {
+    var RandomNumber = Math.floor(Math.random() * 18) + 1;
+    if (randoUsersLikes.length > 0) {
+      this.setState({
+        UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
+      });
+      randomPROFILEIMAGEstring = randomPROFILEIMAGE[RandomNumber];
+      console.log(randomPROFILEIMAGEstring);
+    }
+    console.log(this.state.UserStringLike);
     animationBool = false;
-    
   }
-  handleTextRef = ref => this.text = ref;
+  handleTextRefImg = ref => this.text = ref;
+  handleTextRef = ref => this.image = ref;
+
   render() {
 
     try {
@@ -1186,7 +1196,8 @@ class Explore extends Component {
                   </Text>
           </TouchableOpacity> */}
           <TouchableOpacity style={styles.footerItem}>
-          <Animatable.Text animation="bounceInLeft" iterationCount='infinite' delay={300} duration = {15000} easing='ease-in-out-back' style={styles.footerShareText} ref={this.handleTextRef}>{UserStringLike}</Animatable.Text>
+            <Animatable.Image ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={15000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: randomPROFILEIMAGEstring }}></Animatable.Image>
+            <Animatable.Text ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={15000} easing='ease-in-out-back' style={styles.footerLikeText} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
           </TouchableOpacity>
           <Image style={styles.footer} />
 
@@ -1407,15 +1418,36 @@ const styles = StyleSheet.create({
   },
   footerShare: {
     height: 30,
+    borderRadius: 12,
     width: 30,
     bottom: 0,
     backgroundColor: 'transparent',
     marginBottom: -23,
     marginLeft: Dimensions.get('window').width / 4,
   },
+  footerLikes: {
+    height: 30,
+    borderRadius: 12,
+    width: 30,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: -30,
+    marginLeft: Dimensions.get('window').width / 4,
+  },
   footerShareText: {
     height: 30,
     width: 200,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: 70,
+    marginLeft: Dimensions.get('window').width / 2.8,
+    color: '#747475',
+    fontSize: 12,
+  },
+  footerLikeText: {
+    height: 30,
+    width: 200,
+    fontWeight: 'bold',
     bottom: 0,
     backgroundColor: 'transparent',
     marginBottom: 70,
