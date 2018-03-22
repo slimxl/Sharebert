@@ -34,7 +34,6 @@ var searchcount = 0;
 var brand = '';
 var search = false;
 var randomPROFILEIMAGE = []; //TO BE REMOVED
-var randomPROFILEIMAGEstrin;
 var animationBool = false;
 var likes = [];
 var randoUsersLikes = [];
@@ -44,11 +43,12 @@ class Explore extends Component {
     
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
-    randomPROFILEIMAGEstring = 'http://www.lowisko.online-pl.com/index_html_files/0.png';
+    
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
       isOpen: false,
+      randomPROFILEIMAGEstring: 'http://www.lowisko.online-pl.com/index_html_files/0.png',
       UserStringLike: '',
       selectedItem: 'Explore',
       swipedAllCards: false,
@@ -67,41 +67,40 @@ class Explore extends Component {
       inputValue: 'Search',
       color: "#ff2eff",
     };
-    this.grabRandoLikes();    
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
-        .then(response => response.json())
-        .then(responseData => {
-          var data2 = [];
-          for (var i = 0; i < 20; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData[i]['ASIN'];
-            obj['Title'] = responseData[i]['Title'];
-            obj['URL'] = responseData[i]['URL'];
-            obj['ImageURL'] = responseData[i]['ImageURL'];
-            obj['Retailer'] = responseData[i]['Website'];
-            if (brand === 'Amazon') {
-              obj['Retailer'] = 'Amazon';
-            }
-            data2.push(obj);
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = [];
+        for (var i = 0; i < 20; i++) {
+          var obj = {};
+          obj['ASIN'] = responseData[i]['ASIN'];
+          obj['Title'] = responseData[i]['Title'];
+          obj['URL'] = responseData[i]['URL'];
+          obj['ImageURL'] = responseData[i]['ImageURL'];
+          obj['Retailer'] = responseData[i]['Website'];
+          if (brand === 'Amazon') {
+            obj['Retailer'] = 'Amazon';
           }
-          toofast = false;
-          search = false;
-          data2 = shuffle(data2);
-          this.setState({
-            cardNum: this.state.cardNum,
-            url: data2[this.state.cardNum].ImageURL,
-            title: data2[this.state.cardNum].Title,
-            dataset: data2,
-            cat: false,
-          });
-        })
-        .done();
+          data2.push(obj);
+        }
+        toofast = false;
+        search = false;
+        data2 = shuffle(data2);
+        this.setState({
+          cardNum: this.state.cardNum,
+          url: data2[this.state.cardNum].ImageURL,
+          title: data2[this.state.cardNum].Title,
+          dataset: data2,
+          cat: false,
+        });
+      })
+      .done();
     }
     else if (brand === '') {
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
-        .then(response => response.json())
+      .then(response => response.json())
         .then(responseData => {
           var data2 = [];
           for (var i = 0; i < 20; i++) {
@@ -142,15 +141,15 @@ class Explore extends Component {
       imgUrl = "http://graph.facebook.com/v2.5/" + RandomNumber + "/picture?height=200&height=200";
       randomPROFILEIMAGE.push(imgUrl);
     }
-    var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    randomPROFILEIMAGEstring = randomPROFILEIMAGE[RandomNumber];
+    this.grabRandoLikes();    
     this.getNewUser();
-    setInterval(this.getNewUser, 16000);//every 17 seconds
+    setInterval(this.getNewUser, 17000);//every 17 seconds
 
   }
-  
+
   grabRandoLikes = async () => {
     var data2 = [];
+    var RandomNumber = Math.floor(Math.random() * 18) + 1;
     fetch('https://biosystematic-addit.000webhostapp.com/UserLikes.php?page=5', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
@@ -167,6 +166,7 @@ class Explore extends Component {
 
         }
         this.setState({
+          randomPROFILEIMAGEstring: randomPROFILEIMAGE[RandomNumber],
           UserStringLike: randoUsersLikes[0].User_Name + " liked " + randoUsersLikes[0].Title,
         });
       })
@@ -858,12 +858,13 @@ class Explore extends Component {
 
   getNewUser = () => {
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    if (randoUsersLikes.length > 0) {
+    if (randoUsersLikes.length > 0&&this.refs.animatedTextRef) {
       this.setState({
+        
         UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
+        randomPROFILEIMAGEstring: randomPROFILEIMAGE[RandomNumber],
       });
-      randomPROFILEIMAGEstring = randomPROFILEIMAGE[RandomNumber];
-      console.log(randomPROFILEIMAGEstring);
+      console.log(this.state.randomPROFILEIMAGEstring);
     }
     console.log(this.state.UserStringLike);
     animationBool = false;
@@ -1196,8 +1197,8 @@ class Explore extends Component {
                   </Text>
           </TouchableOpacity> */}
           <TouchableOpacity style={styles.footerItem}>
-            <Animatable.Image ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={15000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={15000} easing='ease-in-out-back' style={styles.footerLikeText} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            <Animatable.Image ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+            <Animatable.Text ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
           </TouchableOpacity>
           <Image style={styles.footer} />
 
