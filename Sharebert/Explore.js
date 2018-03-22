@@ -1338,6 +1338,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   text: {
+    fontFamily: "Montserrat",
     textAlign: 'center',
     fontSize: 20,
     backgroundColor: 'transparent',

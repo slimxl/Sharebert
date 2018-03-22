@@ -131,7 +131,7 @@ class Deals extends Component {
                 </TouchableOpacity>
 
                 <Text style={styles.title}>
-                    Deals
+                    Daily Deals
                 </Text>
                 <Image style={styles.footer} />
 
@@ -225,12 +225,12 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'left',
-        marginLeft: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
+        textAlign: 'center',
+        width: Dimensions.get('window').width,
+        textAlign: 'center',
         color: '#0d2754',
         marginTop: 25,
+        marginLeft: 0,
     },
     image: {
         width: 100,
