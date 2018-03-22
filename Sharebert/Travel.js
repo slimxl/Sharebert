@@ -48,67 +48,21 @@ class Travel extends Component {
 
 
     var Brand1 = {};
-    Brand1['Term'] = 'Ace hardware';
-    Brand1['title'] = 'Ace hardware';
-    Brand1['image_url'] = require('./assets/brands/acehardware.jpg');
+    Brand1['Term'] = 'Tripping';
+    Brand1['title'] = 'Tripping';
+    Brand1['image_url'] = require('./assets/travel/tripping.png');
 
     var Brand2 = {};
-    Brand2['Term'] = 'Aeropostale';
-    Brand2['title'] = 'Aeropostale';
-    Brand2['image_url'] = require('./assets/brands/aeropostle.jpg');
+    Brand2['Term'] = 'Travelocity';
+    Brand2['title'] = 'Travelocity';
+    Brand2['image_url'] = require('./assets/travel/travelocity.png');
 
-    var Brand3 = {};
-    Brand3['Term'] = 'Amazon';
-    Brand3['title'] = 'Amazon';
-    Brand3['image_url'] = require('./assets/brands/amazon.jpg');
-
-    var Brand4 = {};
-    Brand4['Term'] = 'American Apparel';
-    Brand4['title'] = 'American Apparel';
-    Brand4['image_url'] = require('./assets/brands/americanapparel.jpg');
-
-    var Brand5 = {};
-    Brand5['Term'] = 'Avast';
-    Brand5['title'] = 'Avast';
-    Brand5['image_url'] = require('./assets/brands/avast.jpg');
+  
     
-    var Brand6 = {};
-    Brand6['Term'] = 'AVG';
-    Brand6['title'] = 'AVG';
-    Brand6['image_url'] = require('./assets/brands/avgantivirus.jpg');
-    
-    var Brand7 = {};
-    Brand7['Term'] = 'Beretta USA';
-    Brand7['title'] = 'Beretta USA';
-    Brand7['image_url'] = require('./assets/brands/beretta.jpg');
-    
-    var Brand8 = {};
-    Brand8['Term'] = 'Billabong';
-    Brand8['title'] = 'Billabong';
-    Brand8['image_url'] = require('./assets/brands/billabong.jpg');
-    
-    var Brand9 = {};
-    Brand9['Term'] = 'BodyGlove';
-    Brand9['title'] = 'BodyGlove';
-    Brand9['image_url'] = require('./assets/brands/bodyglove.jpg');
-    
-    var Brand10 = {};
-    Brand10['Term'] = 'Brayola';
-    Brand10['title'] = 'Brayola';
-    Brand10['image_url'] = require('./assets/brands/brayola.jpg');
-    
-    if(brandArr.length<10)
+    if(brandArr.length<1)
     {
-
       brandArr.push(Brand1);
       brandArr.push(Brand2);
-      brandArr.push(Brand3);
-      brandArr.push(Brand4);
-      brandArr.push(Brand6);
-      brandArr.push(Brand7);
-      brandArr.push(Brand8);
-      brandArr.push(Brand9);
-      brandArr.push(Brand10);
     }
     
     
@@ -122,7 +76,27 @@ class Travel extends Component {
       index,
     };
   };
-
+  openURL = (Brand) => {
+    try {
+      //Linking.openURL(this.state.dataset[this.state.cardNum].URL);
+      switch(Brand)
+      {
+        case 'Tripping': {
+          Linking.openURL('http://www.jdoqocy.com/click-8331277-13111115?sid='+userID);
+          break;
+        }
+        case 'Travelocity': {
+          Linking.openURL('http://www.anrdoezrs.net/click-8331277-10395454?sid=user'+userID);
+          break;
+        }
+        default: {
+          Alert.alert('Oops!', 'Login failed!');
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   _keyExtractor = item => {
     return item.code_group;
   };
@@ -138,11 +112,7 @@ class Travel extends Component {
       <View style={styles.item}>
       <TouchableOpacity onPress={() => 
               {
-                this.props.navigation.navigate('Explore', {
-                  id: userID,
-                  points: userPoints,
-                  brands: item.title,
-                })
+                this.openURL(item.title);
               }}>
         {!item.image_url
           ? <View style={styles.itemImage}>
@@ -185,7 +155,7 @@ class Travel extends Component {
 
             </TouchableOpacity>
         <Text style={styles.title}>
-          Brands
+          Travel
         </Text>
         <FlatList
           style={styles.listContainer}

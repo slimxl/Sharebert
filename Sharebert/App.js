@@ -6,6 +6,7 @@ import Shipping from './Shipping';
 import Rewards from './Rewards';
 import Likes from './Likes';
 import Brands from './Brands';
+import Travel from './Travel';
 export default class App extends React.Component {
   render() {
     return <AppNavigator />;
@@ -52,7 +53,13 @@ const AppNavigator = StackNavigator(
         gesturesEnabled: true,
       }),
     },
-
+    Travel: {
+      screen: Travel,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
     Explore: {
       screen: Explore,
       navigationOptions: ({ navigation }) => ({

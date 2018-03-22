@@ -175,6 +175,7 @@ class Likes extends Component {
             this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
               id: userID,
               points: userPoints,
+              uri: uri,
             }));
           }}>
 
@@ -195,6 +196,7 @@ class Likes extends Component {
             this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
               id: userID,
               points: userPoints,
+              uri: uri,
             }));
           }}>
           <Image

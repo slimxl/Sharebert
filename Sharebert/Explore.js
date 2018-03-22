@@ -23,7 +23,7 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Constants } from 'expo';
-import { uri2 } from './LoginScreen';
+//import { uri2 } from './LoginScreen';
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
@@ -36,6 +36,7 @@ var search = false;
 var randomPROFILEIMAGE = []; //TO BE REMOVED
 var animationBool = false;
 var likes = [];
+var uri2 = '';
 var randoUsersLikes = [];
 class Explore extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Explore extends Component {
     
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
-    
+    uri2 = this.props.navigation.state.params.uri;
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
@@ -482,6 +483,16 @@ class Explore extends Component {
   catGrab = category => {
     brand = '';
     var data2 = [];
+    if(category==='Travel')
+    {
+      console.log(category);
+      this.props.navigation.navigate('Travel', {
+        id: userID,
+        points: userPoints,
+        uri: uri2,
+      });
+    }
+
     if (category != 'All') {
       fetch(
         'https://sharebert.com/Categoriesios.php?page=5&cat=' +
@@ -1029,7 +1040,7 @@ class Explore extends Component {
                   source={require('./assets/Category/groceries.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('travel')}>
+              <TouchableOpacity onPress={() => this.catGrab('Travel')}>
                 <Image
                   style={styles.catbars}
                   source={require('./assets/Category/travel.png')}
@@ -1225,6 +1236,7 @@ class Explore extends Component {
             onPress={() => this.props.navigation.navigate('Likes', {
               id: userID,
               points: userPoints,
+              uri: uri2,
             })}>
             <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
@@ -1234,6 +1246,7 @@ class Explore extends Component {
             onPress={() => this.props.navigation.navigate('Rewards', {
               id: userID,
               points: userPoints,
+              uri: uri2,
             })}>
             <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
@@ -1244,6 +1257,7 @@ class Explore extends Component {
             onPress={() => this.props.navigation.navigate('Shipping', {
               id: userID,
               points: userPoints,
+              uri: uri2,
             })}>
             <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
