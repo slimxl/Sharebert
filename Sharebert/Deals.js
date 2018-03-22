@@ -53,22 +53,32 @@ class Deals extends Component {
             .then((response) => response.text())
             .then((responseData) => rssParser.parse(responseData))
             .then((rss) => {
-                console.log(rss.title);
+                console.log(rss.items[0]);
+                var data2 = [];
                 for(var i =0;i<rss.items.length;i++)
                 {
-                    console.log(rss.items[i].title);
-                    datafeed.push(rss.items[i].title)
+                    var obj = {};
+                    obj['link'] = rss.items[i]['links'][0]['url'];
+                    obj['title'] = rss.items[i].title;
+                    
+                    console.log(rss.items[i]['links'][0]['url']);
+                    console.log(rss.items[i]['title']);
+                    
+                    data2.push(obj);
                 }
                 this.setState({
-                    trendinglist: datafeed,
+                    trendinglist: data2,
                 })
-                console.log(this.state.trendinglist);
             });
 
 
     }
     _onPress(item) {
-        
+        try {
+            Linking.openURL(item.link);
+          } catch (error) {
+            console.error(error);
+          }
     }
     onSubmitEdit = () => {
         Keyboard.dismiss();
@@ -118,7 +128,7 @@ class Deals extends Component {
                             onShowUnderlay={separators.highlight}
                             onHideUnderlay={separators.unhighlight}>
                             <View style={{ backgroundColor: 'white' }}>
-                                <Text style={styles.text}>{item}</Text>
+                                <Text style={styles.text}>{item.title}</Text>
                             </View>
                         </TouchableOpacity>
                     )}
