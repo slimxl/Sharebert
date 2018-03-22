@@ -1194,10 +1194,21 @@ class Explore extends Component {
               to earn free points!
                   </Text>
           </TouchableOpacity> */}
-          <TouchableOpacity style={styles.footerItem}>
+          <TouchableOpacity disabled={true} style={styles.footerItem}>
             <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={2} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            </TouchableOpacity>
+          <TouchableOpacity style={styles.footerItem}  onPress={this.shareURL}>
+           <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+            <Text style={styles.footerShareText}>
+              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
+                Share{' '}
+              </Text>
+              to earn free points!
+                  </Text>
+                  
           </TouchableOpacity>
+          
           <Image style={styles.footer} />
 
           <TouchableOpacity style={styles.footerItem}
@@ -1415,22 +1426,34 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: 'transparent',
   },
+  
+  footerLikes: {
+    height: 20,
+    borderRadius: 12,
+    width: 20,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: -20,
+    marginLeft: Dimensions.get('window').width / 4.1,
+  },
+  footerLikeText: {
+    height: 30,
+    width: 220,
+    fontWeight: 'bold',
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: 40,
+    marginLeft: Dimensions.get('window').width / 3.2,
+    color: '#747475',
+    fontSize: 10,
+  },
   footerShare: {
     height: 30,
     borderRadius: 12,
     width: 30,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: -23,
-    marginLeft: Dimensions.get('window').width / 4,
-  },
-  footerLikes: {
-    height: 30,
-    borderRadius: 12,
-    width: 30,
-    bottom: 0,
-    backgroundColor: 'transparent',
-    marginBottom: -30,
+    marginBottom: -20,
     marginLeft: Dimensions.get('window').width / 4,
   },
   footerShareText: {
@@ -1438,22 +1461,12 @@ const styles = StyleSheet.create({
     width: 200,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: 70,
+    marginBottom: 85,
     marginLeft: Dimensions.get('window').width / 2.8,
     color: '#747475',
     fontSize: 12,
   },
-  footerLikeText: {
-    height: 30,
-    width: 200,
-    fontWeight: 'bold',
-    bottom: 0,
-    backgroundColor: 'transparent',
-    marginBottom: 70,
-    marginLeft: Dimensions.get('window').width / 2.8,
-    color: '#747475',
-    fontSize: 12,
-  },
+  
   catbar: {
     width: 60,
     height: 88,
