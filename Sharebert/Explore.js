@@ -140,7 +140,7 @@ class Explore extends Component {
         })
         .done();
     }
-    else if (brand === '') {
+    else {
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
       .then(response => response.json())
         .then(responseData => {
