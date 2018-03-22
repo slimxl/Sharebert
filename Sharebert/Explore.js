@@ -1227,9 +1227,9 @@ class Explore extends Component {
               to earn free points!
                   </Text>
           </TouchableOpacity> */}
-          <TouchableOpacity disabled={true} style={styles.footerItem}>
-            <Animatable.Image ref='animatedTextref' animation={animationz ? 'bounceInLeft' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref='animatedTextref' animation={animationz ? 'bounceInLeft' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={2} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+          <TouchableOpacity disabled={true} style={styles.footerTicker}>
+            <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={2} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
             </TouchableOpacity>
           <TouchableOpacity style={styles.footerItem}  onPress={this.shareURL}>
            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
@@ -1350,10 +1350,10 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   button: {
-    width: Dimensions.get('window').width,
+    width: 90,
     height: 30,
     marginTop: -35,
-    alignItems: 'center',
+    marginLeft: Dimensions.get('window').width / 2.7,
     backgroundColor: 'transparent',
     padding: 20,
   },
@@ -1372,10 +1372,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   search: {
-    width: 25,
-    height: 20,
+    width: 30,
+    height: 30,
     marginLeft: 10,
-    marginTop: -30,
+    marginTop: -35,
     backgroundColor: 'transparent',
     padding: 0,
   },
@@ -1462,6 +1462,12 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: 'transparent',
   },
+  footerTicker: {
+    position: "absolute",
+    bottom: 0,
+    marginBottom: 5,
+    backgroundColor: 'transparent',
+  },
   
   footerLikes: {
     height: 20,
@@ -1489,7 +1495,7 @@ const styles = StyleSheet.create({
     width: 30,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: -20,
+    marginBottom: -24,
     marginLeft: Dimensions.get('window').width / 4,
   },
   footerShareText: {
@@ -1497,7 +1503,7 @@ const styles = StyleSheet.create({
     width: 200,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: 85,
+    marginBottom: 75,
     marginLeft: Dimensions.get('window').width / 2.8,
     color: '#747475',
     fontSize: 12,
