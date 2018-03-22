@@ -1073,9 +1073,14 @@ class Explore extends Component {
                   style={styles.catbars}
                   source={require('./assets/Category/random.png')}
                 />
-                <Text style={styles.label}>
-                  All
-                </Text>
+
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals')}>
+                <Image
+                  style={styles.catbars}
+                  source={require('./assets/Category/deals_v2.png')}
+                />
+
               </TouchableOpacity>
               {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
                 <Image
