@@ -20,7 +20,7 @@
     "react-native-elements": "0.18.5",
     "react-native-facebook-login": "^1.6.0",
     "react-native-fade-in-view": "^1.0.5",
-    "react-native-fast-image": "^2.2.5",
+    "react-native-fast-image": "^2.2.6",
     "react-native-fbsdk": "^0.7.0",
     "react-native-filesystem": "0.1.0",
     "react-native-filesystem-v1": "0.10.12",

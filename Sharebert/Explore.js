@@ -33,6 +33,7 @@ var datasize = 0;
 var searchcount = 0;
 var brand = '';
 var search = false;
+var searchterm = '';
 var randomPROFILEIMAGE = []; //TO BE REMOVED
 var animationBool = false;
 var likes = [];
@@ -98,6 +99,46 @@ class Explore extends Component {
         });
       })
       .done();
+    }
+    else if(this.props.navigation.state.params.search !=undefined)
+    {
+      searchterm = this.props.navigation.state.params.search;
+      console.log('yay');
+      fetch(
+        'https://sharebert.com/APISEARCH.php?keyword=' +
+        searchterm +
+        '&page=1',
+        { method: 'GET' }
+      )
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          var count = responseData['Amazon'][0][7];
+          datasize = count;
+          searchcount = datasize;
+  
+          console.log(searchcount);
+          for (var i = 0; i < count; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData['Amazon'][i][0];
+            obj['Title'] = responseData['Amazon'][i][1];
+            obj['URL'] = responseData['Amazon'][i][3];
+            obj['ImageURL'] = responseData['Amazon'][i][4];
+            obj['Retailer'] = 'Amazon';
+            data2.push(obj);
+          }
+          search = true;
+          data2 = shuffle(data2);
+          this.setState({
+            cardNum: 0,
+            dataset: data2,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
+            category: 'All',
+            cat: false,
+          });
+        })
+        .done();
     }
     else if (brand === '') {
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
@@ -822,15 +863,10 @@ class Explore extends Component {
   }
 
   onSubmitEdit = () => {
-    Keyboard.dismiss();
-    if (this.state.inputValue.toString() === '') {
-      Alert.alert("Blank Search!");
-      Keyboard.dismiss();
-      return;
-    }
+    console.log('Search was refreshed');
     fetch(
       'https://sharebert.com/APISEARCH.php?keyword=' +
-      this.state.inputValue.toString() +
+      searchterm +
       '&page=1',
       { method: 'GET' }
     )
@@ -942,7 +978,7 @@ class Explore extends Component {
           <Text style={styles.pointsText}>
             Points
               </Text>
-          <TouchableOpacity onPress={this.shareApp}>
+          <TouchableOpacity >
             <TouchableOpacity onPress={this.shareApp}>
               <Image
                 resizeMode="contain"
@@ -953,33 +989,18 @@ class Explore extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={this.onSubmitEdit}
+            onPress={() => this.props.navigation.navigate('Search', {
+              id: userID,
+              points: userPoints,
+              uri: uri2,
+            })}
             style={{ flexDirection: 'row' }}>
             <Image
               style={styles.search}
               source={require('./assets/icons/search-icon2.png')}
             />
           </TouchableOpacity>
-          <TextInput
-            textAlign="left"
-            onSubmitEditing={this.onSubmitEdit}
-            value={this.state.inputValue}
-            autoFocus={false}
-            onFocus={() => {
-              this.setState({
-                inputValue: "",
-              });
-            }}
-            onChangeText={this._handleTextChange}
-            placeholderTextColor={'#4c515b'}
-            style={{
-              width: 120,
-              height: 44,
-              padding: 8,
-              marginTop: -40,
-              marginLeft: 20,
-            }}
-          />
+          
           <View>
             <ScrollView
               horizontal={true}
@@ -992,6 +1013,7 @@ class Explore extends Component {
               {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
                 id: userID,
                 points: userPoints,
+                uri: uri2,
               })}>
                 <Image
                   style={styles.catbars}
@@ -1350,9 +1372,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   search: {
-    width: 20,
+    width: 25,
     height: 20,
-    marginLeft: 5,
+    marginLeft: 10,
     marginTop: -30,
     backgroundColor: 'transparent',
     padding: 0,
