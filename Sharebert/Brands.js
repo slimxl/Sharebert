@@ -23,7 +23,7 @@ var userPoints = 0;
 var userID = 0;
 var like;
 var brandArr = [];
-
+var uri2 = '';
 // screen sizing
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -41,6 +41,7 @@ class Brands extends Component {
     super(props);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
+    uri2 = this.props.navigation.state.params.uri;
     this.state = {
       userPoints: userPoints,
       userID: userID,
@@ -491,6 +492,7 @@ class Brands extends Component {
                   id: userID,
                   points: userPoints,
                   brands: item.title,
+                  uri: uri2,
                 })
               }}>
         {!item.image_url

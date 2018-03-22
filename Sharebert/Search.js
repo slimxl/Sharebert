@@ -103,7 +103,11 @@ class Search extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        this.props.navigation.dispatch(backAction);
+                        this.props.navigation.navigate('Explore', {
+                            id: userID,
+                            points: userPoints,
+                            uri: uri2,
+                        })
                     }}>
                     <Image
                         style={styles.hamburger}
@@ -405,7 +409,7 @@ const styles = StyleSheet.create({
         marginLeft: Dimensions.get('window').width / 4,
     },
     searchText: {
-        width: 120,
+        width: Dimensions.get('window').width/1.5,
         height: 44,
         padding: 8,
         marginTop: -40,
