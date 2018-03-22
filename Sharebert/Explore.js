@@ -858,7 +858,7 @@ class Explore extends Component {
 
   getNewUser = () => {
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    if (randoUsersLikes.length > 0&&this.refs.animatedTextRef) {
+    if (randoUsersLikes.length > 0&&this.refs.animatedTextref) {
       this.setState({
         
         UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
@@ -869,8 +869,6 @@ class Explore extends Component {
     console.log(this.state.UserStringLike);
     animationBool = false;
   }
-  handleTextRefImg = ref => this.text = ref;
-  handleTextRef = ref => this.image = ref;
 
   render() {
 
@@ -1197,8 +1195,8 @@ class Explore extends Component {
                   </Text>
           </TouchableOpacity> */}
           <TouchableOpacity style={styles.footerItem}>
-            <Animatable.Image ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref={ci => this.animatedTextRef = ci} animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
           </TouchableOpacity>
           <Image style={styles.footer} />
 
