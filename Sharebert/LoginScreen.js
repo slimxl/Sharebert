@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   Alert,
+  Dimensions,
 } from 'react-native';
 import { Google, Facebook,AuthSession, Font } from 'expo';
 var doubleclick = false;
@@ -443,18 +444,20 @@ class LoginScreen extends Component {
 }
 const styles = StyleSheet.create({
   loging: {
-    flex: 1,
-    marginTop: 100,
+    width: 200,
+    height: 40,
+    marginTop: Dimensions.get('window').height / 4.5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
   loginf: {
-    flex: 1,
+    width: 200,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: -50,
+    marginTop: Dimensions.get('window').height / 7,
   },
   later: {
     flex: 1,
