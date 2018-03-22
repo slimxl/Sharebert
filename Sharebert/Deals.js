@@ -49,26 +49,52 @@ class Deals extends Component {
         }
         //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
 
-        fetch('http://www.nasa.gov/rss/dyn/breaking_news.rss')
+        fetch('https://sharebert.com/feed/?post_type=deals')
             .then((response) => response.text())
             .then((responseData) => rssParser.parse(responseData))
             .then((rss) => {
-                console.log(rss.title);
-                for(var i =0;i<rss.items.length;i++)
-                {
-                    console.log(rss.items[i].title);
-                    datafeed.push(rss.items[i].title)
+                var data2 = [];
+                console.log(rss.items[1]['contributor']);
+                for (var i = 0; i < rss.items.length; i++) {
+                    var obj = {};
+                    obj['link'] = rss.items[i]['links'][0]['url'];
+                    obj['title'] = rss.items[i].title;
+
+                    data2.push(obj);
                 }
                 this.setState({
-                    trendinglist: datafeed,
+                    trendinglist: data2,
                 })
-                console.log(this.state.trendinglist);
             });
 
 
     }
+    getNews() {
+        var url = "https://sharebert.com/feed/?post_type=deals"
+        fetch(url)
+            .then((response) => response.text())
+            .then((responseText) => {
+                const doc = new DOMParser().parseFromString(responseText, "text/xml");
+                var item = doc.getElementsByTagName('item');
+
+                for (i = 0; i < item.length; i++) {
+
+                    var title = item[i].getElementsByTagName('title');
+                    console.log(title[0]);
+
+                }
+
+            })
+            .catch((error) => {
+                console.log('Error fetching the feed: ', error);
+            });
+    }
     _onPress(item) {
-        
+        try {
+            Linking.openURL(item.link);
+        } catch (error) {
+            console.error(error);
+        }
     }
     onSubmitEdit = () => {
         Keyboard.dismiss();
@@ -103,13 +129,17 @@ class Deals extends Component {
                     />
 
                 </TouchableOpacity>
-               
+
                 <Text style={styles.title}>
-                    Trending
+                    Deals
                 </Text>
                 <Image style={styles.footer} />
 
                 <FlatList
+                    style={{
+                        marginTop: 15, marginBottom: 60,
+                        paddingBottom: 30
+                    }}
                     data={this.state.trendinglist}
                     keyExtractor={(item, index) => index}
                     renderItem={({ item, separators }) => (
@@ -118,7 +148,7 @@ class Deals extends Component {
                             onShowUnderlay={separators.highlight}
                             onHideUnderlay={separators.unhighlight}>
                             <View style={{ backgroundColor: 'white' }}>
-                                <Text style={styles.text}>{item}</Text>
+                                <Text style={styles.text}>{item.title}</Text>
                             </View>
                         </TouchableOpacity>
                     )}
@@ -197,6 +227,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'left',
         marginLeft: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
         color: '#0d2754',
         marginTop: 25,
     },
