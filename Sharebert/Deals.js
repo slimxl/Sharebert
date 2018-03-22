@@ -16,7 +16,7 @@ import {
     Share,
     Platform,
 } from 'react-native';
-
+import * as rssParser from 'react-native-rss-parser';
 import { Constants } from 'expo';
 const backAction = NavigationActions.back({
     key: null
@@ -24,7 +24,7 @@ const backAction = NavigationActions.back({
 var userPoints = 0;
 var userID = 0;
 var uri2 = '';
-
+var datafeed = [];
 // screen sizing
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -49,38 +49,26 @@ class Deals extends Component {
         }
         //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
 
-        fetch(
-            'https://biosystematic-addit.000webhostapp.com/Trending/Trending.php',
-            { method: 'GET' }
-        )
-            .then(response => response.json())
-            .then(responseData => {
-                var data2 = [];
-                var count = responseData[0][0];
-                console.log(count);
-                for (var i = 0; i < count; i++) {
-                    var obj = {};
-                    obj['id'] = responseData[i]['id'];
-                    obj['Term'] = responseData[i]['Term'];
-                    data2.push(obj);
+        fetch('http://www.nasa.gov/rss/dyn/breaking_news.rss')
+            .then((response) => response.text())
+            .then((responseData) => rssParser.parse(responseData))
+            .then((rss) => {
+                console.log(rss.title);
+                for(var i =0;i<rss.items.length;i++)
+                {
+                    console.log(rss.items[i].title);
+                    datafeed.push(rss.items[i].title)
                 }
                 this.setState({
-                    trendinglist: data2,
-                });
+                    trendinglist: datafeed,
+                })
                 console.log(this.state.trendinglist);
-            })
-            .done();
+            });
 
 
     }
-    _onPress(item)
-    {
-        this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-            uri: uri2,
-            search: item.Term,
-        })
+    _onPress(item) {
+        
     }
     onSubmitEdit = () => {
         Keyboard.dismiss();
@@ -115,27 +103,7 @@ class Deals extends Component {
                     />
 
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ flexDirection: 'row' }}>
-                    <Image
-                        style={styles.search}
-                        source={require('./assets/icons/search-icon2.png')}
-                    />
-                </TouchableOpacity>
-                <TextInput
-                    textAlign="left"
-                    onSubmitEditing={this.onSubmitEdit}
-                    value={this.state.inputValue}
-                    autoFocus={false}
-                    onFocus={() => {
-                        this.setState({
-                            inputValue: "",
-                        });
-                    }}
-                    onChangeText={this._handleTextChange}
-                    placeholderTextColor={'#4c515b'}
-                    style={styles.searchText}
-                />
+               
                 <Text style={styles.title}>
                     Trending
                 </Text>
@@ -150,7 +118,7 @@ class Deals extends Component {
                             onShowUnderlay={separators.highlight}
                             onHideUnderlay={separators.unhighlight}>
                             <View style={{ backgroundColor: 'white' }}>
-                                <Text style={styles.text}>{item.Term}</Text>
+                                <Text style={styles.text}>{item}</Text>
                             </View>
                         </TouchableOpacity>
                     )}
@@ -409,7 +377,7 @@ const styles = StyleSheet.create({
         marginLeft: Dimensions.get('window').width / 4,
     },
     searchText: {
-        width: Dimensions.get('window').width/1.5,
+        width: Dimensions.get('window').width / 1.5,
         height: 44,
         padding: 8,
         marginTop: -40,
