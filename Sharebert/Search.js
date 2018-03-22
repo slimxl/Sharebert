@@ -73,8 +73,7 @@ class Search extends Component {
 
 
     }
-    _onPress(item)
-    {
+    _onPress(item) {
         this.props.navigation.navigate('Explore', {
             id: userID,
             points: userPoints,
@@ -142,6 +141,10 @@ class Search extends Component {
                 <Image style={styles.footer} />
 
                 <FlatList
+                    style={{
+                        marginTop: 15, marginBottom: 60,
+                        paddingBottom: 30
+                    }}
                     data={this.state.trendinglist}
                     keyExtractor={(item, index) => index}
                     renderItem={({ item, separators }) => (
@@ -217,7 +220,7 @@ const styles = StyleSheet.create({
     },
     hamburger: {
         width: 30,
-        height: 23,
+        height: 20,
         marginLeft: 10,
         marginTop: -32,
         backgroundColor: 'transparent',
@@ -296,8 +299,8 @@ const styles = StyleSheet.create({
     text: {
         textAlign: 'left',
         fontSize: 12,
-        marginTop: 40,
         marginLeft: 30,
+        marginBottom: 30,        
         color: '#0d2754',
         backgroundColor: 'transparent',
     },
@@ -409,16 +412,16 @@ const styles = StyleSheet.create({
         marginLeft: Dimensions.get('window').width / 4,
     },
     searchText: {
-        width: Dimensions.get('window').width/1.5,
+        width: Dimensions.get('window').width / 1.5,
         height: 44,
         padding: 8,
         marginTop: -40,
-        marginLeft: 65,
+        marginLeft: 70,
     },
     search: {
         width: 20,
         height: 20,
-        marginLeft: 45,
+        marginLeft: 50,
         marginTop: -30,
         backgroundColor: 'transparent',
         padding: 0,
