@@ -45,8 +45,42 @@ class Search extends Component {
         uri2 = this.props.navigation.state.params.uri;
         this.state = {
             inputValue: 'Search',
+            trendinglist: [],
         }
+        //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
 
+        fetch(
+            'https://biosystematic-addit.000webhostapp.com/Trending/Trending.php',
+            { method: 'GET' }
+        )
+            .then(response => response.json())
+            .then(responseData => {
+                var data2 = [];
+                var count = responseData[0][0];
+                console.log(count);
+                for (var i = 0; i < count; i++) {
+                    var obj = {};
+                    obj['id'] = responseData[i]['id'];
+                    obj['Term'] = responseData[i]['Term'];
+                    data2.push(obj);
+                }
+                this.setState({
+                    trendinglist: data2,
+                });
+                console.log(this.state.trendinglist);
+            })
+            .done();
+
+
+    }
+    _onPress(item)
+    {
+        this.props.navigation.navigate('Explore', {
+            id: userID,
+            points: userPoints,
+            uri: uri2,
+            search: item.Term,
+        })
     }
     onSubmitEdit = () => {
         Keyboard.dismiss();
@@ -102,6 +136,23 @@ class Search extends Component {
                     Trending
                 </Text>
                 <Image style={styles.footer} />
+
+                <FlatList
+                    data={this.state.trendinglist}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item, separators }) => (
+                        <TouchableOpacity
+                            onPress={() => this._onPress(item)}
+                            onShowUnderlay={separators.highlight}
+                            onHideUnderlay={separators.unhighlight}>
+                            <View style={{ backgroundColor: 'white' }}>
+                                <Text style={styles.text}>{item.Term}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+
+
 
                 <TouchableOpacity style={styles.footerItem}
                     onPress={() => this.props.navigation.navigate('Explore', {
@@ -242,7 +293,8 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontSize: 12,
         marginTop: 40,
-        marginLeft: 110,
+        marginLeft: 30,
+        color: '#0d2754',
         backgroundColor: 'transparent',
     },
 
