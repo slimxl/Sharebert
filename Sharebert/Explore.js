@@ -1075,7 +1075,11 @@ class Explore extends Component {
                 />
 
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals')}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals',{
+                  id: userID,
+                  points: userPoints,
+                  uri: uri2,
+              })}>
                 <Image
                   style={styles.catbars}
                   source={require('./assets/Category/deals_v2.png')}
