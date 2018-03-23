@@ -12,6 +12,7 @@ import {
   FlatList,
   Share,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 import { Constants, Font } from 'expo';
@@ -204,11 +205,16 @@ class Likes extends Component {
             source={require('./purplemenuicon.png')}
           />
         </TouchableOpacity>
-
+          <Image 
+          resizeMode="contain" 
+          style={styles.heart}
+            source={require('./assets/icons/heart_button.png')}/>
         <Text style={styles.title}>
-          Things You Like
+          My Likes
         </Text>
-        <FlatList
+        <Image style={styles.divider}
+                />
+        <FlatList backgroundColor={'white'}
           data={like}
           keyExtractor={(item, index) => index}
           renderItem={({ item, separators }) => (
@@ -224,6 +230,8 @@ class Likes extends Component {
                   source={{
                     uri: item.ImageURL,
                   }}
+                />
+                <Image style={styles.divider}
                 />
               </View>
             </TouchableOpacity>
@@ -264,13 +272,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     padding: 0,
   },
+  heart:
+  {
+    width: Dimensions.get('window').width,
+    height: 30,
+    marginTop: -15,
+    marginBottom: 26,
+    backgroundColor: 'white',
+    
+  },
+  divider:
+  {
+    width: Dimensions.get('window').width - 30,
+    height: 2,
+    marginLeft: 15,
+    backgroundColor: '#dee6ee',
+  },
   title: {
     fontFamily: "Montserrat",
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#ff2eff',
-    marginTop: -15,
+    marginTop: -26,
+    backgroundColor: 'white',
   },
   image: {
     
@@ -309,9 +334,10 @@ const styles = StyleSheet.create({
   headertext:
     {
       textAlign: 'center',
+      fontFamily: 'Montserrat',
       fontSize: 17,
       marginTop: -32,
-      marginLeft: 130,
+      marginLeft: 140,
       backgroundColor: 'transparent',
     },
 });
