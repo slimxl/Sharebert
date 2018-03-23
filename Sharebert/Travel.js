@@ -50,12 +50,130 @@ class Travel extends Component {
     var Brand1 = {};
     Brand1['Term'] = 'Tripping';
     Brand1['title'] = 'Tripping';
+    Brand1['link'] = 'http://www.dpbolvw.net/click-8331277-13174391';
     Brand1['image_url'] = require('./assets/travel/tripping.png');
 
     var Brand2 = {};
     Brand2['Term'] = 'Travelocity';
     Brand2['title'] = 'Travelocity';
+    Brand2['link'] = 'http://www.tkqlhce.com/click-8331277-10842219';
     Brand2['image_url'] = require('./assets/travel/travelocity.png');
+
+    var Brand3 = {};
+    Brand3['Term'] = 'One Travel';
+    Brand3['title'] = 'One Travel';
+    Brand2['link'] = 'http://www.pntrac.com/t/8-206-163999-1508';
+    Brand3['image_url'] = require('./assets/travel/onetravel.png');
+
+    var Brand4 = {};
+    Brand4['Term'] = 'CheapAir';
+    Brand4['title'] = 'CheapAir';
+    Brand4['link'] = 'http://www.anrdoezrs.net/click-8331277-11014261';
+    Brand4['image_url'] = require('./assets/travel/cheapair.png');
+
+    var Brand5 = {};
+    Brand5['Term'] = 'CheapOair';
+    Brand5['title'] = 'CheapOair';
+    Brand5['link'] = 'http://www.jdoqocy.com/click-8331277-12953065';
+    Brand5['image_url'] = require('./assets/travel/cheapoair.png');
+
+    var Brand6 = {};
+    Brand6['Term'] = 'CheapTickets';
+    Brand6['title'] = 'CheapTickets';
+    Brand6['link'] = 'http://www.kqzyfj.com/click-8331277-12843040';
+    Brand6['image_url'] = require('./assets/travel/cheaptickets.png');
+
+    var Brand7 = {};
+    Brand7['Term'] = 'Extended Stay America';
+    Brand7['title'] = 'Extended Stay America';
+    Brand7['link'] = 'http://www.jdoqocy.com/click-8331277-13107969';
+    Brand7['image_url'] = require('./assets/travel/extended.png');
+
+    var Brand8 = {};
+    Brand8['Term'] = 'Homestay';
+    Brand8['title'] = 'Homestay';
+    Brand8['link'] = 'http://www.kqzyfj.com/click-8331277-12353257';
+    Brand8['image_url'] = require('./assets/travel/homestay.png');
+
+    var Brand9 = {};
+    Brand9['Term'] = 'HotelPlanner.com';
+    Brand9['title'] = 'HotelPlanner.com';
+    Brand9['link'] =  'http://www.jdoqocy.com/click-8331277-10391851';
+    Brand9['image_url'] = require('./assets/travel/hotelplanner.png');
+
+    var Brand10 = {};
+    Brand10['Term'] = 'Hotels.com';
+    Brand10['title'] = 'Hotels.com';
+    Brand10['link'] = 'http://www.anrdoezrs.net/click-8331277-10443216';
+    Brand10['image_url'] = require('./assets/travel/hotels.png');
+
+    var Brand11 = {};
+    Brand11['Term'] = 'LivingSocial';
+    Brand11['title'] = 'LivingSocial';
+    Brand11['link'] = 'http://www.anrdoezrs.net/click-8331277-11659343';
+    Brand11['image_url'] = require('./assets/travel/livingsocial.png');
+
+    var Brand12 = {};
+    Brand12['Term'] = 'Otel.com';
+    Brand12['title'] = 'Otel.com';
+    Brand12['link'] = 'http://www.anrdoezrs.net/click-8331277-10784091';
+    Brand12['image_url'] = require('./assets/travel/otel.png');
+
+    var Brand13 = {};
+    Brand13['Term'] = 'Palace Resorts';
+    Brand13['title'] = 'Palace Resorts';
+    Brand13['link'] = 'http://www.kqzyfj.com/click-8331277-13221537';
+    Brand13['image_url'] = require('./assets/travel/palaceresorts.png');
+
+    var Brand14 = {};
+    Brand14['Term'] = 'Walt Disney Travel Company';
+    Brand14['title'] = 'Walt Disney Travel Company';
+    Brand14['link'] = 'http://www.tkqlhce.com/click-8331277-13265516';
+    Brand14['image_url'] = require('./assets/travel/disney.png');
+
+    var Brand15 = {};
+    Brand15['Term'] = 'Booking.com';
+    Brand15['title'] = 'Booking.com';
+    Brand15['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=343625.119&type=3&subid=';
+    Brand15['image_url'] = require('./assets/travel/booking.png');
+
+    var Brand16 = {};
+    Brand16['Term'] = 'Camping World';
+    Brand16['title'] = 'Camping World';
+    Brand16['link'] = ' https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=414807.10002997&type=3&subid=';
+    Brand16['image_url'] = require('./assets/travel/campingworld.png');
+
+    var Brand17 = {};
+    Brand17['Term'] = 'CarRentals.com';
+    Brand17['title'] = 'CarRentals.com';
+    Brand17['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=453842.10000029&type=4&subid=';
+    Brand17['image_url'] = require('./assets/travel/carrentals.png');
+
+    var Brand18 = {};
+    Brand18['Term'] = 'LaQuinta';
+    Brand18['title'] = 'LaQuinta';
+    Brand18['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=53964.10000074&type=4&subid=';
+    Brand18['image_url'] = require('./assets/travel/laquinta.png');
+
+    var Brand19 = {};
+    Brand19['Term'] = 'Thrifty Rent-A-Car';
+    Brand19['title'] = 'Thrifty Rent-A-Car';
+    Brand19['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=171424.10000028&type=3&subid='
+    Brand19['image_url'] = require('./assets/travel/thrifty.png');
+
+    var Brand20 = {};
+    Brand20['Term'] = 'TicketCity';
+    Brand20['title'] = 'TicketCity';
+    Brand20['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=360735.376&type=4&subid=';
+    Brand20['image_url'] = require('./assets/travel/ticketcity.png');
+
+    var Brand21 = {};
+    Brand21['Term'] = 'Travelation';
+    Brand21['title'] = 'Travelation ';
+    Brand21['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=562139.573&type=4&subid=';
+    Brand21['image_url'] = require('./assets/travel/travelation.png');
+
+
 
   
     
@@ -63,6 +181,27 @@ class Travel extends Component {
     {
       brandArr.push(Brand1);
       brandArr.push(Brand2);
+      brandArr.push(Brand3);
+      brandArr.push(Brand4);
+      brandArr.push(Brand5);
+      brandArr.push(Brand6);
+      brandArr.push(Brand7);
+      brandArr.push(Brand8);
+      brandArr.push(Brand9);
+      brandArr.push(Brand10);
+      brandArr.push(Brand11);
+      brandArr.push(Brand12);
+      brandArr.push(Brand13);
+      brandArr.push(Brand14);
+      brandArr.push(Brand15);
+      brandArr.push(Brand16);
+      brandArr.push(Brand17);
+      brandArr.push(Brand18);
+      brandArr.push(Brand19);
+      brandArr.push(Brand20);
+      brandArr.push(Brand21);
+
+
     }
     
     
@@ -78,21 +217,7 @@ class Travel extends Component {
   };
   openURL = (Brand) => {
     try {
-      //Linking.openURL(this.state.dataset[this.state.cardNum].URL);
-      switch(Brand)
-      {
-        case 'Tripping': {
-          Linking.openURL('http://www.jdoqocy.com/click-8331277-13111115?sid='+userID);
-          break;
-        }
-        case 'Travelocity': {
-          Linking.openURL('http://www.anrdoezrs.net/click-8331277-10395454?sid=user'+userID);
-          break;
-        }
-        default: {
-          Alert.alert('Oops!', 'Login failed!');
-        }
-      }
+      Linking.openURL(Brand);
     } catch (error) {
       console.error(error);
     }
@@ -112,7 +237,7 @@ class Travel extends Component {
       <View style={styles.item}>
       <TouchableOpacity onPress={() => 
               {
-                this.openURL(item.title);
+                this.openURL(item.link);
               }}>
         {!item.image_url
           ? <View style={styles.itemImage}>
