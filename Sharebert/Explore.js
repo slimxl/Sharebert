@@ -103,7 +103,6 @@ class Explore extends Component {
     else if(this.props.navigation.state.params.search !=undefined)
     {
       searchterm = this.props.navigation.state.params.search;
-      console.log('yay');
       fetch(
         'https://sharebert.com/APISEARCH.php?keyword=' +
         searchterm +
@@ -394,6 +393,7 @@ class Explore extends Component {
   };
 
   openURL = () => {
+    console.log('yep');
     if (
       this.state.url ===
       'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
@@ -922,55 +922,103 @@ class Explore extends Component {
     try {
       return (
         <View style={styles.container}>
-          <Swiper
-            style={styles.swiper}
-            ref={swiper => {
-              this.swiper = swiper;
-            }}
-            onTapCard={this.openURL}
-            disableTopSwipe={true}
-            disableBottomSwipe={true}
-            infinite={true}
-            onSwiped={this.onSwiped}
-            onSwipedRight={this.onSwipedRight}
-            cards={this.state.cards}
-            cardIndex={this.state.cardIndex}
-            cardVerticalMargin={100}
-            onTapCardDeadZone={100}
-            renderCard={this.renderCard}
-            onSwipedAll={this.onSwipedAllCards}
-            showSecondCard={false}
-            backgroundColor={'white'}
-            marginTop={40}
-            overlayLabels={{
-              bottom: {
-                title: 'BLEAH',
-                swipeColor: '#9262C2',
-                backgroundOpacity: '0.75',
-                fontColor: '#FFF',
-              },
-              left: {
-                title: 'NOPE',
-                swipeColor: '#FF6C6C',
-                backgroundOpacity: '0.75',
-                fontColor: '#FFF',
-              },
-              right: {
-                title: 'LIKE',
-                swipeColor: '#4CCC93',
-                backgroundOpacity: '0.75',
-                fontColor: '#FFF',
-              },
-              top: {
-                title: 'SUPER LIKE',
-                swipeColor: '#4EB8B7',
-                backgroundOpacity: '0.75',
-                fontColor: '#FFF',
-              },
-            }}
-            animateOverlayLabelsOpacity
-            animateCardOpacity
-          />
+        <Swiper
+          ref={swiper => {
+            this.swiper = swiper
+          }}
+          onSwiped={this.onSwiped}
+          onTapCard={this.openURL}
+          disableTopSwipe={true}
+          disableBottomSwipe={true}
+          disableTopSwipe={true}
+          disableBottomSwipe={true}
+          onSwipedRight={this.onSwipedRight}
+          infinite={true}
+          cards={this.state.cards}
+          cardIndex={this.state.cardIndex}
+          cardVerticalMargin={80}
+          renderCard={this.renderCard}
+          onSwipedAll={this.onSwipedAllCards}
+          stackSize={1}
+          marginTop={40}
+          cardVerticalMargin={100}
+          showSecondCard={false}
+          backgroundColor={'white'}
+          overlayLabels={{
+            bottom: {
+              title: 'BLEAH',
+              style: {
+                label: {
+                  backgroundColor: 'black',
+                  borderColor: 'black',
+                  color: 'white',
+                  borderWidth: 1
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }
+              }
+            },
+            left: {
+              title: 'NOPE',
+              style: {
+                label: {
+                  backgroundColor: 'transparent',
+                  borderColor: 'transparent',
+                  color: 'red',
+                  borderWidth: 1
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 30,
+                  marginLeft: -30
+                }
+              }
+            },
+            right: {
+              title: 'LIKE',
+              style: {
+                label: {
+                  backgroundColor: 'transparent',
+                  borderColor: 'transparent',
+                  color: '#ff2eff',
+                  borderWidth: 1
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  marginTop: 30,
+                  marginLeft: 30
+                }
+              }
+            },
+            top: {
+              title: 'SUPER LIKE',
+              style: {
+                label: {
+                  backgroundColor: 'black',
+                  borderColor: 'black',
+                  color: 'white',
+                  borderWidth: 1
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }
+              }
+            }
+          }}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+        >
+        </Swiper>
+
           <Image style={styles.bg} />
           <Text style={styles.text2}>
             {userPoints + '\n'}
@@ -1305,6 +1353,7 @@ class Explore extends Component {
 const styles = StyleSheet.create({
   container: {
     marginTop: Constants.statusBarHeight,
+    height: 100,
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
