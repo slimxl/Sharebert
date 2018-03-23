@@ -231,6 +231,10 @@ class Likes extends Component {
                     uri: item.ImageURL,
                   }}
                 />
+                <Text style={{color: 'black',fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width, marginLeft: Dimensions.get('window').width/3}}>
+                  from{' '}
+                  <Text style={{color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat'}}> {item.Retailer}</Text>
+                </Text>
                 <Image style={styles.divider}
                 />
               </View>
