@@ -212,7 +212,7 @@ class Likes extends Component {
         <Text style={styles.title}>
           My Likes
         </Text>
-        <Image style={styles.divider}
+        <Image style={styles.dividerTop}
                 />
         <FlatList backgroundColor={'white'}
           data={like}
@@ -223,7 +223,7 @@ class Likes extends Component {
               onShowUnderlay={separators.highlight}
               onHideUnderlay={separators.unhighlight}>
               <View style={{ backgroundColor: 'white' }}>
-                <Text style={styles.text}>{item.Title}</Text>
+                <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
                 <Image
                   resizeMode={'contain'}
                   style={styles.image}
@@ -231,7 +231,7 @@ class Likes extends Component {
                     uri: item.ImageURL,
                   }}
                 />
-                <Text style={{color: 'black',fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width, marginLeft: Dimensions.get('window').width/3}}>
+                <Text style={{marginTop: -50, marginBottom: 30,color: 'black',fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width, marginLeft: Dimensions.get('window').width/2.9}}>
                   from{' '}
                   <Text style={{color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat'}}> {item.Retailer}</Text>
                 </Text>
@@ -290,6 +290,13 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 30,
     height: 2,
     marginLeft: 15,
+    marginTop: 30,
+    backgroundColor: '#dee6ee',
+  },
+  dividerTop:
+  {
+    width: Dimensions.get('window').width,
+    height: 3,
     backgroundColor: '#dee6ee',
   },
   title: {
