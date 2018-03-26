@@ -177,7 +177,15 @@ class Shipping extends Component {
   render() {
     return (
         <View style={styles.container}>
+              <TouchableOpacity onPress={() => {
+            this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
+              id: userID,
+              points: userPoints,
+              uri: uri,
+            }));
+          }}>
           <Image style={styles.bg} />
+          </TouchableOpacity>
           <TouchableOpacity>
             <TouchableOpacity onPress={this.shareApp}>
               <Image
