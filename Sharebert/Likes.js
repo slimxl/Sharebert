@@ -231,7 +231,7 @@ class Likes extends Component {
           style={styles.heart}
             source={require('./assets/icons/heart_button.png')}/>
         <Text style={styles.title}>
-          Things I Like
+          Things You Like
         </Text>
         <Image style={styles.dividerTop}
                 />
