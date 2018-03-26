@@ -126,23 +126,23 @@ class Likes extends Component {
     }
   }
 
-  _onPress(item) {
-    Alert.alert(
-      'Buy Or Share',
-      item.Title,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'Share', onPress: () => this.shareURL(item) },
-        { text: 'Buy', onPress: () => { Linking.openURL(item.URL); } },
+  // _onPress(item) {
+  //   Alert.alert(
+  //     'Buy Or Share',
+  //     item.Title,
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         onPress: () => console.log('Cancel Pressed'),
+  //         style: 'cancel',
+  //       },
+  //       { text: 'Share', onPress: () => this.shareURL(item) },
+  //       { text: 'Buy', onPress: () => { Linking.openURL(item.URL); } },
 
-      ],
-      { cancelable: false }
-    );
-  }
+  //     ],
+  //     { cancelable: false }
+  //   );
+  // }
 
   getFile = async (type) => {
     try {
@@ -166,6 +166,27 @@ class Likes extends Component {
       // Error retrieving data
     }
   }
+
+  openURL = item => {
+    try{
+    console.log('yep');
+    if (
+      this.state.url ===
+      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+    ) {
+      return;
+    }
+    try {
+      Linking.openURL(item.URL);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  catch(error)
+  {
+    console.error(error);
+  }
+  };
 
   render() {
     return (
@@ -218,8 +239,7 @@ class Likes extends Component {
           data={like}
           keyExtractor={(item, index) => index}
           renderItem={({ item, separators }) => (
-            <TouchableOpacity
-              onPress={() => this._onPress(item)}
+            <View
               onShowUnderlay={separators.highlight}
               onHideUnderlay={separators.unhighlight}>
               <View style={{ backgroundColor: 'white' }}>
@@ -235,10 +255,16 @@ class Likes extends Component {
                   from{' '}
                   <Text style={{color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat'}}> {item.Retailer}</Text>
                 </Text>
+                <TouchableOpacity onPress={() => this.shareURL(item)}>
+                  <Image style={styles.shareBut} source={require('./assets/icons/sharebutton.png')}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.openURL(item)}>
+                  <Image style={styles.buyBut}  source={require('./assets/icons/greenbuybutton.png')}/> 
+                </TouchableOpacity>
                 <Image style={styles.divider}
                 />
               </View>
-            </TouchableOpacity>
+            </View>
           )}
         />
       </View>
@@ -292,6 +318,20 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 30,
     backgroundColor: '#dee6ee',
+  },
+  shareBut:
+  {
+    width: 40,
+    height: 40,
+    marginLeft: Dimensions.get('window').width / 2,
+    marginTop: -25,
+  },
+  buyBut:
+  {
+    width: 40,
+    height: 40,
+    marginLeft: Dimensions.get('window').width / 3,
+    marginTop: -40,
   },
   dividerTop:
   {
