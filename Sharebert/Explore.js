@@ -1307,11 +1307,12 @@ class Explore extends Component {
           //   points: userPoints,
           // })}
           >
-            <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
+            <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
+             source={require('./assets/menu/explore.png')}>
 
             </Image>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem}
+          <TouchableOpacity style={styles.footerItem} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('Likes', {
               id: userID,
               points: userPoints,
@@ -1321,7 +1322,7 @@ class Explore extends Component {
 
             </Image>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.footerRewards}
+          <TouchableOpacity style={styles.footerRewards} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('Rewards', {
               id: userID,
               points: userPoints,
@@ -1332,7 +1333,7 @@ class Explore extends Component {
             </Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.footerProfile}
+          <TouchableOpacity style={styles.footerProfile} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('Shipping', {
               id: userID,
               points: userPoints,
