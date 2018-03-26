@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#34495e',
+    backgroundColor: 'white',
   },
   image: {
     width: 100,
