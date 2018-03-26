@@ -231,7 +231,7 @@ class Likes extends Component {
           style={styles.heart}
             source={require('./assets/icons/heart_button.png')}/>
         <Text style={styles.title}>
-          My Likes
+          Things I Like
         </Text>
         <Image style={styles.dividerTop}
                 />
@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
       android: {
         marginTop: 80,
       },
+      backgroundColor: 'white',
     }),
 
     flex: 1,
@@ -306,7 +307,8 @@ const styles = StyleSheet.create({
   {
     width: Dimensions.get('window').width,
     height: 30,
-    marginTop: -15,
+    paddingTop: 20,
+    marginTop: -10,
     marginBottom: 26,
     backgroundColor: 'white',
     
@@ -346,6 +348,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ff2eff',
     marginTop: -26,
+    marginBottom: 0,
+    paddingBottom: 6,
     backgroundColor: 'white',
   },
   image: {
