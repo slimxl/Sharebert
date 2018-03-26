@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   {
     width: 40,
     height: 40,
-    marginLeft: Dimensions.get('window').width / 1.5,
+    marginLeft: Dimensions.get('window').width / 1.43,
     marginTop: -40,
   },
   dividerTop:

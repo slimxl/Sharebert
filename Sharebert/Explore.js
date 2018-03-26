@@ -334,7 +334,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!" + userPoints);
+                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     this.forceUpdate();
                   }
                 })
