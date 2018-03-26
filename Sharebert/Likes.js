@@ -255,11 +255,11 @@ class Likes extends Component {
                   from{' '}
                   <Text style={{color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat'}}> {item.Retailer}</Text>
                 </Text>
-                <TouchableOpacity onPress={() => this.shareURL(item)}>
-                  <Image style={styles.shareBut} source={require('./assets/icons/sharebutton.png')}/>
-                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.openURL(item)}>
-                  <Image style={styles.buyBut}  source={require('./assets/icons/greenbuybutton.png')}/> 
+                  <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.shareURL(item)}>
+                  <Image style={styles.buyBut}  source={require('./assets/icons/sharebutton.png')}/> 
                 </TouchableOpacity>
                 <Image style={styles.divider}
                 />
@@ -323,14 +323,14 @@ const styles = StyleSheet.create({
   {
     width: 40,
     height: 40,
-    marginLeft: Dimensions.get('window').width / 2,
+    marginLeft: Dimensions.get('window').width / 1.2,
     marginTop: -25,
   },
   buyBut:
   {
     width: 40,
     height: 40,
-    marginLeft: Dimensions.get('window').width / 3,
+    marginLeft: Dimensions.get('window').width / 1.5,
     marginTop: -40,
   },
   dividerTop:
