@@ -1286,7 +1286,7 @@ class Explore extends Component {
           </TouchableOpacity> */}
           <TouchableOpacity disabled={true} style={styles.footerTicker}>
             <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={2} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
             </TouchableOpacity>
           <TouchableOpacity style={styles.footerItem}  onPress={this.shareURL}>
            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />

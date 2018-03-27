@@ -36,7 +36,6 @@ const numColumns = isSmallDevice ? 2 : 3;
 const PRODUCT_ITEM_HEIGHT = 175;
 const PRODUCT_ITEM_OFFSET = 5;
 const PRODUCT_ITEM_MARGIN = PRODUCT_ITEM_OFFSET * 2;
-
 class Deals extends Component {
     constructor(props) {
         super(props);
@@ -48,18 +47,20 @@ class Deals extends Component {
             trendinglist: [],
         }
         //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
-
         fetch('https://sharebert.com/feed/?post_type=deals')
             .then((response) => response.text())
             .then((responseData) => rssParser.parse(responseData))
             .then((rss) => {
                 var data2 = [];
-                console.log(rss.items[1]['contributor']);
+                console.log(rss.items);
+                //console.log(rss.items[0]['description']);
                 for (var i = 0; i < rss.items.length; i++) {
                     var obj = {};
                     obj['link'] = rss.items[i]['links'][0]['url'];
+                    var linkfull = rss.items[i]['description'];
+                    obj['link'] = linkfull.substr(linkfull.indexOf('<p>')+3,linkfull.indexOf('</p>')-3);
                     obj['title'] = rss.items[i].title;
-
+                    
                     data2.push(obj);
                 }
                 this.setState({
@@ -131,7 +132,7 @@ class Deals extends Component {
                 </TouchableOpacity>
 
                 <Text style={styles.title}>
-                    Daily Deals
+                    Deals
                 </Text>
                 <Image style={styles.footer} />
 
@@ -225,12 +226,12 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'center',
-        width: Dimensions.get('window').width,
-        textAlign: 'center',
+        textAlign: 'left',
+        marginLeft: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
         color: '#0d2754',
         marginTop: 25,
-        marginLeft: 0,
     },
     image: {
         width: 100,
