@@ -28,7 +28,7 @@ class Rewards extends Component {
       userPoints: userPoints,
       userID: userID,
     };
-
+    if(rdata.length<1)
     fetch('https://sharebert.com/RetrieveRewards.php?', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {

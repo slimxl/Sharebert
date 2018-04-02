@@ -43,7 +43,7 @@ const AppNavigator = StackNavigator(
     Likes: {
       screen: Likes,
       navigationOptions: ({ navigation }) => ({
-        header: true,
+        header: false,
         gesturesEnabled: false,
       }),
     },

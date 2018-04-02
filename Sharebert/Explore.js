@@ -43,7 +43,7 @@ var randoUsersLikes = [];
 class Explore extends Component {
   constructor(props) {
     super(props);
-    
+
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
@@ -65,7 +65,7 @@ class Explore extends Component {
       title: '',
       jsonData: '',
       responseData: '',
-      url: 'https://i.imgur.com/pN7nexU.png',
+      url: 'https://i.imgur.com/qnHscIM.png',
       data: [],
       dataset: [],
       inputValue: 'Search',
@@ -74,37 +74,36 @@ class Explore extends Component {
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
-      .then(response => response.json())
-      .then(responseData => {
-        var data2 = [];
-        for (var i = 0; i < 20; i++) {
-          var obj = {};
-          obj['ASIN'] = responseData[i]['ASIN'];
-          obj['Title'] = responseData[i]['Title'];
-          obj['URL'] = responseData[i]['URL'];
-          obj['ImageURL'] = responseData[i]['ImageURL'];
-          obj['Retailer'] = responseData[i]['Website'];
-          if (brand === 'Amazon') {
-            obj['Retailer'] = 'Amazon';
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          for (var i = 0; i < 20; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData[i]['ASIN'];
+            obj['Title'] = responseData[i]['Title'];
+            obj['URL'] = responseData[i]['URL'];
+            obj['ImageURL'] = responseData[i]['ImageURL'];
+            obj['Retailer'] = responseData[i]['Website'];
+            if (brand === 'Amazon') {
+              obj['Retailer'] = 'Amazon';
+            }
+            data2.push(obj);
           }
-          data2.push(obj);
-        }
-        toofast = false;
-        search = false;
-        data2 = shuffle(data2);
-        this.setState({
-          cardNum: this.state.cardNum,
-          url: data2[this.state.cardNum].ImageURL,
-          title: data2[this.state.cardNum].Title,
-          disable:false,
-          dataset: data2,
-          cat: false,
-        });
-      })
-      .done();
+          toofast = false;
+          search = false;
+          data2 = shuffle(data2);
+          this.setState({
+            cardNum: this.state.cardNum,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
+            disable: false,
+            dataset: data2,
+            cat: false,
+          });
+        })
+        .done();
     }
-    else if(this.props.navigation.state.params.search !=undefined)
-    {
+    else if (this.props.navigation.state.params.search != undefined) {
       searchterm = this.props.navigation.state.params.search;
       fetch(
         'https://sharebert.com/APISEARCH.php?keyword=' +
@@ -118,7 +117,7 @@ class Explore extends Component {
           var count = responseData['Amazon'][0][7];
           datasize = count;
           searchcount = datasize;
-  
+
           console.log(searchcount);
           for (var i = 0; i < count; i++) {
             var obj = {};
@@ -136,7 +135,7 @@ class Explore extends Component {
             dataset: data2,
             url: data2[this.state.cardNum].ImageURL,
             title: data2[this.state.cardNum].Title,
-            disable:false,
+            disable: false,
             category: 'All',
             cat: false,
           });
@@ -186,7 +185,7 @@ class Explore extends Component {
       imgUrl = "http://graph.facebook.com/v2.5/" + RandomNumber + "/picture?height=200&height=200";
       randomPROFILEIMAGE.push(imgUrl);
     }
-    this.grabRandoLikes();    
+    this.grabRandoLikes();
     this.getNewUser();
     setInterval(this.getNewUser, 17000);//every 17 seconds
 
@@ -222,7 +221,7 @@ class Explore extends Component {
   renderCard = () => {
     if (
       this.state.url ===
-      'https://i.imgur.com/pN7nexU.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       return (
         <View style={styles.card}>
@@ -288,7 +287,7 @@ class Explore extends Component {
   shareURL = () => {
     if (
       this.state.url ===
-      'https://i.imgur.com/pN7nexU.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       return;
     }
@@ -399,7 +398,7 @@ class Explore extends Component {
     console.log('yep');
     if (
       this.state.url ===
-      'https://i.imgur.com/pN7nexU.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       return;
     }
@@ -414,7 +413,7 @@ class Explore extends Component {
     try {
       if (
         this.state.url ===
-        'https://i.imgur.com/pN7nexU.png'
+        'https://i.imgur.com/qnHscIM.png'
       ) {
         return;
       }
@@ -440,7 +439,7 @@ class Explore extends Component {
               cardNum: 0,
               dataset: data2,
               category: '',
-              disable:false,
+              disable: false,
               cat: false,
             });
           })
@@ -484,7 +483,7 @@ class Explore extends Component {
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
-              disable:false,
+              disable: false,
               dataset: data2,
               category: '',
               cat: false,
@@ -529,8 +528,7 @@ class Explore extends Component {
   catGrab = category => {
     brand = '';
     var data2 = [];
-    if(category==='Travel')
-    {
+    if (category === 'Travel') {
       console.log(category);
       this.props.navigation.navigate('Travel', {
         id: userID,
@@ -605,7 +603,7 @@ class Explore extends Component {
                 title: data2[this.state.cardNum].Title,
                 dataset: data2,
                 cat: true,
-                disable:false,
+                disable: false,
                 category: category,
               });
               console.log(this.state.dataset.length);
@@ -646,7 +644,7 @@ class Explore extends Component {
             title: data2[this.state.cardNum].Title,
             dataset: data2,
             category: 'All',
-            disable:false,
+            disable: false,
             cat: false,
           });
         })
@@ -689,7 +687,7 @@ class Explore extends Component {
   onSwipedRight = () => {
     if (
       this.state.url !=
-      'https://i.imgur.com/pN7nexU.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
         likes.push(this.state.dataset[this.state.cardNum - 1]);
@@ -914,9 +912,9 @@ class Explore extends Component {
 
   getNewUser = () => {
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    if (randoUsersLikes.length > 0&&this.refs.animatedTextref) {
+    if (randoUsersLikes.length > 0 && this.refs.animatedTextref) {
       this.setState({
-        
+
         UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
         randomPROFILEIMAGEstring: randomPROFILEIMAGE[RandomNumber],
       });
@@ -931,102 +929,102 @@ class Explore extends Component {
     try {
       return (
         <View style={styles.container}>
-        <Swiper
-          ref={swiper => {
-            this.swiper = swiper
-          }}
-          onSwiped={this.onSwiped}
-          onTapCard={this.openURL}
-          disableTopSwipe={true}
-          disableBottomSwipe={true}
-          disableLeftSwipe={this.state.disable}
-          disableRightSwipe={this.state.disable}
-          onSwipedRight={this.onSwipedRight}
-          infinite={true}
-          cards={this.state.cards}
-          cardIndex={this.state.cardIndex}
-          cardVerticalMargin={80}
-          renderCard={this.renderCard}
-          onSwipedAll={this.onSwipedAllCards}
-          stackSize={1}
-          marginTop={40}
-          cardVerticalMargin={100}
-          showSecondCard={false}
-          backgroundColor={'white'}
-          overlayLabels={{
-            bottom: {
-              title: 'BLEAH',
-              style: {
-                label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+          <Swiper
+            ref={swiper => {
+              this.swiper = swiper
+            }}
+            onSwiped={this.onSwiped}
+            onTapCard={this.openURL}
+            disableTopSwipe={true}
+            disableBottomSwipe={this.state.disable}
+            disableLeftSwipe={this.state.disable}
+            disableRightSwipe={this.state.disable}
+            onSwipedRight={this.onSwipedRight}
+            infinite={true}
+            cards={this.state.cards}
+            cardIndex={this.state.cardIndex}
+            cardVerticalMargin={80}
+            renderCard={this.renderCard}
+            onSwipedAll={this.onSwipedAllCards}
+            stackSize={1}
+            marginTop={40}
+            cardVerticalMargin={100}
+            showSecondCard={false}
+            backgroundColor={'white'}
+            overlayLabels={{
+              bottom: {
+                title: 'REPORT BAD PRODUCT',
+                style: {
+                  label: {
+                    backgroundColor: 'black',
+                    borderColor: 'black',
+                    color: 'white',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }
+                }
+              },
+              left: {
+                title: 'NOPE',
+                style: {
+                  label: {
+                    backgroundColor: 'transparent',
+                    borderColor: 'transparent',
+                    color: 'red',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: -30
+                  }
+                }
+              },
+              right: {
+                title: 'LIKE',
+                style: {
+                  label: {
+                    backgroundColor: 'transparent',
+                    borderColor: 'transparent',
+                    color: '#ff2eff',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: 30
+                  }
+                }
+              },
+              top: {
+                title: 'SUPER LIKE',
+                style: {
+                  label: {
+                    backgroundColor: 'black',
+                    borderColor: 'black',
+                    color: 'white',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }
                 }
               }
-            },
-            left: {
-              title: 'NOPE',
-              style: {
-                label: {
-                  backgroundColor: 'transparent',
-                  borderColor: 'transparent',
-                  color: 'red',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: -30
-                }
-              }
-            },
-            right: {
-              title: 'LIKE',
-              style: {
-                label: {
-                  backgroundColor: 'transparent',
-                  borderColor: 'transparent',
-                  color: '#ff2eff',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: 30
-                }
-              }
-            },
-            top: {
-              title: 'SUPER LIKE',
-              style: {
-                label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }
-              }
-            }
-          }}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-        >
-        </Swiper>
+            }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+          >
+          </Swiper>
 
           <Image style={styles.bg} />
           <Text style={styles.text2}>
@@ -1057,15 +1055,14 @@ class Explore extends Component {
               source={require('./assets/icons/search-icon2.png')}
             />
           </TouchableOpacity>
-          
+
           <View>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
               backgroundColor={'white'}
-              marginTop={-5}
-              height={75}
+              style={styles.scrollbar}
             >
               {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
                 id: userID,
@@ -1077,10 +1074,10 @@ class Explore extends Component {
                   source={require('./assets/Category/brands.png')}
                 />
               </TouchableOpacity>}
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals',{
-                  id: userID,
-                  points: userPoints,
-                  uri: uri2,
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
               })}>
                 <Image
                   style={styles.catbars}
@@ -1143,7 +1140,7 @@ class Explore extends Component {
                 />
 
               </TouchableOpacity>
-              
+
               {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
                 <Image
                   style={styles.catbar}
@@ -1297,63 +1294,63 @@ class Explore extends Component {
           <TouchableOpacity disabled={true} style={styles.footerTicker}>
             <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
             <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
-            </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem}  onPress={this.shareURL}>
-           <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
             <Text style={styles.footerShareText}>
               <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
                 Share{' '}
               </Text>
               to earn free points!!
                   </Text>
-                  
+
           </TouchableOpacity>
-          
+
           <View style={styles.footer}>
-          <Image style={styles.footer} />
+            <Image style={styles.footer} />
 
-          <TouchableWithoutFeedback style={styles.footerItem}
-          // onPress={() => this.props.navigation.navigate('Explore', {
-          //   id: userID,
-          //   points: userPoints,
-          // })}
-          >
-            <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-             source={require('./assets/menu/explore.png')}>
+            <TouchableWithoutFeedback style={styles.footerItem}
+            // onPress={() => this.props.navigation.navigate('Explore', {
+            //   id: userID,
+            //   points: userPoints,
+            // })}
+            >
+              <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                source={require('./assets/menu/explore.png')}>
 
-            </Image>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-            onPress={() => this.props.navigation.navigate('Likes', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
-            <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+              </Image>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+              onPress={() => this.props.navigation.navigate('Likes', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+              <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
-            </Image>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-            onPress={() => this.props.navigation.navigate('Rewards', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
-            <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+              </Image>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+              onPress={() => this.props.navigation.navigate('Rewards', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+              <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
-            </Image>
-          </TouchableWithoutFeedback>
+              </Image>
+            </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-            onPress={() => this.props.navigation.navigate('Shipping', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
-            <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+            <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+              onPress={() => this.props.navigation.navigate('Shipping', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+              <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
-            </Image>
-          </TouchableWithoutFeedback>
+              </Image>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       );
@@ -1365,10 +1362,20 @@ class Explore extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
-    height: 100,
-    flex: 1,
-    backgroundColor: '#F5FCFF',
+    ...Platform.select({
+      ios: {
+        marginTop: Constants.statusBarHeight,
+        height: 100,
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+      },
+      android: {
+        marginTop: Constants.statusBarHeight,
+        flex: 1,
+        
+      },
+    }),
+
   },
 
   swiper: {
@@ -1383,21 +1390,60 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   text2: {
-    marginRight: 10,
-    marginTop: -40,
-    textAlign: 'right',
-    fontSize: 15,
-    color: '#f427f3',
-    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -40,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: 0,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+    }),
+
   },
   pointsText: {
-    marginRight: 10,
-    marginTop: -20,
-    textAlign: 'right',
-    fontSize: 15,
-    color: '#863fba',
-    fontWeight: 'bold',
-    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -20,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: -10,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+    }),
+
+  },
+  scrollbar: {
+    ...Platform.select({
+      ios: {
+        marginTop: -5,
+        height: 75,
+      },
+      android: {
+        marginTop: -5,
+        height: 75,
+      },
+    }),
   },
   text: {
     fontFamily: "Montserrat",
@@ -1444,19 +1490,43 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   search: {
-    width: 30,
-    height: 30,
-    marginLeft: 10,
-    marginTop: -35,
-    backgroundColor: 'transparent',
-    padding: 0,
+    ...Platform.select({
+      ios: {
+        width: 30,
+        height: 30,
+        marginLeft: 10,
+        marginTop: -35,
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+      android: {
+        width: 30,
+        height: 30,
+        marginLeft: 10,
+        marginTop: -20,
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+    }),
+
   },
 
   bg: {
-    height: 190,
-    width: '100%',
-    marginTop: -150,
-    backgroundColor: '#dee6ee',
+    ...Platform.select({
+      ios: {
+        height: 190,
+        width: '100%',
+        marginTop: -150,
+        backgroundColor: '#dee6ee',
+      },
+      android: {
+        height: 300,
+        width: '100%',
+        marginTop: -10,
+        backgroundColor: 'transparent',
+      },
+    }),
+
   },
   exploreBut:
     {
@@ -1540,7 +1610,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: 'transparent',
   },
-  
+
   footerLikes: {
     height: 20,
     borderRadius: 12,
@@ -1580,7 +1650,7 @@ const styles = StyleSheet.create({
     color: '#747475',
     fontSize: 12,
   },
-  
+
   catbar: {
     width: 60,
     height: 88,
