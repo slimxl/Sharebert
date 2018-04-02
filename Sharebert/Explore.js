@@ -56,6 +56,7 @@ class Explore extends Component {
       selectedItem: 'Explore',
       swipedAllCards: false,
       swipeDirection: '',
+      disable: true,
       isSwipingBack: false,
       cardIndex: 0,
       cardNum: 0,
@@ -64,7 +65,7 @@ class Explore extends Component {
       title: '',
       jsonData: '',
       responseData: '',
-      url: 'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png',
+      url: 'https://i.imgur.com/pN7nexU.png',
       data: [],
       dataset: [],
       inputValue: 'Search',
@@ -95,6 +96,7 @@ class Explore extends Component {
           cardNum: this.state.cardNum,
           url: data2[this.state.cardNum].ImageURL,
           title: data2[this.state.cardNum].Title,
+          disable:false,
           dataset: data2,
           cat: false,
         });
@@ -134,46 +136,47 @@ class Explore extends Component {
             dataset: data2,
             url: data2[this.state.cardNum].ImageURL,
             title: data2[this.state.cardNum].Title,
+            disable:false,
             category: 'All',
             cat: false,
           });
         })
         .done();
     }
-    else {
-      fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
-      .then(response => response.json())
-        .then(responseData => {
-          var data2 = [];
-          for (var i = 0; i < 20; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-            obj['Title'] = responseData['Amazon'][i]['Title'];
-            obj['URL'] = responseData['Amazon'][i]['URL'];
-            obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-            obj['Retailer'] = "Amazon";
+    // else {
+    //   fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
+    //   .then(response => response.json())
+    //     .then(responseData => {
+    //       var data2 = [];
+    //       for (var i = 0; i < 20; i++) {
+    //         var obj = {};
+    //         obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
+    //         obj['Title'] = responseData['Amazon'][i]['Title'];
+    //         obj['URL'] = responseData['Amazon'][i]['URL'];
+    //         obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+    //         obj['Retailer'] = "Amazon";
 
-            var obj2 = {};
-            obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-            obj2['Title'] = responseData['Others'][i]['Title'];
-            obj2['URL'] = responseData['Others'][i]['URL'];
-            obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-            obj2['Retailer'] = responseData['Others'][i]['Website'];
+    //         var obj2 = {};
+    //         obj2['ASIN'] = responseData['Others'][i]['ASIN'];
+    //         obj2['Title'] = responseData['Others'][i]['Title'];
+    //         obj2['URL'] = responseData['Others'][i]['URL'];
+    //         obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+    //         obj2['Retailer'] = responseData['Others'][i]['Website'];
 
-            data2.push(obj);
-            data2.push(obj2);
-          }
-          data2 = shuffle(data2);
-          this.setState({
-            cardNum: this.state.cardNum,
-            url: data2[this.state.cardNum].ImageURL,
-            title: data2[this.state.cardNum].Title,
-            dataset: data2,
-            cat: false,
-          });
-        })
-        .done();
-    }
+    //         data2.push(obj);
+    //         data2.push(obj2);
+    //       }
+    //       data2 = shuffle(data2);
+    //       this.setState({
+    //         cardNum: this.state.cardNum,
+    //         url: data2[this.state.cardNum].ImageURL,
+    //         title: data2[this.state.cardNum].Title,
+    //         dataset: data2,
+    //         cat: false,
+    //       });
+    //     })
+    //     .done();
+    // }
     if (userID != 0 || userID != undefined || userID != null) {
 
       this.checkUpdatePoints();
@@ -219,19 +222,18 @@ class Explore extends Component {
   renderCard = () => {
     if (
       this.state.url ===
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/pN7nexU.png'
     ) {
       return (
         <View style={styles.card}>
           <Text style={styles.text}>{this.state.title}</Text>
           <Image
-            resizeMode="contain"
+            resizeMode="stretch"
             style={styles.image}
             source={{
               uri: this.state.url,
             }}
           />
-          <ActivityIndicator size="small" />
         </View>
 
       );
@@ -286,7 +288,7 @@ class Explore extends Component {
   shareURL = () => {
     if (
       this.state.url ===
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/pN7nexU.png'
     ) {
       return;
     }
@@ -397,7 +399,7 @@ class Explore extends Component {
     console.log('yep');
     if (
       this.state.url ===
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/pN7nexU.png'
     ) {
       return;
     }
@@ -412,7 +414,7 @@ class Explore extends Component {
     try {
       if (
         this.state.url ===
-        'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+        'https://i.imgur.com/pN7nexU.png'
       ) {
         return;
       }
@@ -438,6 +440,7 @@ class Explore extends Component {
               cardNum: 0,
               dataset: data2,
               category: '',
+              disable:false,
               cat: false,
             });
           })
@@ -481,6 +484,7 @@ class Explore extends Component {
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
+              disable:false,
               dataset: data2,
               category: '',
               cat: false,
@@ -601,6 +605,7 @@ class Explore extends Component {
                 title: data2[this.state.cardNum].Title,
                 dataset: data2,
                 cat: true,
+                disable:false,
                 category: category,
               });
               console.log(this.state.dataset.length);
@@ -637,8 +642,11 @@ class Explore extends Component {
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
             dataset: data2,
             category: 'All',
+            disable:false,
             cat: false,
           });
         })
@@ -681,7 +689,7 @@ class Explore extends Component {
   onSwipedRight = () => {
     if (
       this.state.url !=
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/pN7nexU.png'
     ) {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
         likes.push(this.state.dataset[this.state.cardNum - 1]);
@@ -931,8 +939,8 @@ class Explore extends Component {
           onTapCard={this.openURL}
           disableTopSwipe={true}
           disableBottomSwipe={true}
-          disableTopSwipe={true}
-          disableBottomSwipe={true}
+          disableLeftSwipe={this.state.disable}
+          disableRightSwipe={this.state.disable}
           onSwipedRight={this.onSwipedRight}
           infinite={true}
           cards={this.state.cards}
