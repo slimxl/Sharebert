@@ -188,6 +188,47 @@ class Likes extends Component {
   }
   };
 
+  showEmptyListView  = () => {
+
+      return(
+        <View style={{ backgroundColor: 'white' }}>
+                <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
+                <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
+        </View>
+      )
+
+  };
+  _renderItem = data => {
+    const item = data.item;
+
+    return (
+      <View>
+              <View style={{ backgroundColor: 'white' }}>
+                <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
+                <Image
+                  resizeMode={'contain'}
+                  style={styles.image}
+                  source={{
+                    uri: item.ImageURL,
+                  }}
+                />
+                <Text style={{marginTop: -50, marginBottom: 30,color: 'black',fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width, marginLeft: Dimensions.get('window').width/2.9}}>
+                  from{' '}
+                  <Text style={{color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat'}}> {item.Retailer}</Text>
+                </Text>
+                <TouchableOpacity onPress={() => this.openURL(item)}>
+                  <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.shareURL(item)}>
+                  <Image style={styles.buyBut}  source={require('./assets/icons/sharebutton.png')}/> 
+                </TouchableOpacity>
+                <Image style={styles.divider}
+                />
+              </View>
+            </View>
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -238,34 +279,8 @@ class Likes extends Component {
         <FlatList backgroundColor={'white'}
           data={like}
           keyExtractor={(item, index) => index}
-          renderItem={({ item, separators }) => (
-            <View
-              onShowUnderlay={separators.highlight}
-              onHideUnderlay={separators.unhighlight}>
-              <View style={{ backgroundColor: 'white' }}>
-                <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
-                <Image
-                  resizeMode={'contain'}
-                  style={styles.image}
-                  source={{
-                    uri: item.ImageURL,
-                  }}
-                />
-                <Text style={{marginTop: -50, marginBottom: 30,color: 'black',fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width, marginLeft: Dimensions.get('window').width/2.9}}>
-                  from{' '}
-                  <Text style={{color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat'}}> {item.Retailer}</Text>
-                </Text>
-                <TouchableOpacity onPress={() => this.openURL(item)}>
-                  <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.shareURL(item)}>
-                  <Image style={styles.buyBut}  source={require('./assets/icons/sharebutton.png')}/> 
-                </TouchableOpacity>
-                <Image style={styles.divider}
-                />
-              </View>
-            </View>
-          )}
+          renderItem={this._renderItem}
+          ListEmptyComponent={this.showEmptyListView()}
         />
       </View>
     );
@@ -385,6 +400,17 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 110,
     backgroundColor: 'transparent',
+  },
+  textEmpty:{
+    fontFamily: 'Montserrat',
+    color: '#0d2754',
+    marginLeft: Dimensions.get('window').width / 4.75,
+    marginTop: Dimensions.get('window').height / 5,
+  },
+  textEmpty2:{
+    fontFamily: 'Montserrat',
+    color: '#0d2754',
+    marginLeft: Dimensions.get('window').width / 3,
   },
   headertext:
     {

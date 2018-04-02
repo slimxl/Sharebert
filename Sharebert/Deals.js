@@ -58,9 +58,11 @@ class Deals extends Component {
                     var obj = {};
                     obj['link'] = rss.items[i]['links'][0]['url'];
                     var linkfull = rss.items[i]['description'];
-                    obj['link'] = linkfull.substr(linkfull.indexOf('<p>')+3,linkfull.indexOf('</p>')-3);
+                    obj['link'] = linkfull.substr(linkfull.indexOf('<p>') + 3, linkfull.indexOf('</p>') - 3);
                     obj['title'] = rss.items[i].title;
-                    
+                    obj['name'] = rss.items[i].title.substr(0, rss.items[i].title.indexOf('posted') - 1);
+                    obj['title'] = rss.items[i].title.substr(rss.items[i].title.indexOf('posted') + 7);
+                    console.log(obj.title);
                     data2.push(obj);
                 }
                 this.setState({
@@ -132,13 +134,13 @@ class Deals extends Component {
                 </TouchableOpacity>
 
                 <Text style={styles.title}>
-                    Deals
+                    Daily Deals
                 </Text>
                 <Image style={styles.footer} />
 
                 <FlatList
                     style={{
-                        marginTop: 15, marginBottom: 60,
+                        marginTop: 0, marginBottom: 60,
                         paddingBottom: 30
                     }}
                     data={this.state.trendinglist}
@@ -149,7 +151,14 @@ class Deals extends Component {
                             onShowUnderlay={separators.highlight}
                             onHideUnderlay={separators.unhighlight}>
                             <View style={{ backgroundColor: 'white' }}>
-                                <Text style={styles.text}>{item.title}</Text>
+
+                                <Text style={styles.text}>
+
+                                    <Text style={{ fontWeight: 'bold', fontSize: 13 }}> {item.name} </Text>
+                                    <Text >posted</Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 13 }}> {item.title} </Text>
+
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     )}
@@ -214,6 +223,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
+    dividerTop:
+        {
+            width: Dimensions.get('window').width,
+            height: 3,
+            backgroundColor: '#dee6ee',
+        },
     hamburger: {
         width: 30,
         height: 23,
@@ -226,13 +241,13 @@ const styles = StyleSheet.create({
         fontFamily: "Montserrat",
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'left',
-        marginLeft: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
+        textAlign: 'center',
         color: '#0d2754',
-        marginTop: 25,
-    },
+        marginTop: 20,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'white',
+      },
     image: {
         width: 100,
         height: 100,

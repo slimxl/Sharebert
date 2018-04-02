@@ -18,6 +18,7 @@ import {
   Platform,
   ActivityIndicator,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   TextInput,
   Dimensions,
 } from 'react-native';
@@ -1068,6 +1069,17 @@ class Explore extends Component {
                   source={require('./assets/Category/brands.png')}
                 />
               </TouchableOpacity>}
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals',{
+                  id: userID,
+                  points: userPoints,
+                  uri: uri2,
+              })}>
+                <Image
+                  style={styles.catbars}
+                  source={require('./assets/Category/deals_v2.png')}
+                />
+
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
                   style={styles.catbar}
@@ -1123,17 +1135,7 @@ class Explore extends Component {
                 />
 
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals',{
-                  id: userID,
-                  points: userPoints,
-                  uri: uri2,
-              })}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/deals_v2.png')}
-                />
-
-              </TouchableOpacity>
+              
               {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
                 <Image
                   style={styles.catbar}
@@ -1294,14 +1296,15 @@ class Explore extends Component {
               <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
                 Share{' '}
               </Text>
-              to earn free points!
+              to earn free points!!
                   </Text>
                   
           </TouchableOpacity>
           
+          <View style={styles.footer}>
           <Image style={styles.footer} />
 
-          <TouchableOpacity style={styles.footerItem}
+          <TouchableWithoutFeedback style={styles.footerItem}
           // onPress={() => this.props.navigation.navigate('Explore', {
           //   id: userID,
           //   points: userPoints,
@@ -1311,8 +1314,8 @@ class Explore extends Component {
              source={require('./assets/menu/explore.png')}>
 
             </Image>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('Likes', {
               id: userID,
               points: userPoints,
@@ -1321,8 +1324,8 @@ class Explore extends Component {
             <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
             </Image>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerRewards} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('Rewards', {
               id: userID,
               points: userPoints,
@@ -1331,9 +1334,9 @@ class Explore extends Component {
             <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
             </Image>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
 
-          <TouchableOpacity style={styles.footerProfile} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
+          <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('Shipping', {
               id: userID,
               points: userPoints,
@@ -1342,7 +1345,8 @@ class Explore extends Component {
             <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
             </Image>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
+          </View>
         </View>
       );
     } catch (error) {

@@ -126,7 +126,7 @@ class LoginScreen extends Component {
       Alert.alert("Hang On!");
       return;
     }
-    if(lastlogged === false)
+    if(lastlogged === false||name2==='Not Logged In')
     {
       this._handleFinalFacebookLogin();
     }
