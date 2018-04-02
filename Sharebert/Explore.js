@@ -227,7 +227,7 @@ class Explore extends Component {
         <View style={styles.card}>
           <Text style={styles.text}>{this.state.title}</Text>
           <Image
-            resizeMode="stretch"
+            resizeMode="contain"
             style={styles.image}
             source={{
               uri: this.state.url,
@@ -1138,159 +1138,9 @@ class Explore extends Component {
                   style={styles.catbars}
                   source={require('./assets/Category/random.png')}
                 />
-
               </TouchableOpacity>
-
-              {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/girls.jpg')}
-                />
-                <Text style={styles.label}>
-                  Girls
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('health')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/health.jpg')}
-                />
-                <Text style={styles.label}>
-                  Health
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Home')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/home.jpg')}
-                />
-                <Text style={styles.label}>
-                  Home
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Kindle')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/kindle.jpg')}
-                />
-                <Text style={styles.label}>
-                  Kindle
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('men')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/men.jpg')}
-                />
-                <Text style={styles.label}>
-                  Men
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Misc')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/misc.jpg')}
-                />
-                <Text style={styles.label}>
-                  Misc
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('lawn')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/outdoors.jpg')}
-                />
-                <Text style={styles.labelShort}>
-                  Outdoor
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Shoes')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/shoes.jpg')}
-                />
-                <Text style={styles.label}>
-                  Shoes
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Sport')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/sports.jpg')}
-                />
-                <Text style={styles.label}>
-                  Sports
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Sunglasses')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/sunglasses.jpg')}
-                />
-                <Text style={styles.labelShort}>
-                  Sunglasses
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Toy')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/toys.jpg')}
-                />
-                <Text style={styles.label}>
-                  Toys
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/travel.jpg')}
-                />
-                <Text style={styles.label}>
-                  Travel
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Watches')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/watches.jpg')}
-                />
-                <Text style={styles.labelShort}>
-                  Watches
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Women')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/women.jpg')}
-                />
-                <Text style={styles.label}>
-                  Women
-                </Text>
-              </TouchableOpacity> */}
-              {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
-                id: userID,
-                points: userPoints,
-              })}>
-              
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/brands.jpg')}
-                />
-                <Text style={styles.label}>
-                  Brands
-                </Text>
-              </TouchableOpacity> */}
             </ScrollView>
           </View>
-          {/* <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
-            <Text style={styles.footerShareText}>
-              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                Share{' '}
-              </Text>
-              to earn free points!
-                  </Text>
-          </TouchableOpacity> */}
           <TouchableOpacity disabled={true} style={styles.footerTicker}>
             <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
             <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
@@ -1372,7 +1222,7 @@ const styles = StyleSheet.create({
       android: {
         marginTop: Constants.statusBarHeight,
         flex: 1,
-        
+
       },
     }),
 
@@ -1520,10 +1370,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#dee6ee',
       },
       android: {
-        height: 300,
+        height: 40,
         width: '100%',
-        marginTop: -10,
-        backgroundColor: 'transparent',
+        position: "absolute",
+        bottom: 0,
+        backgroundColor: '#dee6ee',
       },
     }),
 
