@@ -7,6 +7,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     Image,
     StyleSheet,
     Linking,
@@ -52,7 +53,7 @@ class Deals extends Component {
             .then((responseData) => rssParser.parse(responseData))
             .then((rss) => {
                 var data2 = [];
-                console.log(rss.items);
+                console.log(rss.items.length);
                 //console.log(rss.items[0]['description']);
                 for (var i = 0; i < rss.items.length; i++) {
                     var obj = {};
@@ -115,10 +116,13 @@ class Deals extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.props.navigation.dispatch(backAction);
+                    }}>
                     <Image style={styles.header} />
                 </TouchableOpacity>
-                <TouchableOpacity
+                <TouchableWithoutFeedback
                     onPress={() => {
                         this.props.navigation.navigate('Explore', {
                             id: userID,
@@ -127,12 +131,17 @@ class Deals extends Component {
                         })
                     }}>
                     <Image
+                        resizeMode='contain'
                         style={styles.hamburger}
                         source={require('./assets/arrow.png')}
                     />
 
-                </TouchableOpacity>
-
+                </TouchableWithoutFeedback>
+                <Image
+                    resizeMode="contain"
+                    style={styles.button}
+                    source={require('./Logo.png')}
+                />
                 <Text style={styles.title}>
                     Daily Deals
                 </Text>
@@ -247,7 +256,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         paddingBottom: 6,
         backgroundColor: 'white',
-      },
+    },
     image: {
         width: 100,
         height: 100,
@@ -298,11 +307,11 @@ const styles = StyleSheet.create({
     button: {
         width: 100,
         height: 70,
-        marginTop: -55,
-        marginLeft: 60,
+        marginTop: -45,
+        marginLeft: Dimensions.get('window').width / 2.6,
         backgroundColor: 'transparent',
         padding: 20,
-    },
+      },
     header: {
         width: '100%',
         height: 40,

@@ -4,7 +4,11 @@ import {
   View,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  ImageBackground,
   Image,
+  Platform,
+  Dimensions,
   StyleSheet,
   Alert,
   FlatList,
@@ -28,21 +32,21 @@ class Rewards extends Component {
       userPoints: userPoints,
       userID: userID,
     };
-    if(rdata.length<1)
-    fetch('https://sharebert.com/RetrieveRewards.php?', { method: 'GET' })
-      .then(response => response.json())
-      .then(responseData => {
-        for (var i = 0; i < 18; i++) {
-          var obj = {};
+    if (rdata.length < 1)
+      fetch('https://sharebert.com/RetrieveRewards.php?', { method: 'GET' })
+        .then(response => response.json())
+        .then(responseData => {
+          for (var i = 0; i < 18; i++) {
+            var obj = {};
 
-          obj['Title'] = responseData[i]['Title'];
-          obj['ImageURL'] = responseData[i]['ImageURL'];
-          obj['Cost'] = responseData[i]['Cost'];
-          obj['ID'] = responseData[i]['id'];
-          rdata.push(obj);
-        }
-      })
-      .done();
+            obj['Title'] = responseData[i]['Title'];
+            obj['ImageURL'] = responseData[i]['ImageURL'];
+            obj['Cost'] = responseData[i]['Cost'];
+            obj['ID'] = responseData[i]['id'];
+            rdata.push(obj);
+          }
+        })
+        .done();
   }
   _onPress(item) {
     Alert.alert(
@@ -70,17 +74,17 @@ class Rewards extends Component {
       if (nb >= 0) {
         fetch(
           'https://biosystematic-addit.000webhostapp.com/GiveReward.php?uid=' +
-            userID,
+          userID,
           { method: 'POST' }
         )
           .then(() => {
             fetch(
               'https://biosystematic-addit.000webhostapp.com/GiveReward2.php?uid=' +
-                userID +
-                '&qty=1&rwd=' +
-                item.ID +
-                '&nb=' +
-                nb,
+              userID +
+              '&qty=1&rwd=' +
+              item.ID +
+              '&nb=' +
+              nb,
               { method: 'GET' }
             )
               .then(response => response.json())
@@ -94,61 +98,78 @@ class Rewards extends Component {
         Alert.alert('Points Error!', 'Insufficient Points');
       }
     }
+    else {
+      Alert.alert('Not Logged in!', 'Go log in now!')
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => {
-            this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
-              id: userID,
-              points: userPoints,
-              uri: uri,
-            }));
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
           }}>
-        <Image style={styles.header} />
+
+          <Image style={styles.header} />
+          <Text style={styles.text2}>
+            {userPoints + '\n'}
+          </Text>
+          <Text style={styles.pointsText}>
+            Points
+              </Text>
+        </TouchableOpacity>
         <Image
           resizeMode="contain"
           style={styles.button}
           source={require('./Logo.png')}
         />
-          </TouchableOpacity>        
-        <TouchableOpacity
-              onPress={() => 
-              {
-                this.props.navigation.dispatch(backAction);
-              }}>
-              <Image
-                style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
-              />
-
-            </TouchableOpacity>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
+          <Image
+            style={styles.hamburger}
+            resizeMode='contain'
+            source={require('./assets/arrow.png')}
+          />
+        </TouchableWithoutFeedback>
+        <Image
+          resizeMode="contain"
+          style={styles.heart}
+          source={require('./assets/icons/Reward_Icon.png')} />
         <Text style={styles.title}>
           Rewards
         </Text>
-        <FlatList
-          data={rdata}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, separators }) => (
-            <TouchableOpacity
-              onPress={() => this._onPress(item)}
-              onShowUnderlay={separators.highlight}
-              onHideUnderlay={separators.unhighlight}>
-              <View style={{ backgroundColor: 'white' }}>
-                <Text style={styles.text}>{item.Title}</Text>
-                <Text style={styles.text2}>{item.Cost} Points</Text>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: item.ImageURL,
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-        
+        <Image style={styles.dividerTop} />
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={{ width: '100%', height: '100%' }}>
+          <View style={{ width: '100%', height: '80%' }}>
+          <FlatList backgroundColor={'transparent'}
+            style={{ width: '100%', height: '80%' }}
+            data={rdata}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, separators }) => (
+              <TouchableOpacity
+                onPress={() => this._onPress(item)}
+                onShowUnderlay={separators.highlight}
+                onHideUnderlay={separators.unhighlight}>
+                <View style={{ backgroundColor: 'transparent' }}>
+                  <Text style={styles.text3}>{item.Title}</Text>
+                  <Text style={styles.text4}>{item.Cost} Points</Text>
+                  <Image
+                    style={styles.image}
+                    source={{
+                      uri: item.ImageURL,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+          </View>
+        </ImageBackground>
       </View>
     );
   }
@@ -156,35 +177,173 @@ class Rewards extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
+    ...Platform.select({
+      ios: {
+        marginTop: Constants.statusBarHeight,
+      },
+      android: {
+        marginTop: Constants.statusBarHeight,
+      },
+      backgroundColor: 'transparent',
+    }),
+
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
+  text2: {
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -40,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: 0,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+    }),
+
+  },
+  pointsText: {
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -20,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: -10,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+    }),
+  },
+  hamburger: {
+    ...Platform.select({
+      ios: {
+        width: 30,
+        height: 23,
+        marginLeft: 10,
+        marginTop: -48,
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+      android: {
+        width: 30,
+        height: 30,
+        marginTop: 5,
+      },
+    }),
+
+  },
+  heart:
+    {
+      width: Dimensions.get('window').width,
+      height: 30,
+      paddingTop: 20,
+      marginTop: 10,
+      marginBottom: 26,
+      backgroundColor: 'transparent',
+
+    },
+  bg: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  divider:
+    {
+      width: Dimensions.get('window').width - 30,
+      height: 2,
+      marginLeft: 15,
+      marginTop: 30,
+      backgroundColor: '#dee6ee',
+    },
+  shareBut:
+    {
+      width: 40,
+      height: 40,
+      marginLeft: Dimensions.get('window').width / 1.2,
+      marginTop: -25,
+    },
+  buyBut:
+    {
+      width: 40,
+      height: 40,
+      marginLeft: Dimensions.get('window').width / 1.43,
+      marginTop: -40,
+    },
+  dividerTop:
+    {
+      width: Dimensions.get('window').width,
+      height: 3,
+      backgroundColor: '#dee6ee',
+    },
   title: {
+    fontFamily: "Montserrat",
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#34495e',
-    backgroundColor: 'white',
+    color: '#ff2eff',
+    marginTop: -20,
+    marginBottom: 0,
+    paddingBottom: 6,
+    backgroundColor: 'transparent',
   },
   image: {
+
     width: 100,
     height: 100,
-    marginTop: -75,
+    marginTop: -50,
+    backgroundColor: 'transparent',
   },
   button: {
-    width: 100,
-    height: 70,
-    marginTop: -55,
-    marginLeft: 60,
-    backgroundColor: 'transparent',
-    padding: 20,
+    ...Platform.select({
+      ios: {
+        width: 100,
+        height: 70,
+        marginTop: -44,
+        marginLeft: Dimensions.get('window').width / 2.6,
+        backgroundColor: 'transparent',
+        padding: 20,
+      },
+      android: {
+        marginTop: 10,
+        height: 30,
+      },
+    }),
   },
   header: {
-    width: '100%',
-    height: 40,
-    backgroundColor: '#dee6ee',
-    marginTop: 0,
+    ...Platform.select({
+      ios: {
+        marginTop: 0,
+        width: '100%',
+        height: 40,
+        backgroundColor: '#dee6ee',
+      },
+      android: {
+        marginTop: -10,
+        height: 100,
+      },
+    }),
+
   },
   text: {
     textAlign: 'left',
@@ -193,22 +352,14 @@ const styles = StyleSheet.create({
     marginLeft: 110,
     backgroundColor: 'transparent',
   },
-  hamburger: {
-    width: 30,
-    height: 23,
-    marginLeft: 10,
-    marginTop: -48,
-    backgroundColor: 'transparent',
-    padding: 0,
-  },
-  tab: {
-    width: 25,
-    height: 50,
-    marginTop: -800,
-    marginBottom: 250,
+  text3: {
+    textAlign: 'left',
+    fontSize: 12,
+    marginTop: 40,
+    marginLeft: 110,
     backgroundColor: 'transparent',
   },
-  text2: {
+  text4: {
     color: '#ec47ff',
     textAlign: 'left',
     fontSize: 12,
@@ -216,5 +367,38 @@ const styles = StyleSheet.create({
     marginLeft: 110,
     backgroundColor: 'transparent',
   },
+  textEmpty: {
+    fontFamily: 'Montserrat',
+    color: '#0d2754',
+    marginLeft: Dimensions.get('window').width / 4.75,
+    marginTop: Dimensions.get('window').height / 5,
+  },
+  textEmpty2: {
+    fontFamily: 'Montserrat',
+    color: '#0d2754',
+    marginLeft: Dimensions.get('window').width / 3,
+  },
+  headertext:
+    {
+      ...Platform.select({
+        ios: {
+          textAlign: 'center',
+          fontFamily: 'Montserrat',
+          fontSize: 17,
+          marginTop: -32,
+          marginLeft: 140,
+          backgroundColor: 'transparent',
+        },
+        android: {
+          textAlign: 'center',
+          fontFamily: 'Montserrat',
+          fontSize: 17,
+          marginTop: -32,
+          marginLeft: 140,
+          backgroundColor: 'transparent',
+        },
+      }),
+
+    },
 });
 export default Rewards;

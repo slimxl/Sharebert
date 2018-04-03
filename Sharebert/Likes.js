@@ -197,9 +197,6 @@ class Likes extends Component {
         width: '100%',
         height: '100%'
       }}>
-        <ImageBackground
-          source={require('./like_background.png')}
-          style={{ width: '100%', height: '100%' }}>
           <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
           <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
           <Text numberOfLines={2} style={styles.textEmpty}></Text>
@@ -207,8 +204,6 @@ class Likes extends Component {
           <Text numberOfLines={2} style={styles.textEmpty}></Text>
           <Text numberOfLines={2} style={styles.textEmpty2}></Text>
           <Text numberOfLines={2} style={styles.textEmpty}></Text>
-
-        </ImageBackground>
       </View>
     )
 
@@ -295,15 +290,19 @@ class Likes extends Component {
         </Text>
         <Image style={styles.dividerTop}
         />
+        
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
+          <View style={{ width: '100%', height: '80%' }}>
           <FlatList backgroundColor={'transparent'}
+            style={{ width: '100%', height: '80%' }}
             data={like}
             keyExtractor={(item, index) => index}
             renderItem={this._renderItem}
             ListEmptyComponent={this.showEmptyListView()}
           />
+          </View>
         </ImageBackground>
 
       </View>
@@ -491,13 +490,14 @@ const styles = StyleSheet.create({
   textEmpty: {
     fontFamily: 'Montserrat',
     color: '#0d2754',
-    marginLeft: Dimensions.get('window').width / 4.75,
+    width: '100%',
+    textAlign: "center",
     marginTop: Dimensions.get('window').height / 5,
   },
   textEmpty2: {
     fontFamily: 'Montserrat',
     color: '#0d2754',
-    marginLeft: Dimensions.get('window').width / 3,
+    textAlign: "center",
   },
   headertext:
     {

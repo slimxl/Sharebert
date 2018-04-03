@@ -5,6 +5,7 @@ import {
   Dimensions,
   View,
   Text,
+  TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
   StyleSheet,
@@ -260,7 +261,10 @@ class Travel extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <TouchableOpacity>
+ <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
         <Image style={styles.header} />
         </TouchableOpacity>
         <Image
@@ -268,17 +272,18 @@ class Travel extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-        <TouchableOpacity
+         <TouchableWithoutFeedback
               onPress={() => 
               {
                 this.props.navigation.dispatch(backAction);
               }}>
               <Image
                 style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
+                resizeMode='contain'
+                source={require('./assets/arrow.png')}
               />
 
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         <Text style={styles.title}>
           Travel
         </Text>
@@ -320,7 +325,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#ff2eff',
-    marginTop: -15,
+    marginTop: 30,
   },
 image: {
     width: 100,
@@ -373,7 +378,7 @@ image: {
     width: 100,
     height: 70,
     marginTop: -55,
-    marginLeft: 60,
+    marginLeft: Dimensions.get('window').width / 2.6,
     backgroundColor: 'transparent',
     padding: 20,
   },
