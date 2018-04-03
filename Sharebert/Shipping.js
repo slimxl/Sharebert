@@ -225,6 +225,7 @@ class Shipping extends Component {
         </TouchableWithoutFeedback>
 
         <ScrollView 
+        style = {{marginTop: 20}}
         vertical={true}>
           <Text style={styles.paragraph}>
             Name
@@ -403,14 +404,14 @@ class Shipping extends Component {
           <TouchableOpacity onPress={this.saveForm}>
           <Image
               resizeMode="contain"
-              style={styles.button}
+              style={styles.button2}
               source={require('./assets/icons/save.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
           <Image
               resizeMode="contain"
-              style={styles.button}
+              style={styles.button2}
               source={require('./assets/icons/privacy.png')}
             />
           </TouchableOpacity>
@@ -420,7 +421,7 @@ class Shipping extends Component {
           }}>
             <Image
               resizeMode="contain"
-              style={styles.button}
+              style={styles.button2}
               source={require('./assets/icons/btn_login.png')}
             />
           </TouchableOpacity>
@@ -429,7 +430,7 @@ class Shipping extends Component {
           <TouchableOpacity onPress={this.clearLikes}>
             <Image
               resizeMode="contain"
-              style={styles.button}
+              style={styles.button2}
               source={require('./assets/icons/clear.png')}
             />
           </TouchableOpacity>
@@ -471,10 +472,26 @@ const styles = StyleSheet.create({
       ios: {
         width: 100,
         height: 70,
-        marginTop: -60,
+        marginTop: -50,
         marginLeft: Dimensions.get('window').width / 2.6,
         backgroundColor: 'transparent',
         padding: 40,
+      },
+      android: {
+        marginTop: 10,
+        height: 30,
+      },
+    }),
+  },
+  button2: {
+    ...Platform.select({
+      ios: {
+        width: Dimensions.get('window').width / 2,
+        height: 70,
+        marginTop: 0,
+        marginLeft: Dimensions.get('window').width / 4,
+        backgroundColor: 'transparent',
+        padding: 30,
       },
       android: {
         marginTop: 10,
