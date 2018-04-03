@@ -433,9 +433,11 @@ class LoginScreen extends Component {
           <TouchableOpacity
             onPress={() => this.onSubmitEdit('later')}
             style={styles.later}>
-            <Text style={styles.text}>
-              SIGN IN LATER
-            </Text>
+            <Image
+              resizeMode="contain"
+              style={styles.button4}
+              source={require('./later.png')}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -444,25 +446,26 @@ class LoginScreen extends Component {
 }
 const styles = StyleSheet.create({
   loging: {
-    width: 200,
+    width: 235,
     height: 40,
-    marginTop: Dimensions.get('window').height / 4.5,
+    marginTop: Dimensions.get('window').height / 2,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
   loginf: {
-    width: 200,
+    width: 250,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 7,
+    marginTop: Dimensions.get('window').height / 9,
   },
   later: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: -60,
     backgroundColor: 'transparent',
   },
   bg: {
@@ -478,7 +481,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 9,
     fontWeight: 'bold',
-    color: '#4b4d4f',
+    color: '#0d2754',
     backgroundColor: 'transparent',
   },
   button: {
@@ -487,7 +490,7 @@ const styles = StyleSheet.create({
   },
   button2: {
     flex: 1,
-    width: 200,
+    width: 250,
     height: 25,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -496,9 +499,20 @@ const styles = StyleSheet.create({
   },
   button3: {
     flex: 1,
-    width: 200,
+    width: 235,
     height: 50,
     marginTop: 100,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    padding: 25,
+  },
+  button4: {
+    flex: 1,
+    width: 135,
+    height: 10,
+    marginTop: 150,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

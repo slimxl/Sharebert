@@ -11,6 +11,7 @@ import {
   Alert,
   FlatList,
   Share,
+  ImageBackground,
   Platform,
   Dimensions,
 } from 'react-native';
@@ -202,8 +203,9 @@ class Likes extends Component {
     const item = data.item;
 
     return (
-      <View>
-        <View style={{ backgroundColor: 'white' }}>
+    
+      <View >
+        <View >
           <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
           <Image
             resizeMode={'contain'}
@@ -231,8 +233,8 @@ class Likes extends Component {
 
   render() {
     return (
+      
       <View style={styles.container}>
-
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
@@ -276,12 +278,14 @@ class Likes extends Component {
         </Text>
         <Image style={styles.dividerTop}
         />
-        <FlatList backgroundColor={'white'}
+        <FlatList backgroundColor={'transparent'}
           data={like}
           keyExtractor={(item, index) => index}
           renderItem={this._renderItem}
           ListEmptyComponent={this.showEmptyListView()}
         />
+
+         
       </View>
     );
   }
@@ -301,6 +305,11 @@ const styles = StyleSheet.create({
 
     flex: 1,
     backgroundColor: '#F5FCFF',
+  },
+  button: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'transparent',
   },
   hamburger: {
     ...Platform.select({
@@ -329,6 +338,13 @@ const styles = StyleSheet.create({
       marginBottom: 26,
       backgroundColor: 'white',
 
+    },
+    bg: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
     },
   divider:
     {
@@ -374,6 +390,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: -50,
+    backgroundColor: 'transparent',
   },
   button: {
     ...Platform.select({

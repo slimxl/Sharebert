@@ -6,15 +6,15 @@
     "privacy": "unlisted",
     "scheme": "sharebert",
     "sdkVersion": "25.0.0",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "primaryColor": "#ec47ff",
     "splash": {
       "image": "./assets/splash.png"
     },
-    "icon": "https://i.imgur.com/139FgdQ.png",
+    "icon": "https://i.imgur.com/xW6iH48.png",
     "loading": {
-      "icon": "https://i.imgur.com/139FgdQ.png",
+      "icon": "https://i.imgur.com/xW6iH48.png",
       "hideExponentText": false
     },
     "packagerOpts": {
