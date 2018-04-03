@@ -14,6 +14,7 @@ import {
   Image,
   Linking,
   Keyboard,
+  ImageBackground,
   Share,
   Platform,
   ActivityIndicator,
@@ -928,7 +929,12 @@ class Explore extends Component {
 
     try {
       return (
-        <View style={styles.container}>
+          
+        //<View style={styles.container}>
+        
+          <ImageBackground
+            source={require('./like_background.png')}
+            style={styles.container}> 
           <Swiper
             ref={swiper => {
               this.swiper = swiper
@@ -950,7 +956,7 @@ class Explore extends Component {
             marginTop={40}
             cardVerticalMargin={100}
             showSecondCard={false}
-            backgroundColor={'white'}
+            backgroundColor={'transparent'}
             overlayLabels={{
               bottom: {
                 title: 'REPORT BAD PRODUCT',
@@ -1025,7 +1031,7 @@ class Explore extends Component {
             animateCardOpacity
           >
           </Swiper>
-
+          
           <Image style={styles.bg} />
           <Text style={styles.text2}>
             {userPoints + '\n'}
@@ -1043,18 +1049,19 @@ class Explore extends Component {
             </TouchableOpacity>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          <TouchableWithoutFeedback
             onPress={() => this.props.navigation.navigate('Search', {
               id: userID,
               points: userPoints,
               uri: uri2,
             })}
-            style={{ flexDirection: 'row' }}>
+            style={styles.search}>
             <Image
+              resizeMode='contain'
               style={styles.search}
               source={require('./assets/icons/search-icon2.png')}
             />
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
 
           <View>
             <ScrollView
@@ -1202,7 +1209,8 @@ class Explore extends Component {
               </Image>
             </TouchableWithoutFeedback>
           </View>
-        </View>
+          </ImageBackground>
+        //</View>
       );
     } catch (error) {
       console.error(error);
@@ -1217,7 +1225,7 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight,
         height: 100,
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        //backgroundColor: '#F5FCFF',
       },
       android: {
         marginTop: Constants.statusBarHeight,
@@ -1227,7 +1235,10 @@ const styles = StyleSheet.create({
     }),
 
   },
-
+  button: {
+    width: '100%',
+    height: '100%',
+  },
   swiper: {
     paddingTop: Constants.statusBarHeight,
   },
@@ -1342,10 +1353,10 @@ const styles = StyleSheet.create({
   search: {
     ...Platform.select({
       ios: {
-        width: 30,
-        height: 30,
+        width: 28,
+        height: 40,
         marginLeft: 10,
-        marginTop: -35,
+        marginTop: -40,
         backgroundColor: 'transparent',
         padding: 0,
       },

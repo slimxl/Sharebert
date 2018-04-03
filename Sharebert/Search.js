@@ -83,6 +83,11 @@ class Search extends Component {
     }
     onSubmitEdit = () => {
         Keyboard.dismiss();
+        if(this.state.inputValue===''||this.state.inputValue===null)
+        {
+            Alert.alert("Empty Search! Try again!")
+            return;
+        }
         this.props.navigation.navigate('Explore', {
             id: userID,
             points: userPoints,
@@ -115,6 +120,7 @@ class Search extends Component {
 
                 </TouchableOpacity>
                 <TouchableOpacity
+                     onPress={() => this.onSubmitEdit()}
                     style={{ flexDirection: 'row' }}>
                     <Image
                         style={styles.search}

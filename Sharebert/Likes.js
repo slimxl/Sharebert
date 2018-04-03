@@ -112,6 +112,7 @@ class Likes extends Component {
 
                     userPoints = responseData2['Points'];
                     Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    this.forceUpdate();
 
                   }
                 })
@@ -192,9 +193,22 @@ class Likes extends Component {
   showEmptyListView = () => {
 
     return (
-      <View style={{ backgroundColor: 'white' }}>
-        <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
-        <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
+      <View style={{
+        width: '100%',
+        height: '100%'
+      }}>
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={{ width: '100%', height: '100%' }}>
+          <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
+          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+
+        </ImageBackground>
       </View>
     )
 
@@ -203,7 +217,7 @@ class Likes extends Component {
     const item = data.item;
 
     return (
-    
+
       <View >
         <View >
           <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
@@ -233,7 +247,7 @@ class Likes extends Component {
 
   render() {
     return (
-      
+
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
@@ -245,8 +259,11 @@ class Likes extends Component {
           }}>
 
           <Image style={styles.header} />
-          <Text style={styles.headertext}>
-            Tap to Explore
+          <Text style={styles.text2}>
+            {userPoints + '\n'}
+          </Text>
+          <Text style={styles.pointsText}>
+            Points
               </Text>
         </TouchableOpacity>
         <Image
@@ -266,7 +283,7 @@ class Likes extends Component {
           }}>
           <Image
             style={styles.hamburger}
-            source={require('./purplemenuicon.png')}
+            source={require('./explore2.png')}
           />
         </TouchableOpacity>
         <Image
@@ -278,14 +295,17 @@ class Likes extends Component {
         </Text>
         <Image style={styles.dividerTop}
         />
-        <FlatList backgroundColor={'transparent'}
-          data={like}
-          keyExtractor={(item, index) => index}
-          renderItem={this._renderItem}
-          ListEmptyComponent={this.showEmptyListView()}
-        />
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={{ width: '100%', height: '100%' }}>
+          <FlatList backgroundColor={'transparent'}
+            data={like}
+            keyExtractor={(item, index) => index}
+            renderItem={this._renderItem}
+            ListEmptyComponent={this.showEmptyListView()}
+          />
+        </ImageBackground>
 
-         
       </View>
     );
   }
@@ -300,23 +320,61 @@ const styles = StyleSheet.create({
       android: {
         marginTop: Constants.statusBarHeight,
       },
-      backgroundColor: 'white',
+      backgroundColor: 'transparent',
     }),
 
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
-  button: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'transparent',
+  text2: {
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -40,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: 0,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+    }),
+
+  },
+  pointsText: {
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -20,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: -10,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+    }),
   },
   hamburger: {
     ...Platform.select({
       ios: {
-        marginTop: -47,
-        width: 30,
-        height: 23,
+        marginTop: -55,
+        width: 100,
+        height: 30,
         marginLeft: 10,
         backgroundColor: 'transparent',
         padding: 0,
@@ -339,13 +397,13 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
 
     },
-    bg: {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-    },
+  bg: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
   divider:
     {
       width: Dimensions.get('window').width - 30,
@@ -398,7 +456,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 70,
         marginTop: -44,
-        marginLeft: 60,
+        marginLeft: Dimensions.get('window').width / 2.6,
         backgroundColor: 'transparent',
         padding: 20,
       },
