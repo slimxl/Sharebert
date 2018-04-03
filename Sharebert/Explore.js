@@ -1332,7 +1332,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 30,
     marginTop: -35,
-    marginLeft: Dimensions.get('window').width / 2.7,
+    marginLeft: Dimensions.get('window').width / 2.6,
     backgroundColor: 'transparent',
     padding: 20,
   },

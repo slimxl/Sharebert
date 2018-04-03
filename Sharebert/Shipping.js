@@ -6,6 +6,7 @@ import {
   AsyncStorage,
   Platform,
   Text,
+  ImageBackground,
   TouchableOpacity,
   Image,
   StyleSheet,
@@ -21,6 +22,7 @@ import {
 import { Constants } from 'expo';
 const { width } = 10;
 var loggedin = 'Log Out'
+var loggedbool = false;
 var userID = 0;
 var userPoints = 0;
 var user = {};
@@ -57,6 +59,9 @@ class Shipping extends Component {
     };
     if (userID === 0) {
       loggedin = 'Log In';
+    }
+    else{
+      loggedbool = true;
     }
   }
 
@@ -223,220 +228,236 @@ class Shipping extends Component {
             source={require('./assets/arrow.png')}
           />
         </TouchableWithoutFeedback>
-
-        <ScrollView 
-        style = {{marginTop: 20}}
-        vertical={true}>
-          <Text style={styles.paragraph}>
-            Name
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={{ width: '100%', height: '100%', marginTop:10 }}>
+          <View style={{ width: '100%', height: '90%' }}>
+            <ScrollView
+              style={{ marginTop: 20, backgroundColor: 'transparent', }}
+              vertical={true}>
+              <Text style={styles.paragraph}>
+                Name
             </Text>
-          <TextInput
-            textAlign="left"
-            onSubmitEditing={this.onSubmitEdit}
-            value={this.state.name}
-            onChangeText={(text) => {
-              user.Name = text;
-              this.setState({ name: text })
-            }}
-            placeholderTextColor={'#4c515b'}
-            style={{
-              fontSize: 20,
-              backgroundColor: '#d9dbdd',
-              width: Dimensions.get('window').width - 40,
-              height: 44,
-              padding: 8,
-              marginTop: 0,
-              marginLeft: 20,
-            }}
-          />
-          <Text style={styles.paragraph}>
-            Phone
+              <TextInput
+                textAlign="left"
+                onSubmitEditing={this.onSubmitEdit}
+                value={this.state.name}
+                onChangeText={(text) => {
+                  user.Name = text;
+                  this.setState({ name: text })
+                }}
+                placeholderTextColor={'#4c515b'}
+                style={{
+                  fontSize: 20,
+                  backgroundColor: '#d9dbdd',
+                  width: Dimensions.get('window').width - 40,
+                  height: 44,
+                  padding: 8,
+                  marginTop: 0,
+                  marginLeft: 20,
+                  borderRadius: 8,
+                }}
+              />
+              <Text style={styles.paragraph}>
+                Phone
             </Text>
-          <TextInput
-            textAlign="left"
-            onSubmitEditing={this.onSubmitEdit}
-            value={this.state.phone}
-            onChangeText={(text) => {
-              user.Phone = text;
-              this.setState({ phone: text })
-            }}
-            placeholderTextColor={'#4c515b'}
-            style={{
-              fontSize: 20,
-              backgroundColor: '#d9dbdd',
-              width: Dimensions.get('window').width - 40,
-              height: 44,
-              padding: 8,
-              marginTop: 0,
-              marginLeft: 20,
-            }}
-          />
-          <Text style={styles.paragraph}>
-            Address
+              <TextInput
+                textAlign="left"
+                onSubmitEditing={this.onSubmitEdit}
+                value={this.state.phone}
+                onChangeText={(text) => {
+                  user.Phone = text;
+                  this.setState({ phone: text })
+                }}
+                placeholderTextColor={'#4c515b'}
+                style={{
+                  fontSize: 20,
+                  backgroundColor: '#d9dbdd',
+                  width: Dimensions.get('window').width - 40,
+                  height: 44,
+                  padding: 8,
+                  marginTop: 0,
+                  marginLeft: 20,
+                  borderRadius: 8,
+                }}
+              />
+              <Text style={styles.paragraph}>
+                Address
             </Text>
-          <TextInput
-            textAlign="left"
-            onSubmitEditing={this.onSubmitEdit}
-            value={this.state.address}
-            onChangeText={(text) => {
-              user.Address = text;
-              this.setState({ address: text })
-            }}
-            placeholderTextColor={'#4c515b'}
-            style={{
-              fontSize: 20,
-              backgroundColor: '#d9dbdd',
-              width: Dimensions.get('window').width - 40,
-              height: 44,
-              padding: 8,
-              marginTop: 0,
-              marginLeft: 20,
-            }}
-          />
-          <Text style={styles.paragraph}>
-            City
+              <TextInput
+                textAlign="left"
+                onSubmitEditing={this.onSubmitEdit}
+                value={this.state.address}
+                onChangeText={(text) => {
+                  user.Address = text;
+                  this.setState({ address: text })
+                }}
+                placeholderTextColor={'#4c515b'}
+                style={{
+                  fontSize: 20,
+                  backgroundColor: '#d9dbdd',
+                  width: Dimensions.get('window').width - 40,
+                  height: 44,
+                  padding: 8,
+                  marginTop: 0,
+                  marginLeft: 20,
+                  borderRadius: 8
+                }}
+              />
+              <Text style={styles.paragraph}>
+                City
             </Text>
-          <TextInput
-            textAlign="left"
-            onSubmitEditing={this.onSubmitEdit}
-            value={this.state.city}
-            onChangeText={(text) => {
-              user.City = text;
-              this.setState({ city: text })
-            }}
-            placeholderTextColor={'#4c515b'}
-            style={{
-              fontSize: 20,
-              backgroundColor: '#d9dbdd',
-              width: Dimensions.get('window').width - 40,
-              height: 44,
-              padding: 8,
-              marginTop: 0,
-              marginLeft: 20,
-            }}
-          />
-          <Text style={styles.paragraph}>
-            State
+              <TextInput
+                textAlign="left"
+                onSubmitEditing={this.onSubmitEdit}
+                value={this.state.city}
+                onChangeText={(text) => {
+                  user.City = text;
+                  this.setState({ city: text })
+                }}
+                placeholderTextColor={'#4c515b'}
+                style={{
+                  fontSize: 20,
+                  backgroundColor: '#d9dbdd',
+                  width: Dimensions.get('window').width - 40,
+                  height: 44,
+                  padding: 8,
+                  marginTop: 0,
+                  marginLeft: 20,
+                  borderRadius: 8
+                }}
+              />
+              <Text style={styles.paragraph}>
+                State
             </Text>
-          <Picker
-            style={{ marginTop: -25 }}
-            selectedValue={this.state.state}
-            onValueChange={(itemValue, itemIndex) => {
-            user['State'] = itemValue;
-              user['StateIndex'] = itemIndex;
-              this.setState({ state: itemValue })
-            }}>
-            <Picker.Item label="Alabama" value="AL" />
-            <Picker.Item label="Alaska" value="AK" />
-            <Picker.Item label="Arizona" value="AZ" />
-            <Picker.Item label="Arkansas" value="AR" />
-            <Picker.Item label="California" value="CA" />
-            <Picker.Item label="Colorado" value="CO" />
-            <Picker.Item label="Connecticut" value="CT" />
-            <Picker.Item label="Delaware" value="DE" />
-            <Picker.Item label="Florida" value="FL" />
-            <Picker.Item label="Georgia" value="GA" />
-            <Picker.Item label="Hawaii" value="HI" />
-            <Picker.Item label="Idaho" value="ID" />
-            <Picker.Item label="Illinois" value="IL" />
-            <Picker.Item label="Indiana" value="IN" />
-            <Picker.Item label="Iowa" value="IA" />
-            <Picker.Item label="Kansas" value="KS" />
-            <Picker.Item label="Kentucky" value="KY" />
-            <Picker.Item label="Louisiana" value="LA" />
-            <Picker.Item label="Maine" value="ME" />
-            <Picker.Item label="Maryland" value="MD" />
-            <Picker.Item label="Massachusetts" value="MA" />
-            <Picker.Item label="Michigan" value="MI" />
-            <Picker.Item label="Minnesota" value="MN" />
-            <Picker.Item label="Mississippi" value="MS" />
-            <Picker.Item label="Missouri" value="MO" />
-            <Picker.Item label="Montana" value="MT" />
-            <Picker.Item label="Nebraska" value="NE" />
-            <Picker.Item label="Nevada" value="NV" />
-            <Picker.Item label="New Hampshire" value="NH" />
-            <Picker.Item label="New Jersey" value="NJ" />
-            <Picker.Item label="New Mexico" value="NM" />
-            <Picker.Item label="New York" value="NY" />
-            <Picker.Item label="North Carolina" value="NC" />
-            <Picker.Item label="North Dakota" value="ND" />
-            <Picker.Item label="Ohio" value="OH" />
-            <Picker.Item label="Oklahoma" value="OK" />
-            <Picker.Item label="Oregon" value="OR" />
-            <Picker.Item label="Pennsylvania" value="PA" />
-            <Picker.Item label="Rhode Island" value="RI" />
-            <Picker.Item label="South Carolina" value="SC" />
-            <Picker.Item label="South Dakota" value="SD" />
-            <Picker.Item label="Tennessee" value="TN" />
-            <Picker.Item label="Texas" value="TX" />
-            <Picker.Item label="Utah" value="UT" />
-            <Picker.Item label="Vermont" value="VT" />
-            <Picker.Item label="Virginia" value="VA" />
-            <Picker.Item label="Washington" value="WA" />
-            <Picker.Item label="Washington, D.C" value="DC" />
-            <Picker.Item label="West Virginia" value="WV" />
-            <Picker.Item label="Wisconsin" value="WI" />
-            <Picker.Item label="Wyoming" value="WY" />
-          </Picker>
+              <Picker
+                style={{ marginTop: -25 }}
+                selectedValue={this.state.state}
+                onValueChange={(itemValue, itemIndex) => {
+                  user['State'] = itemValue;
+                  user['StateIndex'] = itemIndex;
+                  this.setState({ state: itemValue })
+                }}>
+                <Picker.Item label="Alabama" value="AL" />
+                <Picker.Item label="Alaska" value="AK" />
+                <Picker.Item label="Arizona" value="AZ" />
+                <Picker.Item label="Arkansas" value="AR" />
+                <Picker.Item label="California" value="CA" />
+                <Picker.Item label="Colorado" value="CO" />
+                <Picker.Item label="Connecticut" value="CT" />
+                <Picker.Item label="Delaware" value="DE" />
+                <Picker.Item label="Florida" value="FL" />
+                <Picker.Item label="Georgia" value="GA" />
+                <Picker.Item label="Hawaii" value="HI" />
+                <Picker.Item label="Idaho" value="ID" />
+                <Picker.Item label="Illinois" value="IL" />
+                <Picker.Item label="Indiana" value="IN" />
+                <Picker.Item label="Iowa" value="IA" />
+                <Picker.Item label="Kansas" value="KS" />
+                <Picker.Item label="Kentucky" value="KY" />
+                <Picker.Item label="Louisiana" value="LA" />
+                <Picker.Item label="Maine" value="ME" />
+                <Picker.Item label="Maryland" value="MD" />
+                <Picker.Item label="Massachusetts" value="MA" />
+                <Picker.Item label="Michigan" value="MI" />
+                <Picker.Item label="Minnesota" value="MN" />
+                <Picker.Item label="Mississippi" value="MS" />
+                <Picker.Item label="Missouri" value="MO" />
+                <Picker.Item label="Montana" value="MT" />
+                <Picker.Item label="Nebraska" value="NE" />
+                <Picker.Item label="Nevada" value="NV" />
+                <Picker.Item label="New Hampshire" value="NH" />
+                <Picker.Item label="New Jersey" value="NJ" />
+                <Picker.Item label="New Mexico" value="NM" />
+                <Picker.Item label="New York" value="NY" />
+                <Picker.Item label="North Carolina" value="NC" />
+                <Picker.Item label="North Dakota" value="ND" />
+                <Picker.Item label="Ohio" value="OH" />
+                <Picker.Item label="Oklahoma" value="OK" />
+                <Picker.Item label="Oregon" value="OR" />
+                <Picker.Item label="Pennsylvania" value="PA" />
+                <Picker.Item label="Rhode Island" value="RI" />
+                <Picker.Item label="South Carolina" value="SC" />
+                <Picker.Item label="South Dakota" value="SD" />
+                <Picker.Item label="Tennessee" value="TN" />
+                <Picker.Item label="Texas" value="TX" />
+                <Picker.Item label="Utah" value="UT" />
+                <Picker.Item label="Vermont" value="VT" />
+                <Picker.Item label="Virginia" value="VA" />
+                <Picker.Item label="Washington" value="WA" />
+                <Picker.Item label="Washington, D.C" value="DC" />
+                <Picker.Item label="West Virginia" value="WV" />
+                <Picker.Item label="Wisconsin" value="WI" />
+                <Picker.Item label="Wyoming" value="WY" />
+              </Picker>
 
-          <Text style={styles.paragraph}>
-            Postal Code
+              <Text style={styles.paragraph}>
+                Postal Code
             </Text>
-          <TextInput
-            textAlign="left"
-            onSubmitEditing={this.onSubmitEdit}
-            value={this.state.zip}
-            onChangeText={(text) => {
-              user.Zip = text;
-              this.setState({ zip: text })
-            }}
-            placeholderTextColor={'#4c515b'}
-            style={{
-              fontSize: 20,
-              backgroundColor: '#d9dbdd',
-              width: Dimensions.get('window').width - 40,
-              height: 44,
-              padding: 8,
-              marginTop: 0,
-              marginLeft: 20,
-            }}
-          />
-          <TouchableOpacity onPress={this.saveForm}>
-          <Image
-              resizeMode="contain"
-              style={styles.button2}
-              source={require('./assets/icons/save.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
-          <Image
-              resizeMode="contain"
-              style={styles.button2}
-              source={require('./assets/icons/privacy.png')}
-            />
-          </TouchableOpacity>
+              <TextInput
+                textAlign="left"
+                onSubmitEditing={this.onSubmitEdit}
+                value={this.state.zip}
+                onChangeText={(text) => {
+                  user.Zip = text;
+                  this.setState({ zip: text })
+                }}
+                placeholderTextColor={'#4c515b'}
+                style={{
+                  fontSize: 20,
+                  backgroundColor: '#d9dbdd',
+                  width: Dimensions.get('window').width - 40,
+                  height: 44,
+                  padding: 8,
+                  marginTop: 0,
+                  marginLeft: 20,
+                  marginBottom: 20,
+                  borderRadius: 8
+                }}
+              />
+              <TouchableOpacity onPress={this.saveForm}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.button2}
+                  source={require('./assets/icons/save.png')}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.button2}
+                  source={require('./assets/icons/privacy.png')}
+                />
+              </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => {
-            this.clearFile();
-          }}>
-            <Image
-              resizeMode="contain"
-              style={styles.button2}
-              source={require('./assets/icons/btn_login.png')}
-            />
-          </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                this.clearFile();
+              }}>
+                {!loggedbool
+                  ? <Image
+                  resizeMode="contain"
+                  style={styles.button2}
+                  source={require('./assets/icons/btn_login.png')}
+                />
+                  : <Image
+                  resizeMode="contain"
+                  style={styles.button2}
+                  source={require('./assets/icons/btn_logout.png')}
+                />}
+              </TouchableOpacity>
 
 
-          <TouchableOpacity onPress={this.clearLikes}>
-            <Image
-              resizeMode="contain"
-              style={styles.button2}
-              source={require('./assets/icons/clear.png')}
-            />
-          </TouchableOpacity>
+              <TouchableOpacity onPress={this.clearLikes}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.button2}
+                  source={require('./assets/icons/clear.png')}
+                />
+              </TouchableOpacity>
 
-        </ScrollView>
-
+            </ScrollView>
+          </View>
+        </ImageBackground>
         <Text style={styles.text}>
           We do not sell, trade, or otherwise share your personal information with any other company or agency. By submitting your information, you agree to have your name, address, phone number, and email stored on our secured servers.
           </Text>
@@ -486,10 +507,10 @@ const styles = StyleSheet.create({
   button2: {
     ...Platform.select({
       ios: {
-        width: Dimensions.get('window').width / 2,
+        width: '75%',
         height: 70,
-        marginTop: 0,
-        marginLeft: Dimensions.get('window').width / 4,
+        marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8,
         backgroundColor: 'transparent',
         padding: 30,
       },
@@ -582,7 +603,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 23,
         marginLeft: 10,
-        marginTop: -48,
+        marginTop: -55,
         backgroundColor: 'transparent',
         padding: 0,
       },
