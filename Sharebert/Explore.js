@@ -1681,7 +1681,6 @@ const styles = StyleSheet.create({
 });
 async function register() {
   const {status} = await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
-  console.log(status)
   if(status!== 'granted')
   {
     Alert.alert("You need to enable permissions in settings");
@@ -1690,6 +1689,9 @@ async function register() {
 
   const token = await Expo.Notifications.getExpoPushTokenAsync();
   console.log(status,token)
+  fetch('https://biosystematic-addit.000webhostapp.com/SendToken.php?token='+token, { method: 'GET' })
+
+
 };
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
