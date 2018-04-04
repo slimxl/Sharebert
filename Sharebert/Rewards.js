@@ -394,9 +394,11 @@ const styles = StyleSheet.create({
   text3: {
     textAlign: 'left',
     fontSize: 12,
-    marginTop: 40,
+    marginTop: 20,
     marginLeft: 110,
     backgroundColor: 'transparent',
+    position: "absolute",
+    left: 0,
   },
   text4: {
     color: '#ec47ff',
