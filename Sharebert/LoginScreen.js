@@ -58,8 +58,8 @@ class LoginScreen extends Component {
         if(Platform.OS==='ios')
         {
           const { type, user } = await Google.logInAsync({
-            androidStandaloneAppClientId: '376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m.apps.googleusercontent.com',
-            iosStandaloneAppClientId: '376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m.apps.googleusercontent.com',
+            androidStandaloneAppClientId: '1078598871426-90mv7k4f48vpaaj6s9ld9usv1m4rtofp.apps.googleusercontent.com',
+            iosStandaloneAppClientId: '376011592870-vudl1kb57fmvg541i988gq8ospcchd8q.apps.googleusercontent.com',
             androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
             iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
@@ -69,12 +69,12 @@ class LoginScreen extends Component {
         else if(Platform.OS==='android')
         {
           const { type, user } = await Google.logInAsync({
-            androidStandaloneAppClientId: '376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m.apps.googleusercontent.com',
-            iosStandaloneAppClientId: '376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m.apps.googleusercontent.com',
+            androidStandaloneAppClientId: '1078598871426-90mv7k4f48vpaaj6s9ld9usv1m4rtofp.apps.googleusercontent.com',
+            iosStandaloneAppClientId: '376011592870-vudl1kb57fmvg541i988gq8ospcchd8q.apps.googleusercontent.com',
             androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
             iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
-            behavior: 'system',
+            behavior: 'web',
           });
         }
      

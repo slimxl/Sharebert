@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "com.Sharebert.Sharebert.Sharebert",
-      "versionCode": 28,
+      "versionCode": 32,
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyA-Y741YY-kfGg95EnM-7YaB20Iay-JY5E",
@@ -41,7 +41,7 @@
       "supportsTablet": true,
       "config": {
         "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m"
+          "reservedClientId": "com.googleusercontent.apps.376011592870-vudl1kb57fmvg541i988gq8ospcchd8q"
         }
       }
     }
