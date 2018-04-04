@@ -141,33 +141,33 @@ class Rewards extends Component {
         <Text style={styles.title}>
           Rewards
         </Text>
-        <Image style={styles.dividerTop} />
+        <Image style={styles.dividerTop} source={require('./assets/empty2.png')}/>
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
           <View style={{ width: '100%', height: '80%' }}>
-          <FlatList backgroundColor={'transparent'}
-            style={{ width: '100%', height: '80%' }}
-            data={rdata}
-            keyExtractor={(item, index) => index}
-            renderItem={({ item, separators }) => (
-              <TouchableOpacity
-                onPress={() => this._onPress(item)}
-                onShowUnderlay={separators.highlight}
-                onHideUnderlay={separators.unhighlight}>
-                <View style={{ backgroundColor: 'transparent' }}>
-                  <Text style={styles.text3}>{item.Title}</Text>
-                  <Text style={styles.text4}>{item.Cost} Points</Text>
-                  <Image
-                    style={styles.image}
-                    source={{
-                      uri: item.ImageURL,
-                    }}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+            <FlatList backgroundColor={'transparent'}
+              style={{ width: '100%', height: '80%' }}
+              data={rdata}
+              keyExtractor={(item, index) => index}
+              renderItem={({ item, separators }) => (
+                <TouchableOpacity
+                  onPress={() => this._onPress(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <View style={{ backgroundColor: 'transparent' }}>
+                    <Text style={styles.text3}>{item.Title}</Text>
+                    <Text style={styles.text4}>{item.Cost} Points</Text>
+                    <Image
+                      style={styles.image}
+                      source={{
+                        uri: item.ImageURL,
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
           </View>
         </ImageBackground>
       </View>
@@ -180,11 +180,13 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: Constants.statusBarHeight,
+         backgroundColor: 'transparent',
+        
       },
       android: {
         marginTop: Constants.statusBarHeight,
+        backgroundColor: '#dee6ee',
       },
-      backgroundColor: 'transparent',
     }),
 
     flex: 1,
@@ -244,21 +246,36 @@ const styles = StyleSheet.create({
         padding: 0,
       },
       android: {
-        width: 30,
-        height: 30,
+        position: 'absolute',
         marginTop: 5,
+        marginLeft: 0,
+        height: 25,
+        width: 45,
       },
     }),
 
   },
   heart:
     {
-      width: Dimensions.get('window').width,
-      height: 30,
-      paddingTop: 20,
-      marginTop: 10,
-      marginBottom: 26,
-      backgroundColor: 'transparent',
+      ...Platform.select({
+        ios: {
+          width: Dimensions.get('window').width,
+          height: 30,
+          paddingTop: 20,
+          marginTop: 10,
+          marginBottom: 26,
+          backgroundColor: 'transparent',
+        },
+        android: {
+          width: Dimensions.get('window').width,
+          height: 30,
+          paddingTop: 20,
+          marginTop: 10,
+          marginBottom: 20,
+          backgroundColor: 'white',
+        },
+      }),
+
 
     },
   bg: {
@@ -297,15 +314,32 @@ const styles = StyleSheet.create({
       backgroundColor: '#dee6ee',
     },
   title: {
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#ff2eff',
-    marginTop: -20,
-    marginBottom: 0,
-    paddingBottom: 6,
-    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        fontFamily: "Montserrat",
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#ff2eff',
+        marginTop: -20,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        fontFamily: "Montserrat",
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#ff2eff',
+        marginTop: -20,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'white',
+
+      },
+    }),
+
   },
   image: {
 
@@ -325,8 +359,11 @@ const styles = StyleSheet.create({
         padding: 20,
       },
       android: {
+        position: 'absolute',
         marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8.5,
         height: 30,
+        flexDirection: 'row',
       },
     }),
   },
@@ -341,6 +378,8 @@ const styles = StyleSheet.create({
       android: {
         marginTop: -10,
         height: 100,
+        backgroundColor: '#dee6ee',
+        
       },
     }),
 

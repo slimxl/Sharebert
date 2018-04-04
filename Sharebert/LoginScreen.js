@@ -5,11 +5,12 @@ import {
   AsyncStorage,
   TouchableOpacity,
   Image,
+  Platform,
   StyleSheet,
   Alert,
   Dimensions,
 } from 'react-native';
-import { Google, Facebook,AuthSession, Font } from 'expo';
+import { Google, Facebook, AuthSession, Font } from 'expo';
 var doubleclick = false;
 var lastlogged = true;
 var userEmail2 = '';
@@ -36,27 +37,26 @@ class LoginScreen extends Component {
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
-        this.props.navigation.navigate('Likes', {
-          id: 0,
-          points: 0,
-          uri: uri2,
-        });
+      this.props.navigation.navigate('Likes', {
+        id: 0,
+        points: 0,
+        uri: uri2,
+      });
     }
-    else
-    {
-    doubleclick = false;
-    //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
-    this.props.navigation.navigate('Likes', {
-      id: userID,
-      points: userPoints,
-      uri: uri2,
-    });
+    else {
+      doubleclick = false;
+      //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
+      this.props.navigation.navigate('Likes', {
+        id: userID,
+        points: userPoints,
+        uri: uri2,
+      });
+    }
   }
-  }
-  _handleFinalGoogleLogin = async () =>{
+  _handleFinalGoogleLogin = async () => {
     try {
       const { type, user } = await Google.logInAsync({
-        androidStandaloneAppClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
+        androidStandaloneAppClientId: '376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m.apps.googleusercontent.com',
         iosStandaloneAppClientId: '376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m.apps.googleusercontent.com',
         androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
         iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
@@ -72,7 +72,7 @@ class LoginScreen extends Component {
           name2 = user.name;
           uri2 = user.photoUrl;
           lastlogged = true;
-          
+
           this.checkPoints();
           break;
         }
@@ -89,24 +89,21 @@ class LoginScreen extends Component {
     }
   }
   _handleGoogleLogin = () => {
-    if(doubleclick)
-    {
+    if (doubleclick) {
       Alert.alert("Hang On!");
       return;
     }
-    
-    if(lastlogged === false||name2==='Not Logged In')
-    {
+
+    if (lastlogged === false || name2 === 'Not Logged In') {
       this._handleFinalGoogleLogin();
     }
-    else
-    {
+    else {
       Alert.alert(
-        'Login as '+name2+"?","",
+        'Login as ' + name2 + "?", "",
         [
           {
             text: 'No',
-            onPress: () => {this._handleFinalGoogleLogin()},
+            onPress: () => { this._handleFinalGoogleLogin() },
             style: 'cancel',
           },
           {
@@ -121,24 +118,21 @@ class LoginScreen extends Component {
     }
   };
   _handleFacebookLogin = () => {
-    if(doubleclick)
-    {
+    if (doubleclick) {
       Alert.alert("Hang On!");
       return;
     }
-    if(lastlogged === false||name2==='Not Logged In')
-    {
+    if (lastlogged === false || name2 === 'Not Logged In') {
       this._handleFinalFacebookLogin();
     }
-    else
-    {
-      
+    else {
+
       Alert.alert(
-        'Login as '+name2+"?","",
+        'Login as ' + name2 + "?", "",
         [
           {
             text: 'No',
-            onPress: () => {this._handleFinalFacebookLogin()},
+            onPress: () => { this._handleFinalFacebookLogin() },
             style: 'cancel',
           },
           {
@@ -153,8 +147,7 @@ class LoginScreen extends Component {
     }
   };
   _handlePressAsync = async () => {
-    if(doubleclick)
-    {
+    if (doubleclick) {
       Alert.alert("Hang On!");
       return;
     }
@@ -188,20 +181,19 @@ class LoginScreen extends Component {
       `https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email,picture.type(large)`
     );
     const userInfo = await userInfoResponse.json();
-    if(userInfo.name!='')
-    {
-     // Alert.alert('Logged in!', `Hi ${userInfo.name}!`);
-              userEmail2 = userInfo.email;
-              name2 = userInfo.name;
-              uri2 =
-                'https://graph.facebook.com/' +
-                userInfo.id +
-                '/picture? type=large';
-                this.checkPoints();
+    if (userInfo.name != '') {
+      // Alert.alert('Logged in!', `Hi ${userInfo.name}!`);
+      userEmail2 = userInfo.email;
+      name2 = userInfo.name;
+      uri2 =
+        'https://graph.facebook.com/' +
+        userInfo.id +
+        '/picture? type=large';
+      this.checkPoints();
     }
   };
 
-  saveNewPoints=async()=>{
+  saveNewPoints = async () => {
     try {
       await AsyncStorage.setItem('@MySuperStore:points', userPoints);
     } catch (error) {
@@ -209,13 +201,13 @@ class LoginScreen extends Component {
     }
   };
 
-  saveFile=async()=>{
+  saveFile = async () => {
     try {
       await AsyncStorage.setItem('@MySuperStore:name', name2);
       await AsyncStorage.setItem('@MySuperStore:email', userEmail2);
       await AsyncStorage.setItem('@MySuperStore:uri2', uri2);
       await AsyncStorage.setItem('@MySuperStore:points', userPoints);
-      await AsyncStorage.setItem('@MySuperStore:id', userID); 
+      await AsyncStorage.setItem('@MySuperStore:id', userID);
     } catch (error) {
       // Error saving data
     }
@@ -228,30 +220,30 @@ class LoginScreen extends Component {
     });
   };
 
-  getData=async()=>{
+  getData = async () => {
     const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
+    console.log(namesaved);
+    if (namesaved !== null && namesaved !== undefined && namesaved !== "") {
+      // We have data!!
       console.log(namesaved);
-      if (namesaved !== null && namesaved !== undefined && namesaved !== ""){
-        // We have data!!
-        console.log(namesaved);
-        name2 = namesaved;
-        const emailsaved = await AsyncStorage.getItem('@MySuperStore:email');
-        userEmail2 = emailsaved;
-        const uri2saved = await AsyncStorage.getItem('@MySuperStore:uri2');
-        uri2 = uri2saved;
-        const pointssaved = await AsyncStorage.getItem('@MySuperStore:points');
-        userPoints = pointssaved;
-        const useridsaved = await AsyncStorage.getItem('@MySuperStore:id');
-        userID = useridsaved;
+      name2 = namesaved;
+      const emailsaved = await AsyncStorage.getItem('@MySuperStore:email');
+      userEmail2 = emailsaved;
+      const uri2saved = await AsyncStorage.getItem('@MySuperStore:uri2');
+      uri2 = uri2saved;
+      const pointssaved = await AsyncStorage.getItem('@MySuperStore:points');
+      userPoints = pointssaved;
+      const useridsaved = await AsyncStorage.getItem('@MySuperStore:id');
+      userID = useridsaved;
 
-        lastlogged = true;
-      }
+      lastlogged = true;
+    }
   }
-  getFile=async(type)=>{
+  getFile = async (type) => {
     try {
       const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
       console.log(namesaved);
-      if (namesaved !== null && namesaved !== undefined && namesaved !== ""){
+      if (namesaved !== null && namesaved !== undefined && namesaved !== "") {
         // We have data!!
         console.log(namesaved);
         name2 = namesaved;
@@ -265,21 +257,18 @@ class LoginScreen extends Component {
         userID = useridsaved;
 
         lastlogged = true;
-        if(type === 'Facebook')
-        {
+        if (type === 'Facebook') {
           this._handleFacebookLogin();
         }
-        else{
+        else {
           this._handleGoogleLogin();
         }
       }
-      else
-      {
-        if(type === 'Facebook')
-        {
+      else {
+        if (type === 'Facebook') {
           this._handleFacebookLogin();
         }
-        else{
+        else {
           this._handleGoogleLogin();
 
         }
@@ -291,24 +280,23 @@ class LoginScreen extends Component {
   }
 
   checkUpdatePoints = () => {
-  fetch(
-    'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+    fetch(
+      'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
       userEmail2,
-    { method: 'GET' }
-  )
-    .then(response => response.json())
-    .then(responseData => {
-      var test = responseData['Points'];
-      userPoints = test;
-      this.saveNewPoints();
-      this.onSubmitEdit('Login');
-    })
-    .done();
+      { method: 'GET' }
+    )
+      .then(response => response.json())
+      .then(responseData => {
+        var test = responseData['Points'];
+        userPoints = test;
+        this.saveNewPoints();
+        this.onSubmitEdit('Login');
+      })
+      .done();
   };
 
   _handleFinalFacebookLogin = async () => {
-    if(doubleclick)
-    {
+    if (doubleclick) {
       Alert.alert("Hang On!");
       return;
     }
@@ -326,7 +314,7 @@ class LoginScreen extends Component {
           // Get the user's name using Facebook's Graph API
           fetch(
             'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
-              token
+            token
           )
             .then(response => response.json())
             .then(json => {
@@ -337,10 +325,10 @@ class LoginScreen extends Component {
                 'https://graph.facebook.com/' +
                 json.id +
                 '/picture? type=large';
-                this.checkPoints();
-                doubleclick = true;
+              this.checkPoints();
+              doubleclick = true;
             })
-            .catch(() => {});
+            .catch(() => { });
           break;
         }
         case 'cancel': {
@@ -357,19 +345,19 @@ class LoginScreen extends Component {
   };
 
   checkPoints = () => {
-    
+
     if (userEmail2 != '') {
       fetch(
         'https://sharebert.com/ReturnLoginToServerWeb.php?uemail=' +
-          userEmail2 +
-          '&uname=' +
-          name2,
+        userEmail2 +
+        '&uname=' +
+        name2,
         { method: 'GET' }
       )
         .then(() => {
           fetch(
             'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
-              userEmail2,
+            userEmail2,
             { method: 'GET' }
           )
             .then(response => response.json())
@@ -380,26 +368,25 @@ class LoginScreen extends Component {
             .done();
         })
         .done();
-        
-        
-        fetch(
-            'https://biosystematic-addit.000webhostapp.com/GetIDfromEmail.php?uemail=' +
-              userEmail2,
-            { method: 'GET' }
-          )
-            .then(response2 => response2.json())
-            .then(responseData2 => {
-              var test = responseData2['id'];
-             userID = test;
-             this.saveFile();
-             this.onSubmitEdit('Login');
-            })
-            .done();
-        
-        
+
+
+      fetch(
+        'https://biosystematic-addit.000webhostapp.com/GetIDfromEmail.php?uemail=' +
+        userEmail2,
+        { method: 'GET' }
+      )
+        .then(response2 => response2.json())
+        .then(responseData2 => {
+          var test = responseData2['id'];
+          userID = test;
+          this.saveFile();
+          this.onSubmitEdit('Login');
+        })
+        .done();
+
+
     }
-    else
-    {
+    else {
       Alert.alert("no Email");
     }
   };
@@ -446,12 +433,25 @@ class LoginScreen extends Component {
 }
 const styles = StyleSheet.create({
   loging: {
-    width: 235,
-    height: 40,
-    marginTop: Dimensions.get('window').height / 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        width: 235,
+        height: 40,
+        marginTop: Dimensions.get('window').height / 3,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        width: 235,
+        height: 40,
+        marginTop: Dimensions.get('window').height / 3,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+      },
+    }),
+
   },
   loginf: {
     width: 250,
@@ -499,31 +499,58 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   button3: {
-    flex: 1,
-    width: 235,
-    height: 50,
-    marginTop: 100,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    padding: 25,
+    ...Platform.select({
+      ios: {
+        flex: 1,
+        width: 235,
+        height: 50,
+        marginTop: 100,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        padding: 25,
+      },
+      android: {
+        flex: 1,
+        width: 250,
+        height: 25,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+      },
+    }),
   },
   button4: {
-    flex: 1,
-    width: 135,
-    height: 10,
-    marginTop: Dimensions.get('window').height / 8,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    padding: 25,
+    ...Platform.select({
+      ios: {
+        flex: 1,
+        width: 135,
+        height: 10,
+        marginTop: Dimensions.get('window').height / 8,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        padding: 25,
+      },
+      android: {
+        flex: 1,
+        width: 250,
+        height: 25,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+      },
+    }),
+    
   },
 });
 export { userEmail2 };
 export { name2 };
 export { uri2 };
-export {userPoints};
-export {userID};
+export { userPoints };
+export { userID };
 export default LoginScreen;

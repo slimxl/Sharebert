@@ -4,6 +4,8 @@ import SideMenu from 'react-native-side-menu'; // Version can be specified in pa
 import Image2 from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Notification from 'react-native-in-app-notification';
 import {
   StyleSheet,
   AsyncStorage,
@@ -60,6 +62,7 @@ class Explore extends Component {
       disable: true,
       isSwipingBack: false,
       cardIndex: 0,
+      showAlert: false,
       cardNum: 0,
       cat: false,
       category: '',
@@ -192,6 +195,26 @@ class Explore extends Component {
 
   }
 
+
+componentWillMount()
+{
+  register();
+}
+  showAlert = () => {
+    this.setState({
+      showAlert: true
+    });
+    this.forceUpdate();
+    
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+    this.forceUpdate();
+    
+  };
   grabRandoLikes = async () => {
     var data2 = [];
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
@@ -290,6 +313,7 @@ class Explore extends Component {
       this.state.url ===
       'https://i.imgur.com/qnHscIM.png'
     ) {
+      this.shareApp();
       return;
     }
     try {
@@ -300,7 +324,7 @@ class Explore extends Component {
               url: this.state.dataset[this.state.cardNum].URL,
             },
             android: {
-              message: 'Look at this : \n' +
+              message:
                 this.state.dataset[this.state.cardNum].URL,
             },
           }),
@@ -320,6 +344,7 @@ class Explore extends Component {
           }),
         }
       ).then(({ action, activityType }) => {
+
         if (action === Share.dismissedAction) {
           Alert.alert("Hey!", "Don't Forget, You Get Points for Sharing Products!");
         }
@@ -337,8 +362,21 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    if (Platform.OS === 'android') {
+                      this.notification.show({
+                        title: 'You got points!!',
+                        message: 'Thanks For Sharing!',
+                        icon: {uri: 'https://i.imgur.com/xW6iH48.png'},
+                        onPress: () => this.showAlert(),
+                      });
+                    }
+                    else
+                    {
+                      this.showAlert();
+                    }
                     this.forceUpdate();
+
                   }
                 })
                 .done();
@@ -705,11 +743,11 @@ class Explore extends Component {
         {
           ...Platform.select({
             ios: {
-              url: 'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+              url: 'https://sharebert.com/download',
             },
             android: {
               message: 'Look at this : \n' +
-                'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+                'https://sharebert.com/download',
             },
           }),
           title: 'Wow, did you see that?',
@@ -723,7 +761,7 @@ class Explore extends Component {
             android: {
               // Android only:
               dialogTitle: 'Share : ' +
-                'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+                'https://sharebert.com/download',
             },
           }),
         }
@@ -926,15 +964,15 @@ class Explore extends Component {
   }
 
   render() {
-
+    const { showAlert } = this.state;
     try {
       return (
-          
-        //<View style={styles.container}>
-        
-          <ImageBackground
-            source={require('./like_background.png')}
-            style={styles.container}> 
+
+
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={styles.container}>
+
           <Swiper
             ref={swiper => {
               this.swiper = swiper
@@ -1031,23 +1069,37 @@ class Explore extends Component {
             animateCardOpacity
           >
           </Swiper>
-          
+
           <Image style={styles.bg} />
+
+          <TouchableWithoutFeedback
+            onPress={this.shareApp}
+            style={styles.search2}>
+            <Image
+              resizeMode='contain'
+              style={styles.search2}
+              source={require('./assets/empty2.png')}
+            />
+          </TouchableWithoutFeedback>
+
+
           <Text style={styles.text2}>
             {userPoints + '\n'}
           </Text>
           <Text style={styles.pointsText}>
             Points
               </Text>
-          <TouchableOpacity >
-            <TouchableOpacity onPress={this.shareApp}>
-              <Image
-                resizeMode="contain"
-                style={styles.button}
-                source={require('./Logo.png')}
-              />
-            </TouchableOpacity>
-          </TouchableOpacity>
+
+
+          <TouchableWithoutFeedback
+            onPress={this.shareApp}
+            style={styles.button}>
+            <Image
+              resizeMode='contain'
+              style={styles.button}
+              source={require('./Logo.png')}
+            />
+          </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback
             onPress={() => this.props.navigation.navigate('Search', {
@@ -1209,8 +1261,39 @@ class Explore extends Component {
               </Image>
             </TouchableWithoutFeedback>
           </View>
-          </ImageBackground>
-        //</View>
+          <AwesomeAlert
+            show={showAlert}
+            showProgress={false}
+            title="Points Obtained!"
+            message="Hey! Thanks for Sharing a product!"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={true}
+            showCancelButton={false}
+            showConfirmButton={true}
+            cancelText=""
+            confirmText="Awesome!"
+            confirmButtonColor="#f427f3"
+            onCancelPressed={() => {
+              this.hideAlert();
+            }}
+            onConfirmPressed={() => {
+              this.hideAlert();
+            }}
+            onDismiss={() => {
+              this.hideAlert();
+            }}
+          />
+           {
+           (Platform.OS==='android') 
+           ?
+           <Notification
+           ref={(ref) => { this.notification = ref; }} 
+           backgroundColour= '#ff2eff'
+            />
+            :
+            <View />
+         }
+        </ImageBackground>
       );
     } catch (error) {
       console.error(error);
@@ -1230,14 +1313,11 @@ const styles = StyleSheet.create({
       android: {
         marginTop: Constants.statusBarHeight,
         flex: 1,
+        height: Dimensions.get('window').height,
+        backgroundColor: '#dee6ee',
 
       },
     }),
-
-  },
-  button: {
-    width: '100%',
-    height: '100%',
   },
   swiper: {
     paddingTop: Constants.statusBarHeight,
@@ -1267,6 +1347,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#f427f3',
         backgroundColor: 'transparent',
+        elevation: 100,
       },
     }),
 
@@ -1284,12 +1365,14 @@ const styles = StyleSheet.create({
       },
       android: {
         marginRight: 10,
-        marginTop: -10,
+        marginTop: -5,
+        marginBottom: 10,
         textAlign: 'right',
         fontSize: 15,
         color: '#863fba',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
+
       },
     }),
 
@@ -1328,13 +1411,38 @@ const styles = StyleSheet.create({
     width,
     flex: 3,
   },
+  logobutton: {
+    ...Platform.select({
+      ios: {
+
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: 5,
+        height: 28,
+        width: 40,
+      },
+    }),
+  },
   button: {
-    width: 90,
-    height: 30,
-    marginTop: -35,
-    marginLeft: Dimensions.get('window').width / 2.6,
-    backgroundColor: 'transparent',
-    padding: 20,
+    ...Platform.select({
+      ios: {
+        width: 90,
+        height: 30,
+        marginTop: -35,
+        marginLeft: Dimensions.get('window').width / 2.6,
+        backgroundColor: 'transparent',
+        padding: 20,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8.5,
+        height: 30,
+        flexDirection: 'row',
+      },
+    }),
   },
   button2: {
     width: 10,
@@ -1350,6 +1458,21 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
   },
+  search2: {
+    ...Platform.select({
+      ios: {
+        width: 0,
+        height: 0,
+      },
+      android: {
+        position: 'absolute',
+        height: 45,
+        backgroundColor: '#dee6ee',
+        width: Dimensions.get('window').width,
+      },
+    }),
+
+  },
   search: {
     ...Platform.select({
       ios: {
@@ -1361,12 +1484,11 @@ const styles = StyleSheet.create({
         padding: 0,
       },
       android: {
-        width: 30,
-        height: 30,
-        marginLeft: 10,
-        marginTop: -20,
-        backgroundColor: 'transparent',
-        padding: 0,
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: 5,
+        height: 28,
+        width: 40,
       },
     }),
 
@@ -1384,7 +1506,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: '100%',
         position: "absolute",
-        bottom: 0,
+        top: 0,
         backgroundColor: '#dee6ee',
       },
     }),
@@ -1447,7 +1569,20 @@ const styles = StyleSheet.create({
       borderRadius: 12,
       backgroundColor: 'transparent',
     },
-
+  header: {
+    ...Platform.select({
+      ios: {
+      },
+      android: {
+        height: 40,
+        width: '100%',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        backgroundColor: '#dee6ee',
+      },
+    }),
+  },
   footer: {
     height: 40,
     width: '100%',
@@ -1544,7 +1679,18 @@ const styles = StyleSheet.create({
     height: 25,
   },
 });
+async function register() {
+  const {status} = await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
+  console.log(status)
+  if(status!== 'granted')
+  {
+    Alert.alert("You need to enable permissions in settings");
+    return;
+  }
 
+  const token = await Expo.Notifications.getExpoPushTokenAsync();
+  console.log(status,token)
+};
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 

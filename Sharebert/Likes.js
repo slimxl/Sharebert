@@ -9,12 +9,15 @@ import {
   StyleSheet,
   Linking,
   Alert,
+  TouchableWithoutFeedback,
   FlatList,
   Share,
   ImageBackground,
   Platform,
   Dimensions,
 } from 'react-native';
+import Notification from 'react-native-in-app-notification';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { Constants, Font } from 'expo';
 const backAction = NavigationActions.back({
@@ -37,12 +40,12 @@ class Likes extends Component {
     this.state = {
       isOpen: false,
       selectedItem: 'Likes',
+      showAlert: false,      
       userPoints: userPoints,
       userID: userID,
     };
     this.getFile();
   }
-
   onMenuItemSelected = item => {
     this.setState({
       isOpen: false,
@@ -54,16 +57,20 @@ class Likes extends Component {
       this.props.navigation.navigate('Explore');
     }
   };
-
-  toggle() {
+  showAlert = () => {
     this.setState({
-      isOpen: !this.state.isOpen,
+      showAlert: true
     });
-  }
+    this.forceUpdate();
+  };
 
-  updateMenuState(isOpen) {
-    this.setState({ isOpen });
-  }
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+    this.forceUpdate();
+    
+  };
 
   shareURL(item) {
     try {
@@ -111,7 +118,21 @@ class Likes extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    if (Platform.OS === 'android') {
+                      this.notification.show({
+                        title: 'You got points!!',
+                        message: 'Thanks For Sharing!',
+                        icon: {uri: 'https://i.imgur.com/xW6iH48.png'},
+                        onPress: () => this.showAlert(),
+                      });
+
+                    }
+                    else
+                    {
+                      this.showAlert();
+                      console.log('ios');
+                    }
                     this.forceUpdate();
 
                   }
@@ -197,13 +218,13 @@ class Likes extends Component {
         width: '100%',
         height: '100%'
       }}>
-          <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
-          <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
-          <Text numberOfLines={2} style={styles.textEmpty}></Text>
-          <Text numberOfLines={2} style={styles.textEmpty2}></Text>
-          <Text numberOfLines={2} style={styles.textEmpty}></Text>
-          <Text numberOfLines={2} style={styles.textEmpty2}></Text>
-          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+        <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
+        <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
+        <Text numberOfLines={2} style={styles.textEmpty}></Text>
+        <Text numberOfLines={2} style={styles.textEmpty2}></Text>
+        <Text numberOfLines={2} style={styles.textEmpty}></Text>
+        <Text numberOfLines={2} style={styles.textEmpty2}></Text>
+        <Text numberOfLines={2} style={styles.textEmpty}></Text>
       </View>
     )
 
@@ -227,13 +248,14 @@ class Likes extends Component {
             from{' '}
             <Text style={{ color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat' }}> {item.Retailer}</Text>
           </Text>
-          <TouchableOpacity onPress={() => this.openURL(item)}>
+          <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
             <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.shareURL(item)}>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => this.shareURL(item)}>
             <Image style={styles.buyBut} source={require('./assets/icons/sharebutton.png')} />
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
           <Image style={styles.divider}
+            source={require('./assets/empty2.png')}
           />
         </View>
       </View>
@@ -241,8 +263,8 @@ class Likes extends Component {
   };
 
   render() {
+    const { showAlert } = this.state;    
     return (
-
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
@@ -267,6 +289,7 @@ class Likes extends Component {
           source={require('./Logo.png')}
         />
         <TouchableOpacity
+          style={styles.hamburger2}
           onPress={() => {
             //this.props.navigation.dispatch(backAction); //navigate to explore
 
@@ -278,9 +301,12 @@ class Likes extends Component {
           }}>
           <Image
             style={styles.hamburger}
+            resizeMode='contain'
             source={require('./explore2.png')}
           />
         </TouchableOpacity>
+
+
         <Image
           resizeMode="contain"
           style={styles.heart}
@@ -289,22 +315,56 @@ class Likes extends Component {
           Things You Like
         </Text>
         <Image style={styles.dividerTop}
+          source={require('./assets/empty2.png')}
         />
-        
+
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
-          <View style={{ width: '100%', height: '80%' }}>
-          <FlatList backgroundColor={'transparent'}
-            style={{ width: '100%', height: '80%' }}
-            data={like}
-            keyExtractor={(item, index) => index}
-            renderItem={this._renderItem}
-            ListEmptyComponent={this.showEmptyListView()}
-          />
+          <View style={styles.likesviewscroll}>
+            <FlatList backgroundColor={'transparent'}
+              style={styles.likesviewscroll}
+              data={like}
+              keyExtractor={(item, index) => index}
+              renderItem={this._renderItem}
+              ListEmptyComponent={this.showEmptyListView()}
+            />
           </View>
         </ImageBackground>
 
+        
+         {
+           (Platform.OS==='android') 
+           ?
+           <Notification
+           ref={(ref) => { this.notification = ref; }} 
+           backgroundColour= '#ff2eff'
+            />
+            :
+            <View />
+         }
+         <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title="Points Obtained!"
+          message="Hey! Thanks for Sharing a product!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showCancelButton={false}
+          showConfirmButton={true}
+          cancelText=""
+          confirmText="Awesome!"
+          confirmButtonColor="#f427f3"
+          onCancelPressed={() => {
+            this.hideAlert();
+          }}
+          onConfirmPressed={() => {
+            this.hideAlert();
+          }}
+          onDismiss={() => {
+            this.hideAlert();
+          }}
+        />
       </View>
     );
   }
@@ -315,15 +375,18 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: Constants.statusBarHeight,
+        flex: 1,
+        backgroundColor: 'white',
+
       },
       android: {
         marginTop: Constants.statusBarHeight,
+        backgroundColor: '#dee6ee',
+
       },
-      backgroundColor: 'transparent',
     }),
 
-    flex: 1,
-    backgroundColor: '#F5FCFF',
+
   },
   text2: {
     ...Platform.select({
@@ -337,7 +400,7 @@ const styles = StyleSheet.create({
       },
       android: {
         marginRight: 10,
-        marginTop: 0,
+        marginTop: 10,
         textAlign: 'right',
         fontSize: 15,
         color: '#f427f3',
@@ -360,6 +423,7 @@ const styles = StyleSheet.create({
       android: {
         marginRight: 10,
         marginTop: -10,
+        marginBottom: 20,
         textAlign: 'right',
         fontSize: 15,
         color: '#863fba',
@@ -379,9 +443,37 @@ const styles = StyleSheet.create({
         padding: 0,
       },
       android: {
-        width: 30,
-        height: 30,
+        position: 'absolute',
         marginTop: 5,
+        marginLeft: 15,
+        height: 40,
+        width: 90,
+      },
+    }),
+
+  },
+  likesviewscroll: {
+    ...Platform.select({
+      ios: {
+        width: '100%',
+        height: '80%',
+      },
+      android: {
+        width: '100%',
+        height: '70%',
+      },
+    }),
+  },
+  hamburger2: {
+    ...Platform.select({
+      ios: {
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: 10,
+        height: 50,
+        width: 150,
       },
     }),
 
@@ -390,8 +482,8 @@ const styles = StyleSheet.create({
     {
       width: Dimensions.get('window').width,
       height: 30,
-      paddingTop: 20,
-      marginTop: -10,
+      paddingTop: 30,
+      marginTop: -15,
       marginBottom: 26,
       backgroundColor: 'white',
 
@@ -405,11 +497,23 @@ const styles = StyleSheet.create({
   },
   divider:
     {
-      width: Dimensions.get('window').width - 30,
-      height: 2,
-      marginLeft: 15,
-      marginTop: 30,
-      backgroundColor: '#dee6ee',
+      ...Platform.select({
+        ios: {
+          width: Dimensions.get('window').width - 30,
+          height: 2,
+          marginLeft: 15,
+          marginTop: 30,
+          backgroundColor: '#dee6ee',
+        },
+        android: {
+          width: Dimensions.get('window').width - 30,
+          height: 2,
+          marginLeft: 15,
+          marginTop: 30,
+          backgroundColor: '#dee6ee',
+        },
+      }),
+
     },
   shareBut:
     {
@@ -460,8 +564,11 @@ const styles = StyleSheet.create({
         padding: 20,
       },
       android: {
+        position: 'absolute',
         marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8.5,
         height: 30,
+        flexDirection: 'row',
       },
     }),
   },
@@ -474,8 +581,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#dee6ee',
       },
       android: {
-        marginTop: -10,
-        height: 100,
+        position: 'absolute',
+        marginTop: 0,
+        width: '100%',
+        height: 50,
+        backgroundColor: '#dee6ee',
       },
     }),
 
