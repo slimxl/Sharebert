@@ -618,10 +618,11 @@ componentWillMount()
           toofast = false;
 
           data2 = shuffle(data2);
+          var RandomNumber2 = Math.floor(Math.random() *10) + 1
           fetch(
             'https://sharebert.com/APISEARCH.php?keyword=' +
             category +
-            '&page=1',
+            '&page='+RandomNumber2,
             { method: 'GET' }
           )
             .then(response => response.json())
