@@ -159,11 +159,6 @@ class Brands extends Component {
     Brand22['title'] = '800Bear.com';
     Brand22['image_url'] = require('./assets/brands/ehbear.jpg');
 
-    var Brand23 = {};
-    Brand23['Term'] = 'Fanzz';
-    Brand23['title'] = 'Fanzz';
-    Brand23['image_url'] = require('./assets/brands/fanzz.jpg');
-
     var Brand24 = {};
     Brand24['Term'] = 'Fat Head';
     Brand24['title'] = 'Fat Head';
@@ -410,7 +405,6 @@ class Brands extends Component {
   
       brandArr.push(Brand21);
       brandArr.push(Brand22);
-      brandArr.push(Brand23);
       brandArr.push(Brand24);
       brandArr.push(Brand25);
       brandArr.push(Brand26);
