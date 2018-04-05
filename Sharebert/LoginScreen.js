@@ -78,7 +78,7 @@ class LoginScreen extends Component {
             androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
             iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
-            behavior: 'web',
+            behavior: 'system',
           });
           stype = type;        
           suser = user;

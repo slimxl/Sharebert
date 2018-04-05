@@ -268,11 +268,11 @@ class Likes extends Component {
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
+            this.props.navigation.navigate('Explore', {
               id: userID,
               points: userPoints,
               uri: uri,
-            }));
+            });
           }}>
 
           <Image style={styles.header} />
@@ -293,11 +293,11 @@ class Likes extends Component {
           onPress={() => {
             //this.props.navigation.dispatch(backAction); //navigate to explore
 
-            this.props.navigation.dispatch(this.props.navigation.navigate('Explore', {
+            this.props.navigation.navigate('Explore', {
               id: userID,
               points: userPoints,
               uri: uri,
-            }));
+            });
           }}>
           <Image
             style={styles.hamburger}
