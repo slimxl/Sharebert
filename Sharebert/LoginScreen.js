@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
   },
   later: {
     width: 250,
-    height: 10,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
@@ -574,8 +574,8 @@ const styles = StyleSheet.create({
       },
       android: {
         flex: 1,
-        width: 250,
-        height: 25,
+        width: 150,
+        height: 10,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
