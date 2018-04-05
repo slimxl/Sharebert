@@ -265,7 +265,7 @@ componentWillMount()
       if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
 
         imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
-
+        
 
       }
       var retailfinal = '';

@@ -160,6 +160,7 @@ class Rewards extends Component {
                     <Text style={styles.text4}>{item.Cost} Points</Text>
                     <Image
                       style={styles.image}
+                      resizeMode ='contain'
                       source={{
                         uri: item.ImageURL,
                       }}

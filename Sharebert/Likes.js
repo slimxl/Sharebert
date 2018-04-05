@@ -231,9 +231,29 @@ class Likes extends Component {
   };
   _renderItem = data => {
     const item = data.item;
+    var imageURL2 = ""
+    try{
 
+    if(item.ImageURL.includes('tillys'))
+    {
+
+      imageURL2 = item.ImageURL.substring(0, item.ImageURL.indexOf('?'));
+      
+    }
+    else
+    {
+      imageURL2 = item.ImageURL;
+    }
+    var finalretail = ""
+    if(item.Retailer.includes('shopDisney'))
+    {
+      finalretail = 'Paid Partnership with Disney';
+    }
+    else
+    {
+      finalretail =  item.Retailer;
+    }
     return (
-
       <View >
         <View >
           <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
@@ -241,12 +261,12 @@ class Likes extends Component {
             resizeMode={'contain'}
             style={styles.image}
             source={{
-              uri: item.ImageURL,
+              uri: imageURL2,
             }}
           />
-          <Text style={{ marginTop: -50, marginBottom: 30, color: 'black', fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width, marginLeft: Dimensions.get('window').width / 2.9 }}>
+          <Text style={{ marginTop: -50, marginBottom: 30, color: 'black', fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width-10, marginLeft: Dimensions.get('window').width / 2.9 }}>
             from{' '}
-            <Text style={{ color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat' }}> {item.Retailer}</Text>
+            <Text style={{ color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat' }}> {finalretail}</Text>
           </Text>
           <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
             <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')} />
@@ -260,6 +280,10 @@ class Likes extends Component {
         </View>
       </View>
     );
+    }catch(error)
+    {
+
+    }
   };
 
   render() {
