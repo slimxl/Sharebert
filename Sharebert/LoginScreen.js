@@ -17,6 +17,8 @@ var userEmail2 = '';
 var userID = 0;
 var name2 = 'Not Logged In';
 var userPoints = 0;
+var stype;
+var suser;
 var uri2 =
   'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
@@ -65,6 +67,8 @@ class LoginScreen extends Component {
             scopes: ['profile', 'email'],
             behavior: 'web',
           });
+          stype = type;
+          suser = user;
         }
         else if(Platform.OS==='android')
         {
@@ -76,16 +80,18 @@ class LoginScreen extends Component {
             scopes: ['profile', 'email'],
             behavior: 'system',
           });
+          stype = type;        
+          suser = user;
         }
      
 
-      switch (type) {
+      switch (stype) {
         case 'success': {
-          Alert.alert('Logged in!', `Hi ${user.name}!`);
-          userEmail2 = user.email;
+          Alert.alert('Logged in!', `Hi ${suser.name}!`);
+          userEmail2 = suser.email;
           doubleclick = true;
-          name2 = user.name;
-          uri2 = user.photoUrl;
+          name2 = suser.name;
+          uri2 = suser.photoUrl;
           lastlogged = true;
 
           this.checkPoints();
@@ -97,10 +103,19 @@ class LoginScreen extends Component {
         }
         default: {
           Alert.alert('Oops!', 'Login failed!');
+          //Alert.alert('googleDefault', JSON.stringify(stype));
+          
+          console.log(stype + "google");
         }
       }
     } catch (e) {
+      //console.log(e + "google");
       Alert.alert('Oops!', 'Login failed!');
+    console.log("Error", e.stack);
+    console.log("Error", e.name);
+    console.log("Error", e.message);
+      
+      //Alert.alert('googleErr', JSON.stringify(e.message));
     }
   }
   _handleGoogleLogin = () => {
@@ -132,6 +147,7 @@ class LoginScreen extends Component {
       );
     }
   };
+  
   _handleFacebookLogin = () => {
     if (doubleclick) {
       Alert.alert("Hang On!");
@@ -352,10 +368,16 @@ class LoginScreen extends Component {
         }
         default: {
           Alert.alert('Oops!', 'Login failed!');
+          //Alert.alert('facebook', JSON.stringify(type));
+          
+          console.log(type + "facebook");
         }
       }
     } catch (e) {
       Alert.alert('Oops!', 'Login failed!');
+      //Alert.alert('facebook', JSON.stringify(e));
+      
+      console.log(e + "facebook");
     }
   };
 
@@ -563,6 +585,24 @@ const styles = StyleSheet.create({
     
   },
 });
+
+export function getToken (code, type = 'web') {
+  const redirectUri = (type === 'movil') ? null : 'postmessage';
+  const oauth2Client = new OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    redirectUri
+  );
+  return new Promise((resolve, reject) => {
+     oauth2Client.getToken(code, (err, tokens) => {
+        if (!err) {
+          resolve(tokens);
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
 export { userEmail2 };
 export { name2 };
 export { uri2 };

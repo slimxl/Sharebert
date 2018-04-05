@@ -403,6 +403,7 @@ componentWillMount()
   };
 
   checkUpdatePoints = () => {
+    try{
     if (userID === 0) {
       return;
     }
@@ -418,6 +419,11 @@ componentWillMount()
         this.forceUpdate();
       })
       .done();
+    }
+    catch(error)
+    {
+      console.error(error); 
+    }
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
