@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
   },
   later: {
     width: 250,
-    height: 100,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
