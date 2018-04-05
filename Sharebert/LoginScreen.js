@@ -57,33 +57,31 @@ class LoginScreen extends Component {
   }
   _handleFinalGoogleLogin = async () => {
     try {
-        if(Platform.OS==='ios')
-        {
-          const { type, user } = await Google.logInAsync({
-            androidStandaloneAppClientId: '1078598871426-90mv7k4f48vpaaj6s9ld9usv1m4rtofp.apps.googleusercontent.com',
-            iosStandaloneAppClientId: '376011592870-vudl1kb57fmvg541i988gq8ospcchd8q.apps.googleusercontent.com',
-            androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
-            iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
-            scopes: ['profile', 'email'],
-            behavior: 'web',
-          });
-          stype = type;
-          suser = user;
-        }
-        else if(Platform.OS==='android')
-        {
-          const { type, user } = await Google.logInAsync({
-            androidStandaloneAppClientId: '1078598871426-90mv7k4f48vpaaj6s9ld9usv1m4rtofp.apps.googleusercontent.com',
-            iosStandaloneAppClientId: '376011592870-vudl1kb57fmvg541i988gq8ospcchd8q.apps.googleusercontent.com',
-            androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
-            iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
-            scopes: ['profile', 'email'],
-            behavior: 'system',
-          });
-          stype = type;        
-          suser = user;
-        }
-     
+      if (Platform.OS === 'ios') {
+        const { type, user } = await Google.logInAsync({
+          androidStandaloneAppClientId: '1078598871426-90mv7k4f48vpaaj6s9ld9usv1m4rtofp.apps.googleusercontent.com',
+          iosStandaloneAppClientId: '376011592870-vudl1kb57fmvg541i988gq8ospcchd8q.apps.googleusercontent.com',
+          androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
+          iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
+          scopes: ['profile', 'email'],
+          behavior: 'web',
+        });
+        stype = type;
+        suser = user;
+      }
+      else if (Platform.OS === 'android') {
+        const { type, user } = await Google.logInAsync({
+          androidStandaloneAppClientId: '1078598871426-90mv7k4f48vpaaj6s9ld9usv1m4rtofp.apps.googleusercontent.com',
+          iosStandaloneAppClientId: '376011592870-vudl1kb57fmvg541i988gq8ospcchd8q.apps.googleusercontent.com',
+          androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
+          iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
+          scopes: ['profile', 'email'],
+          behavior: 'system',
+        });
+        stype = type;
+        suser = user;
+      }
+
 
       switch (stype) {
         case 'success': {
@@ -104,17 +102,17 @@ class LoginScreen extends Component {
         default: {
           Alert.alert('Oops!', 'Login failed!');
           //Alert.alert('googleDefault', JSON.stringify(stype));
-          
+
           console.log(stype + "google");
         }
       }
     } catch (e) {
       //console.log(e + "google");
       Alert.alert('Oops!', 'Login failed!');
-    console.log("Error", e.stack);
-    console.log("Error", e.name);
-    console.log("Error", e.message);
-      
+      console.log("Error", e.stack);
+      console.log("Error", e.name);
+      console.log("Error", e.message);
+
       //Alert.alert('googleErr', JSON.stringify(e.message));
     }
   }
@@ -147,7 +145,7 @@ class LoginScreen extends Component {
       );
     }
   };
-  
+
   _handleFacebookLogin = () => {
     if (doubleclick) {
       Alert.alert("Hang On!");
@@ -311,19 +309,23 @@ class LoginScreen extends Component {
   }
 
   checkUpdatePoints = () => {
-    fetch(
-      'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
-      userEmail2,
-      { method: 'GET' }
-    )
-      .then(response => response.json())
-      .then(responseData => {
-        var test = responseData['Points'];
-        userPoints = test;
-        this.saveNewPoints();
-        this.onSubmitEdit('Login');
-      })
-      .done();
+    try {
+      fetch(
+        'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+        userEmail2,
+        { method: 'GET' }
+      )
+        .then(response => response.json())
+        .then(responseData => {
+          var test = responseData['Points'];
+          userPoints = test;
+          this.saveNewPoints();
+          this.onSubmitEdit('Login');
+        })
+        .done();
+    } catch (error) {
+
+    }
   };
 
   _handleFinalFacebookLogin = async () => {
@@ -369,62 +371,65 @@ class LoginScreen extends Component {
         default: {
           Alert.alert('Oops!', 'Login failed!');
           //Alert.alert('facebook', JSON.stringify(type));
-          
+
           console.log(type + "facebook");
         }
       }
     } catch (e) {
       Alert.alert('Oops!', 'Login failed!');
       //Alert.alert('facebook', JSON.stringify(e));
-      
+
       console.log(e + "facebook");
     }
   };
 
   checkPoints = () => {
-
-    if (userEmail2 != '') {
-      fetch(
-        'https://sharebert.com/ReturnLoginToServerWeb.php?uemail=' +
-        userEmail2 +
-        '&uname=' +
-        name2,
-        { method: 'GET' }
-      )
-        .then(() => {
-          fetch(
-            'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
-            userEmail2,
-            { method: 'GET' }
-          )
-            .then(response => response.json())
-            .then(responseData => {
-              var test = responseData['Points'];
-              userPoints = test;
-            })
-            .done();
-        })
-        .done();
-
-
-      fetch(
-        'https://biosystematic-addit.000webhostapp.com/GetIDfromEmail.php?uemail=' +
-        userEmail2,
-        { method: 'GET' }
-      )
-        .then(response2 => response2.json())
-        .then(responseData2 => {
-          var test = responseData2['id'];
-          userID = test;
-          this.saveFile();
-          this.onSubmitEdit('Login');
-        })
-        .done();
+    try {
+      if (userEmail2 != '') {
+        fetch(
+          'https://sharebert.com/ReturnLoginToServerWeb.php?uemail=' +
+          userEmail2 +
+          '&uname=' +
+          name2,
+          { method: 'GET' }
+        )
+          .then(() => {
+            fetch(
+              'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+              userEmail2,
+              { method: 'GET' }
+            )
+              .then(response => response.json())
+              .then(responseData => {
+                var test = responseData['Points'];
+                userPoints = test;
+              })
+              .done();
+          })
+          .done();
 
 
-    }
-    else {
-      Alert.alert("no Email");
+        fetch(
+          'https://biosystematic-addit.000webhostapp.com/GetIDfromEmail.php?uemail=' +
+          userEmail2,
+          { method: 'GET' }
+        )
+          .then(response2 => response2.json())
+          .then(responseData2 => {
+            var test = responseData2['id'];
+            userID = test;
+            this.saveFile();
+            this.onSubmitEdit('Login');
+          })
+          .done();
+
+
+      }
+      else {
+        Alert.alert("no Email");
+      }
+    } catch (error) {
+
     }
   };
   render() {
@@ -582,11 +587,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
       },
     }),
-    
+
   },
 });
 
-export function getToken (code, type = 'web') {
+export function getToken(code, type = 'web') {
   const redirectUri = (type === 'movil') ? null : 'postmessage';
   const oauth2Client = new OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -594,13 +599,13 @@ export function getToken (code, type = 'web') {
     redirectUri
   );
   return new Promise((resolve, reject) => {
-     oauth2Client.getToken(code, (err, tokens) => {
-        if (!err) {
-          resolve(tokens);
-        } else {
-          reject(err);
-        }
-      });
+    oauth2Client.getToken(code, (err, tokens) => {
+      if (!err) {
+        resolve(tokens);
+      } else {
+        reject(err);
+      }
+    });
   });
 }
 export { userEmail2 };

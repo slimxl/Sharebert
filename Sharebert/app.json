@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "com.Sharebert.Sharebert.Sharebert",
-      "versionCode": 32,
+      "versionCode": 34,
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyBwCDHczeBDLMUc3-8hr336rkFNp2HDDQs",

@@ -1696,7 +1696,12 @@ async function register() {
 
   const token = await Expo.Notifications.getExpoPushTokenAsync();
   console.log(status,token)
+  try{
   fetch('https://biosystematic-addit.000webhostapp.com/SendToken.php?token='+token+'&ui='+userID, { method: 'GET' })
+  }
+  catch (error) {
+    console.error(error);
+  }
 
 
 };
