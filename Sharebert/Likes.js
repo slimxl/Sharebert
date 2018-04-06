@@ -290,15 +290,16 @@ class Likes extends Component {
     const { showAlert } = this.state;    
     return (
       <View style={styles.container}>
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           onPress={() => {
             this.props.navigation.navigate('Explore', {
               id: userID,
               points: userPoints,
               uri: uri,
             });
-          }}>
-
+          }}
+          >
+          <View>
           <Image style={styles.header} />
           <Text style={styles.text2}>
             {userPoints + '\n'}
@@ -306,13 +307,14 @@ class Likes extends Component {
           <Text style={styles.pointsText}>
             Points
               </Text>
-        </TouchableOpacity>
+              </View>
+        </TouchableWithoutFeedback>
         <Image
           resizeMode="contain"
           style={styles.button}
           source={require('./Logo.png')}
         />
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           style={styles.hamburger2}
           onPress={() => {
             //this.props.navigation.dispatch(backAction); //navigate to explore
@@ -328,7 +330,7 @@ class Likes extends Component {
             resizeMode='contain'
             source={require('./explore2.png')}
           />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
 
 
         <Image
