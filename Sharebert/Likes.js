@@ -40,7 +40,7 @@ class Likes extends Component {
     this.state = {
       isOpen: false,
       selectedItem: 'Likes',
-      showAlert: false,      
+      showAlert: false,
       userPoints: userPoints,
       userID: userID,
     };
@@ -69,7 +69,7 @@ class Likes extends Component {
       showAlert: false
     });
     this.forceUpdate();
-    
+
   };
 
   shareURL(item) {
@@ -123,13 +123,12 @@ class Likes extends Component {
                       this.notification.show({
                         title: 'You got points!!',
                         message: 'Thanks For Sharing!',
-                        icon: {uri: 'https://i.imgur.com/xW6iH48.png'},
+                        icon: { uri: 'https://i.imgur.com/xW6iH48.png' },
                         onPress: () => this.showAlert(),
                       });
 
                     }
-                    else
-                    {
+                    else {
                       this.showAlert();
                       console.log('ios');
                     }
@@ -214,85 +213,91 @@ class Likes extends Component {
   showEmptyListView = () => {
 
     return (
-      <View style={{
-        width: '100%',
-        height: '100%'
-      }}>
-        <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
-        <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
-        <Text numberOfLines={2} style={styles.textEmpty}></Text>
-        <Text numberOfLines={2} style={styles.textEmpty2}></Text>
-        <Text numberOfLines={2} style={styles.textEmpty}></Text>
-        <Text numberOfLines={2} style={styles.textEmpty2}></Text>
-        <Text numberOfLines={2} style={styles.textEmpty}></Text>
-      </View>
+
+      <TouchableWithoutFeedback
+        onPress={() => {
+          this.props.navigation.navigate('Explore', {
+            id: userID,
+            points: userPoints,
+            uri: uri,
+          });
+        }}
+      >
+        <View style={{
+          width: '100%',
+          height: '100%'
+        }}>
+          <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
+          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}></Text>
+          <Text numberOfLines={2} style={styles.textEmpty}></Text>
+        </View>
+      </TouchableWithoutFeedback>
     )
 
   };
   _renderItem = data => {
     const item = data.item;
     var imageURL2 = ""
-    try{
+    try {
 
-    if(item.ImageURL.includes('tillys'))
-    {
+      if (item.ImageURL.includes('tillys')) {
 
-      imageURL2 = item.ImageURL.substring(0, item.ImageURL.indexOf('?'));
-      
-    }
-    else
-    {
-      imageURL2 = item.ImageURL;
-    }
-    var finalretail = ""
-    if(item.Retailer.includes('shopDisney'))
-    {
-      finalretail = 'Paid Partnership with Disney';
-    }
-    else
-    {
-      finalretail =  item.Retailer;
-    }
-    return (
-      <View >
+        imageURL2 = item.ImageURL.substring(0, item.ImageURL.indexOf('?'));
+
+      }
+      else {
+        imageURL2 = item.ImageURL;
+      }
+      var finalretail = ""
+      if (item.Retailer.includes('shopDisney')) {
+        finalretail = 'Paid Partnership with Disney';
+      }
+      else {
+        finalretail = item.Retailer;
+      }
+      return (
         <View >
-        <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
-          <View>
-          <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
-          <Image
-            resizeMode={'contain'}
-            style={styles.image}
-            source={{
-              uri: imageURL2,
-            }}
-          />
+          <View >
+            <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
+              <View>
+                <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
+                <Image
+                  resizeMode={'contain'}
+                  style={styles.image}
+                  source={{
+                    uri: imageURL2,
+                  }}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+
+            <Text style={{ marginTop: -50, marginBottom: 30, color: 'black', fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width - 10, marginLeft: Dimensions.get('window').width / 2.9 }}>
+              from{' '}
+              <Text style={{ color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat' }}> {finalretail}</Text>
+            </Text>
+            <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
+              <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')} />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => this.shareURL(item)}>
+              <Image style={styles.buyBut} source={require('./assets/icons/sharebutton.png')} />
+            </TouchableWithoutFeedback>
+            <Image style={styles.divider}
+              source={require('./assets/empty2.png')}
+            />
           </View>
-          </TouchableWithoutFeedback>
-          
-          <Text style={{ marginTop: -50, marginBottom: 30, color: 'black', fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width-10, marginLeft: Dimensions.get('window').width / 2.9 }}>
-            from{' '}
-            <Text style={{ color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat' }}> {finalretail}</Text>
-          </Text>
-          <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
-            <Image style={styles.shareBut} source={require('./assets/icons/greenbuybutton.png')} />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => this.shareURL(item)}>
-            <Image style={styles.buyBut} source={require('./assets/icons/sharebutton.png')} />
-          </TouchableWithoutFeedback>
-          <Image style={styles.divider}
-            source={require('./assets/empty2.png')}
-          />
         </View>
-      </View>
-    );
-    }catch(error)
-    {
+      );
+    } catch (error) {
 
     }
   };
 
   render() {
-    const { showAlert } = this.state;    
+    const { showAlert } = this.state;
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback
@@ -303,16 +308,16 @@ class Likes extends Component {
               uri: uri,
             });
           }}
-          >
+        >
           <View>
-          <Image style={styles.header} />
-          <Text style={styles.text2}>
-            {userPoints + '\n'}
-          </Text>
-          <Text style={styles.pointsText}>
-            Points
+            <Image style={styles.header} />
+            <Text style={styles.text2}>
+              {userPoints + '\n'}
+            </Text>
+            <Text style={styles.pointsText}>
+              Points
               </Text>
-              </View>
+          </View>
         </TouchableWithoutFeedback>
         <Image
           resizeMode="contain"
@@ -363,18 +368,18 @@ class Likes extends Component {
           </View>
         </ImageBackground>
 
-        
-         {
-           (Platform.OS==='android') 
-           ?
-           <Notification
-           ref={(ref) => { this.notification = ref; }} 
-           backgroundColour= '#ff2eff'
+
+        {
+          (Platform.OS === 'android')
+            ?
+            <Notification
+              ref={(ref) => { this.notification = ref; }}
+              backgroundColour='#ff2eff'
             />
             :
             <View />
-         }
-         <AwesomeAlert
+        }
+        <AwesomeAlert
           show={showAlert}
           showProgress={false}
           title="Points Obtained!"
@@ -474,7 +479,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         padding: 0,
         marginBottom: 30,
-        
+
       },
       android: {
         position: 'absolute',
