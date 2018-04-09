@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  TouchableWithoutFeedback,
   StyleSheet,
   Linking,
   Alert,
@@ -157,11 +158,6 @@ class Brands extends Component {
     Brand22['Term'] = '800Bear.com';
     Brand22['title'] = '800Bear.com';
     Brand22['image_url'] = require('./assets/brands/ehbear.jpg');
-
-    var Brand23 = {};
-    Brand23['Term'] = 'Fanzz';
-    Brand23['title'] = 'Fanzz';
-    Brand23['image_url'] = require('./assets/brands/fanzz.jpg');
 
     var Brand24 = {};
     Brand24['Term'] = 'Fat Head';
@@ -409,7 +405,6 @@ class Brands extends Component {
   
       brandArr.push(Brand21);
       brandArr.push(Brand22);
-      brandArr.push(Brand23);
       brandArr.push(Brand24);
       brandArr.push(Brand25);
       brandArr.push(Brand26);
@@ -516,7 +511,11 @@ class Brands extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <TouchableOpacity>
+
+      <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
         <Image style={styles.header} />
         </TouchableOpacity>
         <Image
@@ -524,17 +523,18 @@ class Brands extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-        <TouchableOpacity
+        <TouchableWithoutFeedback
               onPress={() => 
               {
                 this.props.navigation.dispatch(backAction);
               }}>
               <Image
                 style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
+                resizeMode='contain'
+                source={require('./assets/arrow.png')}
               />
 
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         <Text style={styles.title}>
           Brands
         </Text>
@@ -563,21 +563,51 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   hamburger: {
-    width: 30,
-    height: 23,
-    marginLeft: 10,
-    marginTop: -48,
-    backgroundColor: 'transparent',
-    padding: 0,
+    ...Platform.select({
+      ios: {
+        width: 30,
+        height: 23,
+        marginLeft: 10,
+        marginTop: -48,
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: -5,
+        height: 25,
+        width: 70,
+      },
+    }),
+
   },
   title: {
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#ff2eff',
-    marginTop: -15,
-  },
+    ...Platform.select({
+        ios: {
+          fontFamily: "Montserrat",
+          fontSize: 18,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          color: '#0d2754',
+          marginTop: 30,
+          marginBottom: 0,
+          paddingBottom: 6,
+          backgroundColor: 'white',
+        },
+        android: {
+            fontFamily: "Montserrat",
+            fontSize: 18,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: '#0d2754',
+            marginTop: 60,
+            marginBottom: 0,
+            paddingBottom: 6,
+            backgroundColor: 'white',
+        },
+    }),
+},
 image: {
     width: 100,
     height: 100,
@@ -626,12 +656,23 @@ image: {
     }),
   },
   button: {
-    width: 100,
-    height: 70,
-    marginTop: -55,
-    marginLeft: 60,
-    backgroundColor: 'transparent',
-    padding: 20,
+    ...Platform.select({
+      ios: {
+        width: 100,
+        height: 70,
+        marginTop: -55,
+        marginLeft: Dimensions.get('window').width / 2.6,
+        backgroundColor: 'transparent',
+        padding: 20,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8.5,
+        height: 30,
+        flexDirection: 'row',
+      },
+    }),
   },
   header: {
     width: '100%',

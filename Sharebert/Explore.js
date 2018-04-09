@@ -4,6 +4,8 @@ import SideMenu from 'react-native-side-menu'; // Version can be specified in pa
 import Image2 from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Notification from 'react-native-in-app-notification';
 import {
   StyleSheet,
   AsyncStorage,
@@ -14,10 +16,12 @@ import {
   Image,
   Linking,
   Keyboard,
+  ImageBackground,
   Share,
   Platform,
   ActivityIndicator,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   TextInput,
   Dimensions,
 } from 'react-native';
@@ -42,7 +46,7 @@ var randoUsersLikes = [];
 class Explore extends Component {
   constructor(props) {
     super(props);
-    
+
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
@@ -55,15 +59,17 @@ class Explore extends Component {
       selectedItem: 'Explore',
       swipedAllCards: false,
       swipeDirection: '',
+      disable: true,
       isSwipingBack: false,
       cardIndex: 0,
+      showAlert: false,
       cardNum: 0,
       cat: false,
       category: '',
       title: '',
       jsonData: '',
       responseData: '',
-      url: 'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png',
+      url: 'https://i.imgur.com/qnHscIM.png',
       data: [],
       dataset: [],
       inputValue: 'Search',
@@ -72,36 +78,36 @@ class Explore extends Component {
     if (this.props.navigation.state.params.brands != undefined) {
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
-      .then(response => response.json())
-      .then(responseData => {
-        var data2 = [];
-        for (var i = 0; i < 20; i++) {
-          var obj = {};
-          obj['ASIN'] = responseData[i]['ASIN'];
-          obj['Title'] = responseData[i]['Title'];
-          obj['URL'] = responseData[i]['URL'];
-          obj['ImageURL'] = responseData[i]['ImageURL'];
-          obj['Retailer'] = responseData[i]['Website'];
-          if (brand === 'Amazon') {
-            obj['Retailer'] = 'Amazon';
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          for (var i = 0; i < 20; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData[i]['ASIN'];
+            obj['Title'] = responseData[i]['Title'];
+            obj['URL'] = responseData[i]['URL'];
+            obj['ImageURL'] = responseData[i]['ImageURL'];
+            obj['Retailer'] = responseData[i]['Website'];
+            if (brand === 'Amazon') {
+              obj['Retailer'] = 'Amazon';
+            }
+            data2.push(obj);
           }
-          data2.push(obj);
-        }
-        toofast = false;
-        search = false;
-        data2 = shuffle(data2);
-        this.setState({
-          cardNum: this.state.cardNum,
-          url: data2[this.state.cardNum].ImageURL,
-          title: data2[this.state.cardNum].Title,
-          dataset: data2,
-          cat: false,
-        });
-      })
-      .done();
+          toofast = false;
+          search = false;
+          data2 = shuffle(data2);
+          this.setState({
+            cardNum: this.state.cardNum,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
+            disable: false,
+            dataset: data2,
+            cat: false,
+          });
+        })
+        .done();
     }
-    else if(this.props.navigation.state.params.search !=undefined)
-    {
+    else if (this.props.navigation.state.params.search != undefined) {
       searchterm = this.props.navigation.state.params.search;
       fetch(
         'https://sharebert.com/APISEARCH.php?keyword=' +
@@ -115,7 +121,7 @@ class Explore extends Component {
           var count = responseData['Amazon'][0][7];
           datasize = count;
           searchcount = datasize;
-  
+
           console.log(searchcount);
           for (var i = 0; i < count; i++) {
             var obj = {};
@@ -133,46 +139,47 @@ class Explore extends Component {
             dataset: data2,
             url: data2[this.state.cardNum].ImageURL,
             title: data2[this.state.cardNum].Title,
+            disable: false,
             category: 'All',
             cat: false,
           });
         })
         .done();
     }
-    else {
-      fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
-      .then(response => response.json())
-        .then(responseData => {
-          var data2 = [];
-          for (var i = 0; i < 20; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-            obj['Title'] = responseData['Amazon'][i]['Title'];
-            obj['URL'] = responseData['Amazon'][i]['URL'];
-            obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-            obj['Retailer'] = "Amazon";
+    // else {
+    //   fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
+    //   .then(response => response.json())
+    //     .then(responseData => {
+    //       var data2 = [];
+    //       for (var i = 0; i < 20; i++) {
+    //         var obj = {};
+    //         obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
+    //         obj['Title'] = responseData['Amazon'][i]['Title'];
+    //         obj['URL'] = responseData['Amazon'][i]['URL'];
+    //         obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+    //         obj['Retailer'] = "Amazon";
 
-            var obj2 = {};
-            obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-            obj2['Title'] = responseData['Others'][i]['Title'];
-            obj2['URL'] = responseData['Others'][i]['URL'];
-            obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-            obj2['Retailer'] = responseData['Others'][i]['Website'];
+    //         var obj2 = {};
+    //         obj2['ASIN'] = responseData['Others'][i]['ASIN'];
+    //         obj2['Title'] = responseData['Others'][i]['Title'];
+    //         obj2['URL'] = responseData['Others'][i]['URL'];
+    //         obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+    //         obj2['Retailer'] = responseData['Others'][i]['Website'];
 
-            data2.push(obj);
-            data2.push(obj2);
-          }
-          data2 = shuffle(data2);
-          this.setState({
-            cardNum: this.state.cardNum,
-            url: data2[this.state.cardNum].ImageURL,
-            title: data2[this.state.cardNum].Title,
-            dataset: data2,
-            cat: false,
-          });
-        })
-        .done();
-    }
+    //         data2.push(obj);
+    //         data2.push(obj2);
+    //       }
+    //       data2 = shuffle(data2);
+    //       this.setState({
+    //         cardNum: this.state.cardNum,
+    //         url: data2[this.state.cardNum].ImageURL,
+    //         title: data2[this.state.cardNum].Title,
+    //         dataset: data2,
+    //         cat: false,
+    //       });
+    //     })
+    //     .done();
+    // }
     if (userID != 0 || userID != undefined || userID != null) {
 
       this.checkUpdatePoints();
@@ -182,12 +189,32 @@ class Explore extends Component {
       imgUrl = "http://graph.facebook.com/v2.5/" + RandomNumber + "/picture?height=200&height=200";
       randomPROFILEIMAGE.push(imgUrl);
     }
-    this.grabRandoLikes();    
+    this.grabRandoLikes();
     this.getNewUser();
     setInterval(this.getNewUser, 17000);//every 17 seconds
 
   }
 
+
+componentWillMount()
+{
+  register();
+}
+  showAlert = () => {
+    this.setState({
+      showAlert: true
+    });
+    this.forceUpdate();
+    
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+    this.forceUpdate();
+    
+  };
   grabRandoLikes = async () => {
     var data2 = [];
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
@@ -218,7 +245,7 @@ class Explore extends Component {
   renderCard = () => {
     if (
       this.state.url ===
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       return (
         <View style={styles.card}>
@@ -230,7 +257,6 @@ class Explore extends Component {
               uri: this.state.url,
             }}
           />
-          <ActivityIndicator size="small" />
         </View>
 
       );
@@ -239,7 +265,7 @@ class Explore extends Component {
       if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
 
         imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
-
+        
 
       }
       var retailfinal = '';
@@ -285,8 +311,9 @@ class Explore extends Component {
   shareURL = () => {
     if (
       this.state.url ===
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
+      this.shareApp();
       return;
     }
     try {
@@ -297,7 +324,7 @@ class Explore extends Component {
               url: this.state.dataset[this.state.cardNum].URL,
             },
             android: {
-              message: 'Look at this : \n' +
+              message:
                 this.state.dataset[this.state.cardNum].URL,
             },
           }),
@@ -317,6 +344,7 @@ class Explore extends Component {
           }),
         }
       ).then(({ action, activityType }) => {
+
         if (action === Share.dismissedAction) {
           Alert.alert("Hey!", "Don't Forget, You Get Points for Sharing Products!");
         }
@@ -334,8 +362,21 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
+                    if (Platform.OS === 'android') {
+                      this.notification.show({
+                        title: 'You got points!!',
+                        message: 'Thanks For Sharing!',
+                        icon: {uri: 'https://i.imgur.com/xW6iH48.png'},
+                        onPress: () => this.showAlert(),
+                      });
+                    }
+                    else
+                    {
+                      this.showAlert();
+                    }
                     this.forceUpdate();
+
                   }
                 })
                 .done();
@@ -362,6 +403,7 @@ class Explore extends Component {
   };
 
   checkUpdatePoints = () => {
+    try{
     if (userID === 0) {
       return;
     }
@@ -377,6 +419,11 @@ class Explore extends Component {
         this.forceUpdate();
       })
       .done();
+    }
+    catch(error)
+    {
+      console.error(error); 
+    }
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
@@ -396,7 +443,7 @@ class Explore extends Component {
     console.log('yep');
     if (
       this.state.url ===
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       return;
     }
@@ -411,7 +458,7 @@ class Explore extends Component {
     try {
       if (
         this.state.url ===
-        'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+        'https://i.imgur.com/qnHscIM.png'
       ) {
         return;
       }
@@ -437,6 +484,7 @@ class Explore extends Component {
               cardNum: 0,
               dataset: data2,
               category: '',
+              disable: false,
               cat: false,
             });
           })
@@ -480,6 +528,7 @@ class Explore extends Component {
             data2 = shuffle(data2);
             this.setState({
               cardNum: 0,
+              disable: false,
               dataset: data2,
               category: '',
               cat: false,
@@ -524,8 +573,7 @@ class Explore extends Component {
   catGrab = category => {
     brand = '';
     var data2 = [];
-    if(category==='Travel')
-    {
+    if (category === 'Travel') {
       console.log(category);
       this.props.navigation.navigate('Travel', {
         id: userID,
@@ -570,10 +618,11 @@ class Explore extends Component {
           toofast = false;
 
           data2 = shuffle(data2);
+          var RandomNumber2 = Math.floor(Math.random() *10) + 1
           fetch(
             'https://sharebert.com/APISEARCH.php?keyword=' +
             category +
-            '&page=1',
+            '&page='+RandomNumber2,
             { method: 'GET' }
           )
             .then(response => response.json())
@@ -600,6 +649,7 @@ class Explore extends Component {
                 title: data2[this.state.cardNum].Title,
                 dataset: data2,
                 cat: true,
+                disable: false,
                 category: category,
               });
               console.log(this.state.dataset.length);
@@ -636,8 +686,11 @@ class Explore extends Component {
           data2 = shuffle(data2);
           this.setState({
             cardNum: 0,
+            url: data2[this.state.cardNum].ImageURL,
+            title: data2[this.state.cardNum].Title,
             dataset: data2,
             category: 'All',
+            disable: false,
             cat: false,
           });
         })
@@ -680,7 +733,7 @@ class Explore extends Component {
   onSwipedRight = () => {
     if (
       this.state.url !=
-      'https://s3.amazonaws.com/sbsupersharebert-us-east-03942032794023/wp-content/uploads/2017/06/19160520/Sharebert_Logo.png'
+      'https://i.imgur.com/qnHscIM.png'
     ) {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
         likes.push(this.state.dataset[this.state.cardNum - 1]);
@@ -697,11 +750,11 @@ class Explore extends Component {
         {
           ...Platform.select({
             ios: {
-              url: 'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+              url: 'https://sharebert.com/download',
             },
             android: {
               message: 'Look at this : \n' +
-                'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+                'https://sharebert.com/download',
             },
           }),
           title: 'Wow, did you see that?',
@@ -715,7 +768,7 @@ class Explore extends Component {
             android: {
               // Android only:
               dialogTitle: 'Share : ' +
-                'https://itunes.apple.com/us/app/sharebert/id1351955303?mt=8',
+                'https://sharebert.com/download',
             },
           }),
         }
@@ -905,9 +958,9 @@ class Explore extends Component {
 
   getNewUser = () => {
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    if (randoUsersLikes.length > 0&&this.refs.animatedTextref) {
+    if (randoUsersLikes.length > 0 && this.refs.animatedTextref) {
       this.setState({
-        
+
         UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
         randomPROFILEIMAGEstring: randomPROFILEIMAGE[RandomNumber],
       });
@@ -918,145 +971,164 @@ class Explore extends Component {
   }
 
   render() {
-
+    const { showAlert } = this.state;
     try {
       return (
-        <View style={styles.container}>
-        <Swiper
-          ref={swiper => {
-            this.swiper = swiper
-          }}
-          onSwiped={this.onSwiped}
-          onTapCard={this.openURL}
-          disableTopSwipe={true}
-          disableBottomSwipe={true}
-          disableTopSwipe={true}
-          disableBottomSwipe={true}
-          onSwipedRight={this.onSwipedRight}
-          infinite={true}
-          cards={this.state.cards}
-          cardIndex={this.state.cardIndex}
-          cardVerticalMargin={80}
-          renderCard={this.renderCard}
-          onSwipedAll={this.onSwipedAllCards}
-          stackSize={1}
-          marginTop={40}
-          cardVerticalMargin={100}
-          showSecondCard={false}
-          backgroundColor={'white'}
-          overlayLabels={{
-            bottom: {
-              title: 'BLEAH',
-              style: {
-                label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+
+
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={styles.container}>
+
+          <Swiper
+            ref={swiper => {
+              this.swiper = swiper
+            }}
+            onSwiped={this.onSwiped}
+            onTapCard={this.openURL}
+            disableTopSwipe={true}
+            disableBottomSwipe={this.state.disable}
+            disableLeftSwipe={this.state.disable}
+            disableRightSwipe={this.state.disable}
+            onSwipedRight={this.onSwipedRight}
+            infinite={true}
+            cards={this.state.cards}
+            cardIndex={this.state.cardIndex}
+            cardVerticalMargin={80}
+            renderCard={this.renderCard}
+            onSwipedAll={this.onSwipedAllCards}
+            stackSize={1}
+            marginTop={40}
+            cardVerticalMargin={100}
+            showSecondCard={false}
+            backgroundColor={'transparent'}
+            overlayLabels={{
+              bottom: {
+                title: 'REPORT BAD PRODUCT',
+                style: {
+                  label: {
+                    backgroundColor: 'black',
+                    borderColor: 'black',
+                    color: 'white',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }
+                }
+              },
+              left: {
+                title: 'NOPE',
+                style: {
+                  label: {
+                    backgroundColor: 'transparent',
+                    borderColor: 'transparent',
+                    color: 'red',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: -30
+                  }
+                }
+              },
+              right: {
+                title: 'LIKE',
+                style: {
+                  label: {
+                    backgroundColor: 'transparent',
+                    borderColor: 'transparent',
+                    color: '#ff2eff',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: 30
+                  }
+                }
+              },
+              top: {
+                title: 'SUPER LIKE',
+                style: {
+                  label: {
+                    backgroundColor: 'black',
+                    borderColor: 'black',
+                    color: 'white',
+                    borderWidth: 1
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }
                 }
               }
-            },
-            left: {
-              title: 'NOPE',
-              style: {
-                label: {
-                  backgroundColor: 'transparent',
-                  borderColor: 'transparent',
-                  color: 'red',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: -30
-                }
-              }
-            },
-            right: {
-              title: 'LIKE',
-              style: {
-                label: {
-                  backgroundColor: 'transparent',
-                  borderColor: 'transparent',
-                  color: '#ff2eff',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: 30
-                }
-              }
-            },
-            top: {
-              title: 'SUPER LIKE',
-              style: {
-                label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }
-              }
-            }
-          }}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-        >
-        </Swiper>
+            }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+          >
+          </Swiper>
 
           <Image style={styles.bg} />
+
+          <TouchableWithoutFeedback
+            onPress={this.shareApp}
+            style={styles.search2}>
+            <Image
+              resizeMode='contain'
+              style={styles.search2}
+              source={require('./assets/empty2.png')}
+            />
+          </TouchableWithoutFeedback>
+
+
           <Text style={styles.text2}>
             {userPoints + '\n'}
           </Text>
           <Text style={styles.pointsText}>
             Points
               </Text>
-          <TouchableOpacity >
-            <TouchableOpacity onPress={this.shareApp}>
-              <Image
-                resizeMode="contain"
-                style={styles.button}
-                source={require('./Logo.png')}
-              />
-            </TouchableOpacity>
-          </TouchableOpacity>
 
-          <TouchableOpacity
+
+          <TouchableWithoutFeedback
+            onPress={this.shareApp}
+            style={styles.button}>
+            <Image
+              resizeMode='contain'
+              style={styles.button}
+              source={require('./Logo.png')}
+            />
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
             onPress={() => this.props.navigation.navigate('Search', {
               id: userID,
               points: userPoints,
               uri: uri2,
             })}
-            style={{ flexDirection: 'row' }}>
+            style={styles.search}>
             <Image
+              resizeMode='contain'
               style={styles.search}
               source={require('./assets/icons/search-icon2.png')}
             />
-          </TouchableOpacity>
-          
+          </TouchableWithoutFeedback>
+
           <View>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               indicatorStyle={'black'}
               backgroundColor={'white'}
-              marginTop={-5}
-              height={75}
+              style={styles.scrollbar}
             >
               {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
                 id: userID,
@@ -1068,6 +1140,17 @@ class Explore extends Component {
                   source={require('./assets/Category/brands.png')}
                 />
               </TouchableOpacity>}
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+                <Image
+                  style={styles.catbars}
+                  source={require('./assets/Category/deals_v2.png')}
+                />
+
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('womens')}>
                 <Image
                   style={styles.catbar}
@@ -1121,229 +1204,103 @@ class Explore extends Component {
                   style={styles.catbars}
                   source={require('./assets/Category/random.png')}
                 />
-
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals',{
-                  id: userID,
-                  points: userPoints,
-                  uri: uri2,
-              })}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/deals_v2.png')}
-                />
-
-              </TouchableOpacity>
-              {/* <TouchableOpacity onPress={() => this.catGrab('Girl')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/girls.jpg')}
-                />
-                <Text style={styles.label}>
-                  Girls
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('health')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/health.jpg')}
-                />
-                <Text style={styles.label}>
-                  Health
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Home')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/home.jpg')}
-                />
-                <Text style={styles.label}>
-                  Home
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Kindle')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/kindle.jpg')}
-                />
-                <Text style={styles.label}>
-                  Kindle
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('men')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/men.jpg')}
-                />
-                <Text style={styles.label}>
-                  Men
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Misc')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/misc.jpg')}
-                />
-                <Text style={styles.label}>
-                  Misc
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('lawn')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/outdoors.jpg')}
-                />
-                <Text style={styles.labelShort}>
-                  Outdoor
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Shoes')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/shoes.jpg')}
-                />
-                <Text style={styles.label}>
-                  Shoes
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Sport')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/sports.jpg')}
-                />
-                <Text style={styles.label}>
-                  Sports
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Sunglasses')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/sunglasses.jpg')}
-                />
-                <Text style={styles.labelShort}>
-                  Sunglasses
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Toy')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/toys.jpg')}
-                />
-                <Text style={styles.label}>
-                  Toys
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/travel.jpg')}
-                />
-                <Text style={styles.label}>
-                  Travel
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Watches')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/watches.jpg')}
-                />
-                <Text style={styles.labelShort}>
-                  Watches
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Women')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/women.jpg')}
-                />
-                <Text style={styles.label}>
-                  Women
-                </Text>
-              </TouchableOpacity> */}
-              {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
-                id: userID,
-                points: userPoints,
-              })}>
-              
-                <Image
-                  style={styles.catbar}
-                  source={require('./Assett/brands.jpg')}
-                />
-                <Text style={styles.label}>
-                  Brands
-                </Text>
-              </TouchableOpacity> */}
             </ScrollView>
           </View>
-          {/* <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+          <TouchableOpacity disabled={true} style={styles.footerTicker}>
+            <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
             <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
             <Text style={styles.footerShareText}>
               <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
                 Share{' '}
               </Text>
-              to earn free points!
+              to earn free points!!
                   </Text>
-          </TouchableOpacity> */}
-          <TouchableOpacity disabled={true} style={styles.footerTicker}>
-            <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
-            </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem}  onPress={this.shareURL}>
-           <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
-            <Text style={styles.footerShareText}>
-              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                Share{' '}
-              </Text>
-              to earn free points!
-                  </Text>
-                  
-          </TouchableOpacity>
-          
-          <Image style={styles.footer} />
 
-          <TouchableOpacity style={styles.footerItem}
-          // onPress={() => this.props.navigation.navigate('Explore', {
-          //   id: userID,
-          //   points: userPoints,
-          // })}
-          >
-            <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-             source={require('./assets/menu/explore.png')}>
-
-            </Image>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-            onPress={() => this.props.navigation.navigate('Likes', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
-            <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
-
-            </Image>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerRewards} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-            onPress={() => this.props.navigation.navigate('Rewards', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
-            <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
-
-            </Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.footerProfile} hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
-            onPress={() => this.props.navigation.navigate('Shipping', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
-            <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+          <View style={styles.footer}>
+            <Image style={styles.footer} />
 
-            </Image>
-          </TouchableOpacity>
-        </View>
+            <TouchableWithoutFeedback style={styles.footerItem}
+            // onPress={() => this.props.navigation.navigate('Explore', {
+            //   id: userID,
+            //   points: userPoints,
+            // })}
+            >
+              <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                source={require('./assets/menu/explore.png')}>
+
+              </Image>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+              onPress={() => this.props.navigation.navigate('Likes', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+              <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+
+              </Image>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+              onPress={() => this.props.navigation.navigate('Rewards', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+              <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+
+              </Image>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+              onPress={() => this.props.navigation.navigate('Shipping', {
+                id: userID,
+                points: userPoints,
+                uri: uri2,
+              })}>
+              <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+
+              </Image>
+            </TouchableWithoutFeedback>
+          </View>
+          <AwesomeAlert
+            show={showAlert}
+            showProgress={false}
+            title="Points Obtained!"
+            message="Hey! Thanks for Sharing a product!"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={true}
+            showCancelButton={false}
+            showConfirmButton={true}
+            cancelText=""
+            confirmText="Awesome!"
+            confirmButtonColor="#f427f3"
+            onCancelPressed={() => {
+              this.hideAlert();
+            }}
+            onConfirmPressed={() => {
+              this.hideAlert();
+            }}
+            onDismiss={() => {
+              this.hideAlert();
+            }}
+          />
+           {
+           (Platform.OS==='android') 
+           ?
+           <Notification
+           ref={(ref) => { this.notification = ref; }} 
+           backgroundColour= '#ff2eff'
+            />
+            :
+            <View />
+         }
+        </ImageBackground>
       );
     } catch (error) {
       console.error(error);
@@ -1353,12 +1310,22 @@ class Explore extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
-    height: 100,
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
+    ...Platform.select({
+      ios: {
+        marginTop: Constants.statusBarHeight,
+        height: 100,
+        flex: 1,
+        //backgroundColor: '#F5FCFF',
+      },
+      android: {
+        marginTop: Constants.statusBarHeight,
+        flex: 1,
+        height: Dimensions.get('window').height,
+        backgroundColor: '#dee6ee',
 
+      },
+    }),
+  },
   swiper: {
     paddingTop: Constants.statusBarHeight,
   },
@@ -1371,21 +1338,63 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   text2: {
-    marginRight: 10,
-    marginTop: -40,
-    textAlign: 'right',
-    fontSize: 15,
-    color: '#f427f3',
-    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -40,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: 0,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#f427f3',
+        backgroundColor: 'transparent',
+        elevation: 100,
+      },
+    }),
+
   },
   pointsText: {
-    marginRight: 10,
-    marginTop: -20,
-    textAlign: 'right',
-    fontSize: 15,
-    color: '#863fba',
-    fontWeight: 'bold',
-    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -20,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: -5,
+        marginBottom: 10,
+        textAlign: 'right',
+        fontSize: 15,
+        color: '#863fba',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+
+      },
+    }),
+
+  },
+  scrollbar: {
+    ...Platform.select({
+      ios: {
+        marginTop: -5,
+        height: 75,
+      },
+      android: {
+        marginTop: -5,
+        height: 75,
+      },
+    }),
   },
   text: {
     fontFamily: "Montserrat",
@@ -1409,13 +1418,38 @@ const styles = StyleSheet.create({
     width,
     flex: 3,
   },
+  logobutton: {
+    ...Platform.select({
+      ios: {
+
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: 5,
+        height: 28,
+        width: 40,
+      },
+    }),
+  },
   button: {
-    width: 90,
-    height: 30,
-    marginTop: -35,
-    marginLeft: Dimensions.get('window').width / 2.7,
-    backgroundColor: 'transparent',
-    padding: 20,
+    ...Platform.select({
+      ios: {
+        width: 90,
+        height: 30,
+        marginTop: -35,
+        marginLeft: Dimensions.get('window').width / 2.6,
+        backgroundColor: 'transparent',
+        padding: 20,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8.5,
+        height: 30,
+        flexDirection: 'row',
+      },
+    }),
   },
   button2: {
     width: 10,
@@ -1431,20 +1465,59 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
   },
+  search2: {
+    ...Platform.select({
+      ios: {
+        width: 0,
+        height: 0,
+      },
+      android: {
+        position: 'absolute',
+        height: 45,
+        backgroundColor: '#dee6ee',
+        width: Dimensions.get('window').width,
+      },
+    }),
+
+  },
   search: {
-    width: 30,
-    height: 30,
-    marginLeft: 10,
-    marginTop: -35,
-    backgroundColor: 'transparent',
-    padding: 0,
+    ...Platform.select({
+      ios: {
+        width: 28,
+        height: 40,
+        marginLeft: 10,
+        marginTop: -40,
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: 5,
+        height: 28,
+        width: 40,
+      },
+    }),
+
   },
 
   bg: {
-    height: 190,
-    width: '100%',
-    marginTop: -150,
-    backgroundColor: '#dee6ee',
+    ...Platform.select({
+      ios: {
+        height: 190,
+        width: '100%',
+        marginTop: -150,
+        backgroundColor: '#dee6ee',
+      },
+      android: {
+        height: 40,
+        width: '100%',
+        position: "absolute",
+        top: 0,
+        backgroundColor: '#dee6ee',
+      },
+    }),
+
   },
   exploreBut:
     {
@@ -1503,7 +1576,20 @@ const styles = StyleSheet.create({
       borderRadius: 12,
       backgroundColor: 'transparent',
     },
-
+  header: {
+    ...Platform.select({
+      ios: {
+      },
+      android: {
+        height: 40,
+        width: '100%',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        backgroundColor: '#dee6ee',
+      },
+    }),
+  },
   footer: {
     height: 40,
     width: '100%',
@@ -1528,7 +1614,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: 'transparent',
   },
-  
+
   footerLikes: {
     height: 20,
     borderRadius: 12,
@@ -1568,7 +1654,7 @@ const styles = StyleSheet.create({
     color: '#747475',
     fontSize: 12,
   },
-  
+
   catbar: {
     width: 60,
     height: 88,
@@ -1600,7 +1686,25 @@ const styles = StyleSheet.create({
     height: 25,
   },
 });
+async function register() {
+  const {status} = await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
+  if(status!== 'granted')
+  {
+    Alert.alert("You need to enable permissions in settings");
+    return;
+  }
 
+  const token = await Expo.Notifications.getExpoPushTokenAsync();
+  console.log(status,token)
+  try{
+  fetch('https://biosystematic-addit.000webhostapp.com/SendToken.php?token='+token+'&ui='+userID, { method: 'GET' })
+  }
+  catch (error) {
+    console.error(error);
+  }
+
+
+};
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 

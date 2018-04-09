@@ -9,7 +9,9 @@ import Brands from './Brands';
 import Travel from './Travel';
 import Search from './Search';
 import Deals from './Deals';
+
 export default class App extends React.Component {
+  
   render() {
     return <AppNavigator />;
   }
@@ -43,7 +45,7 @@ const AppNavigator = StackNavigator(
     Likes: {
       screen: Likes,
       navigationOptions: ({ navigation }) => ({
-        header: true,
+        header: false,
         gesturesEnabled: false,
       }),
     },

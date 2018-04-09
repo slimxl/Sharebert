@@ -6,15 +6,16 @@
     "privacy": "unlisted",
     "scheme": "sharebert",
     "sdkVersion": "25.0.0",
-    "version": "1.1.7",
+    "version": "1.2.5",
     "orientation": "portrait",
     "primaryColor": "#ec47ff",
     "splash": {
-      "image": "./assets/splash.png"
+      "image": "./assets/splash.png",
+      "resizeMode": "cover"
     },
-    "icon": "https://i.imgur.com/139FgdQ.png",
+    "icon": "https://i.imgur.com/xW6iH48.png",
     "loading": {
-      "icon": "https://i.imgur.com/139FgdQ.png",
+      "icon": "https://i.imgur.com/xW6iH48.png",
       "hideExponentText": false
     },
     "packagerOpts": {
@@ -25,15 +26,23 @@
         "xml"
       ]
     },
+    "android": {
+      "package": "com.Sharebert.Sharebert.Sharebert",
+      "versionCode": 36,
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyBwCDHczeBDLMUc3-8hr336rkFNp2HDDQs",
+          "certificateHash": "32e4f2be0b4c9ccafc3bd6f55fddea5508bbd54f"
+        }
+      }
+    },
     "ios": {
       "bundleIdentifier": "com.sharebert.sharebert",
       "supportsTablet": true,
-      "config":
-      {
-          "googleSignIn":
-          {
-            "reservedClientId":"com.googleusercontent.apps.376011592870-sg2cq3fdqh6jk9tnbvope04f2sta0k2m" 
-          }
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.376011592870-vudl1kb57fmvg541i988gq8ospcchd8q"
+        }
       }
     }
   }

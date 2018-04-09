@@ -5,6 +5,7 @@ import {
   Dimensions,
   View,
   Text,
+  TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
   StyleSheet,
@@ -62,7 +63,7 @@ class Travel extends Component {
     var Brand3 = {};
     Brand3['Term'] = 'One Travel';
     Brand3['title'] = 'One Travel';
-    Brand2['link'] = 'http://www.pntrac.com/t/8-206-163999-1508';
+    Brand3['link'] = 'http://www.pntrac.com/t/8-206-163999-1508';
     Brand3['image_url'] = require('./assets/travel/onetravel.png');
 
     var Brand4 = {};
@@ -140,7 +141,7 @@ class Travel extends Component {
     var Brand16 = {};
     Brand16['Term'] = 'Camping World';
     Brand16['title'] = 'Camping World';
-    Brand16['link'] = ' https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=414807.10002997&type=3&subid=';
+    Brand16['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=414807.10002997&type=3&subid=';
     Brand16['image_url'] = require('./assets/travel/campingworld.png');
 
     var Brand17 = {};
@@ -237,6 +238,7 @@ class Travel extends Component {
       <View style={styles.item}>
       <TouchableOpacity onPress={() => 
               {
+                //console.log(item.link);
                 this.openURL(item.link);
               }}>
         {!item.image_url
@@ -260,7 +262,10 @@ class Travel extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <TouchableOpacity>
+ <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
         <Image style={styles.header} />
         </TouchableOpacity>
         <Image
@@ -268,17 +273,18 @@ class Travel extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-        <TouchableOpacity
+         <TouchableWithoutFeedback
               onPress={() => 
               {
                 this.props.navigation.dispatch(backAction);
               }}>
               <Image
                 style={styles.hamburger}
-                source={require('./purplemenuicon.png')}
+                resizeMode='contain'
+                source={require('./assets/arrow.png')}
               />
 
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         <Text style={styles.title}>
           Travel
         </Text>
@@ -307,21 +313,51 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   hamburger: {
-    width: 30,
-    height: 23,
-    marginLeft: 10,
-    marginTop: -48,
-    backgroundColor: 'transparent',
-    padding: 0,
+    ...Platform.select({
+      ios: {
+        width: 30,
+        height: 23,
+        marginLeft: 10,
+        marginTop: -48,
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 5,
+        marginLeft: -5,
+        height: 25,
+        width: 70,
+      },
+    }),
+
   },
   title: {
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#ff2eff',
-    marginTop: -15,
-  },
+    ...Platform.select({
+        ios: {
+          fontFamily: "Montserrat",
+          fontSize: 18,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          color: '#0d2754',
+          marginTop: 30,
+          marginBottom: 0,
+          paddingBottom: 6,
+          backgroundColor: 'white',
+        },
+        android: {
+            fontFamily: "Montserrat",
+            fontSize: 18,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: '#0d2754',
+            marginTop: 60,
+            marginBottom: 0,
+            paddingBottom: 6,
+            backgroundColor: 'white',
+        },
+    }),
+},
 image: {
     width: 100,
     height: 100,
@@ -370,12 +406,23 @@ image: {
     }),
   },
   button: {
-    width: 100,
-    height: 70,
-    marginTop: -55,
-    marginLeft: 60,
-    backgroundColor: 'transparent',
-    padding: 20,
+    ...Platform.select({
+      ios: {
+        width: 100,
+        height: 70,
+        marginTop: -55,
+        marginLeft: Dimensions.get('window').width / 2.6,
+        backgroundColor: 'transparent',
+        padding: 20,
+      },
+      android: {
+        position: 'absolute',
+        marginTop: 10,
+        marginLeft: Dimensions.get('window').width / 8.5,
+        height: 30,
+        flexDirection: 'row',
+      },
+    }),
   },
   header: {
     width: '100%',

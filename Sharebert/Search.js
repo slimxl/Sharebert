@@ -10,6 +10,7 @@ import {
     Image,
     StyleSheet,
     Linking,
+    TouchableWithoutFeedback,
     Keyboard,
     Alert,
     FlatList,
@@ -83,6 +84,10 @@ class Search extends Component {
     }
     onSubmitEdit = () => {
         Keyboard.dismiss();
+        if (this.state.inputValue === '' || this.state.inputValue === null) {
+            Alert.alert("Empty Search! Try again!")
+            return;
+        }
         this.props.navigation.navigate('Explore', {
             id: userID,
             points: userPoints,
@@ -100,7 +105,8 @@ class Search extends Component {
                 <TouchableOpacity>
                     <Image style={styles.header} />
                 </TouchableOpacity>
-                <TouchableOpacity
+
+                <TouchableWithoutFeedback
                     onPress={() => {
                         this.props.navigation.navigate('Explore', {
                             id: userID,
@@ -110,17 +116,20 @@ class Search extends Component {
                     }}>
                     <Image
                         style={styles.hamburger}
+                        resizeMode='contain'
                         source={require('./assets/arrow.png')}
                     />
 
-                </TouchableOpacity>
-                <TouchableOpacity
+                </TouchableWithoutFeedback>
+
+                <TouchableWithoutFeedback
+                    onPress={() => this.onSubmitEdit()}
                     style={{ flexDirection: 'row' }}>
                     <Image
                         style={styles.search}
                         source={require('./assets/icons/search-icon2.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
                 <TextInput
                     textAlign="left"
                     onSubmitEditing={this.onSubmitEdit}
@@ -161,7 +170,7 @@ class Search extends Component {
 
 
 
-                <TouchableOpacity style={styles.footerItem}
+                <TouchableWithoutFeedback style={styles.footerItem}
                     onPress={() => this.props.navigation.navigate('Explore', {
                         id: userID,
                         points: userPoints,
@@ -170,8 +179,8 @@ class Search extends Component {
                     <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
                     </Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerItem}
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback style={styles.footerItem}
                     onPress={() => this.props.navigation.navigate('Likes', {
                         id: userID,
                         points: userPoints,
@@ -180,8 +189,8 @@ class Search extends Component {
                     <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
                     </Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerRewards}
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback style={styles.footerRewards}
                     onPress={() => this.props.navigation.navigate('Rewards', {
                         id: userID,
                         points: userPoints,
@@ -190,9 +199,9 @@ class Search extends Component {
                     <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
                     </Image>
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
-                <TouchableOpacity style={styles.footerProfile}
+                <TouchableWithoutFeedback style={styles.footerProfile}
                     onPress={() => this.props.navigation.navigate('Shipping', {
                         id: userID,
                         points: userPoints,
@@ -201,7 +210,7 @@ class Search extends Component {
                     <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
                     </Image>
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
             </View>
         );
     }
@@ -219,21 +228,49 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     hamburger: {
-        width: 30,
-        height: 20,
-        marginLeft: 10,
-        marginTop: -32,
-        backgroundColor: 'transparent',
-        padding: 0,
+        ...Platform.select({
+            ios: {
+                width: 30,
+                height: 20,
+                marginLeft: 10,
+                marginTop: -32,
+                backgroundColor: 'transparent',
+                padding: 0,
+            },
+            android: {
+                position: 'absolute',
+                marginTop: 5,
+                marginLeft: -5,
+                height: 25,
+                width: 70,
+            },
+        }),
+
     },
+
     title: {
-        fontFamily: "Montserrat",
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'left',
-        marginLeft: 30,
-        color: '#0d2754',
-        marginTop: 25,
+        ...Platform.select({
+            ios: {
+                fontFamily: "Montserrat",
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'left',
+                marginLeft: 30,
+                color: '#0d2754',
+                marginTop: 25,
+            },
+            android: {
+                fontFamily: "Montserrat",
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                color: '#0d2754',
+                marginTop: 60,
+                marginBottom: 0,
+                paddingBottom: 6,
+                backgroundColor: 'white',
+            },
+        }),
     },
     image: {
         width: 100,
@@ -300,7 +337,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontSize: 12,
         marginLeft: 30,
-        marginBottom: 30,        
+        marginBottom: 30,
         color: '#0d2754',
         backgroundColor: 'transparent',
     },
@@ -412,19 +449,44 @@ const styles = StyleSheet.create({
         marginLeft: Dimensions.get('window').width / 4,
     },
     searchText: {
-        width: Dimensions.get('window').width / 1.5,
-        height: 44,
-        padding: 8,
-        marginTop: -40,
-        marginLeft: 70,
+        ...Platform.select({
+            ios: {
+                width: Dimensions.get('window').width / 1.5,
+                height: 44,
+                padding: 8,
+                marginTop: -30,
+                marginLeft: 70,
+            },
+            android: {
+              position: 'absolute',
+              height: 44,
+              width: Dimensions.get('window').width-95,
+              marginLeft: 90,
+              textDecorationLine: "none",
+              
+            },
+          }),
+        
     },
     search: {
-        width: 20,
-        height: 20,
-        marginLeft: 50,
-        marginTop: -30,
-        backgroundColor: 'transparent',
-        padding: 0,
+        ...Platform.select({
+            ios: {
+                width: 20,
+                height: 20,
+                marginLeft: 50,
+                marginTop: -20,
+                backgroundColor: 'transparent',
+                padding: 0,
+            },
+            android: {
+                position: 'absolute',
+                marginTop: 5,
+                marginLeft: 56,
+                height: 30,
+                width: 30,
+              },
+          }),
+ 
     },
     footerShareText: {
         height: 30,
