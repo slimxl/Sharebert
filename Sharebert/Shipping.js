@@ -141,10 +141,8 @@ class Shipping extends Component {
     if(userID != 0)
     {
     Alert.alert("User Data Confirmation",
-    +userID + " \n"
     +user.Name +" \n"
     +user.Phone + " \n"
-    +user.Email +" \n"
     +user.Address + " \n"
     +user.State + " \n"
     +user.Zip + " \n",
