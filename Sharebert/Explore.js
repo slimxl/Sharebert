@@ -269,7 +269,17 @@ componentWillMount()
       return(
       <View style={styles.card}>
 
-          <ActivityIndicator size="large" color="#ff2eff" />
+          <Image2
+            resizeMode="contain"
+            indicator={ProgressBar}
+            indicatorProps={{
+              color: '#ff2eff',
+              unfilledColor: 'rgba(200, 200, 200, 0.2)'
+            }}
+            style={styles.image}
+
+            source={require('./assets/loading3.gif')}
+          />
         </View>
       )
     }
