@@ -480,10 +480,10 @@ const styles = StyleSheet.create({
             },
             android: {
                 position: 'absolute',
-                marginTop: 5,
-                marginLeft: 56,
-                height: 30,
-                width: 30,
+                marginTop: 10,
+                marginLeft: 60,
+                height: 20,
+                width: 20,
               },
           }),
  
