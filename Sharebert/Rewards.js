@@ -36,7 +36,7 @@ class Rewards extends Component {
       fetch('https://sharebert.com/RetrieveRewards.php?', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
-          for (var i = 0; i < 17; i++) {
+          for (var i = 0; i < responseData.length; i++) {
             var obj = {};
 
             obj['Title'] = responseData[i]['Title'];
