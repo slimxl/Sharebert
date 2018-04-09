@@ -347,6 +347,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: -50,
+    marginLeft:10,
     backgroundColor: 'transparent',
   },
   button: {
@@ -396,7 +397,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 12,
     marginTop: 20,
-    marginLeft: 110,
+    marginLeft: 140,
     backgroundColor: 'transparent',
     position: "absolute",
     left: 0,
@@ -406,7 +407,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 12,
     marginTop: 40,
-    marginLeft: 110,
+    marginLeft: 140,
     backgroundColor: 'transparent',
   },
   textEmpty: {

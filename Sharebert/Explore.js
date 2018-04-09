@@ -4,6 +4,7 @@ import SideMenu from 'react-native-side-menu'; // Version can be specified in pa
 import Image2 from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
+import LoadingView from 'rn-loading-view';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Notification from 'react-native-in-app-notification';
 import {
@@ -260,7 +261,19 @@ componentWillMount()
         </View>
 
       );
-    } else {
+    } else if(
+      this.state.url ===
+      'https://i.imgur.com/JaG8ovv.gif'
+    )
+    {
+      return(
+      <View style={styles.card}>
+
+          <ActivityIndicator size="large" color="#ff2eff" />
+        </View>
+      )
+    }
+    else{
       var imageURL2 = this.state.dataset[this.state.cardNum].ImageURL;
       if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
 
@@ -570,7 +583,16 @@ componentWillMount()
   };
 
 
+  
+
+
   catGrab = category => {
+
+    this.setState({
+      url: 'https://i.imgur.com/JaG8ovv.gif',
+    });
+
+
     brand = '';
     var data2 = [];
     if (category === 'Travel') {
@@ -1417,6 +1439,11 @@ const styles = StyleSheet.create({
   image: {
     width,
     flex: 3,
+  },
+  imageload: {
+    width,
+    marginLeft: Dimensions.get('window').width / 4.5,
+    flex: 1,
   },
   logobutton: {
     ...Platform.select({

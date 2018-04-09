@@ -445,6 +445,7 @@ const styles = StyleSheet.create({
         color: '#863fba',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
+        marginBottom: 30,
       },
       android: {
         marginRight: 10,
@@ -461,12 +462,14 @@ const styles = StyleSheet.create({
   hamburger: {
     ...Platform.select({
       ios: {
-        marginTop: -55,
+        marginTop: -80,
         width: 100,
         height: 30,
         marginLeft: 10,
         backgroundColor: 'transparent',
         padding: 0,
+        marginBottom: 30,
+        
       },
       android: {
         position: 'absolute',
@@ -584,10 +587,11 @@ const styles = StyleSheet.create({
       ios: {
         width: 100,
         height: 70,
-        marginTop: -44,
+        marginTop: -75,
         marginLeft: Dimensions.get('window').width / 2.6,
         backgroundColor: 'transparent',
         padding: 20,
+        marginBottom: 30,
       },
       android: {
         position: 'absolute',
