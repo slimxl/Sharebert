@@ -227,8 +227,8 @@ class Likes extends Component {
           width: '100%',
           height: '100%'
         }}>
-          <Text numberOfLines={2} style={styles.textEmpty}>YOU HAVEN'T LIKED ANYTHING YET.</Text>
-          <Text numberOfLines={2} style={styles.textEmpty2}>BETTER GET SWIPING!</Text>
+          <Text numberOfLines={2} style={styles.textEmpty}>THINGS YOU LIKE WILL APPEAR HERE!</Text>
+          <Text numberOfLines={2} style={styles.textEmpty2}>TAP TO GET STARTED!</Text>
           <Text numberOfLines={2} style={styles.textEmpty}></Text>
           <Text numberOfLines={2} style={styles.textEmpty2}></Text>
           <Text numberOfLines={2} style={styles.textEmpty}></Text>
