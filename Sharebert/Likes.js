@@ -256,6 +256,8 @@ class Likes extends Component {
     return (
       <View >
         <View >
+        <TouchableWithoutFeedback onPress={() => this.openURL(item)}>
+          <View>
           <Text numberOfLines={2} style={styles.text}>{item.Title}</Text>
           <Image
             resizeMode={'contain'}
@@ -264,6 +266,9 @@ class Likes extends Component {
               uri: imageURL2,
             }}
           />
+          </View>
+          </TouchableWithoutFeedback>
+          
           <Text style={{ marginTop: -50, marginBottom: 30, color: 'black', fontSize: 12, fontFamily: 'Montserrat', width: Dimensions.get('window').width-10, marginLeft: Dimensions.get('window').width / 2.9 }}>
             from{' '}
             <Text style={{ color: '#ff2eff', fontSize: 12, fontFamily: 'Montserrat' }}> {finalretail}</Text>
