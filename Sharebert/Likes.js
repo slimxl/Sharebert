@@ -415,18 +415,17 @@ class Likes extends Component {
 
                     </Image>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.props.navigation.navigate('Likes', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
+                <TouchableWithoutFeedback style={styles.footerItem}>
                     <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
                     </Image>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback style={styles.footerRewards}
-                    >
+                    onPress={() => this.props.navigation.navigate('Rewards', {
+                      id: userID,
+                      points: userPoints,
+                      uri: uri2,
+                    })}>
                     <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
                     </Image>
