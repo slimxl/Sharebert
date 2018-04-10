@@ -175,7 +175,11 @@ class Rewards extends Component {
         <View style={styles.footer}>
         <Image style={styles.footer} />        
         <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.props.navigation.dispatch(backAction)}>
+                    onPress={() => this.props.navigation.navigate('Explore', {
+                      id: userID,
+                      points: userPoints,
+                      uri: uri2,
+                    })}>
                     <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
                     </Image>

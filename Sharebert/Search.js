@@ -169,7 +169,8 @@ class Search extends Component {
                 />
 
 
-
+        <View style={styles.footer}>
+        <Image style={styles.footer} /> 
                 <TouchableWithoutFeedback style={styles.footerItem}
                     onPress={() => this.props.navigation.navigate('Explore', {
                         id: userID,
@@ -211,6 +212,8 @@ class Search extends Component {
 
                     </Image>
                 </TouchableWithoutFeedback>
+            </View>
+
             </View>
         );
     }
