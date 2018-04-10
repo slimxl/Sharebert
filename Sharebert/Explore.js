@@ -32,7 +32,7 @@ import { Constants } from 'expo';
 const { width } = 10;
 var userPoints = 0;
 var userID = 0;
-var animationz = true;
+var animationz = false;
 var toofast = false;
 var datasize = 0;
 var searchcount = 0;
@@ -41,7 +41,25 @@ var search = false;
 var searchterm = '';
 var randomPROFILEIMAGE = []; //TO BE REMOVED
 var animationBool = false;
+var emptycard = true;
 var likes = [];
+var RandomQ = Math.floor(Math.random() * 15) + 0;
+var questionBank = ["What's your favorite movie?",
+  "What's your favorite TV show?",
+  "What's the best game you've played recently?",
+  "What football team are you rooting for?",
+  "What's your favorite hockey team?",
+  "Who do you want to win the world series?",
+  "What's your favorite color?",
+  "What type of phone do you have?",
+  "What's your favorite hobby?",
+  "What's your favorite book?",
+  "Who's your favorite political candidate?",
+  "Who's your favorite celebrity?",
+  "Who's your favorite TV star?",
+  "What's something you need in your life?",
+  "What video game console do you play?",
+  "Who's your favorite artist?"]
 var uri2 = '';
 var randoUsersLikes = [];
 class Explore extends Component {
@@ -73,10 +91,11 @@ class Explore extends Component {
       url: 'https://i.imgur.com/qnHscIM.png',
       data: [],
       dataset: [],
-      inputValue: 'Search',
+      inputValue: 'My Answer!',
       color: "#ff2eff",
     };
     if (this.props.navigation.state.params.brands != undefined) {
+      emptycard = false;
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
         .then(response => response.json())
@@ -109,6 +128,8 @@ class Explore extends Component {
         .done();
     }
     else if (this.props.navigation.state.params.search != undefined) {
+      emptycard = false;
+
       searchterm = this.props.navigation.state.params.search;
       fetch(
         'https://sharebert.com/APISEARCH.php?keyword=' +
@@ -146,6 +167,10 @@ class Explore extends Component {
           });
         })
         .done();
+    }
+    else {
+      emptycard = true;
+      RandomQ = Math.floor(Math.random() * 15) + 0;
     }
     // else {
     //   fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
@@ -197,16 +222,15 @@ class Explore extends Component {
   }
 
 
-componentWillMount()
-{
-  register();
-}
+  componentWillMount() {
+    register();
+  }
   showAlert = () => {
     this.setState({
       showAlert: true
     });
     this.forceUpdate();
-    
+
   };
 
   hideAlert = () => {
@@ -214,7 +238,7 @@ componentWillMount()
       showAlert: false
     });
     this.forceUpdate();
-    
+
   };
   grabRandoLikes = async () => {
     var data2 = [];
@@ -248,26 +272,25 @@ componentWillMount()
       this.state.url ===
       'https://i.imgur.com/qnHscIM.png'
     ) {
-      return (
-        <View style={styles.card}>
-          <Text style={styles.text}>{this.state.title}</Text>
-          <Image
-            resizeMode="contain"
-            style={styles.image}
-            source={{
-              uri: this.state.url,
-            }}
-          />
-        </View>
+      // return (
+      //   <View style={styles.card}>
+      //     <Text style={styles.text}>{this.state.title}</Text>
+      //     <Image
+      //       resizeMode="contain"
+      //       style={styles.image}
+      //       source={{
+      //         uri: this.state.url,
+      //       }}
+      //     />
+      //   </View>
 
-      );
-    } else if(
+      // );
+    } else if (
       this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
-    )
-    {
-      return(
-      <View style={styles.card}>
+    ) {
+      return (
+        <View style={styles.card}>
 
           <Image2
             resizeMode="contain"
@@ -276,19 +299,19 @@ componentWillMount()
               color: '#ff2eff',
               unfilledColor: 'rgba(200, 200, 200, 0.2)'
             }}
-            style={styles.image}
+            style={styles.imageload}
 
             source={require('./assets/loading3.gif')}
           />
         </View>
       )
     }
-    else{
+    else {
       var imageURL2 = this.state.dataset[this.state.cardNum].ImageURL;
       if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
 
         imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
-        
+
 
       }
       var retailfinal = '';
@@ -390,12 +413,11 @@ componentWillMount()
                       this.notification.show({
                         title: 'You got points!!',
                         message: 'Thanks For Sharing!',
-                        icon: {uri: 'https://i.imgur.com/xW6iH48.png'},
+                        icon: { uri: 'https://i.imgur.com/xW6iH48.png' },
                         onPress: () => this.showAlert(),
                       });
                     }
-                    else
-                    {
+                    else {
                       this.showAlert();
                     }
                     this.forceUpdate();
@@ -426,26 +448,25 @@ componentWillMount()
   };
 
   checkUpdatePoints = () => {
-    try{
-    if (userID === 0) {
-      return;
+    try {
+      if (userID === 0) {
+        return;
+      }
+      fetch(
+        'https://sharebert.com/RetrievePointsWeb.php?uid=' +
+        userID,
+        { method: 'GET' }
+      )
+        .then(response => response.json())
+        .then(responseData => {
+          var test = responseData['Points'];
+          userPoints = test;
+          this.forceUpdate();
+        })
+        .done();
     }
-    fetch(
-      'https://sharebert.com/RetrievePointsWeb.php?uid=' +
-      userID,
-      { method: 'GET' }
-    )
-      .then(response => response.json())
-      .then(responseData => {
-        var test = responseData['Points'];
-        userPoints = test;
-        this.forceUpdate();
-      })
-      .done();
-    }
-    catch(error)
-    {
-      console.error(error); 
+    catch (error) {
+      console.error(error);
     }
   };
 
@@ -576,7 +597,7 @@ componentWillMount()
             .then(response2 => response2.json())
             .then(responseData2 => {
               if (responseData2['Points'] != userPoints) {
-                Alert.alert('POINTS OBTAINED', "Nice Swiping!");
+                Alert.alert('You Earned Points', "Keep swiping to earn more!");
 
                 userPoints = responseData2['Points'];
                 this.forceUpdate();
@@ -593,7 +614,7 @@ componentWillMount()
   };
 
 
-  
+
 
 
   catGrab = category => {
@@ -602,7 +623,7 @@ componentWillMount()
       url: 'https://i.imgur.com/JaG8ovv.gif',
     });
 
-
+    emptycard = false;
     brand = '';
     var data2 = [];
     if (category === 'Travel') {
@@ -650,11 +671,11 @@ componentWillMount()
           toofast = false;
 
           data2 = shuffle(data2);
-          var RandomNumber2 = Math.floor(Math.random() *10) + 1
+          var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
             'https://sharebert.com/APISEARCH.php?keyword=' +
             category +
-            '&page='+RandomNumber2,
+            '&page=' + RandomNumber2,
             { method: 'GET' }
           )
             .then(response => response.json())
@@ -949,6 +970,20 @@ componentWillMount()
 
   onSubmitEdit = () => {
     console.log('Search was refreshed');
+    Keyboard.dismiss();
+    if (this.state.inputValue === '' || this.state.inputValue === null||this.state.inputValue==='My Answer!') {
+      //Alert.alert("Empty Search! Try again!")
+      if (this.props.navigation.state.params.search != undefined) {
+        searchterm = this.props.navigation.state.params.search;
+      }
+      else {
+        return;
+      }
+    }
+    else {
+      searchterm = this.state.inputValue;
+      console.log(searchterm);
+    }
     fetch(
       'https://sharebert.com/APISEARCH.php?keyword=' +
       searchterm +
@@ -957,7 +992,9 @@ componentWillMount()
     )
       .then(response => response.json())
       .then(responseData => {
+        emptycard = false;
         var data2 = [];
+        
         var count = responseData['Amazon'][0][7];
         datasize = count;
         searchcount = datasize;
@@ -979,6 +1016,9 @@ componentWillMount()
           dataset: data2,
           category: 'All',
           cat: false,
+          url: data2[this.state.cardNum].ImageURL,
+          title: data2[this.state.cardNum].Title,
+          disable: false,
         });
       })
       .done();
@@ -1012,6 +1052,7 @@ componentWillMount()
           source={require('./like_background.png')}
           style={styles.container}>
 
+
           <Swiper
             ref={swiper => {
               this.swiper = swiper
@@ -1026,12 +1067,11 @@ componentWillMount()
             infinite={true}
             cards={this.state.cards}
             cardIndex={this.state.cardIndex}
-            cardVerticalMargin={80}
             renderCard={this.renderCard}
             onSwipedAll={this.onSwipedAllCards}
             stackSize={1}
             marginTop={40}
-            cardVerticalMargin={100}
+            cardVerticalMargin={110}
             showSecondCard={false}
             backgroundColor={'transparent'}
             overlayLabels={{
@@ -1239,6 +1279,35 @@ componentWillMount()
               </TouchableOpacity>
             </ScrollView>
           </View>
+          {
+            emptycard ?
+              <View>
+                <Text style={styles.inputQuestion}>
+                  {questionBank[RandomQ]}
+
+                </Text>
+                <TextInput
+                  style={styles.inputQuestion2}
+                  maxLength={30}
+                  underlineColorAndroid='transparent'
+                  onSubmitEditing={this.onSubmitEdit}
+                  value={this.state.inputValue}
+                  autoFocus={false}
+                  onFocus={() => {
+                    this.setState({
+                      inputValue: "",
+                    });
+                  }}
+                  onChangeText={this._handleTextChange}
+                  placeholderTextColor={'#4c515b'}
+
+                />
+              </View>
+
+              :
+              <View />
+
+          }
           <TouchableOpacity disabled={true} style={styles.footerTicker}>
             <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
             <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
@@ -1249,8 +1318,7 @@ componentWillMount()
               <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
                 Share{' '}
               </Text>
-              to earn free points!!
-                  </Text>
+            </Text>
 
           </TouchableOpacity>
 
@@ -1322,16 +1390,16 @@ componentWillMount()
               this.hideAlert();
             }}
           />
-           {
-           (Platform.OS==='android') 
-           ?
-           <Notification
-           ref={(ref) => { this.notification = ref; }} 
-           backgroundColour= '#ff2eff'
-            />
-            :
-            <View />
-         }
+          {
+            (Platform.OS === 'android')
+              ?
+              <Notification
+                ref={(ref) => { this.notification = ref; }}
+                backgroundColour='#ff2eff'
+              />
+              :
+              <View />
+          }
         </ImageBackground>
       );
     } catch (error) {
@@ -1434,6 +1502,37 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: 'transparent',
   },
+  inputQuestion:
+    {
+      marginTop: Dimensions.get('window').height / 3,
+      //fontFamily: "Montserrat",
+      textAlign: 'center',
+      fontSize: 18,
+      fontStyle: 'normal',
+      fontWeight: '100',
+      backgroundColor: 'transparent',
+    },
+  inputQuestion2:
+    {
+      marginTop: Dimensions.get('window').height / 30,
+      textAlign: 'center',
+      fontStyle: 'italic',
+      color: '#A9A9A9',
+      marginLeft: Dimensions.get('window').width / 4,
+      width: Dimensions.get('window').width / 2,
+      ...Platform.select({
+        ios: {
+          borderBottomWidth: 2,
+          borderBottomColor: 'black',
+        },
+        android: {
+          borderBottomWidth: 2,
+          borderBottomColor: 'black',
+        }
+      }
+      ),
+
+    },
   retail: {
     textAlign: 'center',
     fontSize: 15,
@@ -1452,7 +1551,9 @@ const styles = StyleSheet.create({
   },
   imageload: {
     width,
-    marginLeft: Dimensions.get('window').width / 4.5,
+    marginLeft: Dimensions.get('window').width / 3.5,
+    marginTop: Dimensions.get('window').height / 5.2,
+
     flex: 1,
   },
   logobutton: {
@@ -1678,16 +1779,16 @@ const styles = StyleSheet.create({
     width: 30,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: -24,
-    marginLeft: Dimensions.get('window').width / 4,
+    marginBottom: 2,
+    marginLeft: Dimensions.get('window').width / 2.2,
   },
   footerShareText: {
     height: 30,
     width: 200,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: 75,
-    marginLeft: Dimensions.get('window').width / 2.8,
+    marginBottom: 65,
+    marginLeft: Dimensions.get('window').width / 2.22,
     color: '#747475',
     fontSize: 12,
   },
@@ -1724,17 +1825,16 @@ const styles = StyleSheet.create({
   },
 });
 async function register() {
-  const {status} = await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
-  if(status!== 'granted')
-  {
+  const { status } = await Expo.Permissions.askAsync(Expo.Permissions.NOTIFICATIONS);
+  if (status !== 'granted') {
     Alert.alert("You need to enable permissions in settings");
     return;
   }
 
   const token = await Expo.Notifications.getExpoPushTokenAsync();
-  console.log(status,token)
-  try{
-  fetch('https://biosystematic-addit.000webhostapp.com/SendToken.php?token='+token+'&ui='+userID, { method: 'GET' })
+  console.log(status, token)
+  try {
+    fetch('https://biosystematic-addit.000webhostapp.com/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
   }
   catch (error) {
     console.error(error);

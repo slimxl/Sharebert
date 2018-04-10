@@ -113,6 +113,22 @@ class Deals extends Component {
     _handleTextChange = inputValue => {
         this.setState({ inputValue });
     };
+
+
+    showEmptyListView = () => {
+
+        return(
+            <View style={styles.card}>
+      
+                <Image
+                  resizeMode="contain"
+                  style={styles.imageload}
+      
+                  source={require('./assets/loading3.gif')}
+                />
+              </View>
+            )
+    };
     render() {
         return (
             <View style={styles.container}>
@@ -153,6 +169,7 @@ class Deals extends Component {
                         paddingBottom: 30
                     }}
                     data={this.state.trendinglist}
+                    ListEmptyComponent={this.showEmptyListView()}
                     keyExtractor={(item, index) => index}
                     renderItem={({ item, separators }) => (
                         <TouchableOpacity
@@ -423,7 +440,13 @@ const styles = StyleSheet.create({
             borderRadius: 12,
             backgroundColor: 'transparent',
         },
+    imageload: {
+        width,
+        marginLeft: Dimensions.get('window').width / 70,
+        marginTop: Dimensions.get('window').height / 4.5,
 
+        flex: 1,
+    },
     footer: {
         height: 40,
         width: '100%',
