@@ -195,6 +195,14 @@ class Shipping extends Component {
     console.log('likes' + value);
     this.forceUpdate();
   };
+  resetTo(route) {
+    this.props.navigation.pop(0)
+    this.props.navigation.navigate(route, {
+      id: userID,
+      points: userPoints,
+      uri: uri2,
+    })
+  }
 
   render() {
     return (
@@ -217,16 +225,7 @@ class Shipping extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.dispatch(backAction);
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow.png')}
-          />
-        </TouchableWithoutFeedback>
+        
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%', marginTop: 10 }}>
@@ -466,31 +465,19 @@ class Shipping extends Component {
         <View style={styles.footer}>
           <Image style={styles.footer} />
           <TouchableWithoutFeedback style={styles.footerItem}
-            onPress={() => this.props.navigation.navigate('Explore', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
+            onPress={() => this.resetTo('Explore')}>
             <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
             </Image>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback style={styles.footerItem}
-            onPress={() => this.props.navigation.navigate('Likes', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}>
+            onPress={() => this.resetTo('Likes')}>
             <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
             </Image>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback style={styles.footerRewards}
-            onPress={() => this.props.navigation.navigate('Rewards', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}
+            onPress={() => this.resetTo('Rewards')}
           >
             <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 

@@ -20,7 +20,7 @@ import { Constants } from 'expo';
 var rdata = [];
 var userID = 0;
 var userPoints = 0;
-
+const { width, height } = Dimensions.get('window');
 class Rewards extends Component {
   constructor(props) {
     super(props);
@@ -32,11 +32,12 @@ class Rewards extends Component {
       selectedItem: 'Rewards',
       userPoints: userPoints,
       userID: userID,
+      rewards: [],
     };
-    if (rdata.length < 1)
       fetch('https://sharebert.com/RetrieveRewards.php?', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
+          var data2 = []
           for (var i = 0; i < responseData.length; i++) {
             var obj = {};
 
@@ -44,8 +45,11 @@ class Rewards extends Component {
             obj['ImageURL'] = responseData[i]['ImageURL'];
             obj['Cost'] = responseData[i]['Cost'];
             obj['ID'] = responseData[i]['id'];
-            rdata.push(obj);
+            data2.push(obj);
           }
+          this.setState({
+            rewards: data2,
+          })
         })
         .done();
   }
@@ -68,7 +72,7 @@ class Rewards extends Component {
       ],
       { cancelable: false }
     );
-  }
+  };
   checkout(item) {
     if (userID != 0) {
       var nb = userPoints - item.Cost;
@@ -102,15 +106,36 @@ class Rewards extends Component {
     else {
       Alert.alert('Not Logged in!', 'Go log in now!')
     }
-  }
+  };
+  resetTo(route) {
+    this.props.navigation.pop(0)
+    this.props.navigation.navigate(route, {
+      id: userID,
+      points: userPoints,
+      uri: uri2,
+    })
+  };
+
+  showEmptyListView = () => {
+
+    return (
+      <View style={styles.card}>
+
+        <Image
+          resizeMode="contain"
+          style={styles.imageload}
+
+          source={require('./assets/loading3.gif')}
+        />
+      </View>
+    )
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.dispatch(backAction);
-          }}>
+        >
 
           <Image style={styles.header} />
           <Text style={styles.text2}>
@@ -125,16 +150,7 @@ class Rewards extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.dispatch(backAction);
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow.png')}
-          />
-        </TouchableWithoutFeedback>
+
         <Image
           resizeMode="contain"
           style={styles.heart}
@@ -142,15 +158,16 @@ class Rewards extends Component {
         <Text style={styles.title}>
           Rewards
         </Text>
-        <Image style={styles.dividerTop} source={require('./assets/empty2.png')}/>
+        <Image style={styles.dividerTop} source={require('./assets/empty2.png')} />
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
           <View style={{ width: '100%', height: '80%' }}>
             <FlatList backgroundColor={'transparent'}
               style={{ width: '100%', height: '80%' }}
-              data={rdata}
+              data={this.state.rewards}
               keyExtractor={(item, index) => index}
+              ListEmptyComponent={this.showEmptyListView()}              
               renderItem={({ item, separators }) => (
                 <TouchableOpacity
                   onPress={() => this._onPress(item)}
@@ -161,7 +178,7 @@ class Rewards extends Component {
                     <Text style={styles.text4}>{item.Cost} Points</Text>
                     <Image
                       style={styles.image}
-                      resizeMode ='contain'
+                      resizeMode='contain'
                       source={{
                         uri: item.ImageURL,
                       }}
@@ -173,45 +190,33 @@ class Rewards extends Component {
           </View>
         </ImageBackground>
         <View style={styles.footer}>
-        <Image style={styles.footer} />        
-        <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.props.navigation.navigate('Explore', {
-                      id: userID,
-                      points: userPoints,
-                      uri: uri2,
-                    })}>
-                    <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
+          <Image style={styles.footer} />
+          <TouchableWithoutFeedback style={styles.footerItem}
+            onPress={() => this.resetTo('Explore')}>
+            <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.props.navigation.navigate('Likes', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+            </Image>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.footerItem}
+            onPress={() => this.resetTo('Likes')}>
+            <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerRewards}
-                    >
-                    <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+            </Image>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.footerRewards}
+          >
+            <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
+            </Image>
+          </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback style={styles.footerProfile}
-                    onPress={() => this.props.navigation.navigate('Shipping', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+          <TouchableWithoutFeedback style={styles.footerProfile}
+            onPress={() => this.resetTo('Shipping')}>
+            <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
-                </View>
+            </Image>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
     );
   }
@@ -222,8 +227,8 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: Constants.statusBarHeight,
-         backgroundColor: 'transparent',
-        
+        backgroundColor: 'transparent',
+
       },
       android: {
         marginTop: Constants.statusBarHeight,
@@ -388,7 +393,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: -50,
-    marginLeft:10,
+    marginLeft: 10,
     backgroundColor: 'transparent',
   },
   button: {
@@ -422,7 +427,7 @@ const styles = StyleSheet.create({
         marginTop: -10,
         height: 100,
         backgroundColor: '#dee6ee',
-        
+
       },
     }),
 
@@ -433,6 +438,13 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 110,
     backgroundColor: 'transparent',
+  },
+  imageload: {
+    width,
+    marginLeft: Dimensions.get('window').width / 90,
+    marginTop: Dimensions.get('window').height / 4.5,
+
+    flex: 1,
   },
   text3: {
     textAlign: 'left',
@@ -463,7 +475,7 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width / 3,
   },
   exploreBut:
-  {
+    {
       height: 25,
       width: 25,
       position: "absolute",
@@ -472,9 +484,9 @@ const styles = StyleSheet.create({
       marginLeft: Dimensions.get('window').width / 16,
       marginBottom: 5,
       backgroundColor: 'transparent',
-  },
-likesBut:
-  {
+    },
+  likesBut:
+    {
       height: 25,
       width: 25,
       marginLeft: Dimensions.get('window').width / 3.3,
@@ -483,15 +495,15 @@ likesBut:
       bottom: 0,
       left: 0,
       backgroundColor: 'transparent',
+    },
+  footerRewards: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
   },
-footerRewards: {
-  position: "absolute",
-  bottom: 0,
-  right: 0,
-  backgroundColor: 'transparent',
-},
-rewardsBut:
-  {
+  rewardsBut:
+    {
       height: 25,
       width: 25,
       marginRight: Dimensions.get('window').width / 3.3,
@@ -500,15 +512,15 @@ rewardsBut:
       bottom: 0,
       right: 0,
       backgroundColor: 'transparent',
+    },
+  footerProfile: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
   },
-footerProfile: {
-  position: "absolute",
-  bottom: 0,
-  right: 0,
-  backgroundColor: 'transparent',
-},
-profileBut:
-  {
+  profileBut:
+    {
       height: 25,
       width: 25,
       position: "absolute",
@@ -518,36 +530,36 @@ profileBut:
       marginBottom: 5,
       borderRadius: 12,
       backgroundColor: 'transparent',
+    },
+
+  footer: {
+    height: 40,
+    width: '100%',
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: '#dee6ee',
+  },
+  footerItem: {
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: 'transparent',
+  },
+  footerItem2: {
+    position: "absolute",
+    bottom: 0,
+    height: 30,
+    backgroundColor: 'transparent',
   },
 
-footer: {
-  height: 40,
-  width: '100%',
-  position: "absolute",
-  bottom: 0,
-  backgroundColor: '#dee6ee',
-},
-footerItem: {
-  position: "absolute",
-  bottom: 0,
-  backgroundColor: 'transparent',
-},
-footerItem2: {
-  position: "absolute",
-  bottom: 0,
-  height: 30,
-  backgroundColor: 'transparent',
-},
-
-footerLikes: {
-  height: 20,
-  borderRadius: 12,
-  width: 20,
-  bottom: 0,
-  backgroundColor: 'transparent',
-  marginBottom: -20,
-  marginLeft: Dimensions.get('window').width / 4.1,
-},
+  footerLikes: {
+    height: 20,
+    borderRadius: 12,
+    width: 20,
+    bottom: 0,
+    backgroundColor: 'transparent',
+    marginBottom: -20,
+    marginLeft: Dimensions.get('window').width / 4.1,
+  },
   headertext:
     {
       ...Platform.select({

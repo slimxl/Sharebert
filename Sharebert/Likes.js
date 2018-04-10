@@ -296,6 +296,14 @@ class Likes extends Component {
 
     }
   };
+  resetTo(route) {
+    this.props.navigation.replace(route, {
+      id: userID,
+      points: userPoints,
+      uri: uri2,
+    });
+    //this.props.navigation.pop();
+  }
 
   render() {
     const { showAlert } = this.state;
@@ -368,7 +376,7 @@ class Likes extends Component {
             />
           </View>
         </ImageBackground>
-       
+
 
         {
           (Platform.OS === 'android')
@@ -403,45 +411,33 @@ class Likes extends Component {
           }}
         />
 
-<View style={styles.footer}>
-        <Image style={styles.footer} />        
-        <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.props.navigation.navigate('Explore', {
-                      id: userID,
-                      points: userPoints,
-                      uri: uri2,
-                    })}>
-                    <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
+        <View style={styles.footer}>
+          <Image style={styles.footer} />
+          <TouchableWithoutFeedback style={styles.footerItem}
+            onPress={() => this.resetTo('Explore')}>
+            <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerItem}>
-                    <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+            </Image>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.footerItem}>
+            <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerRewards}
-                    onPress={() => this.props.navigation.navigate('Rewards', {
-                      id: userID,
-                      points: userPoints,
-                      uri: uri2,
-                    })}>
-                    <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+            </Image>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.footerRewards}
+            onPress={() => this.resetTo('Rewards')}>
+            <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
+            </Image>
+          </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback style={styles.footerProfile}
-                    onPress={() => this.props.navigation.navigate('Shipping', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+          <TouchableWithoutFeedback style={styles.footerProfile}
+            onPress={() => this.resetTo('Shipping')}>
+            <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
-                    </Image>
-                </TouchableWithoutFeedback>
-                </View>
+            </Image>
+          </TouchableWithoutFeedback>
+        </View>
 
 
       </View>
@@ -693,7 +689,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   exploreBut:
-  {
+    {
       height: 25,
       width: 25,
       position: "absolute",
@@ -702,9 +698,9 @@ const styles = StyleSheet.create({
       marginLeft: Dimensions.get('window').width / 16,
       marginBottom: 5,
       backgroundColor: 'transparent',
-  },
-likesBut:
-  {
+    },
+  likesBut:
+    {
       height: 25,
       width: 25,
       marginLeft: Dimensions.get('window').width / 3.3,
@@ -713,7 +709,7 @@ likesBut:
       bottom: 0,
       left: 0,
       backgroundColor: 'transparent',
-  },
+    },
   footerRewards: {
     position: "absolute",
     bottom: 0,
@@ -722,14 +718,14 @@ likesBut:
   },
   rewardsBut:
     {
-        height: 25,
-        width: 25,
-        marginRight: Dimensions.get('window').width / 3.3,
-        marginBottom: 5,
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        backgroundColor: 'transparent',
+      height: 25,
+      width: 25,
+      marginRight: Dimensions.get('window').width / 3.3,
+      marginBottom: 5,
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      backgroundColor: 'transparent',
     },
   footerProfile: {
     position: "absolute",
@@ -739,47 +735,48 @@ likesBut:
   },
   profileBut:
     {
-        height: 25,
-        width: 25,
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        marginRight: Dimensions.get('window').width / 16,
-        marginBottom: 5,
-        borderRadius: 12,
-        backgroundColor: 'transparent',
+      height: 25,
+      width: 25,
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      marginRight: Dimensions.get('window').width / 16,
+      marginBottom: 5,
+      borderRadius: 12,
+      backgroundColor: 'transparent',
     },
-  
+
   footer: {
     ...Platform.select({
-    ios: {
-    height: 40,
-    width: '100%',
-    position: "absolute",
-    bottom: 0,
-    backgroundColor: '#dee6ee',
-    },
-    android: {
-      height: 40,
-      width: '100%',
-      position: "absolute",
-      bottom: 115,
-      backgroundColor: '#dee6ee',
-    }
-  })
+      ios: {
+        height: 40,
+        width: '100%',
+        position: "absolute",
+        bottom: 0,
+        backgroundColor: '#dee6ee',
+      },
+      android: {
+        height: 40,
+        width: '100%',
+        position: "absolute",
+        bottom: 115,
+        backgroundColor: '#dee6ee',
+      }
+    })
   },
   footerItem: {
     ...Platform.select({
       ios: {
-    position: "absolute",
-    bottom: 0,
-    backgroundColor: 'transparent',
-      },
-      android:{
         position: "absolute",
         bottom: 0,
         backgroundColor: 'transparent',
-      }})
+      },
+      android: {
+        position: "absolute",
+        bottom: 0,
+        backgroundColor: 'transparent',
+      }
+    })
   },
   footerItem2: {
     position: "absolute",
@@ -787,7 +784,7 @@ likesBut:
     height: 30,
     backgroundColor: 'transparent',
   },
-  
+
   footerLikes: {
     height: 20,
     borderRadius: 12,

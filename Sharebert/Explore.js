@@ -1054,6 +1054,14 @@ class Explore extends Component {
     console.log(this.state.UserStringLike);
     animationBool = false;
   }
+  resetTo(route) {
+    this.props.navigation.pop(0)
+    this.props.navigation.navigate(route, {
+      id: userID,
+      points: userPoints,
+      uri: uri2,
+    })
+  }
 
   render() {
     const { showAlert } = this.state;
@@ -1194,11 +1202,7 @@ class Explore extends Component {
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.navigate('Search', {
-              id: userID,
-              points: userPoints,
-              uri: uri2,
-            })}
+            onPress={() => this.resetTo('Search')}
             style={styles.search}>
             <Image
               resizeMode='contain'
@@ -1360,32 +1364,20 @@ class Explore extends Component {
               </Image>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.props.navigation.navigate('Likes', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
+              onPress={() => this.resetTo('Likes')}>
               <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
               </Image>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.props.navigation.navigate('Rewards', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
+              onPress={() => this.resetTo('Rewards')}>
               <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
               </Image>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.props.navigation.navigate('Shipping', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
+              onPress={() =>this.resetTo('Shipping')}>
               <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
               </Image>
