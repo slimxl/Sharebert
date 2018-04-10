@@ -1290,9 +1290,19 @@ class Explore extends Component {
           {
             emptycard ?
               <View>
+                {/* <Image
+                  resizeMode="contain"
+                  style={styles.heart}
+                  source={require('./assets/icons/heart_button.png')} />
+                <Text style={styles.title}>
+                  I WANT...
+                 </Text>
+                <Text style={styles.title2}>
+                  TAP A CATEGORY TO SWIPE THROUGH PRODUCTS.
+                 </Text> */}
+
                 <Text style={styles.inputQuestion}>
                   {questionBank[RandomQ]}
-
                 </Text>
                 <TextInput
                   style={styles.inputQuestion2}
@@ -1467,6 +1477,38 @@ const styles = StyleSheet.create({
     }),
 
   },
+  heart:
+    {
+      width: Dimensions.get('window').width,
+      height: 30,
+      paddingTop: 30,
+      marginTop: 60,
+      marginBottom: 26,
+      backgroundColor: 'transparent',
+
+    },
+  title: {
+    fontFamily: "Montserrat",
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#ff2eff',
+    marginTop: -26,
+    marginLeft: 5,
+    marginBottom: 0,
+    paddingBottom: 6,
+    backgroundColor: 'transparent',
+  },
+  title2:
+    {
+      fontFamily: "Montserrat",
+      fontSize: 12,
+      textAlign: 'center',
+      marginTop: 0,
+      marginBottom: 0,
+      paddingBottom: 6,
+      backgroundColor: 'transparent',
+    },
   pointsText: {
     ...Platform.select({
       ios: {
@@ -1512,7 +1554,7 @@ const styles = StyleSheet.create({
   },
   inputQuestion:
     {
-      marginTop: Dimensions.get('window').height / 3,
+      marginTop: Dimensions.get('window').height / 8,
       //fontFamily: "Montserrat",
       textAlign: 'center',
       fontSize: 18,
@@ -1578,6 +1620,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
+
   button: {
     ...Platform.select({
       ios: {
