@@ -491,7 +491,7 @@ class Explore extends Component {
     console.log('yep');
     if (
       this.state.url ===
-      'https://i.imgur.com/qnHscIM.png'
+      'https://i.imgur.com/qnHscIM.png' || this.state.url === 'https://i.imgur.com/JaG8ovv.gif'
     ) {
       return;
     }
