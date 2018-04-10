@@ -55,7 +55,7 @@ class Rewards extends Component {
   }
   _onPress(item) {
     Alert.alert(
-      'Buy Or Share',
+      'Buy Reward',
       item.Title,
       [
         {
