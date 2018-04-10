@@ -139,36 +139,40 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          if (responseData.length === 0 || responseData.length === undefined) {
+          console.log(Object.keys(responseData['Amazon']).length);
+          if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
             Alert.alert("No Results Found");
+            emptycard = true;
             return;
           }
-          emptycard = false;
-          var data2 = [];
-          var count = responseData['Amazon'][0][7];
-          datasize = count;
-          searchcount = datasize;
-          console.log(searchcount);
-          for (var i = 0; i < count; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData['Amazon'][i][0];
-            obj['Title'] = responseData['Amazon'][i][1];
-            obj['URL'] = responseData['Amazon'][i][3];
-            obj['ImageURL'] = responseData['Amazon'][i][4];
-            obj['Retailer'] = 'Amazon';
-            data2.push(obj);
+          else {
+            emptycard = false;
+            var data2 = [];
+            var count = responseData['Amazon'][0][7];
+            datasize = count;
+            searchcount = datasize;
+            console.log(searchcount);
+            for (var i = 0; i < count; i++) {
+              var obj = {};
+              obj['ASIN'] = responseData['Amazon'][i][0];
+              obj['Title'] = responseData['Amazon'][i][1];
+              obj['URL'] = responseData['Amazon'][i][3];
+              obj['ImageURL'] = responseData['Amazon'][i][4];
+              obj['Retailer'] = 'Amazon';
+              data2.push(obj);
+            }
+            search = true;
+            data2 = shuffle(data2);
+            this.setState({
+              cardNum: 0,
+              dataset: data2,
+              url: data2[this.state.cardNum].ImageURL,
+              title: data2[this.state.cardNum].Title,
+              disable: false,
+              category: 'All',
+              cat: false,
+            });
           }
-          search = true;
-          data2 = shuffle(data2);
-          this.setState({
-            cardNum: 0,
-            dataset: data2,
-            url: data2[this.state.cardNum].ImageURL,
-            title: data2[this.state.cardNum].Title,
-            disable: false,
-            category: 'All',
-            cat: false,
-          });
         })
         .done();
     }
@@ -979,6 +983,7 @@ class Explore extends Component {
       //Alert.alert("Empty Search! Try again!")
       if (this.props.navigation.state.params.search != undefined) {
         searchterm = this.props.navigation.state.params.search;
+
       }
       else {
         return;
@@ -997,8 +1002,8 @@ class Explore extends Component {
       .then(response => response.json())
       .then(responseData => {
         var data2 = [];
-        console.log(responseData.length)
-        if (responseData.length === 0 || responseData.length === undefined) {
+        console.log(Object.keys(responseData['Amazon']).length)
+        if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
           Alert.alert("No Results Found");
           return;
         }
