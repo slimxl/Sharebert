@@ -46,6 +46,7 @@ var likes = [];
 var RandomQ = Math.floor(Math.random() * 15) + 0;
 var questionBank = ["What's your favorite movie?",
   "What's your favorite TV show?",
+  "What do you want to be when you grow up?",
   "What's the best game you've played recently?",
   "What football team are you rooting for?",
   "What's your favorite hockey team?",
@@ -128,7 +129,6 @@ class Explore extends Component {
         .done();
     }
     else if (this.props.navigation.state.params.search != undefined) {
-      emptycard = false;
 
       searchterm = this.props.navigation.state.params.search;
       fetch(
@@ -139,11 +139,15 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
+          if (responseData.length === 0 || responseData.length === undefined) {
+            Alert.alert("No Results Found");
+            return;
+          }
+          emptycard = false;
           var data2 = [];
           var count = responseData['Amazon'][0][7];
           datasize = count;
           searchcount = datasize;
-
           console.log(searchcount);
           for (var i = 0; i < count; i++) {
             var obj = {};
@@ -971,7 +975,7 @@ class Explore extends Component {
   onSubmitEdit = () => {
     console.log('Search was refreshed');
     Keyboard.dismiss();
-    if (this.state.inputValue === '' || this.state.inputValue === null||this.state.inputValue==='My Answer!') {
+    if (this.state.inputValue === '' || this.state.inputValue === null || this.state.inputValue === 'My Answer!') {
       //Alert.alert("Empty Search! Try again!")
       if (this.props.navigation.state.params.search != undefined) {
         searchterm = this.props.navigation.state.params.search;
@@ -992,9 +996,13 @@ class Explore extends Component {
     )
       .then(response => response.json())
       .then(responseData => {
-        emptycard = false;
         var data2 = [];
-        
+        console.log(responseData.length)
+        if (responseData.length === 0 || responseData.length === undefined) {
+          Alert.alert("No Results Found");
+          return;
+        }
+        emptycard = false;
         var count = responseData['Amazon'][0][7];
         datasize = count;
         searchcount = datasize;
