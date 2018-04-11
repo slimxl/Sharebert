@@ -317,16 +317,55 @@ class Explore extends Component {
       return (
         <View style={styles.card}>
           <Text style={styles.text}>{this.state.title}</Text>
-          <TouchableWithoutFeedback style={styles.image}
+          <TouchableWithoutFeedback style={styles.Trend1}
           onPress={()=>{
             searchterm = this.state.trendData[0].term;
             this.onSubmitEdit();
           }}>
           <Image
             resizeMode="contain"
-            style={styles.image}
+            style={styles.Trend1}
             source={{
               uri: this.state.trendData[0].ImageURL,
+            }}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.Trend2}
+          onPress={()=>{
+            searchterm = this.state.trendData[1].term;
+            this.onSubmitEdit();
+          }}>
+          <Image
+            resizeMode="contain"
+            style={styles.Trend2}
+            source={{
+              uri: this.state.trendData[1].ImageURL,
+            }}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.Trend3}
+          onPress={()=>{
+            searchterm = this.state.trendData[2].term;
+            this.onSubmitEdit();
+          }}>
+          <Image
+            resizeMode="contain"
+            style={styles.Trend3}
+            source={{
+              uri: this.state.trendData[2].ImageURL,
+            }}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={styles.Trend4}
+          onPress={()=>{
+            searchterm = this.state.trendData[3].term;
+            this.onSubmitEdit();
+          }}>
+          <Image
+            resizeMode="contain"
+            style={styles.Trend4}
+            source={{
+              uri: this.state.trendData[3].ImageURL,
             }}
             />
           </TouchableWithoutFeedback>
@@ -1599,6 +1638,63 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get('window').height / 5.2,
 
     flex: 1,
+  },
+  TrendText: {
+    fontFamily: 'Montserrat',
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    top: 0,
+    flex: 1,
+    marginTop: 100,
+  },
+  Trend1: {
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    flex: 1,
+    backgroundColor: '#dee6ee',
+    borderRadius: 12,
+    marginLeft: 15,
+    marginTop: 100,
+  },
+  Trend2: {
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    flex: 1,
+    backgroundColor: '#dee6ee',
+    borderRadius: 12,
+    marginRight: 15,
+    marginTop: 100,
+  },
+  Trend3: {
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    flex: 1,
+    backgroundColor: '#dee6ee',
+    borderRadius: 12,
+    marginLeft: 15,
+    marginBottom: 20,
+  },
+  Trend4: {
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    flex: 1,
+    backgroundColor: '#dee6ee',
+    borderRadius: 12,
+    marginRight: 15,
+    marginBottom: 20,
   },
   logobutton: {
     ...Platform.select({
