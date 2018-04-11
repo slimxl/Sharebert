@@ -89,7 +89,7 @@ class Explore extends Component {
       title: '',
       jsonData: '',
       responseData: '',
-      url: 'https://i.imgur.com/qnHscIM.png',
+      url: 'https://i.imgur.com/JaG8ovv.gif',
       data: [],
       dataset: [],
       inputValue: 'My Answer!',
@@ -242,14 +242,17 @@ class Explore extends Component {
             data2.push(obj);
           }
           data2 = shuffle(data2);
+          
           this.setState({
             trendData: data2,
+            url: 'https://i.imgur.com/qnHscIM.png',
             // cardNum: this.state.cardNum,
             // url: data2[this.state.cardNum].ImageURL,
             // title: data2[this.state.cardNum].Title,
             // dataset: data2,
             // cat: false,
           });
+          console.log(this.state.trendData);
         })
         .done();
   }
@@ -312,7 +315,7 @@ class Explore extends Component {
             resizeMode="contain"
             style={styles.image}
             source={{
-              uri: this.state.url,
+              uri: this.state.trendData[0].ImageURL,
             }}
           />
         </View>
@@ -566,7 +569,7 @@ class Explore extends Component {
           })
           .done();
       }
-      else if ((search === true && this.state.cardNum >= (searchcount - 5)) || (this.state.cardNum > 30 && search === true)) {
+      else if ((search === true && this.state.cardNum+1 >= (searchcount)) || (this.state.cardNum > 30 && search === true)) {
         this.onSubmitEdit();
       }
       else if (
@@ -612,11 +615,15 @@ class Explore extends Component {
           })
           .done();
       }
-      this.setState({
-        cardNum: this.state.cardNum + 1,
-        url: this.state.dataset[this.state.cardNum].ImageURL,
-        title: this.state.dataset[this.state.cardNum].Title,
-      });
+      if(this.state.dataset.length>this.state.cardNum+1)
+      {
+        this.setState({
+          cardNum: this.state.cardNum + 1,
+          url: this.state.dataset[this.state.cardNum].ImageURL,
+          title: this.state.dataset[this.state.cardNum].Title,
+        });
+      }
+      
 
       try {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
