@@ -276,6 +276,12 @@ class Explore extends Component {
     this.forceUpdate();
 
   };
+  frontPageClick = term =>{
+
+    searchterm=term;
+    this.onSubmitEdit;
+
+  }
   grabRandoLikes = async () => {
     var data2 = [];
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
@@ -311,13 +317,19 @@ class Explore extends Component {
       return (
         <View style={styles.card}>
           <Text style={styles.text}>{this.state.title}</Text>
+          <TouchableWithoutFeedback style={styles.image}
+          onPress={()=>{
+            searchterm = this.state.trendData[0].term;
+            this.onSubmitEdit();
+          }}>
           <Image
             resizeMode="contain"
             style={styles.image}
             source={{
               uri: this.state.trendData[0].ImageURL,
             }}
-          />
+            />
+          </TouchableWithoutFeedback>
         </View>
 
       );
@@ -1010,20 +1022,12 @@ class Explore extends Component {
   onSubmitEdit = () => {
     console.log('Search was refreshed');
     Keyboard.dismiss();
-    if (this.state.inputValue === '' || this.state.inputValue === null || this.state.inputValue === 'My Answer!') {
-      //Alert.alert("Empty Search! Try again!")
-      if (this.props.navigation.state.params.search != undefined) {
-        searchterm = this.props.navigation.state.params.search;
-
-      }
-      else {
-        return;
-      }
+    if(searchterm===undefined||searchterm===' '||searchterm==='')
+    {
+      Alert.alert("Empty Search!",'Try Again!');
+      return;
     }
-    else {
-      searchterm = this.state.inputValue;
-      console.log(searchterm);
-    }
+    console.log(searchterm);
     fetch(
       'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
       searchterm +
