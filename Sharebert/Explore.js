@@ -94,6 +94,7 @@ class Explore extends Component {
       dataset: [],
       inputValue: 'My Answer!',
       color: "#ff2eff",
+      trendData: [],
     };
     if (this.props.navigation.state.params.brands != undefined) {
       emptycard = false;
@@ -132,7 +133,7 @@ class Explore extends Component {
 
       searchterm = this.props.navigation.state.params.search;
       fetch(
-        'https://sharebert.com/APISEARCH.php?keyword=' +
+        'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
         searchterm +
         '&page=1',
         { method: 'GET' }
@@ -178,6 +179,7 @@ class Explore extends Component {
     }
     else {
       emptycard = true;
+      this.grabFrontPage();
     }
     // else {
     //   fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
@@ -241,6 +243,7 @@ class Explore extends Component {
           }
           data2 = shuffle(data2);
           this.setState({
+            trendData: data2,
             // cardNum: this.state.cardNum,
             // url: data2[this.state.cardNum].ImageURL,
             // title: data2[this.state.cardNum].Title,
@@ -702,7 +705,7 @@ class Explore extends Component {
           data2 = shuffle(data2);
           var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
-            'https://sharebert.com/APISEARCH.php?keyword=' +
+            'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
             category +
             '&page=' + RandomNumber2,
             { method: 'GET' }
@@ -1015,7 +1018,7 @@ class Explore extends Component {
       console.log(searchterm);
     }
     fetch(
-      'https://sharebert.com/APISEARCH.php?keyword=' +
+      'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
       searchterm +
       '&page=1',
       { method: 'GET' }
