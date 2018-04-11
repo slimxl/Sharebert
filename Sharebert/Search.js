@@ -160,37 +160,16 @@ class Search extends Component {
                         </TouchableOpacity>
                     )}
                 />
-
-
-        <View style={styles.footer}>
-        <Image style={styles.footer} /> 
-                <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.resetTo('Explore')}>
-                    <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
-
-                    </Image>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerItem}
-                    onPress={() => this.resetTo('Likes')}>
-                    <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
-
-                    </Image>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback style={styles.footerRewards}
-                    onPress={() => this.resetTo('Rewards')}>
-                    <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
-
-                    </Image>
-                </TouchableWithoutFeedback>
-
-                <TouchableWithoutFeedback style={styles.footerProfile}
-                    onPress={() => this.resetTo('Shipping')}>
-                    <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
-
-                    </Image>
-                </TouchableWithoutFeedback>
-            </View>
-
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
+          <Image
+            style={styles.hamburger}
+            resizeMode='contain'
+            source={require('./assets/arrow.png')}
+          />
+        </TouchableWithoutFeedback>
             </View>
         );
     }
