@@ -228,6 +228,29 @@ class Explore extends Component {
 
   }
 
+  grabFrontPage = () => {
+    fetch('https://biosystematic-addit.000webhostapp.com/Frontpage/Frontpage.php', { method: 'GET' })
+      .then(response => response.json())
+        .then(responseData => {
+          var data2 = [];
+          for (var i = 0; i < responseData.length; i++) {
+            var obj = {};
+            obj['term'] = responseData[i]['term'];
+            obj['ImageURL'] = responseData[i]['ImageURL'];
+            data2.push(obj);
+          }
+          data2 = shuffle(data2);
+          this.setState({
+            // cardNum: this.state.cardNum,
+            // url: data2[this.state.cardNum].ImageURL,
+            // title: data2[this.state.cardNum].Title,
+            // dataset: data2,
+            // cat: false,
+          });
+        })
+        .done();
+  }
+
 
   componentWillMount() {
     register();
