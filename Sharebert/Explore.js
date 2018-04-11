@@ -178,7 +178,6 @@ class Explore extends Component {
     }
     else {
       emptycard = true;
-      RandomQ = Math.floor(Math.random() * 15) + 0;
     }
     // else {
     //   fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
@@ -280,19 +279,19 @@ class Explore extends Component {
       this.state.url ===
       'https://i.imgur.com/qnHscIM.png'
     ) {
-      // return (
-      //   <View style={styles.card}>
-      //     <Text style={styles.text}>{this.state.title}</Text>
-      //     <Image
-      //       resizeMode="contain"
-      //       style={styles.image}
-      //       source={{
-      //         uri: this.state.url,
-      //       }}
-      //     />
-      //   </View>
+      return (
+        <View style={styles.card}>
+          <Text style={styles.text}>{this.state.title}</Text>
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={{
+              uri: this.state.url,
+            }}
+          />
+        </View>
 
-      // );
+      );
     } else if (
       this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
@@ -492,7 +491,6 @@ class Explore extends Component {
   };
 
   openURL = () => {
-    console.log('yep');
     if (
       this.state.url ===
       'https://i.imgur.com/qnHscIM.png' || this.state.url === 'https://i.imgur.com/JaG8ovv.gif'
@@ -1296,45 +1294,7 @@ class Explore extends Component {
               </TouchableOpacity>
             </ScrollView>
           </View>
-          {
-            emptycard ?
-              <View>
-                {/* <Image
-                  resizeMode="contain"
-                  style={styles.heart}
-                  source={require('./assets/icons/heart_button.png')} />
-                <Text style={styles.title}>
-                  I WANT...
-                 </Text>
-                <Text style={styles.title2}>
-                  TAP A CATEGORY TO SWIPE THROUGH PRODUCTS.
-                 </Text> */}
-
-                <Text style={styles.inputQuestion}>
-                  {questionBank[RandomQ]}
-                </Text>
-                <TextInput
-                  style={styles.inputQuestion2}
-                  maxLength={30}
-                  underlineColorAndroid='transparent'
-                  onSubmitEditing={this.onSubmitEdit}
-                  value={this.state.inputValue}
-                  autoFocus={false}
-                  onFocus={() => {
-                    this.setState({
-                      inputValue: "",
-                    });
-                  }}
-                  onChangeText={this._handleTextChange}
-                  placeholderTextColor={'#4c515b'}
-
-                />
-              </View>
-
-              :
-              <View />
-
-          }
+          
           <TouchableOpacity disabled={true} style={styles.footerTicker}>
             <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
             <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
