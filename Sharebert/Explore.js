@@ -1517,7 +1517,7 @@ class Explore extends Component {
               </ScrollView>
             </View>
             <View style={styles.TrendText2}>
-            <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
+            <Animatable.Text ref='animatedTextref' animation={'zoomIn'} iterationCount='infinite' delay={10} duration={5000} easing='ease-in-out-back' style={styles.TrendText} numberOfLines={1} ref={this.handleTextRef}>{this.state.frontTitle}</Animatable.Text>
             </View>
             <View style={styles.listContainer}>
               <FlatList
@@ -2144,6 +2144,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   TrendText: {
+    ...Platform.select({
+      ios: {
     fontFamily: 'Montserrat',
     width: Dimensions.get('window').width,
     height: 150,
@@ -2155,10 +2157,27 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width/50,
     flex: 1,
     marginTop: 0,
+      },
+      android:
+      {
+        fontFamily: 'Montserrat',
+        width: Dimensions.get('window').width,
+        height: 150,
+        position: 'absolute',
+        textAlign: 'center',
+        fontSize: 25,
+        bottom: 0,
+        left: 0,
+        marginLeft: Dimensions.get('window').width/50,
+        flex: 1,
+        marginTop: 0,
+      }
+    })
   },
   TrendText2:
   {
-    marginTop: 180,
+    marginTop: 160,
+    marginBottom:5,
   },
   Trend1: {
     width: Dimensions.get('window').width / 4,
