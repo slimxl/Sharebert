@@ -328,7 +328,7 @@ class Explore extends Component {
               source={{
                 uri: item.image_url
               }}
-              resizeMode={'contain'}
+              resizeMode={'cover'}
               backgroundColor='transparent'
               style={styles.itemImage}
             />}
@@ -1992,7 +1992,7 @@ const styles = StyleSheet.create({
     {
       backgroundColor: 'transparent',
       height: '100%',
-      marginTop: -100,
+      marginTop: -70,
     },
     listContainer2:
     {
@@ -2160,10 +2160,10 @@ const styles = StyleSheet.create({
         height: 30,
         position: 'absolute',
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 20,
         left: 0,
         marginLeft: Dimensions.get('window').width / 50,
-        marginTop: 0,
+        marginTop: 10,
         marginBottom: -40,
       },
       android:
@@ -2173,10 +2173,10 @@ const styles = StyleSheet.create({
           height: 30,
           position: 'absolute',
           textAlign: 'center',
-          fontSize: 25,
+          fontSize: 20,
           left: 0,
           marginLeft: Dimensions.get('window').width / 50,
-          marginTop: 0,
+          marginTop: 10,
           marginBottom: -40,
 
         }
@@ -2504,11 +2504,14 @@ const styles = StyleSheet.create({
   itemImage: {
     width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
       PRODUCT_ITEM_MARGIN,
-    height: 185,
+    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 25,
+    marginTop: 5,
     borderRadius: 5,
+    borderColor:'transparent',
+    
+    
 
   },
   itemTitle: {
@@ -2528,6 +2531,8 @@ const styles = StyleSheet.create({
       PRODUCT_ITEM_MARGIN,
     height: PRODUCT_ITEM_HEIGHT,
     flexDirection: 'column',
+    borderRadius:5,
+    borderColor:'transparent',
     backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
@@ -2537,7 +2542,7 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
       },
       android: {
-        elevation: 1,
+        elevation: 0,
       },
     }),
   },
