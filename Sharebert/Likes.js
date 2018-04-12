@@ -47,6 +47,7 @@ class Likes extends Component {
     };
     this.getFile();
   }
+
   onMenuItemSelected = item => {
     this.setState({
       isOpen: false,
@@ -296,14 +297,6 @@ class Likes extends Component {
 
     }
   };
-  resetTo(route) {
-    this.props.navigation.replace(route, {
-      id: userID,
-      points: userPoints,
-      uri: uri2,
-    });
-    //this.props.navigation.pop();
-  }
 
   render() {
     const { showAlert } = this.state;
@@ -396,6 +389,7 @@ class Likes extends Component {
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={true}
           showCancelButton={false}
+          overlayStyle={styles.container2}
           showConfirmButton={true}
           cancelText=""
           confirmText="Awesome!"
@@ -431,8 +425,10 @@ const styles = StyleSheet.create({
 
       },
     }),
-
-
+  },
+  container2: {
+    height: Dimensions.get('window').height+Constants.statusBarHeight,
+    width: Dimensions.get('window').width,
   },
   text2: {
     ...Platform.select({

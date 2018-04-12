@@ -447,7 +447,8 @@ class Explore extends Component {
   shareURL = () => {
     if (
       this.state.url ===
-      'https://i.imgur.com/qnHscIM.png'
+      'https://i.imgur.com/qnHscIM.png'||this.state.url ===
+      'https://i.imgur.com/JaG8ovv.gif'
     ) {
       this.shareApp();
       return;
@@ -1123,7 +1124,7 @@ class Explore extends Component {
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
     if (randoUsersLikes.length > 0 && this.refs.animatedTextref) {
       this.setState({
-
+        showAlert: false,
         UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
         randomPROFILEIMAGEstring: randomPROFILEIMAGE[RandomNumber],
       });
@@ -1432,6 +1433,7 @@ class Explore extends Component {
             closeOnHardwareBackPress={true}
             showCancelButton={false}
             showConfirmButton={true}
+            overlayStyle={styles.container2}
             cancelText=""
             confirmText="Awesome!"
             confirmButtonColor="#f427f3"
@@ -1480,6 +1482,10 @@ const styles = StyleSheet.create({
 
       },
     }),
+  },
+  container2: {
+    height: Dimensions.get('window').height+Constants.statusBarHeight,
+    width: Dimensions.get('window').width,
   },
   swiper: {
     paddingTop: Constants.statusBarHeight,
