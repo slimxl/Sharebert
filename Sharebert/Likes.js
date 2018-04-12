@@ -46,6 +46,7 @@ class Likes extends Component {
       userID: userID,
     };
     this.getFile();
+    
   }
 
   onMenuItemSelected = item => {

@@ -429,7 +429,9 @@ class LoginScreen extends Component {
         Alert.alert("no Email");
       }
     } catch (error) {
-
+      //this.onSubmitEdit('Login');
+      Alert.alert(error);
+      this.checkUpdatePoints();
     }
   };
   render() {
