@@ -303,34 +303,37 @@ class Explore extends Component {
       index,
     };
   };
-  
+
   _keyExtractor = item => {
     return item.code_group;
   };
-  
+
   _renderItem = data => {
     const item = data.item;
     return (
       <View style={styles.item}>
-      <TouchableOpacity onPress={() => 
-              {
-                searchterm=item.term;
-                emptycard = false;
-                this.onSubmitEdit;                
-              }}>
-        {!item.image_url
-          ? <View style={styles.itemImage}>
+        <TouchableOpacity onPress={() => {
+          searchterm = item.term;
+          emptycard = false;
+          this.setState({
+            url: 'https://i.imgur.com/JaG8ovv.gif'
+          })
+          this.onSubmitEdit();
+        }}>
+          {!item.image_url
+            ? <View style={styles.itemImage}>
               <Text>No image</Text>
             </View>
-          : <Image            
-          source={{
-              uri: item.image_url
-                  }}
+            : <Image
+              source={{
+                uri: item.image_url
+              }}
               resizeMode={'contain'}
+              backgroundColor='transparent'
               style={styles.itemImage}
             />}
         </TouchableOpacity>
-            
+
         <Text numberOfLines={3} style={styles.itemTitle}>
           {item.title}
         </Text>
@@ -341,38 +344,36 @@ class Explore extends Component {
   grabFrontPage = () => {
     fetch('https://sharebert.com/Frontpage2.php', { method: 'GET' })
       .then(response => response.json())
-        .then(responseData => {
-          var data2 = [];
-          var temptitle = '';
-          for (var i = 0; i < responseData.length; i++) {
-            var obj = {};
-            if(responseData[i]['id']==='1')
-            {
-              temptitle = responseData[i]['term'];
-            }
-            else
-            {
-              obj['term'] = responseData[i]['term'];
-              obj['image_url'] = responseData[i]['ImageURL'];
-              data2.push(obj);
-            }
-           
+      .then(responseData => {
+        var data2 = [];
+        var temptitle = '';
+        for (var i = 0; i < responseData.length; i++) {
+          var obj = {};
+          if (responseData[i]['id'] === '1') {
+            temptitle = responseData[i]['term'];
           }
-          data2 = shuffle(data2);
-          
-          this.setState({
-            trendData: data2,
-            url: 'https://i.imgur.com/qnHscIM.png',
-            frontTitle: temptitle,
-            // cardNum: this.state.cardNum,
-            // url: data2[this.state.cardNum].ImageURL,
-            // title: data2[this.state.cardNum].Title,
-            // dataset: data2,
-            // cat: false,
-          });
-          console.log(this.state.trendData);
-        })
-        .done();
+          else {
+            obj['term'] = responseData[i]['term'];
+            obj['image_url'] = responseData[i]['ImageURL'];
+            data2.push(obj);
+          }
+
+        }
+        data2 = shuffle(data2);
+
+        this.setState({
+          trendData: data2,
+          url: 'https://i.imgur.com/qnHscIM.png',
+          frontTitle: temptitle,
+          // cardNum: this.state.cardNum,
+          // url: data2[this.state.cardNum].ImageURL,
+          // title: data2[this.state.cardNum].Title,
+          // dataset: data2,
+          // cat: false,
+        });
+        console.log(this.state.trendData);
+      })
+      .done();
   }
 
 
@@ -394,9 +395,9 @@ class Explore extends Component {
     this.forceUpdate();
 
   };
-  frontPageClick = term =>{
+  frontPageClick = term => {
 
-    searchterm=term;
+    searchterm = term;
     this.onSubmitEdit;
 
   }
@@ -447,7 +448,7 @@ class Explore extends Component {
         </View>
       );
 */
-      
+
     } else if (
       this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
@@ -520,7 +521,7 @@ class Explore extends Component {
   shareURL = () => {
     if (
       this.state.url ===
-      'https://i.imgur.com/qnHscIM.png'||this.state.url ===
+      'https://i.imgur.com/qnHscIM.png' || this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
     ) {
       this.shareApp();
@@ -697,7 +698,7 @@ class Explore extends Component {
           })
           .done();
       }
-      else if ((search === true && this.state.cardNum+1 >= (searchcount)) || (this.state.cardNum > 30 && search === true)) {
+      else if ((search === true && this.state.cardNum + 1 >= (searchcount)) || (this.state.cardNum > 30 && search === true)) {
         this.onSubmitEdit();
       }
       else if (
@@ -743,15 +744,14 @@ class Explore extends Component {
           })
           .done();
       }
-      if(this.state.dataset.length>this.state.cardNum+1)
-      {
+      if (this.state.dataset.length > this.state.cardNum + 1) {
         this.setState({
           cardNum: this.state.cardNum + 1,
           url: this.state.dataset[this.state.cardNum].ImageURL,
           title: this.state.dataset[this.state.cardNum].Title,
         });
       }
-      
+
 
       try {
         if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
@@ -1270,652 +1270,650 @@ class Explore extends Component {
     const { showAlert } = this.state;
     try {
 
-      if(this.state.url === 'https://i.imgur.com/qnHscIM.png')
-      {
+      if (this.state.url === 'https://i.imgur.com/qnHscIM.png') {
 
-        return(
-        <ImageBackground
-          source={require('./like_background.png')}
-          style={styles.container}>
+        return (
+          <ImageBackground
+            source={require('./like_background.png')}
+            style={styles.container}>
 
 
-          <Swiper
-            ref={swiper => {
-              this.swiper = swiper
-            }}
-            onSwiped={this.onSwiped}
-            onTapCard={this.openURL}
-            disableTopSwipe={true}
-            disableBottomSwipe={this.state.disable}
-            disableLeftSwipe={this.state.disable}
-            disableRightSwipe={this.state.disable}
-            onSwipedRight={this.onSwipedRight}
-            infinite={true}
-            cards={this.state.cards}
-            cardIndex={this.state.cardIndex}
-            renderCard={this.renderCard}
-            onSwipedAll={this.onSwipedAllCards}
-            stackSize={1}
-            marginTop={40}
-            cardVerticalMargin={110}
-            showSecondCard={false}
-            backgroundColor={'transparent'}
-            overlayLabels={{
-              bottom: {
-                title: 'REPORT BAD PRODUCT',
-                style: {
-                  label: {
-                    backgroundColor: 'black',
-                    borderColor: 'black',
-                    color: 'white',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+            <Swiper
+              ref={swiper => {
+                this.swiper = swiper
+              }}
+              onSwiped={this.onSwiped}
+              onTapCard={this.openURL}
+              disableTopSwipe={true}
+              disableBottomSwipe={this.state.disable}
+              disableLeftSwipe={this.state.disable}
+              disableRightSwipe={this.state.disable}
+              onSwipedRight={this.onSwipedRight}
+              infinite={true}
+              cards={this.state.cards}
+              cardIndex={this.state.cardIndex}
+              renderCard={this.renderCard}
+              onSwipedAll={this.onSwipedAllCards}
+              stackSize={1}
+              marginTop={40}
+              cardVerticalMargin={110}
+              showSecondCard={false}
+              backgroundColor={'transparent'}
+              overlayLabels={{
+                bottom: {
+                  title: 'REPORT BAD PRODUCT',
+                  style: {
+                    label: {
+                      backgroundColor: 'black',
+                      borderColor: 'black',
+                      color: 'white',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }
+                  }
+                },
+                left: {
+                  title: 'NOPE',
+                  style: {
+                    label: {
+                      backgroundColor: 'transparent',
+                      borderColor: 'transparent',
+                      color: 'red',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      justifyContent: 'flex-start',
+                      marginTop: 30,
+                      marginLeft: -30
+                    }
+                  }
+                },
+                right: {
+                  title: 'LIKE',
+                  style: {
+                    label: {
+                      backgroundColor: 'transparent',
+                      borderColor: 'transparent',
+                      color: '#ff2eff',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      justifyContent: 'flex-start',
+                      marginTop: 30,
+                      marginLeft: 30
+                    }
+                  }
+                },
+                top: {
+                  title: 'SUPER LIKE',
+                  style: {
+                    label: {
+                      backgroundColor: 'black',
+                      borderColor: 'black',
+                      color: 'white',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }
                   }
                 }
-              },
-              left: {
-                title: 'NOPE',
-                style: {
-                  label: {
-                    backgroundColor: 'transparent',
-                    borderColor: 'transparent',
-                    color: 'red',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    justifyContent: 'flex-start',
-                    marginTop: 30,
-                    marginLeft: -30
-                  }
-                }
-              },
-              right: {
-                title: 'LIKE',
-                style: {
-                  label: {
-                    backgroundColor: 'transparent',
-                    borderColor: 'transparent',
-                    color: '#ff2eff',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                    marginTop: 30,
-                    marginLeft: 30
-                  }
-                }
-              },
-              top: {
-                title: 'SUPER LIKE',
-                style: {
-                  label: {
-                    backgroundColor: 'black',
-                    borderColor: 'black',
-                    color: 'white',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }
-                }
-              }
-            }}
-            animateOverlayLabelsOpacity
-            animateCardOpacity
-          >
-          </Swiper>
-
-          <Image style={styles.bg} />
-
-
-          <TouchableWithoutFeedback
-            onPress={this.shareApp}
-            style={styles.search2}>
-            <Image
-              resizeMode='contain'
-              style={styles.search2}
-              source={require('./assets/empty2.png')}
-            />
-          </TouchableWithoutFeedback>
-
-
-          <Text style={styles.text2}>
-            {userPoints + '\n'}
-          </Text>
-          <Text style={styles.pointsText}>
-            Points
-              </Text>
-
-
-          <TouchableWithoutFeedback
-            onPress={this.shareApp}
-            style={styles.button}>
-            <Image
-              resizeMode='contain'
-              style={styles.button}
-              source={require('./Logo.png')}
-            />
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => this.resetTo('Search')}
-            style={styles.search}>
-            <Image
-              resizeMode='contain'
-              style={styles.search}
-              source={require('./assets/icons/search-icon2.png')}
-            />
-          </TouchableWithoutFeedback>
-
-          <View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              indicatorStyle={'black'}
-              backgroundColor={'white'}
-              style={styles.scrollbar}
+              }}
+              animateOverlayLabelsOpacity
+              animateCardOpacity
             >
-              {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/brands.png')}
-                />
-              </TouchableOpacity>}
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/deals_v2.png')}
-                />
+            </Swiper>
 
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('womens')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./assets/Category/womens.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('men')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/mens.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('girls')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/girls.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('baby')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/baby.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('pet')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/pet.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('gift')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/gifts.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('groceries')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./assets/Category/groceries.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/travel.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('All')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/random.png')}
-                />
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
+            <Image style={styles.bg} />
 
-          
-          <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
-          <FlatList
-          style={styles.listContainer}
-          data={this.state.trendData}
-          keyExtractor={(item, index) => index}
-          renderItem={this._renderItem}
-          getItemLayout={this._getItemLayout}
-          numColumns={numColumns}
-          />
-          
-          <TouchableOpacity disabled={true} style={styles.footerTicker}>
-            <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
-            <Text style={styles.footerShareText}>
-              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                Share{' '}
-              </Text>
-            </Text>
 
-          </TouchableOpacity>
-
-          <View style={styles.footer}>
-            <Image style={styles.footer} />
-
-            <TouchableWithoutFeedback style={styles.footerItem}
-            // onPress={() => this.props.navigation.navigate('Explore', {
-            //   id: userID,
-            //   points: userPoints,
-            // })}
-            >
-              <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-                source={require('./assets/menu/explore.png')}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.resetTo('Likes')}>
-              <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.resetTo('Rewards')}>
-              <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() =>this.resetTo('Shipping')}>
-              <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-          </View>
-          <AwesomeAlert
-            show={showAlert}
-            showProgress={false}
-            title="Points Obtained!"
-            message="Hey! Thanks for Sharing a product!"
-            closeOnTouchOutside={true}
-            closeOnHardwareBackPress={true}
-            showCancelButton={false}
-            showConfirmButton={true}
-            overlayStyle={styles.container2}
-            cancelText=""
-            confirmText="Awesome!"
-            confirmButtonColor="#f427f3"
-            onCancelPressed={() => {
-              this.hideAlert();
-            }}
-            onConfirmPressed={() => {
-              this.hideAlert();
-            }}
-            onDismiss={() => {
-              this.hideAlert();
-            }}
-          />
-          {
-            (Platform.OS === 'android')
-              ?
-              <Notification
-                ref={(ref) => { this.notification = ref; }}
-                backgroundColour='#ff2eff'
+            <TouchableWithoutFeedback
+              onPress={this.shareApp}
+              style={styles.search2}>
+              <Image
+                resizeMode='contain'
+                style={styles.search2}
+                source={require('./assets/empty2.png')}
               />
-              :
-              <View />
-          }
-        </ImageBackground>
-      );
+            </TouchableWithoutFeedback>
+
+
+            <Text style={styles.text2}>
+              {userPoints + '\n'}
+            </Text>
+            <Text style={styles.pointsText}>
+              Points
+              </Text>
+
+
+            <TouchableWithoutFeedback
+              onPress={this.shareApp}
+              style={styles.button}>
+              <Image
+                resizeMode='contain'
+                style={styles.button}
+                source={require('./Logo.png')}
+              />
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback
+              onPress={() => this.resetTo('Search')}
+              style={styles.search}>
+              <Image
+                resizeMode='contain'
+                style={styles.search}
+                source={require('./assets/icons/search-icon2.png')}
+              />
+            </TouchableWithoutFeedback>
+
+            <View>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                indicatorStyle={'black'}
+                backgroundColor={'white'}
+                style={styles.scrollbar}
+              >
+                {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+                  id: userID,
+                  points: userPoints,
+                  uri: uri2,
+                })}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/brands.png')}
+                  />
+                </TouchableOpacity>}
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
+                  id: userID,
+                  points: userPoints,
+                  uri: uri2,
+                })}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/deals_v2.png')}
+                  />
+
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('womens')}>
+                  <Image
+                    style={styles.catbar}
+                    source={require('./assets/Category/womens.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('men')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/mens.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('girls')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/girls.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('baby')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/baby.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('pet')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/pet.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('gift')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/gifts.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('groceries')}>
+                  <Image
+                    style={styles.catbar}
+                    source={require('./assets/Category/groceries.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('Travel')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/travel.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('All')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/random.png')}
+                  />
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
+
+
+            <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
+            <FlatList
+              style={styles.listContainer}
+              data={this.state.trendData}
+              keyExtractor={(item, index) => index}
+              renderItem={this._renderItem}
+              getItemLayout={this._getItemLayout}
+              numColumns={numColumns}
+            />
+
+            <TouchableOpacity disabled={true} style={styles.footerTicker}>
+              <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+              <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+              <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+              <Text style={styles.footerShareText}>
+                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
+                  Share{' '}
+                </Text>
+              </Text>
+
+            </TouchableOpacity>
+
+            <View style={styles.footer}>
+              <Image style={styles.footer} />
+
+              <TouchableWithoutFeedback style={styles.footerItem}
+              // onPress={() => this.props.navigation.navigate('Explore', {
+              //   id: userID,
+              //   points: userPoints,
+              // })}
+              >
+                <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                  source={require('./assets/menu/explore.png')}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                onPress={() => this.resetTo('Likes')}>
+                <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                onPress={() => this.resetTo('Rewards')}>
+                <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                onPress={() => this.resetTo('Shipping')}>
+                <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+            </View>
+            <AwesomeAlert
+              show={showAlert}
+              showProgress={false}
+              title="Points Obtained!"
+              message="Hey! Thanks for Sharing a product!"
+              closeOnTouchOutside={true}
+              closeOnHardwareBackPress={true}
+              showCancelButton={false}
+              showConfirmButton={true}
+              overlayStyle={styles.container2}
+              cancelText=""
+              confirmText="Awesome!"
+              confirmButtonColor="#f427f3"
+              onCancelPressed={() => {
+                this.hideAlert();
+              }}
+              onConfirmPressed={() => {
+                this.hideAlert();
+              }}
+              onDismiss={() => {
+                this.hideAlert();
+              }}
+            />
+            {
+              (Platform.OS === 'android')
+                ?
+                <Notification
+                  ref={(ref) => { this.notification = ref; }}
+                  backgroundColour='#ff2eff'
+                />
+                :
+                <View />
+            }
+          </ImageBackground>
+        );
 
       }
-      else
-      {
-      return (
+      else {
+        return (
 
 
-        <ImageBackground
-          source={require('./like_background.png')}
-          style={styles.container}>
+          <ImageBackground
+            source={require('./like_background.png')}
+            style={styles.container}>
 
 
-          <Swiper
-            ref={swiper => {
-              this.swiper = swiper
-            }}
-            onSwiped={this.onSwiped}
-            onTapCard={this.openURL}
-            disableTopSwipe={true}
-            disableBottomSwipe={this.state.disable}
-            disableLeftSwipe={this.state.disable}
-            disableRightSwipe={this.state.disable}
-            onSwipedRight={this.onSwipedRight}
-            infinite={true}
-            cards={this.state.cards}
-            cardIndex={this.state.cardIndex}
-            renderCard={this.renderCard}
-            onSwipedAll={this.onSwipedAllCards}
-            stackSize={1}
-            marginTop={40}
-            cardVerticalMargin={110}
-            showSecondCard={false}
-            backgroundColor={'transparent'}
-            overlayLabels={{
-              bottom: {
-                title: 'REPORT BAD PRODUCT',
-                style: {
-                  label: {
-                    backgroundColor: 'black',
-                    borderColor: 'black',
-                    color: 'white',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+            <Swiper
+              ref={swiper => {
+                this.swiper = swiper
+              }}
+              onSwiped={this.onSwiped}
+              onTapCard={this.openURL}
+              disableTopSwipe={true}
+              disableBottomSwipe={this.state.disable}
+              disableLeftSwipe={this.state.disable}
+              disableRightSwipe={this.state.disable}
+              onSwipedRight={this.onSwipedRight}
+              infinite={true}
+              cards={this.state.cards}
+              cardIndex={this.state.cardIndex}
+              renderCard={this.renderCard}
+              onSwipedAll={this.onSwipedAllCards}
+              stackSize={1}
+              marginTop={40}
+              cardVerticalMargin={110}
+              showSecondCard={false}
+              backgroundColor={'transparent'}
+              overlayLabels={{
+                bottom: {
+                  title: 'REPORT BAD PRODUCT',
+                  style: {
+                    label: {
+                      backgroundColor: 'black',
+                      borderColor: 'black',
+                      color: 'white',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }
+                  }
+                },
+                left: {
+                  title: 'NOPE',
+                  style: {
+                    label: {
+                      backgroundColor: 'transparent',
+                      borderColor: 'transparent',
+                      color: 'red',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      justifyContent: 'flex-start',
+                      marginTop: 30,
+                      marginLeft: -30
+                    }
+                  }
+                },
+                right: {
+                  title: 'LIKE',
+                  style: {
+                    label: {
+                      backgroundColor: 'transparent',
+                      borderColor: 'transparent',
+                      color: '#ff2eff',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      justifyContent: 'flex-start',
+                      marginTop: 30,
+                      marginLeft: 30
+                    }
+                  }
+                },
+                top: {
+                  title: 'SUPER LIKE',
+                  style: {
+                    label: {
+                      backgroundColor: 'black',
+                      borderColor: 'black',
+                      color: 'white',
+                      borderWidth: 1
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }
                   }
                 }
-              },
-              left: {
-                title: 'NOPE',
-                style: {
-                  label: {
-                    backgroundColor: 'transparent',
-                    borderColor: 'transparent',
-                    color: 'red',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    justifyContent: 'flex-start',
-                    marginTop: 30,
-                    marginLeft: -30
-                  }
-                }
-              },
-              right: {
-                title: 'LIKE',
-                style: {
-                  label: {
-                    backgroundColor: 'transparent',
-                    borderColor: 'transparent',
-                    color: '#ff2eff',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                    marginTop: 30,
-                    marginLeft: 30
-                  }
-                }
-              },
-              top: {
-                title: 'SUPER LIKE',
-                style: {
-                  label: {
-                    backgroundColor: 'black',
-                    borderColor: 'black',
-                    color: 'white',
-                    borderWidth: 1
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }
-                }
-              }
-            }}
-            animateOverlayLabelsOpacity
-            animateCardOpacity
-          >
-          </Swiper>
-
-          <Image style={styles.bg} />
-
-          <TouchableWithoutFeedback
-            onPress={this.shareApp}
-            style={styles.search2}>
-            <Image
-              resizeMode='contain'
-              style={styles.search2}
-              source={require('./assets/empty2.png')}
-            />
-          </TouchableWithoutFeedback>
-
-
-          <Text style={styles.text2}>
-            {userPoints + '\n'}
-          </Text>
-          <Text style={styles.pointsText}>
-            Points
-              </Text>
-
-
-          <TouchableWithoutFeedback
-            onPress={this.shareApp}
-            style={styles.button}>
-            <Image
-              resizeMode='contain'
-              style={styles.button}
-              source={require('./Logo.png')}
-            />
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback
-            onPress={() => this.resetTo('Search')}
-            style={styles.search}>
-            <Image
-              resizeMode='contain'
-              style={styles.search}
-              source={require('./assets/icons/search-icon2.png')}
-            />
-          </TouchableWithoutFeedback>
-
-          <View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              indicatorStyle={'black'}
-              backgroundColor={'white'}
-              style={styles.scrollbar}
+              }}
+              animateOverlayLabelsOpacity
+              animateCardOpacity
             >
-              {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/brands.png')}
-                />
-              </TouchableOpacity>}
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
-                id: userID,
-                points: userPoints,
-                uri: uri2,
-              })}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/deals_v2.png')}
-                />
+            </Swiper>
 
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('womens')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./assets/Category/womens.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('men')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/mens.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('girls')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/girls.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('baby')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/baby.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('pet')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/pet.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('gift')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/gifts.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('groceries')}>
-                <Image
-                  style={styles.catbar}
-                  source={require('./assets/Category/groceries.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/travel.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.catGrab('All')}>
-                <Image
-                  style={styles.catbars}
-                  source={require('./assets/Category/random.png')}
-                />
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
-          
-          <TouchableOpacity disabled={true} style={styles.footerTicker}>
-            <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-            <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-            <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
-            <Text style={styles.footerShareText}>
-              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                Share{' '}
-              </Text>
-            </Text>
+            <Image style={styles.bg} />
 
-          </TouchableOpacity>
-
-          <View style={styles.footer}>
-            <Image style={styles.footer} />
-
-            <TouchableWithoutFeedback style={styles.footerItem}
-            // onPress={() => this.props.navigation.navigate('Explore', {
-            //   id: userID,
-            //   points: userPoints,
-            // })}
-            >
-              <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-                source={require('./assets/menu/explore.png')}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.resetTo('Likes')}>
-              <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() => this.resetTo('Rewards')}>
-              <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-              onPress={() =>this.resetTo('Shipping')}>
-              <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
-
-              </Image>
-            </TouchableWithoutFeedback>
-          </View>
-          <AwesomeAlert
-            show={showAlert}
-            showProgress={false}
-            title="Points Obtained!"
-            message="Hey! Thanks for Sharing a product!"
-            closeOnTouchOutside={true}
-            closeOnHardwareBackPress={true}
-            showCancelButton={false}
-            showConfirmButton={true}
-            overlayStyle={styles.container2}
-            cancelText=""
-            confirmText="Awesome!"
-            confirmButtonColor="#f427f3"
-            onCancelPressed={() => {
-              this.hideAlert();
-            }}
-            onConfirmPressed={() => {
-              this.hideAlert();
-            }}
-            onDismiss={() => {
-              this.hideAlert();
-            }}
-          />
-          {
-            (Platform.OS === 'android')
-              ?
-              <Notification
-                ref={(ref) => { this.notification = ref; }}
-                backgroundColour='#ff2eff'
+            <TouchableWithoutFeedback
+              onPress={this.shareApp}
+              style={styles.search2}>
+              <Image
+                resizeMode='contain'
+                style={styles.search2}
+                source={require('./assets/empty2.png')}
               />
-              :
-              <View />
-          }
-        </ImageBackground>
-      );
-    }
+            </TouchableWithoutFeedback>
+
+
+            <Text style={styles.text2}>
+              {userPoints + '\n'}
+            </Text>
+            <Text style={styles.pointsText}>
+              Points
+              </Text>
+
+
+            <TouchableWithoutFeedback
+              onPress={this.shareApp}
+              style={styles.button}>
+              <Image
+                resizeMode='contain'
+                style={styles.button}
+                source={require('./Logo.png')}
+              />
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback
+              onPress={() => this.resetTo('Search')}
+              style={styles.search}>
+              <Image
+                resizeMode='contain'
+                style={styles.search}
+                source={require('./assets/icons/search-icon2.png')}
+              />
+            </TouchableWithoutFeedback>
+
+            <View>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                indicatorStyle={'black'}
+                backgroundColor={'white'}
+                style={styles.scrollbar}
+              >
+                {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+                  id: userID,
+                  points: userPoints,
+                  uri: uri2,
+                })}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/brands.png')}
+                  />
+                </TouchableOpacity>}
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
+                  id: userID,
+                  points: userPoints,
+                  uri: uri2,
+                })}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/deals_v2.png')}
+                  />
+
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('womens')}>
+                  <Image
+                    style={styles.catbar}
+                    source={require('./assets/Category/womens.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('men')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/mens.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('girls')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/girls.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('baby')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/baby.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('pet')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/pet.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('gift')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/gifts.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('groceries')}>
+                  <Image
+                    style={styles.catbar}
+                    source={require('./assets/Category/groceries.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('Travel')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/travel.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('All')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/random.png')}
+                  />
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
+
+            <TouchableOpacity disabled={true} style={styles.footerTicker}>
+              <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+              <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+              <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+              <Text style={styles.footerShareText}>
+                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
+                  Share{' '}
+                </Text>
+              </Text>
+
+            </TouchableOpacity>
+
+            <View style={styles.footer}>
+              <Image style={styles.footer} />
+
+              <TouchableWithoutFeedback style={styles.footerItem}
+              // onPress={() => this.props.navigation.navigate('Explore', {
+              //   id: userID,
+              //   points: userPoints,
+              // })}
+              >
+                <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                  source={require('./assets/menu/explore.png')}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                onPress={() => this.resetTo('Likes')}>
+                <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                onPress={() => this.resetTo('Rewards')}>
+                <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                onPress={() => this.resetTo('Shipping')}>
+                <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+
+                </Image>
+              </TouchableWithoutFeedback>
+            </View>
+            <AwesomeAlert
+              show={showAlert}
+              showProgress={false}
+              title="Points Obtained!"
+              message="Hey! Thanks for Sharing a product!"
+              closeOnTouchOutside={true}
+              closeOnHardwareBackPress={true}
+              showCancelButton={false}
+              showConfirmButton={true}
+              overlayStyle={styles.container2}
+              cancelText=""
+              confirmText="Awesome!"
+              confirmButtonColor="#f427f3"
+              onCancelPressed={() => {
+                this.hideAlert();
+              }}
+              onConfirmPressed={() => {
+                this.hideAlert();
+              }}
+              onDismiss={() => {
+                this.hideAlert();
+              }}
+            />
+            {
+              (Platform.OS === 'android')
+                ?
+                <Notification
+                  ref={(ref) => { this.notification = ref; }}
+                  backgroundColour='#ff2eff'
+                />
+                :
+                <View />
+            }
+          </ImageBackground>
+        );
+      }
     } catch (error) {
       console.error(error);
     }
@@ -1947,7 +1945,7 @@ const styles = StyleSheet.create({
     }),
   },
   container2: {
-    height: Dimensions.get('window').height+Constants.statusBarHeight,
+    height: Dimensions.get('window').height + Constants.statusBarHeight,
     width: Dimensions.get('window').width,
   },
   swiper: {
@@ -2134,7 +2132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     marginLeft: Dimensions.get('window').width / 10,
-    marginBottom: Dimensions.get('window').height/ 5,
+    marginBottom: Dimensions.get('window').height / 5,
   },
   Trend2: {
     width: Dimensions.get('window').width / 4,
@@ -2145,7 +2143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     marginRight: Dimensions.get('window').width / 10,
-    marginBottom: Dimensions.get('window').height/ 5,
+    marginBottom: Dimensions.get('window').height / 5,
   },
   Trend3: {
     width: Dimensions.get('window').width / 4,
@@ -2156,7 +2154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     marginLeft: Dimensions.get('window').width / 10,
-    marginBottom: Dimensions.get('window').height/ 40,
+    marginBottom: Dimensions.get('window').height / 40,
   },
   Trend4: {
     width: Dimensions.get('window').width / 4,
@@ -2167,7 +2165,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     marginRight: Dimensions.get('window').width / 10,
-    marginBottom: Dimensions.get('window').height/ 40,
+    marginBottom: Dimensions.get('window').height / 40,
 
   },
   logobutton: {
@@ -2447,7 +2445,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 25,
     borderRadius: 12,
-    
+
   },
   itemTitle: {
     flex: 1,
@@ -2462,12 +2460,12 @@ const styles = StyleSheet.create({
   item: {
     margin: PRODUCT_ITEM_OFFSET,
     overflow: 'hidden',
-    borderRadius: 3,
+    borderRadius: 1,
     width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
       PRODUCT_ITEM_MARGIN,
     height: PRODUCT_ITEM_HEIGHT,
     flexDirection: 'column',
-    backgroundColor: colors.snow,
+    backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
         shadowColor: 'rgba(0,0,0, .2)',
