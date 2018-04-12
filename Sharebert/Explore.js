@@ -1240,6 +1240,21 @@ class Explore extends Component {
       }).done();
   };
 
+  showEmptyListView = () => {
+
+    return (
+      <View style={styles.card2}>
+
+        <Image
+          resizeMode="contain"
+          style={styles.imageload}
+
+          source={require('./assets/loading3.gif')}
+        />
+      </View>
+    )
+  };
+
   _handleTextChange = inputValue => {
     this.setState({ inputValue });
   };
@@ -1501,17 +1516,18 @@ class Explore extends Component {
                 </TouchableOpacity>
               </ScrollView>
             </View>
-
-
             <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
-            <FlatList
-              style={styles.listContainer}
-              data={this.state.trendData}
-              keyExtractor={(item, index) => index}
-              renderItem={this._renderItem}
-              getItemLayout={this._getItemLayout}
-              numColumns={numColumns}
-            />
+            <View style={styles.listContainer}>
+              <FlatList
+                style={styles.listContainer}
+                data={this.state.trendData}
+                keyExtractor={(item, index) => index}
+                renderItem={this._renderItem}
+                ListEmptyComponent={this.showEmptyListView()}
+                getItemLayout={this._getItemLayout}
+                numColumns={numColumns}
+              />
+            </View>
 
             <TouchableOpacity disabled={true} style={styles.footerTicker}>
               <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
@@ -1959,6 +1975,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
+  card2: {
+    flex: 0.9,
+    borderRadius: 2,
+    borderWidth: 2,
+    borderColor: '#f2efef',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  listContainer:
+    {
+      backgroundColor: 'transparent',
+      height: '60%',
+      marginTop: 25,
+    },
+
   text2: {
     ...Platform.select({
       ios: {
@@ -2100,14 +2131,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   image: {
-    width,
-    flex: 3,
+    width: '100%',
+    flex: 1,
   },
   imageload: {
     width,
     marginLeft: Dimensions.get('window').width / 3.5,
     marginTop: Dimensions.get('window').height / 5.2,
-
+    backgroundColor: 'transparent',
     flex: 1,
   },
   TrendText: {
@@ -2119,9 +2150,9 @@ const styles = StyleSheet.create({
     fontSize: 25,
     bottom: 0,
     left: 0,
-    marginLeft: -20,
+    marginLeft: Dimensions.get('window').width/50,
     flex: 1,
-    marginBottom: Dimensions.get('window').width / 2,
+    marginTop: -600,
   },
   Trend1: {
     width: Dimensions.get('window').width / 4,
