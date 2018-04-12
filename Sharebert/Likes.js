@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     }),
   },
   container2: {
-    height: Dimensions.get('window').height+Constants.statusBarHeight,
+    height: Dimensions.get('window').height+100,
     width: Dimensions.get('window').width,
   },
   text2: {
