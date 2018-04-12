@@ -140,11 +140,7 @@ class Deals extends Component {
                 </TouchableOpacity>
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        this.props.navigation.navigate('Explore', {
-                            id: userID,
-                            points: userPoints,
-                            uri: uri2,
-                        })
+                        this.props.navigation.dispatch(backAction);
                     }}>
                     <Image
                         resizeMode='contain'

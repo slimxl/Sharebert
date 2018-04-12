@@ -133,7 +133,7 @@ class Explore extends Component {
 
       searchterm = this.props.navigation.state.params.search;
       fetch(
-        'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
+        'https://sharebert.com/APISEARCH.php?keyword=' +
         searchterm +
         '&page=1',
         { method: 'GET' }
@@ -144,6 +144,7 @@ class Explore extends Component {
           if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
             Alert.alert("No Results Found");
             emptycard = true;
+            this.grabFrontPage();
             return;
           }
           else {
@@ -325,6 +326,8 @@ class Explore extends Component {
           <Image
             resizeMode="contain"
             style={styles.Trend1}
+            borderRadius={10}
+            borderColor='#dee6ee'
             source={{
               uri: this.state.trendData[0].ImageURL,
             }}
@@ -763,7 +766,7 @@ class Explore extends Component {
           data2 = shuffle(data2);
           var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
-            'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
+            'https://sharebert.com/APISEARCH.php?keyword=' +
             category +
             '&page=' + RandomNumber2,
             { method: 'GET' }
@@ -1068,7 +1071,7 @@ class Explore extends Component {
     }
     console.log(searchterm);
     fetch(
-      'https://biosystematic-addit.000webhostapp.com/APISEARCH.php?keyword=' +
+      'https://sharebert.com/APISEARCH.php?keyword=' +
       searchterm +
       '&page=1',
       { method: 'GET' }
@@ -1079,6 +1082,7 @@ class Explore extends Component {
         console.log(Object.keys(responseData['Amazon']).length)
         if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
           Alert.alert("No Results Found");
+          this.grabFrontPage();
           return;
         }
         emptycard = false;
