@@ -46,7 +46,28 @@ class Likes extends Component {
       userID: userID,
     };
     this.getFile();
-    
+    try {
+      if (userID != 0) {
+        fetch(
+          'https://sharebert.com/RetrievePointsWeb.php?uid=' +
+          userID,
+          { method: 'GET' }
+        )
+          .then(response => response.json())
+          .then(responseData => {
+            var test = responseData['Points'];
+            userPoints = test;
+            this.setState({
+              userPoints: test,
+            })
+          })
+          .done();
+      }
+    }catch(error)
+    {
+      Alert.alert(error);
+    }
+   
   }
 
   onMenuItemSelected = item => {
@@ -121,6 +142,9 @@ class Likes extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
+                    this.setState({
+                      userPoints:responseData2['Points'],
+                    })
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
@@ -315,7 +339,7 @@ class Likes extends Component {
           <View>
             <Image style={styles.header} />
             <Text style={styles.text2}>
-              {userPoints + '\n'}
+              {this.state.userPoints + '\n'}
             </Text>
             <Text style={styles.pointsText}>
               Points
@@ -428,7 +452,7 @@ const styles = StyleSheet.create({
     }),
   },
   container2: {
-    height: Dimensions.get('window').height+100,
+    height: Dimensions.get('window').height + 100,
     width: Dimensions.get('window').width,
   },
   text2: {
