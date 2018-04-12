@@ -360,8 +360,7 @@ class Explore extends Component {
 
         }
         data2 = shuffle(data2);
-        while(data2.length!=4)
-        {
+        while (data2.length != 4) {
           data2.pop();
         }
         this.setState({
@@ -1520,7 +1519,7 @@ class Explore extends Component {
               </ScrollView>
             </View>
             <View style={styles.TrendText2}>
-            <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
+              <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
             </View>
             <View style={styles.listContainer}>
               <FlatList
@@ -1533,21 +1532,30 @@ class Explore extends Component {
                 numColumns={numColumns}
               />
             </View>
-
-            <TouchableOpacity disabled={true} style={styles.footerTicker}>
-              <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-              <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-              <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
-              <Text style={styles.footerShareText}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                  Share{' '}
-                </Text>
-              </Text>
-
-            </TouchableOpacity>
-
+            {
+              emptycard
+                ?
+                <View />
+                :
+                <TouchableOpacity disabled={true} style={styles.footerTicker}>
+                  <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
+                  <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
+                </TouchableOpacity>
+            }
+            {
+              emptycard
+                ?
+                <View />
+                :
+                <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+                  <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+                  <Text style={styles.footerShareText}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
+                      Share{' '}
+                    </Text>
+                  </Text>
+                </TouchableOpacity>
+            }
             <View style={styles.footer}>
               <Image style={styles.footer} />
 
@@ -1994,7 +2002,7 @@ const styles = StyleSheet.create({
       height: '100%',
       marginTop: -70,
     },
-    listContainer2:
+  listContainer2:
     {
       backgroundColor: 'transparent',
       height: '100%',
@@ -2509,9 +2517,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 5,
     borderRadius: 5,
-    borderColor:'transparent',
-    
-    
+    borderColor: 'transparent',
+
+
 
   },
   itemTitle: {
@@ -2531,8 +2539,8 @@ const styles = StyleSheet.create({
       PRODUCT_ITEM_MARGIN,
     height: PRODUCT_ITEM_HEIGHT,
     flexDirection: 'column',
-    borderRadius:5,
-    borderColor:'transparent',
+    borderRadius: 5,
+    borderColor: 'transparent',
     backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
