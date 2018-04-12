@@ -95,14 +95,6 @@ class Search extends Component {
             search: this.state.inputValue
         })
     };
-    resetTo(route) {
-        this.props.navigation.pop(0)
-        this.props.navigation.navigate(route, {
-          id: userID,
-          points: userPoints,
-          uri: uri2,
-        })
-      }
 
     _handleTextChange = inputValue => {
         this.setState({ inputValue });
@@ -114,6 +106,21 @@ class Search extends Component {
                     <Image style={styles.header} />
                 </TouchableOpacity>
 
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        this.props.navigation.navigate('Explore', {
+                            id: userID,
+                            points: userPoints,
+                            uri: uri2,
+                        })
+                    }}>
+                    <Image
+                        style={styles.hamburger}
+                        resizeMode='contain'
+                        source={require('./assets/arrow.png')}
+                    />
+
+                </TouchableWithoutFeedback>
 
                 <TouchableWithoutFeedback
                     onPress={() => this.onSubmitEdit()}
@@ -160,16 +167,7 @@ class Search extends Component {
                         </TouchableOpacity>
                     )}
                 />
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.dispatch(backAction);
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow.png')}
-          />
-        </TouchableWithoutFeedback>
+
             </View>
         );
     }

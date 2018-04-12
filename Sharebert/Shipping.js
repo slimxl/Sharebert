@@ -225,7 +225,16 @@ class Shipping extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-        
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
+          <Image
+            style={styles.hamburger}
+            resizeMode='contain'
+            source={require('./assets/arrow.png')}
+          />
+        </TouchableWithoutFeedback>
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%', marginTop: 10 }}>
@@ -460,16 +469,6 @@ class Shipping extends Component {
           </View>
           
         </ImageBackground>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.dispatch(backAction);
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow.png')}
-          />
-        </TouchableWithoutFeedback>
       </View>
     );
   }

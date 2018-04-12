@@ -135,7 +135,9 @@ class Rewards extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity
-        >
+        onPress={() => {
+          this.props.navigation.dispatch(backAction);
+        }}>
 
           <Image style={styles.header} />
           <Text style={styles.text2}>
@@ -150,7 +152,16 @@ class Rewards extends Component {
           style={styles.button}
           source={require('./Logo.png')}
         />
-
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.props.navigation.dispatch(backAction);
+          }}>
+          <Image
+            style={styles.hamburger}
+            resizeMode='contain'
+            source={require('./assets/arrow.png')}
+          />
+        </TouchableWithoutFeedback>
         <Image
           resizeMode="contain"
           style={styles.heart}
@@ -189,16 +200,6 @@ class Rewards extends Component {
             />
           </View>
         </ImageBackground>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.dispatch(backAction);
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow.png')}
-          />
-        </TouchableWithoutFeedback>
       </View>
     );
   }
