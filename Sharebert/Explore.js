@@ -1516,7 +1516,9 @@ class Explore extends Component {
                 </TouchableOpacity>
               </ScrollView>
             </View>
+            <View style={styles.TrendText2}>
             <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
+            </View>
             <View style={styles.listContainer}>
               <FlatList
                 style={styles.listContainer}
@@ -1986,8 +1988,8 @@ const styles = StyleSheet.create({
   listContainer:
     {
       backgroundColor: 'transparent',
-      height: '60%',
-      marginTop: 25,
+      height: '50%',
+      marginTop: -50,
     },
 
   text2: {
@@ -2152,7 +2154,11 @@ const styles = StyleSheet.create({
     left: 0,
     marginLeft: Dimensions.get('window').width/50,
     flex: 1,
-    marginTop: -600,
+    marginTop: 0,
+  },
+  TrendText2:
+  {
+    marginTop: 180,
   },
   Trend1: {
     width: Dimensions.get('window').width / 4,
