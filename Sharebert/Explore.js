@@ -1517,7 +1517,7 @@ class Explore extends Component {
               </ScrollView>
             </View>
             <View style={styles.TrendText2}>
-            <Animatable.Text ref='animatedTextref' animation={'zoomIn'} iterationCount='infinite' delay={10} duration={5000} easing='ease-in-out-back' style={styles.TrendText} numberOfLines={1} ref={this.handleTextRef}>{this.state.frontTitle}</Animatable.Text>
+            <Animatable.Text ref='animatedTextref' animation={'zoomIn'} iterationCount='infinite' direction="alternate" delay={10} duration={5000} easing='ease-in-out-back' style={styles.TrendText} numberOfLines={1} ref={this.handleTextRef}>{this.state.frontTitle}</Animatable.Text>
             </View>
             <View style={styles.listContainer}>
               <FlatList
@@ -2177,7 +2177,7 @@ const styles = StyleSheet.create({
   TrendText2:
   {
     marginTop: 160,
-    marginBottom:5,
+    marginBottom:'1%',
   },
   Trend1: {
     width: Dimensions.get('window').width / 4,
