@@ -360,7 +360,10 @@ class Explore extends Component {
 
         }
         data2 = shuffle(data2);
-
+        while(data2.length!=4)
+        {
+          data2.pop();
+        }
         this.setState({
           trendData: data2,
           url: 'https://i.imgur.com/qnHscIM.png',
@@ -1517,7 +1520,7 @@ class Explore extends Component {
               </ScrollView>
             </View>
             <View style={styles.TrendText2}>
-            <Animatable.Text ref='animatedTextref' animation={'zoomIn'} iterationCount='infinite' direction="alternate" delay={10} duration={5000} easing='ease-in-out-back' style={styles.TrendText} numberOfLines={1} ref={this.handleTextRef}>{this.state.frontTitle}</Animatable.Text>
+              <Animatable.Text ref='animatedTextref' animation={'zoomIn'} iterationCount='infinite' direction="alternate" delay={10} duration={5000} easing='ease-in-out-back' style={styles.TrendText} numberOfLines={1} ref={this.handleTextRef}>{this.state.frontTitle}</Animatable.Text>
             </View>
             <View style={styles.listContainer}>
               <FlatList
@@ -2146,39 +2149,42 @@ const styles = StyleSheet.create({
   TrendText: {
     ...Platform.select({
       ios: {
-    fontFamily: 'Montserrat',
-    width: Dimensions.get('window').width,
-    height: 150,
-    position: 'absolute',
-    textAlign: 'center',
-    fontSize: 25,
-    bottom: 0,
-    left: 0,
-    marginLeft: Dimensions.get('window').width/50,
-    flex: 1,
-    marginTop: 0,
-      },
-      android:
-      {
         fontFamily: 'Montserrat',
         width: Dimensions.get('window').width,
-        height: 150,
+        height: 50,
         position: 'absolute',
         textAlign: 'center',
         fontSize: 25,
         bottom: 0,
         left: 0,
-        marginLeft: Dimensions.get('window').width/50,
+        marginLeft: Dimensions.get('window').width / 50,
         flex: 1,
         marginTop: 0,
-      }
+        marginBottom: 80,
+      },
+      android:
+        {
+          fontFamily: 'Montserrat',
+          width: Dimensions.get('window').width,
+          height: 30,
+          position: 'absolute',
+          textAlign: 'center',
+          fontSize: 25,
+          bottom: 0,
+          left: 0,
+          marginLeft: Dimensions.get('window').width / 50,
+          flex: 1,
+          marginTop: 0,
+          marginBottom: 80,
+
+        }
     })
   },
   TrendText2:
-  {
-    marginTop: 160,
-    marginBottom:'1%',
-  },
+    {
+      marginTop: 160,
+      marginBottom: '1%',
+    },
   Trend1: {
     width: Dimensions.get('window').width / 4,
     height: Dimensions.get('window').height / 4,
@@ -2500,7 +2506,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
-    borderRadius: 12,
+    borderRadius: 5,
 
   },
   itemTitle: {
