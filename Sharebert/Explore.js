@@ -79,6 +79,7 @@ class Explore extends Component {
       selectedItem: 'Explore',
       swipedAllCards: false,
       swipeDirection: '',
+      frontTitle: 'Today\'s Hot Picks!',
       disable: true,
       isSwipingBack: false,
       cardIndex: 0,
@@ -232,21 +233,31 @@ class Explore extends Component {
   }
 
   grabFrontPage = () => {
-    fetch('https://sharebert.com/Frontpage.php', { method: 'GET' })
+    fetch('https://sharebert.com/Frontpage2.php', { method: 'GET' })
       .then(response => response.json())
         .then(responseData => {
           var data2 = [];
+          var temptitle = '';
           for (var i = 0; i < responseData.length; i++) {
             var obj = {};
-            obj['term'] = responseData[i]['term'];
-            obj['ImageURL'] = responseData[i]['ImageURL'];
-            data2.push(obj);
+            if(responseData[i]['id']==='1')
+            {
+              temptitle = responseData[i]['term'];
+            }
+            else
+            {
+              obj['term'] = responseData[i]['term'];
+              obj['ImageURL'] = responseData[i]['ImageURL'];
+              data2.push(obj);
+            }
+           
           }
           data2 = shuffle(data2);
           
           this.setState({
             trendData: data2,
             url: 'https://i.imgur.com/qnHscIM.png',
+            frontTitle: temptitle,
             // cardNum: this.state.cardNum,
             // url: data2[this.state.cardNum].ImageURL,
             // title: data2[this.state.cardNum].Title,
@@ -317,7 +328,7 @@ class Explore extends Component {
     ) {
       return (
         <View style={styles.card}>
-          <Text style={styles.TrendText}>Today's Hot Picks</Text>
+          <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
           <TouchableWithoutFeedback style={styles.Trend1}
           onPress={()=>{
             searchterm = this.state.trendData[0].term;
