@@ -1520,11 +1520,11 @@ class Explore extends Component {
               </ScrollView>
             </View>
             <View style={styles.TrendText2}>
-              <Animatable.Text ref='animatedTextref' animation={'zoomIn'} iterationCount='infinite' direction="alternate" delay={10} duration={5000} easing='ease-in-out-back' style={styles.TrendText} numberOfLines={1} ref={this.handleTextRef}>{this.state.frontTitle}</Animatable.Text>
+            <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
             </View>
             <View style={styles.listContainer}>
               <FlatList
-                style={styles.listContainer}
+                style={styles.listContainer2}
                 data={this.state.trendData}
                 keyExtractor={(item, index) => index}
                 renderItem={this._renderItem}
@@ -1991,8 +1991,14 @@ const styles = StyleSheet.create({
   listContainer:
     {
       backgroundColor: 'transparent',
-      height: '50%',
-      marginTop: -50,
+      height: '100%',
+      marginTop: -100,
+    },
+    listContainer2:
+    {
+      backgroundColor: 'transparent',
+      height: '100%',
+      marginTop: 10,
     },
 
   text2: {
@@ -2151,16 +2157,14 @@ const styles = StyleSheet.create({
       ios: {
         fontFamily: 'Montserrat',
         width: Dimensions.get('window').width,
-        height: 50,
+        height: 30,
         position: 'absolute',
         textAlign: 'center',
         fontSize: 25,
-        bottom: 0,
         left: 0,
         marginLeft: Dimensions.get('window').width / 50,
-        flex: 1,
         marginTop: 0,
-        marginBottom: 80,
+        marginBottom: -40,
       },
       android:
         {
@@ -2170,20 +2174,18 @@ const styles = StyleSheet.create({
           position: 'absolute',
           textAlign: 'center',
           fontSize: 25,
-          bottom: 0,
           left: 0,
           marginLeft: Dimensions.get('window').width / 50,
-          flex: 1,
           marginTop: 0,
-          marginBottom: 80,
+          marginBottom: -40,
 
         }
     })
   },
   TrendText2:
     {
-      marginTop: 160,
-      marginBottom: '1%',
+      marginTop: 10,
+      marginBottom: '30%',
     },
   Trend1: {
     width: Dimensions.get('window').width / 4,
@@ -2502,7 +2504,7 @@ const styles = StyleSheet.create({
   itemImage: {
     width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
       PRODUCT_ITEM_MARGIN,
-    height: 125,
+    height: 185,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
@@ -2522,7 +2524,6 @@ const styles = StyleSheet.create({
   item: {
     margin: PRODUCT_ITEM_OFFSET,
     overflow: 'hidden',
-    borderRadius: 1,
     width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
       PRODUCT_ITEM_MARGIN,
     height: PRODUCT_ITEM_HEIGHT,
