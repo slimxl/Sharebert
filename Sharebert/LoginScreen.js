@@ -410,7 +410,7 @@ class LoginScreen extends Component {
 
 
         fetch(
-          'https://biosystematic-addit.000webhostapp.com/GetIDfromEmail.php?uemail=' +
+          'https://sharebert.com/GetIDfromEmail.php?uemail=' +
           userEmail2,
           { method: 'GET' }
         )

@@ -232,7 +232,7 @@ class Explore extends Component {
   }
 
   grabFrontPage = () => {
-    fetch('https://biosystematic-addit.000webhostapp.com/Frontpage/Frontpage.php', { method: 'GET' })
+    fetch('https://sharebert.com/Frontpage.php', { method: 'GET' })
       .then(response => response.json())
         .then(responseData => {
           var data2 = [];
@@ -286,7 +286,7 @@ class Explore extends Component {
   grabRandoLikes = async () => {
     var data2 = [];
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    fetch('https://biosystematic-addit.000webhostapp.com/UserLikes.php?page=5', { method: 'GET' })
+    fetch('https://sharebert.com/UserLikes.php?page=5', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
         for (var i = 0; i < 20; i++) {
@@ -1986,7 +1986,7 @@ async function register() {
   const token = await Expo.Notifications.getExpoPushTokenAsync();
   console.log(status, token)
   try {
-    fetch('https://biosystematic-addit.000webhostapp.com/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
+    fetch('https://sharebert.com/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
   }
   catch (error) {
     console.error(error);

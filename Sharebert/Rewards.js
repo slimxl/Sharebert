@@ -78,13 +78,13 @@ class Rewards extends Component {
       var nb = userPoints - item.Cost;
       if (nb >= 0) {
         fetch(
-          'https://biosystematic-addit.000webhostapp.com/GiveReward.php?uid=' +
+          'https://sharebert.com/GiveReward.php?uid=' +
           userID,
           { method: 'POST' }
         )
           .then(() => {
             fetch(
-              'https://biosystematic-addit.000webhostapp.com/GiveReward2.php?uid=' +
+              'https://sharebert.com/GiveReward2.php?uid=' +
               userID +
               '&qty=1&rwd=' +
               item.ID +
