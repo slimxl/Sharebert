@@ -397,11 +397,11 @@ class Brands extends Component {
       brandArr.push(Brand13);
       brandArr.push(Brand14);
       brandArr.push(Brand15);
-      brandArr.push(Brand16);
+      //brandArr.push(Brand16);
       brandArr.push(Brand17);
       brandArr.push(Brand18);
       brandArr.push(Brand19);
-      brandArr.push(Brand20);
+      //brandArr.push(Brand20);
   
       brandArr.push(Brand21);
       brandArr.push(Brand22);
@@ -409,13 +409,13 @@ class Brands extends Component {
       brandArr.push(Brand25);
       brandArr.push(Brand26);
       brandArr.push(Brand27);
-      brandArr.push(Brand28);
+      //brandArr.push(Brand28);
       brandArr.push(Brand29);
       brandArr.push(Brand30);
       brandArr.push(Brand31);
       brandArr.push(Brand32);
       brandArr.push(Brand33);
-      brandArr.push(Brand34);
+      //brandArr.push(Brand34);
       brandArr.push(Brand35);
       brandArr.push(Brand36);
       brandArr.push(Brand37);
@@ -424,12 +424,12 @@ class Brands extends Component {
       brandArr.push(Brand40);
   
       brandArr.push(Brand41);
-      brandArr.push(Brand42);
-      brandArr.push(Brand43);
-      brandArr.push(Brand44);
+      //brandArr.push(Brand42);
+      //brandArr.push(Brand43);
+      //brandArr.push(Brand44);
       brandArr.push(Brand45);
       brandArr.push(Brand46);
-      brandArr.push(Brand47);
+      //brandArr.push(Brand47);
       brandArr.push(Brand48);
       brandArr.push(Brand49);
       brandArr.push(Brand50);
@@ -450,7 +450,7 @@ class Brands extends Component {
       brandArr.push(Brand64);
       brandArr.push(Brand65);
       brandArr.push(Brand66);
-      brandArr.push(Brand67);
+      //brandArr.push(Brand67);
     }
     
     
