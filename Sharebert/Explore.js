@@ -70,6 +70,8 @@ const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height;
 // const SCREEN_HEIGHT = width < height ? height : width;
 const isSmallDevice = SCREEN_WIDTH <= 414;
+var deviceHeight = Dimensions.get('window').height;
+var deviceWidth = Dimensions.get('window').width;
 const numColumns = isSmallDevice ? 2 : 3;
 // item size
 const PRODUCT_ITEM_HEIGHT = 175;
@@ -92,7 +94,7 @@ class Explore extends Component {
       selectedItem: 'Explore',
       swipedAllCards: false,
       swipeDirection: '',
-      frontTitle: 'Today\'s Hot Picks!',
+      frontTitle: '',
       disable: true,
       isSwipingBack: false,
       cardIndex: 0,
@@ -450,7 +452,6 @@ class Explore extends Component {
         </View>
       );
 */
-
     } else if (
       this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
@@ -460,11 +461,6 @@ class Explore extends Component {
 
           <Image2
             resizeMode="contain"
-            indicator={ProgressBar}
-            indicatorProps={{
-              color: '#ff2eff',
-              unfilledColor: 'rgba(200, 200, 200, 0.2)'
-            }}
             style={styles.imageload}
 
             source={require('./assets/loading3.gif')}
@@ -1245,7 +1241,7 @@ class Explore extends Component {
   showEmptyListView = () => {
 
     return (
-      <View style={styles.card2}>
+      <View style={styles.card}>
 
         <Image
           resizeMode="contain"
@@ -1520,19 +1516,19 @@ class Explore extends Component {
               emptycard
                 ?
                 <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-                  <Image style={styles.footerShare2} resizeMode={"contain"} source={require('./sharebutton.png')} />
-                  <Text style={styles.footerShareText2}>
-                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18, }}>
-                      Share{' '}
+                  <Image style={styles.footerShare} resizeMode={"contain"} source={require('./assets/share1.png')} />
+                  <Text style={styles.footerShareText}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
+                      {''}
                     </Text>
                   </Text>
                 </TouchableOpacity>
                 :
                 <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-                  <Image style={styles.footerShare} resizeMode={"contain"} source={require('./sharebutton.png')} />
+                  <Image style={styles.footerShare} resizeMode={"contain"} source={require('./assets/share2.png')} />
                   <Text style={styles.footerShareText}>
                     <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                      Share{' '}
+                      {' '}
                     </Text>
                   </Text>
                 </TouchableOpacity>
@@ -1554,7 +1550,6 @@ class Explore extends Component {
                 data={this.state.trendData}
                 keyExtractor={(item, index) => index}
                 renderItem={this._renderItem}
-                ListEmptyComponent={this.showEmptyListView()}
                 getItemLayout={this._getItemLayout}
                 numColumns={numColumns}
               />
@@ -1655,6 +1650,7 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
+  
   container: {
     ...Platform.select({
       ios: {
@@ -1681,7 +1677,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 0.9,
-    borderRadius: 2,
+    borderRadius: 20,
     borderWidth: 2,
     borderColor: '#f2efef',
     justifyContent: 'center',
@@ -1698,13 +1694,13 @@ const styles = StyleSheet.create({
   listContainer:
     {
       backgroundColor: 'transparent',
-      height: '100%',
+      height: deviceHeight-300,
       marginTop: -70,
     },
   listContainer2:
     {
       backgroundColor: 'transparent',
-      height: '100%',
+      height: deviceHeight,
       marginTop: 10,
     },
 
@@ -1850,10 +1846,11 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
+    borderRadius: 10,
     flex: 1,
   },
   imageload: {
-    width,
+    width: '100%',
     marginLeft: Dimensions.get('window').width / 3.5,
     marginTop: Dimensions.get('window').height / 5.2,
     backgroundColor: 'transparent',
@@ -2158,13 +2155,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   footerShare: {
-    height: 30,
+    height: 40,
     borderRadius: 12,
-    width: 30,
+    width: 300,
     bottom: 0,
     backgroundColor: 'transparent',
-    marginBottom: 2,
-    marginLeft: Dimensions.get('window').width / 2.2,
+    marginBottom: -10,
+    marginLeft: Dimensions.get('window').width / 7,
   },
   footerShareText: {
     height: 30,
@@ -2175,25 +2172,6 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width / 2.22,
     color: '#747475',
     fontSize: 12,
-  },
-  footerShare2: {
-    height: 60,
-    borderRadius: 12,
-    width: 60,
-    bottom: 0,
-    backgroundColor: 'transparent',
-    marginBottom: 2,
-    marginLeft: Dimensions.get('window').width / 2.42,
-  },
-  footerShareText2: {
-    height: 30,
-    width: 200,
-    bottom: 0,
-    backgroundColor: 'transparent',
-    marginBottom: 65,
-    marginLeft: Dimensions.get('window').width / 2.35,
-    color: '#747475',
-    fontSize: 16,
   },
 
   catbar: {
