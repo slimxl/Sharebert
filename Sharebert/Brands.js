@@ -380,7 +380,7 @@ class Brands extends Component {
     Brand67['image_url'] = require('./assets/brands/tvgear.jpg');
 
 
-    if(brandArr.length<60)
+    if(brandArr.length<10)
     {
 
       brandArr.push(Brand1);
