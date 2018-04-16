@@ -28,6 +28,9 @@ class LoginScreen extends Component {
     this.getData();
     Font.loadAsync({
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
+      'MontserratBold': require('./assets/fonts/MontserratBold.otf'),
+      'MontserratLight': require('./assets/fonts/MontserratLight.otf'),
+      'MontserratBoldItalic': require('./assets/fonts/MontserratBoldItalic.otf'),      
     });
   }
   onSubmitEdit(location) {

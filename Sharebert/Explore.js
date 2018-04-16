@@ -81,7 +81,7 @@ const PRODUCT_ITEM_MARGIN = PRODUCT_ITEM_OFFSET * 2;
 class Explore extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props.navigation.state.params);
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
@@ -114,12 +114,13 @@ class Explore extends Component {
     };
     if (this.props.navigation.state.params.brands != undefined) {
       emptycard = false;
+      console.log('Grabbed brands - New Explore');
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           var data2 = [];
-          for (var i = 0; i < 20; i++) {
+          for (var i = 0; i < Object.keys(responseData).length; i++) {
             var obj = {};
             obj['ASIN'] = responseData[i]['ASIN'];
             obj['Title'] = responseData[i]['Title'];
@@ -146,6 +147,7 @@ class Explore extends Component {
         .done();
     }
     else if (this.props.navigation.state.params.search != undefined) {
+      console.log('Grabbed Search - New Explore');
 
       searchterm = this.props.navigation.state.params.search;
       fetch(
@@ -157,77 +159,75 @@ class Explore extends Component {
         .then(response => response.json())
         .then(responseData => {
           console.log(Object.keys(responseData['Amazon']).length);
-          if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
-            Alert.alert("No Results Found");
-            emptycard = true;
-            this.grabFrontPage();
-            return;
+          // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
+          //   Alert.alert("No Results Found");
+          //   emptycard = true;
+          //   this.grabFrontPage();
+          //   return;
+          // }
+          //else {
+          var data2 = [];
+          //var count = responseData['Amazon'][0][7];
+          //datasize = count;
+          //searchcount = datasize;
+          console.log(searchcount);
+          for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData['Amazon'][i][0];
+            obj['Title'] = responseData['Amazon'][i][1];
+            obj['URL'] = responseData['Amazon'][i][3];
+            obj['ImageURL'] = responseData['Amazon'][i][4];
+            obj['Retailer'] = 'Amazon';
+            data2.push(obj);
           }
-          else {
-            emptycard = false;
-            var data2 = [];
-            var count = responseData['Amazon'][0][7];
-            datasize = count;
-            searchcount = datasize;
-            console.log(searchcount);
-            for (var i = 0; i < count; i++) {
-              var obj = {};
-              obj['ASIN'] = responseData['Amazon'][i][0];
-              obj['Title'] = responseData['Amazon'][i][1];
-              obj['URL'] = responseData['Amazon'][i][3];
-              obj['ImageURL'] = responseData['Amazon'][i][4];
-              obj['Retailer'] = 'Amazon';
-              data2.push(obj);
-            }
-            search = true;
+          search = true;
 
-            fetch(
-              'https://sharebert.com/search.php?cat=' +
-              searchterm +
-              '&page=10',
-              { method: 'GET' }
-            )
-              .then(response2 => response2.json())
-              .then(responseData2 => {
-                console.log(Object.keys(responseData2['Amazon']).length);
-                // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
-                //   Alert.alert("No Results Found");
-                //   emptycard = true;
-                //   this.grabFrontPage();
-                //   return;
-                // }
-                // else {
+          fetch(
+            'https://sharebert.com/search.php?cat=' +
+            searchterm +
+            '&page=10',
+            { method: 'GET' }
+          )
+            .then(response2 => response2.json())
+            .then(responseData2 => {
+              console.log(Object.keys(responseData2['Amazon']).length);
+              // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
+              //   Alert.alert("No Results Found");
+              //   emptycard = true;
+              //   this.grabFrontPage();
+              //   return;
+              // }
+              // else {
+              emptycard = false;
+              var count = Object.keys(responseData2['Amazon']).length;
+              if (count != 0) {
+                for (var i = 0; i < count; i++) {
+                  var obj = {};
+                  obj['ASIN'] = responseData2['Amazon'][i]['ASIN'];
+                  obj['Title'] = responseData2['Amazon'][i]['Title'];
+                  obj['URL'] = responseData2['Amazon'][i]['URL'];
+                  obj['ImageURL'] = responseData2['Amazon'][i]['ImageURL'];
+                  obj['Retailer'] = 'Amazon';
+                  data2.push(obj);
+                }
+              }
+              count = Object.keys(responseData2['Others']).length;
+              if (count != 0) {
+                for (var i = 0; i < count; i++) {
+                  var obj2 = {};
+                  obj2['ASIN'] = responseData2['Others'][i]['ASIN'];
+                  obj2['Title'] = responseData2['Others'][i]['Title'];
+                  obj2['URL'] = responseData2['Others'][i]['URL'];
+                  obj2['ImageURL'] = responseData2['Others'][i]['ImageURL'];
+                  obj2['Retailer'] = responseData2['Others'][i]['Website'];
+                  data2.push(obj2);
+                }
+              }
+              if (data2.length > 0) {
+                search = true;
+                datasize = data2.length;
+                searchcount = datasize;
                 emptycard = false;
-                var count = Object.keys(responseData2['Amazon']).length;
-                if (count != 0) {
-                  for (var i = 0; i < count; i++) {
-                    var obj = {};
-                    obj['ASIN'] = responseData2['Amazon'][i]['ASIN'];
-                    obj['Title'] = responseData2['Amazon'][i]['Title'];
-                    obj['URL'] = responseData2['Amazon'][i]['URL'];
-                    obj['ImageURL'] = responseData2['Amazon'][i]['ImageURL'];
-                    obj['Retailer'] = 'Amazon';
-                    data2.push(obj);
-                  }
-                }
-                count = Object.keys(responseData2['Others']).length;
-                if (count != 0) {
-                  for (var i = 0; i < count; i++) {
-                    var obj2 = {};
-                    obj2['ASIN'] = responseData2['Others'][i]['ASIN'];
-                    obj2['Title'] = responseData2['Others'][i]['Title'];
-                    obj2['URL'] = responseData2['Others'][i]['URL'];
-                    obj2['ImageURL'] = responseData2['Others'][i]['ImageURL'];
-                    obj2['Retailer'] = responseData2['Others'][i]['Website'];
-                    data2.push(obj2);
-                  }
-                }
-                if (data2.length > 0) {
-                  search = true;
-                  datasize = data2.length;
-                  searchcount = datasize;
-                }
-
                 data2 = shuffle(data2);
                 console.log(data2.length);
                 this.setState({
@@ -239,8 +239,18 @@ class Explore extends Component {
                   category: 'All',
                   cat: false,
                 });
-              })
-          }
+              }
+              else {
+                Alert.alert("No Results Found!", 'Try Again!');
+                emptycard = true;
+                this.grabFrontPage();
+                return;
+              }
+
+
+
+            })
+          //}
         })
         .done();
     }
@@ -483,6 +493,7 @@ class Explore extends Component {
       else {
         retailfinal = this.state.dataset[this.state.cardNum].Retailer
       }
+      var finaltitle = trunc(this.state.dataset[this.state.cardNum].Title)
       return (
         <View style={styles.card}>
 
@@ -499,11 +510,14 @@ class Explore extends Component {
               uri: imageURL2,
             }}
           />
-          <Text numberOfLines={2} style={styles.text}>
-            {this.state.dataset[this.state.cardNum].Title}
+          <Text numberOfLines={1}  style={styles.text}>
+            {finaltitle}
+          </Text>
+          <Text  style={styles.retail2}>
+            (Tap for Price)
           </Text>
           <Text style={styles.retail}>
-            From <Text style={{ color: '#ff2eff' }}>{retailfinal}</Text>
+          Sold by <Text style={{ color: '#858a8f' }}>{retailfinal}</Text>
           </Text>
         </View>
       );
@@ -668,111 +682,126 @@ class Explore extends Component {
       ) {
         return;
       }
-      if (brand !== "" && (this.state.cardNum + 11 >= this.state.dataset.length)) {
-        console.log('brand reset')
-        fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
-          .then(response => response.json())
-          .then(responseData => {
-            var data2 = [];
-            for (var i = 0; i < 20; i++) {
-              var obj = {};
-              obj['ASIN'] = responseData[i]['ASIN'];
-              obj['Title'] = responseData[i]['Title'];
-              obj['URL'] = responseData[i]['URL'];
-              obj['ImageURL'] = responseData[i]['ImageURL'];
-              obj['Retailer'] = responseData[i]['Website'];
-              data2.push(obj);
-            }
-            toofast = false;
-            search = false;
-            data2 = shuffle(data2);
-            this.setState({
-              cardNum: 0,
-              dataset: data2,
-              category: '',
-              disable: false,
-              cat: false,
-            });
-          })
-          .done();
-      }
-      else if ((search === true && this.state.cardNum + 1 >= (searchcount)) || (this.state.cardNum > 30 && search === true)) {
-        this.onSubmitEdit();
-      }
-      else if (
-        this.state.cat &&
-        this.state.category != 'All' &&
-        (this.state.cardNum + 10) >= this.state.dataset.length) {
-        console.log('reset cat');
-        this.catGrab(this.state.category);
-      }
-      else if ((this.state.cardNum + 10 >= this.state.dataset.length) && search === false && this.state.cat === false) {
-        console.log('Search was reset');
-        fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
-          .then(response => response.json())
-          .then(responseData => {
-            var data2 = [];
-            for (var i = 0; i < 20; i++) {
-              var obj = {};
-              obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-              obj['Title'] = responseData['Amazon'][i]['Title'];
-              obj['URL'] = responseData['Amazon'][i]['URL'];
-              obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-              obj['Retailer'] = "Amazon";
+      if (this.state.dataset.length <= this.state.cardNum + 1) {
+        this.setState({
+          disable: true,
+          url: 'https://i.imgur.com/JaG8ovv.gif',
+        })
+        if (brand !== "" && (this.state.cardNum + 1 >= this.state.dataset.length)) {
+          console.log('brand reset')
+          fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
+            .then(response => response.json())
+            .then(responseData => {
+              var data2 = [];
+              for (var i = 0; i < Object.keys(responseData).length; i++) {
+                var obj = {};
+                obj['ASIN'] = responseData[i]['ASIN'];
+                obj['Title'] = responseData[i]['Title'];
+                obj['URL'] = responseData[i]['URL'];
+                obj['ImageURL'] = responseData[i]['ImageURL'];
+                obj['Retailer'] = responseData[i]['Website'];
+                data2.push(obj);
+              }
+              toofast = false;
+              search = false;
+              data2 = shuffle(data2);
+              this.setState({
+                cardNum: 0,
+                dataset: data2,
+                url: this.state.dataset[this.state.cardNum].ImageURL,
+                title: this.state.dataset[this.state.cardNum].Title,
+                category: '',
+                disable: false,
+                cat: false,
+              });
+            })
+            .done();
+        }
+        else if ((search === true && this.state.cardNum + 1 >= (searchcount)) || (this.state.cardNum > 30 && search === true)) {
+          this.onSubmitEdit();
+        }
+        else if (
+          this.state.cat &&
+          this.state.category != 'All' &&
+          (this.state.cardNum + 1) >= this.state.dataset.length) {
+          console.log('reset cat');
+          this.catGrab(this.state.category);
+        }
+        else if ((this.state.cardNum + 1 >= this.state.dataset.length) && search === false && this.state.cat === false) {
+          console.log('Search was reset');
+          fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
+            .then(response => response.json())
+            .then(responseData => {
+              var data2 = [];
+              for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
+                var obj = {};
+                obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
+                obj['Title'] = responseData['Amazon'][i]['Title'];
+                obj['URL'] = responseData['Amazon'][i]['URL'];
+                obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+                obj['Retailer'] = "Amazon";
+                data2.push(obj);
+              }
+              for (var i = 0; i < Object.keys(responseData['Others']).length; i++) {
+                var obj2 = {};
+                obj2['ASIN'] = responseData['Others'][i]['ASIN'];
+                obj2['Title'] = responseData['Others'][i]['Title'];
+                obj2['URL'] = responseData['Others'][i]['URL'];
+                obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+                obj2['Retailer'] = responseData['Others'][i]['Website'];
 
-              var obj2 = {};
-              obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-              obj2['Title'] = responseData['Others'][i]['Title'];
-              obj2['URL'] = responseData['Others'][i]['URL'];
-              obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-              obj2['Retailer'] = responseData['Others'][i]['Website'];
-              data2.push(obj);
-              data2.push(obj2);
-            }
-            toofast = false;
-            search = false;
-            data2 = shuffle(data2);
-            this.setState({
-              cardNum: 0,
-              disable: false,
-              dataset: data2,
-              category: '',
-              cat: false,
-            });
-          })
-          .done();
+                data2.push(obj2);
+
+              }
+              toofast = false;
+              search = false;
+              data2 = shuffle(data2);
+              this.setState({
+                cardNum: 0,
+                disable: false,
+                dataset: data2,
+                url: this.state.dataset[this.state.cardNum].ImageURL,
+                title: this.state.dataset[this.state.cardNum].Title,
+                category: '',
+                cat: false,
+              });
+            })
+            .done();
+        }
       }
+
       if (this.state.dataset.length > this.state.cardNum + 1) {
         this.setState({
           cardNum: this.state.cardNum + 1,
           url: this.state.dataset[this.state.cardNum].ImageURL,
           title: this.state.dataset[this.state.cardNum].Title,
         });
-      }
+        try {
+          if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
+            fetch(
+              'https://sharebert.com/DBAwardPoints.php?uid=' +
+              userID +
+              '&type=2',
+              { method: 'GET' }
+            )
+              .then(response2 => response2.json())
+              .then(responseData2 => {
+                if (responseData2['Points'] != userPoints) {
+                  Alert.alert('You Earned Points', "Keep swiping to earn more!");
 
-
-      try {
-        if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
-          fetch(
-            'https://sharebert.com/DBAwardPoints.php?uid=' +
-            userID +
-            '&type=2',
-            { method: 'GET' }
-          )
-            .then(response2 => response2.json())
-            .then(responseData2 => {
-              if (responseData2['Points'] != userPoints) {
-                Alert.alert('You Earned Points', "Keep swiping to earn more!");
-
-                userPoints = responseData2['Points'];
-                this.forceUpdate();
-              }
-            })
-            .done();
+                  userPoints = responseData2['Points'];
+                  this.forceUpdate();
+                }
+              })
+              .done();
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
+
       }
+
+
     } catch (error) {
       console.error(error);
     }
@@ -880,14 +909,16 @@ class Explore extends Component {
       fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
-          for (var i = 0; i < 20; i++) {
+          for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
             var obj = {};
             obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
             obj['Title'] = responseData['Amazon'][i]['Title'];
             obj['URL'] = responseData['Amazon'][i]['URL'];
             obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
             obj['Retailer'] = "Amazon";
-
+            data2.push(obj);
+          }
+          for (var i = 0; i < Object.keys(responseData['Others']).length; i++) {
             var obj2 = {};
             obj2['ASIN'] = responseData['Others'][i]['ASIN'];
             obj2['Title'] = responseData['Others'][i]['Title'];
@@ -895,7 +926,6 @@ class Explore extends Component {
             obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
             obj2['Retailer'] = responseData['Others'][i]['Website'];
 
-            data2.push(obj);
             data2.push(obj2);
 
           }
@@ -1150,91 +1180,97 @@ class Explore extends Component {
       .then(response => response.json())
       .then(responseData => {
         console.log(Object.keys(responseData['Amazon']).length);
-        if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
-          Alert.alert("No Results Found");
-          emptycard = true;
-          this.grabFrontPage();
-          return;
+        // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
+        //   Alert.alert("No Results Found");
+        //   emptycard = true;
+        //   this.grabFrontPage();
+        //   return;
+        // }
+        //else {
+        emptycard = false;
+        var data2 = [];
+        var count = responseData['Amazon'][0][7];
+        datasize = count;
+        searchcount = datasize;
+        console.log(searchcount);
+        for (var i = 0; i < count; i++) {
+          var obj = {};
+          obj['ASIN'] = responseData['Amazon'][i][0];
+          obj['Title'] = responseData['Amazon'][i][1];
+          obj['URL'] = responseData['Amazon'][i][3];
+          obj['ImageURL'] = responseData['Amazon'][i][4];
+          obj['Retailer'] = 'Amazon';
+          data2.push(obj);
         }
-        else {
-          emptycard = false;
-          var data2 = [];
-          var count = responseData['Amazon'][0][7];
-          datasize = count;
-          searchcount = datasize;
-          console.log(searchcount);
-          for (var i = 0; i < count; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData['Amazon'][i][0];
-            obj['Title'] = responseData['Amazon'][i][1];
-            obj['URL'] = responseData['Amazon'][i][3];
-            obj['ImageURL'] = responseData['Amazon'][i][4];
-            obj['Retailer'] = 'Amazon';
-            data2.push(obj);
-          }
-          search = true;
+        search = true;
 
-          fetch(
-            'https://sharebert.com/search.php?cat=' +
-            searchterm +
-            '&page=10',
-            { method: 'GET' }
-          )
-            .then(response2 => response2.json())
-            .then(responseData2 => {
-              console.log(Object.keys(responseData2['Amazon']).length);
-              // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
-              //   Alert.alert("No Results Found");
-              //   emptycard = true;
-              //   this.grabFrontPage();
-              //   return;
-              // }
-              // else {
-              emptycard = false;
-              var count = Object.keys(responseData2['Amazon']).length;
-              if (count != 0) {
-                for (var i = 0; i < count; i++) {
-                  var obj = {};
-                  obj['ASIN'] = responseData2['Amazon'][i]['ASIN'];
-                  obj['Title'] = responseData2['Amazon'][i]['Title'];
-                  obj['URL'] = responseData2['Amazon'][i]['URL'];
-                  obj['ImageURL'] = responseData2['Amazon'][i]['ImageURL'];
-                  obj['Retailer'] = 'Amazon';
-                  data2.push(obj);
-                }
+        fetch(
+          'https://sharebert.com/search.php?cat=' +
+          searchterm +
+          '&page=10',
+          { method: 'GET' }
+        )
+          .then(response2 => response2.json())
+          .then(responseData2 => {
+            console.log(Object.keys(responseData2['Amazon']).length);
+            // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
+            //   Alert.alert("No Results Found");
+            //   emptycard = true;
+            //   this.grabFrontPage();
+            //   return;
+            // }
+            // else {
+            emptycard = false;
+            var count = Object.keys(responseData2['Amazon']).length;
+            if (count != 0) {
+              for (var i = 0; i < count; i++) {
+                var obj = {};
+                obj['ASIN'] = responseData2['Amazon'][i]['ASIN'];
+                obj['Title'] = responseData2['Amazon'][i]['Title'];
+                obj['URL'] = responseData2['Amazon'][i]['URL'];
+                obj['ImageURL'] = responseData2['Amazon'][i]['ImageURL'];
+                obj['Retailer'] = 'Amazon';
+                data2.push(obj);
               }
-              count = Object.keys(responseData2['Others']).length;
-              if (count != 0) {
-                for (var i = 0; i < count; i++) {
-                  var obj2 = {};
-                  obj2['ASIN'] = responseData2['Others'][i]['ASIN'];
-                  obj2['Title'] = responseData2['Others'][i]['Title'];
-                  obj2['URL'] = responseData2['Others'][i]['URL'];
-                  obj2['ImageURL'] = responseData2['Others'][i]['ImageURL'];
-                  obj2['Retailer'] = responseData2['Others'][i]['Website'];
-                  data2.push(obj2);
-                }
+            }
+            count = Object.keys(responseData2['Others']).length;
+            if (count != 0) {
+              for (var i = 0; i < count; i++) {
+                var obj2 = {};
+                obj2['ASIN'] = responseData2['Others'][i]['ASIN'];
+                obj2['Title'] = responseData2['Others'][i]['Title'];
+                obj2['URL'] = responseData2['Others'][i]['URL'];
+                obj2['ImageURL'] = responseData2['Others'][i]['ImageURL'];
+                obj2['Retailer'] = responseData2['Others'][i]['Website'];
+                data2.push(obj2);
               }
-              if (data2.length > 0) {
-                search = true;
-                datasize = data2.length;
-                searchcount = datasize;
-                data2 = shuffle(data2);
-                console.log(data2);
-                this.setState({
-                  cardNum: 0,
-                  dataset: data2,
-                  category: 'All',
-                  cat: false,
-                  url: data2[this.state.cardNum].ImageURL,
-                  title: data2[this.state.cardNum].Title,
-                  disable: false,
-                });
-              }
+            }
+            if (data2.length > 0) {
+              search = true;
+              datasize = data2.length;
+              searchcount = datasize;
+              data2 = shuffle(data2);
+              console.log(data2);
+              this.setState({
+                cardNum: 0,
+                dataset: data2,
+                category: 'All',
+                cat: false,
+                url: data2[this.state.cardNum].ImageURL,
+                title: data2[this.state.cardNum].Title,
+                disable: false,
+              });
+            }
+            else {
+              Alert.alert("No Results Found!", 'Try Again!');
+                emptycard = true;
+                this.grabFrontPage();
+              return;
+            }
 
 
-            }).done();
-        }
+          }).done();
+        //}
       }).done();
   };
 
@@ -1792,10 +1828,14 @@ const styles = StyleSheet.create({
     }),
   },
   text: {
-    fontFamily: "Montserrat",
+    fontFamily: "MontserratBold",
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffa21c',
     backgroundColor: 'transparent',
+    marginTop: 8,    
+    marginBottom: 8,
   },
   inputQuestion:
     {
@@ -1830,14 +1870,16 @@ const styles = StyleSheet.create({
     },
   retail: {
     textAlign: 'center',
-    fontSize: 15,
-    color: 'black',
+    fontSize: 12,
+    color: '#858a8f',
+    fontFamily: 'MontserratBold',    
     backgroundColor: 'transparent',
   },
   retail2: {
     textAlign: 'center',
-    fontSize: 15,
-    color: 'black',
+    fontSize: 10,
+    color: '#858a8f',    
+    fontFamily: 'MontserratLight',        
     backgroundColor: 'transparent',
   },
   image: {
@@ -2272,6 +2314,9 @@ async function register() {
 
 
 };
+function trunc(text) {
+  return text.length > 30 ? `${text.substr(0, 30)}...` : text;
+}
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 

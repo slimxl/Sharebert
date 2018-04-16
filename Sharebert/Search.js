@@ -80,6 +80,7 @@ class Search extends Component {
             points: userPoints,
             uri: uri2,
             search: item.Term,
+            brand: null,
         })
     }
     onSubmitEdit = () => {
