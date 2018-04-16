@@ -83,7 +83,15 @@ class Explore extends Component {
     super(props);
     console.log(this.props.navigation.state.params);
     userID = this.props.navigation.state.params.id;
+    try{
     userPoints = this.props.navigation.state.params.points;
+    }
+    catch(error)
+    {
+      this.state={
+        userPoints: 0
+      }
+    }
     uri2 = this.props.navigation.state.params.uri;
     this.getOldLikes();
     this.state = {
@@ -112,6 +120,7 @@ class Explore extends Component {
       color: "#ff2eff",
       trendData: [],
     };
+    
     if (this.props.navigation.state.params.brands != undefined) {
       emptycard = false;
       console.log('Grabbed brands - New Explore');
@@ -1507,6 +1516,12 @@ class Explore extends Component {
                 <Image
                   style={styles.catbars}
                   source={require('./assets/Category/girls.png')}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.catGrab('boys')}>
+                <Image
+                  style={styles.catbars}
+                  source={require('./assets/Category/boys.png')}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.catGrab('baby')}>
