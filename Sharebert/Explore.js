@@ -88,9 +88,7 @@ class Explore extends Component {
     }
     catch(error)
     {
-      this.state={
-        userPoints: 0
-      }
+      userPoints = 0;
     }
     uri2 = this.props.navigation.state.params.uri;
     this.getOldLikes();
