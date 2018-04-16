@@ -47,8 +47,9 @@ class Rewards extends Component {
             obj['ID'] = responseData[i]['id'];
             data2.push(obj);
           }
+          var reversed = data2.reverse(); 
           this.setState({
-            rewards: data2,
+            rewards: reversed,
           })
         })
         .done();
