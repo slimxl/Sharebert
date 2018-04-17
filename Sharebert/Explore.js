@@ -601,8 +601,8 @@ class Explore extends Component {
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
-                        title: 'You got points!!',
-                        message: 'Thanks For Sharing!',
+                        title: 'You Earned 5 Points!',
+                        message: 'Share Another Product to Earn More!',
                         icon: { uri: 'https://i.imgur.com/xW6iH48.png' },
                         onPress: () => this.showAlert(),
                       });
@@ -800,7 +800,7 @@ class Explore extends Component {
               .then(response2 => response2.json())
               .then(responseData2 => {
                 if (responseData2['Points'] != userPoints) {
-                  Alert.alert('You Earned Points', "Keep swiping to earn more!");
+                  Alert.alert('You Earned 5 Points!', "Keep swiping to earn more!");
 
                   userPoints = responseData2['Points'];
                   this.forceUpdate();
@@ -1051,7 +1051,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('POINTS OBTAINED', "Thanks for Sharing The App!");
+                    Alert.alert('You Earned 5 Points!', "Share Another Product to Earn More!");
 
                   }
                 })
@@ -1682,8 +1682,8 @@ class Explore extends Component {
             <AwesomeAlert
               show={showAlert}
               showProgress={false}
-              title="Points Obtained!"
-              message="Hey! Thanks for Sharing a product!"
+              title="You Earned 5 Points!"
+              message="Share Another Product to Earn More!"
               closeOnTouchOutside={true}
               closeOnHardwareBackPress={true}
               showCancelButton={false}
