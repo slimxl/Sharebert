@@ -842,6 +842,16 @@ class Explore extends Component {
       });
     }
 
+    else if (category === 'groceries')
+    {
+      console.log(category);
+      this.props.navigation.navigate('Grocery', {
+        id: userID,
+        points: userPoints,
+        uri: uri2,
+      });
+    }
+
     if (category != 'All') {
       fetch(
         'https://sharebert.com/Categoriesios.php?page=5&cat=' +
