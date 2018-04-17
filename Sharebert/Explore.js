@@ -1329,18 +1329,23 @@ class Explore extends Component {
       if (tutorial) {
         return (
           <View style={styles.container}>
-            <WebView
-              source={{ uri: 'http://www.appdemostore.com/m/5957343759040512' }}
-              style={styles.container}
-            />
-            <TouchableOpacity
-              onPress={()=>{
-                tutorial=false
+          <TouchableWithoutFeedback
+              onPress={() => {
+                tutorial = false
                 this.forceUpdate();
               }}
             >
-              <Text style={styles.search}>Go Back</Text>
-            </TouchableOpacity>
+              <Image
+                style={styles.hamburger}
+                resizeMode='contain'
+                source={require('./assets/icons/close.png')}
+              />
+            </TouchableWithoutFeedback>
+            <WebView
+              source={{ uri: 'http://www.appdemostore.com/m/5957343759040512' }}
+              style={styles.container3}
+            />
+            
           </View>
 
         );
@@ -1726,6 +1731,25 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight,
         height: 100,
         flex: 1,
+        //backgroundColor: '#F5FCFF',
+      },
+      android: {
+        marginTop: Constants.statusBarHeight,
+        flex: 1,
+        height: Dimensions.get('window').height,
+        backgroundColor: '#dee6ee',
+
+      },
+    }),
+  },
+  container3: {
+    ...Platform.select({
+      ios: {
+        marginTop: Constants.statusBarHeight,
+        height: 100,
+        flex: 1,
+        marginTop:0,
+        backgroundColor: 'transparent',
         //backgroundColor: '#F5FCFF',
       },
       android: {
@@ -2123,6 +2147,15 @@ const styles = StyleSheet.create({
       marginLeft: Dimensions.get('window').width / 16,
       marginBottom: 5,
       backgroundColor: 'transparent',
+    },
+    hamburger: {
+     
+          width: 25,
+          height: 24,
+          marginTop:5,
+          marginLeft:Dimensions.get('window').width/1.1,
+          backgroundColor: 'transparent',
+  
     },
   likesBut:
     {
