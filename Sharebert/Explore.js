@@ -120,6 +120,11 @@ class Explore extends Component {
       trendData: [],
     };
 
+    if(userPoints > 100)
+    {
+      tutorial = false;
+    }
+
     if (this.props.navigation.state.params.brands != undefined) {
       emptycard = false;
       console.log('Grabbed brands - New Explore');
@@ -1343,7 +1348,7 @@ class Explore extends Component {
             </TouchableWithoutFeedback>
             <WebView
               source={{ uri: 'http://www.appdemostore.com/m/5957343759040512' }}
-              style={styles.container3}
+              style={{width: '100%', height: '100%'}}
             />
             
           </View>
