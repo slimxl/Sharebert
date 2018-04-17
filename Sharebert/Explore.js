@@ -1660,14 +1660,14 @@ class Explore extends Component {
                 </Image>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-                onPress={() => this.resetTo('Likes')}>
-                <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+                onPress={() => this.resetTo('Rewards')}>
+                <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
 
                 </Image>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-                onPress={() => this.resetTo('Rewards')}>
-                <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+                onPress={() => this.resetTo('Likes')}>
+                <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
 
                 </Image>
               </TouchableWithoutFeedback>
