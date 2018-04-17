@@ -1508,7 +1508,7 @@ class Explore extends Component {
                 backgroundColor={'white'}
                 style={styles.scrollbar}
               >
-                {<TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
                   id: userID,
                   points: userPoints,
                   uri: uri2,
@@ -1517,7 +1517,19 @@ class Explore extends Component {
                     style={styles.catbars}
                     source={require('./assets/Category/brands.png')}
                   />
-                </TouchableOpacity>}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('Travel')}>
+                  <Image
+                    style={styles.catbars}
+                    source={require('./assets/Category/travel.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.catGrab('groceries')}>
+                  <Image
+                    style={styles.catbar}
+                    source={require('./assets/Category/groceries.png')}
+                  />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
                   id: userID,
                   points: userPoints,
@@ -1569,18 +1581,6 @@ class Explore extends Component {
                   <Image
                     style={styles.catbars}
                     source={require('./assets/Category/gifts.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('groceries')}>
-                  <Image
-                    style={styles.catbar}
-                    source={require('./assets/Category/groceries.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/travel.png')}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.catGrab('All')}>
