@@ -148,8 +148,8 @@ class Likes extends Component {
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
-                        title: 'You got points!!',
-                        message: 'Thanks For Sharing!',
+                        title: 'You earned 5 points!',
+                        message: 'Share another product to earn more!',
                         icon: { uri: 'https://i.imgur.com/xW6iH48.png' },
                         onPress: () => this.showAlert(),
                       });

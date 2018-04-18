@@ -9,6 +9,7 @@ import Brands from './Brands';
 import Travel from './Travel';
 import Search from './Search';
 import Deals from './Deals';
+import Grocery from './Grocery';
 
 export default class App extends React.Component {
   
@@ -59,6 +60,13 @@ const AppNavigator = StackNavigator(
     },
     Travel: {
       screen: Travel,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
+    Grocery: {
+      screen: Grocery,
       navigationOptions: ({ navigation }) => ({
         header: true,
         gesturesEnabled: true,

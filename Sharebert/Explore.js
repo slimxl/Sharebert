@@ -601,8 +601,8 @@ class Explore extends Component {
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
-                        title: 'You Earned 5 Points!',
-                        message: 'Share Another Product to Earn More!',
+                        title: 'You earned 5 points!',
+                        message: 'Share another product to earn more!',
                         icon: { uri: 'https://i.imgur.com/xW6iH48.png' },
                         onPress: () => this.showAlert(),
                       });
@@ -800,7 +800,7 @@ class Explore extends Component {
               .then(response2 => response2.json())
               .then(responseData2 => {
                 if (responseData2['Points'] != userPoints) {
-                  Alert.alert('You Earned 5 Points!', "Keep swiping to earn more!");
+                  Alert.alert('You earned 5 points!', "Keep swiping to earn more!");
 
                   userPoints = responseData2['Points'];
                   this.forceUpdate();
@@ -836,6 +836,16 @@ class Explore extends Component {
     if (category === 'Travel') {
       console.log(category);
       this.props.navigation.navigate('Travel', {
+        id: userID,
+        points: userPoints,
+        uri: uri2,
+      });
+    }
+
+    else if (category === 'groceries')
+    {
+      console.log(category);
+      this.props.navigation.navigate('Grocery', {
         id: userID,
         points: userPoints,
         uri: uri2,
@@ -1051,7 +1061,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('You Earned 5 Points!', "Share Another Product to Earn More!");
+                    Alert.alert('You earned 5 points!', "Share another product to earn more!");
 
                   }
                 })
@@ -1682,8 +1692,8 @@ class Explore extends Component {
             <AwesomeAlert
               show={showAlert}
               showProgress={false}
-              title="You Earned 5 Points!"
-              message="Share Another Product to Earn More!"
+              title="You earned 5 points!"
+              message="Share another product to earn more!"
               closeOnTouchOutside={true}
               closeOnHardwareBackPress={true}
               showCancelButton={false}
