@@ -1524,12 +1524,12 @@ class Explore extends Component {
                     source={require('./assets/Category/travel.png')}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('groceries')}>
+                {/* <TouchableOpacity onPress={() => this.catGrab('groceries')}>
                   <Image
                     style={styles.catbar}
                     source={require('./assets/Category/groceries.png')}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
                   id: userID,
                   points: userPoints,
