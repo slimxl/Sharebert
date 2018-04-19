@@ -1605,7 +1605,7 @@ class Explore extends Component {
             {emptycard
               ?
               <View style={styles.TrendText2}>
-                <Image style={{ width: Dimensions.get('window').width, height: 170, marginTop: -50, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
+               <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
                 <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
               </View>
               :
@@ -1634,23 +1634,17 @@ class Explore extends Component {
             {
               emptycard
                 ?
-                <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
+                <View style={{overflow: "visible", position: 'absolute', bottom: 0}}>
+                <TouchableOpacity style={styles.footerItem3} onPress={this.shareURL}>
                   <Image style={styles.footerShare} resizeMode={"contain"} source={require('./assets/share1.png')} />
-                  <Text style={styles.footerShareText}>
-                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                      {''}
-                    </Text>
-                  </Text>
                 </TouchableOpacity>
+                </View>
                 :
-                <TouchableOpacity style={styles.footerItem} onPress={this.shareURL}>
-                  <Image style={styles.footerShare} resizeMode={"contain"} source={require('./assets/share2.png')} />
-                  <Text style={styles.footerShareText}>
-                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 12, }}>
-                      {' '}
-                    </Text>
-                  </Text>
+                <View style={{overflow: "visible", position: 'absolute', bottom: 0}}>
+                <TouchableOpacity style={styles.footerItem4} onPress={this.shareURL}>
+                  <Image style={styles.footerShare2} resizeMode={"contain"} source={require('./assets/share2.png')} />
                 </TouchableOpacity>
+                </View>                
             }
 
 
@@ -2244,15 +2238,20 @@ const styles = StyleSheet.create({
   },
   footerItem3:
     {
-      position: "absolute",
-
-      bottom: 50,
-      height: 100
+    bottom: Dimensions.get('window').height * .1 ,
+      
+      height: 100,
+    },
+    footerItem4:
+    {
+      position: 'absolute',
+      bottom: Dimensions.get('window').height * .07,
+      
+      height: 100,
     },
   footerItem: {
-    position: "absolute",
-    bottom: 0,
-    backgroundColor: 'transparent',
+    position: 'absolute',
+    bottom: Dimensions.get('window').height * .25 ,
   },
   footerItem2: {
     position: "absolute",
@@ -2288,13 +2287,30 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   footerShare: {
-    height: 40,
-    borderRadius: 12,
-    width: '100%',
-    bottom: 0,
-    backgroundColor: 'transparent',
-    marginBottom: -10,
-    marginLeft: Dimensions.get('window').width / 30,
+    height: 100,
+    width: 250,
+    overflow: 'visible',
+    //offset the margin by half of window width so image is always centered
+    //make up for the left-aligned image by subtracting half the image width
+    marginLeft: Dimensions.get('window').width *.50 - 125,
+  },
+  footerShare2: {
+    height: 100,
+    width: 250,
+    overflow: 'visible',
+    marginBottom: 100,
+    //offset the margin by half of window width so image is always centered
+    //make up for the left-aligned image by subtracting half the image width
+    marginLeft: Dimensions.get('window').width *.50 - 125,
+  },
+  extraComponentContainer: {
+    // fakes overflow but requires more markup
+    backgroundColor: "transparent",
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingBottom: 20,
+    paddingRight: 20,
+    position: "relative"
   },
   footerShareText: {
     height: 30,
