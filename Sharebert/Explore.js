@@ -1607,6 +1607,7 @@ class Explore extends Component {
             {emptycard
               ?
               <View style={styles.TrendText2}>
+                <Image style={{width:Dimensions.get('window').width,height:170,marginTop:-50,marginBottom:-110}} resizeMode={"contain"} source={require('./assets/title_header.png')} />
                 <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
               </View>
               :
@@ -1973,32 +1974,36 @@ const styles = StyleSheet.create({
   TrendText: {
     ...Platform.select({
       ios: {
-        fontFamily: 'Montserrat',
+        fontFamily: 'MontserratItalic',
         width: Dimensions.get('window').width,
         height: 30,
         position: 'absolute',
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 25,
         left: 0,
         marginLeft: Dimensions.get('window').width / 50,
-        marginTop: 10,
+        marginTop: 20,
         marginBottom: -40,
+        color:'#ffffff',
+        
       },
       android:
         {
-          fontFamily: 'Montserrat',
+          fontFamily: 'MontserratItalic',
           width: Dimensions.get('window').width,
           height: 30,
           position: 'absolute',
           textAlign: 'center',
-          fontSize: 20,
+          fontSize: 25,
           left: 0,
           marginLeft: Dimensions.get('window').width / 50,
-          marginTop: 10,
+          marginTop: 20,
           marginBottom: -40,
+          color:'#ffffff',
 
         }
-    })
+    }),
+    
   },
   TrendText2:
     {

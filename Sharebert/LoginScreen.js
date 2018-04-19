@@ -30,9 +30,12 @@ class LoginScreen extends Component {
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
       'MontserratBold': require('./assets/fonts/MontserratBold.otf'),
       'MontserratLight': require('./assets/fonts/MontserratLight.otf'),
-      'MontserratBoldItalic': require('./assets/fonts/MontserratBoldItalic.otf'),      
+      'MontserratBoldItalic': require('./assets/fonts/MontserratBoldItalic.otf'),  
+      'MontserratItalic': require('./assets/fonts/MontserratItalic.otf'),      
+          
     });
   }
+  
   onSubmitEdit(location) {
     if (location === 'later') {
       name2 = 'Not Logged In';
