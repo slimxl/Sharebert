@@ -2238,16 +2238,16 @@ const styles = StyleSheet.create({
   },
   footerItem3:
     {
-    bottom: Dimensions.get('window').height * .1 ,
+    bottom: Dimensions.get('window').height * .12 ,
       
-      height: 100,
+      height: 75,
     },
     footerItem4:
     {
       position: 'absolute',
       bottom: Dimensions.get('window').height * .07,
       
-      height: 100,
+      height: 75,
     },
   footerItem: {
     position: 'absolute',
@@ -2287,7 +2287,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   footerShare: {
-    height: 100,
+    height: 75,
     width: 250,
     overflow: 'visible',
     //offset the margin by half of window width so image is always centered
@@ -2295,7 +2295,7 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width *.50 - 125,
   },
   footerShare2: {
-    height: 100,
+    height: 75,
     width: 250,
     overflow: 'visible',
     marginBottom: 100,
