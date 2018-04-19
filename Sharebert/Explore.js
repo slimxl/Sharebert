@@ -1966,7 +1966,7 @@ const styles = StyleSheet.create({
   TrendText: {
     ...Platform.select({
       ios: {
-        fontFamily: 'MontserratItalic',
+        fontFamily: 'MontserratBoldItalic',
         width: Dimensions.get('window').width,
         height: 30,
         width: '100%',
@@ -1981,7 +1981,7 @@ const styles = StyleSheet.create({
       },
       android:
         {
-          fontFamily: 'MontserratItalic',
+          fontFamily: 'MontserratBoldItalic',
           width: Dimensions.get('window').width,
           height: 30,
           width: '100%',
@@ -2245,7 +2245,7 @@ const styles = StyleSheet.create({
     footerItem4:
     {
       position: 'absolute',
-      bottom: Dimensions.get('window').height * .11,
+      bottom: Dimensions.get('window').height * .09,
       
       height: 75,
     },
