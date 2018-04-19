@@ -120,7 +120,7 @@ class Explore extends Component {
       trendData: [],
     };
 
-    if(userPoints > 100)
+    if(userPoints >= 100)
     {
       tutorial = false;
     }
