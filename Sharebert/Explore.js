@@ -120,8 +120,7 @@ class Explore extends Component {
       trendData: [],
     };
 
-    if(userPoints > 100)
-    {
+    if (userPoints > 100) {
       tutorial = false;
     }
 
@@ -842,8 +841,7 @@ class Explore extends Component {
       });
     }
 
-    else if (category === 'groceries')
-    {
+    else if (category === 'groceries') {
       console.log(category);
       this.props.navigation.navigate('Grocery', {
         id: userID,
@@ -1344,7 +1342,7 @@ class Explore extends Component {
       if (tutorial) {
         return (
           <View style={styles.container}>
-          <TouchableWithoutFeedback
+            <TouchableWithoutFeedback
               onPress={() => {
                 tutorial = false
                 this.forceUpdate();
@@ -1358,9 +1356,9 @@ class Explore extends Component {
             </TouchableWithoutFeedback>
             <WebView
               source={{ uri: 'http://www.appdemostore.com/m/6591960073633792' }}
-              style={{width: '100%', height: '80%',marginTop:5}}
+              style={{ width: '100%', height: '80%', marginTop: 5 }}
             />
-            
+
           </View>
 
         );
@@ -1607,7 +1605,7 @@ class Explore extends Component {
             {emptycard
               ?
               <View style={styles.TrendText2}>
-                <Image style={{width:Dimensions.get('window').width,height:170,marginTop:-50,marginBottom:-110}} resizeMode={"contain"} source={require('./assets/title_header.png')} />
+                <Image style={{ width: Dimensions.get('window').width, height: 170, marginTop: -50, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
                 <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
               </View>
               :
@@ -1764,7 +1762,7 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight,
         height: 100,
         flex: 1,
-        marginTop:0,
+        marginTop: 0,
         backgroundColor: 'transparent',
         //backgroundColor: '#F5FCFF',
       },
@@ -1977,33 +1975,33 @@ const styles = StyleSheet.create({
         fontFamily: 'MontserratItalic',
         width: Dimensions.get('window').width,
         height: 30,
+        width: '100%',
         position: 'absolute',
         textAlign: 'center',
-        fontSize: 25,
-        left: 0,
-        marginLeft: Dimensions.get('window').width / 50,
+        fontSize: 20,
+        marginLeft: Dimensions.get('window').width / 20,
         marginTop: 20,
         marginBottom: -40,
-        color:'#ffffff',
-        
+        color: '#ffffff',
+
       },
       android:
         {
           fontFamily: 'MontserratItalic',
           width: Dimensions.get('window').width,
           height: 30,
+          width: '100%',
           position: 'absolute',
           textAlign: 'center',
-          fontSize: 25,
-          left: 0,
-          marginLeft: Dimensions.get('window').width / 50,
+          fontSize: 20,
+          marginLeft: Dimensions.get('window').width / 20,
           marginTop: 20,
           marginBottom: -40,
-          color:'#ffffff',
+          color: '#ffffff',
 
         }
     }),
-    
+
   },
   TrendText2:
     {
@@ -2168,15 +2166,15 @@ const styles = StyleSheet.create({
       marginBottom: 5,
       backgroundColor: 'transparent',
     },
-    hamburger: {
-     
-          width: 25,
-          height: 24,
-          marginTop:5,
-          marginLeft:Dimensions.get('window').width/1.1,
-          backgroundColor: 'transparent',
-  
-    },
+  hamburger: {
+
+    width: 25,
+    height: 24,
+    marginTop: 5,
+    marginLeft: Dimensions.get('window').width / 1.1,
+    backgroundColor: 'transparent',
+
+  },
   likesBut:
     {
       height: 25,
@@ -2292,11 +2290,11 @@ const styles = StyleSheet.create({
   footerShare: {
     height: 40,
     borderRadius: 12,
-    width: 300,
+    width: '100%',
     bottom: 0,
     backgroundColor: 'transparent',
     marginBottom: -10,
-    marginLeft: Dimensions.get('window').width / 7,
+    marginLeft: Dimensions.get('window').width / 30,
   },
   footerShareText: {
     height: 30,
