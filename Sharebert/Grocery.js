@@ -50,7 +50,7 @@ class Grocery extends Component {
 
     var Brand1 = {};
     Brand1['Term'] = 'Tripping';
-    Brand1['title'] = 'Tripping';
+    Brand1['title'] = 'TrippingGroceryTest';
     Brand1['link'] = 'http://www.dpbolvw.net/click-8331277-13174391';
     Brand1['image_url'] = require('./assets/travel/tripping.png');
 
@@ -286,7 +286,7 @@ class Grocery extends Component {
 
             </TouchableWithoutFeedback>
         <Text style={styles.title}>
-          Groceries
+          Grocery
         </Text>
         <FlatList
           style={styles.listContainer}
