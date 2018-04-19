@@ -1357,8 +1357,8 @@ class Explore extends Component {
               />
             </TouchableWithoutFeedback>
             <WebView
-              source={{ uri: 'http://www.appdemostore.com/m/5432123751137280' }}
-              style={{width: '100%', height: '100%'}}
+              source={{ uri: 'http://www.appdemostore.com/m/6591960073633792' }}
+              style={{width: '100%', height: '80%',marginTop:5}}
             />
             
           </View>
