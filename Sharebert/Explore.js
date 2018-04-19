@@ -2245,7 +2245,7 @@ const styles = StyleSheet.create({
     footerItem4:
     {
       position: 'absolute',
-      bottom: Dimensions.get('window').height * .07,
+      bottom: Dimensions.get('window').height * .11,
       
       height: 75,
     },
