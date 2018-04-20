@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 10,
+    marginTop: Dimensions.get('window').height * .10,
   },
   later: {
     width: 250,
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 8,
+    marginTop: Dimensions.get('window').height *.08,
   },
   bg: {
     position: 'absolute',

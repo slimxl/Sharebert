@@ -617,7 +617,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   image: {
-
+    borderRadius: 20,
+    borderWidth: 2,
     width: 100,
     height: 100,
     marginTop: -50,
