@@ -119,7 +119,7 @@ class Explore extends Component {
       color: "#ff2eff",
       trendData: [],
     };
-
+    console.log(userPoints);
     if (userPoints > 100) {
       tutorial = false;
     }
@@ -1059,8 +1059,8 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    Alert.alert('You earned 5 points!', "Share another product to earn more!");
-
+                    Alert.alert('You earned 35 points!', "Share the app weekly to earn more!");
+                    this.forceUpdate();
                   }
                 })
                 .done();
