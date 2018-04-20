@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
       ios: {
         width: 235,
         height: 40,
-        marginBottom: Dimensions.get('window').height *0.01,
+        marginBottom: Dimensions.get('window').height *-.01,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
       android: {
         width: 235,
         height: 40,
-        marginBottom: Dimensions.get('window').height * -.3,
+        marginBottom: Dimensions.get('window').height * -.2,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
