@@ -270,40 +270,6 @@ class Explore extends Component {
       emptycard = true;
       this.grabFrontPage();
     }
-    // else {
-    //   fetch('https://sharebert.com/login9.php?page=5', { method: 'GET' })
-    //   .then(response => response.json())
-    //     .then(responseData => {
-    //       var data2 = [];
-    //       for (var i = 0; i < 20; i++) {
-    //         var obj = {};
-    //         obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-    //         obj['Title'] = responseData['Amazon'][i]['Title'];
-    //         obj['URL'] = responseData['Amazon'][i]['URL'];
-    //         obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-    //         obj['Retailer'] = "Amazon";
-
-    //         var obj2 = {};
-    //         obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-    //         obj2['Title'] = responseData['Others'][i]['Title'];
-    //         obj2['URL'] = responseData['Others'][i]['URL'];
-    //         obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-    //         obj2['Retailer'] = responseData['Others'][i]['Website'];
-
-    //         data2.push(obj);
-    //         data2.push(obj2);
-    //       }
-    //       data2 = shuffle(data2);
-    //       this.setState({
-    //         cardNum: this.state.cardNum,
-    //         url: data2[this.state.cardNum].ImageURL,
-    //         title: data2[this.state.cardNum].Title,
-    //         dataset: data2,
-    //         cat: false,
-    //       });
-    //     })
-    //     .done();
-    // }
     if (userID != 0 || userID != undefined || userID != null) {
 
       this.checkUpdatePoints();
@@ -473,7 +439,7 @@ class Explore extends Component {
         />
         </View>
       );
-*/
+      */
     } else if (
       this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
@@ -690,7 +656,7 @@ class Explore extends Component {
     try {
       if (
         this.state.url ===
-        'https://i.imgur.com/qnHscIM.png'
+        'https://i.imgur.com/qnHscIM.png'||this.state.url ==='https://i.imgur.com/JaG8ovv.gif'
       ) {
         return;
       }
@@ -729,7 +695,7 @@ class Explore extends Component {
             })
             .done();
         }
-        else if ((search === true && this.state.cardNum + 1 >= (searchcount)) || (this.state.cardNum > 30 && search === true)) {
+        else if (search === true && (this.state.cardNum + 1 >= this.state.dataset.length)) {
           this.onSubmitEdit();
         }
         else if (
@@ -781,7 +747,7 @@ class Explore extends Component {
             .done();
         }
       }
-
+      
       if (this.state.dataset.length > this.state.cardNum + 1) {
         this.setState({
           cardNum: this.state.cardNum + 1,
@@ -818,10 +784,6 @@ class Explore extends Component {
       console.error(error);
     }
   };
-
-
-
-
 
   catGrab = category => {
 
@@ -1102,62 +1064,6 @@ class Explore extends Component {
 
   }
 
-  // clearFile = async () => {
-  //   try {
-  //     await AsyncStorage.removeItem('@MySuperStore:name');
-  //     await AsyncStorage.removeItem('@MySuperStore:email');
-  //     await AsyncStorage.removeItem('@MySuperStore:uri2');
-  //     await AsyncStorage.removeItem('@MySuperStore:points');
-  //     await AsyncStorage.removeItem('@MySuperStore:id');
-
-  //     this.props.navigation.navigate('LoginScreen', {
-  //       loggedbool2: false,
-  //       id: 0,
-  //       points: 0,
-  //     });
-  //   } catch (error) {
-  //     // Error saving data
-  //   }
-  // }
-
-
-  onMenuItemSelected = item => {
-    this.setState({
-      isOpen: false,
-      selectedItem: item,
-    });
-
-    if (item === 'Shipping') {
-      this.props.navigation.navigate('Shipping', {
-        id: userID,
-        points: userPoints,
-      });
-    } else if (item === 'Likes') {
-      this.props.navigation.navigate('Likes', {
-        id: userID,
-        points: userPoints,
-      });
-    } else if (item === 'Rewards') {
-      this.props.navigation.navigate('Rewards', {
-        id: userID,
-        points: userPoints,
-      });
-    } else if (item === 'Privacy Policies') {
-      try {
-        Linking.openURL('https://sharebert.com/privacy-policy/');
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (item === 'Logout') {
-      try {
-        //this.clearFile();
-
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   getOldLikes = async (type) => {
     try {
       var likesave;
@@ -1180,9 +1086,6 @@ class Explore extends Component {
     }
   };
 
-  updateMenuState(isOpen) {
-    this.setState({ isOpen });
-  }
 
   onSubmitEdit = () => {
     console.log('Search was refreshed');
@@ -1208,13 +1111,12 @@ class Explore extends Component {
         //   return;
         // }
         //else {
-        emptycard = false;
         var data2 = [];
-        var count = responseData['Amazon'][0][7];
-        datasize = count;
-        searchcount = datasize;
+        //var count = responseData['Amazon'][0][7];
+        //datasize = count;
+        //searchcount = datasize;
         console.log(searchcount);
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
           var obj = {};
           obj['ASIN'] = responseData['Amazon'][i][0];
           obj['Title'] = responseData['Amazon'][i][1];
@@ -1270,16 +1172,17 @@ class Explore extends Component {
               search = true;
               datasize = data2.length;
               searchcount = datasize;
+              emptycard = false;
               data2 = shuffle(data2);
-              console.log(data2);
+              console.log(data2.length);
               this.setState({
                 cardNum: 0,
                 dataset: data2,
-                category: 'All',
-                cat: false,
                 url: data2[this.state.cardNum].ImageURL,
                 title: data2[this.state.cardNum].Title,
                 disable: false,
+                category: 'All',
+                cat: false,
               });
             }
             else {
