@@ -81,7 +81,7 @@ class Shipping extends Component {
   fetchData = () => {
     if (userID != 0) {
       fetch(
-        'https://sharebert.com/ShipGet.php?uid=' +
+        'https://sharebert.com/s/ShipGet.php?uid=' +
         userID,
         { method: 'GET' }
       )
@@ -131,7 +131,7 @@ class Shipping extends Component {
 
   sendData = () => {
     fetch(
-      'https://sharebert.com/ShipSend2.php?uid=' +
+      'https://sharebert.com/s/ShipSend2.php?uid=' +
       +userID + '&' +
       'uname=' + user.Name + '&' +
       'uem=' + user.Email + '&' +

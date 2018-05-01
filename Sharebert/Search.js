@@ -51,7 +51,7 @@ class Search extends Component {
         //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
 
         fetch(
-            'https://sharebert.com/Trending.php',
+            'https://sharebert.com/s/Trending.php',
             { method: 'GET' }
         )
             .then(response => response.json())

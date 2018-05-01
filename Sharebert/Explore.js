@@ -37,6 +37,7 @@ var animationz = false;
 var toofast = false;
 var datasize = 0;
 var searchcount = 0;
+var refresh = false;
 var brand = '';
 var search = false;
 var searchterm = '';
@@ -128,7 +129,7 @@ class Explore extends Component {
       emptycard = false;
       console.log('Grabbed brands - New Explore');
       brand = this.props.navigation.state.params.brands;
-      fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
+      fetch('https://sharebert.com/s/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           var data2 = [];
@@ -163,7 +164,7 @@ class Explore extends Component {
 
       searchterm = this.props.navigation.state.params.search;
       fetch(
-        'https://sharebert.com/APISEARCH.php?keyword=' +
+        'https://sharebert.com/s/APISEARCH.php?keyword=' +
         searchterm +
         '&page=1',
         { method: 'GET' }
@@ -195,7 +196,7 @@ class Explore extends Component {
           search = true;
 
           fetch(
-            'https://sharebert.com/search.php?cat=' +
+            'https://sharebert.com/s/search.php?cat=' +
             searchterm +
             '&page=10',
             { method: 'GET' }
@@ -332,7 +333,8 @@ class Explore extends Component {
   };
 
   grabFrontPage = () => {
-    fetch('https://sharebert.com/Frontpage2.php', { method: 'GET' })
+    console.log('refresh trending');
+    fetch('https://sharebert.com/s/Frontpage2.php', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
         var data2 = [];
@@ -396,7 +398,7 @@ class Explore extends Component {
   grabRandoLikes = async () => {
     var data2 = [];
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    fetch('https://sharebert.com/UserLikes.php?page=5', { method: 'GET' })
+    fetch('https://sharebert.com/s/UserLikes.php?page=5', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
         for (var i = 0; i < 20; i++) {
@@ -553,7 +555,7 @@ class Explore extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://sharebert.com/DBAwardPoints.php?uid=' +
+                'https://sharebert.com/s/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=1',
                 { method: 'GET' }
@@ -608,7 +610,7 @@ class Explore extends Component {
         return;
       }
       fetch(
-        'https://sharebert.com/RetrievePointsWeb.php?uid=' +
+        'https://sharebert.com/s/RetrievePointsWeb.php?uid=' +
         userID,
         { method: 'GET' }
       )
@@ -667,7 +669,7 @@ class Explore extends Component {
         })
         if (brand !== "" && (this.state.cardNum + 1 >= this.state.dataset.length)) {
           console.log('brand reset')
-          fetch('https://sharebert.com/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
+          fetch('https://sharebert.com/s/Brands.php?brand=' + brand + '&page=5', { method: 'GET' })
             .then(response => response.json())
             .then(responseData => {
               var data2 = [];
@@ -707,7 +709,7 @@ class Explore extends Component {
         }
         else if ((this.state.cardNum + 1 >= this.state.dataset.length) && search === false && this.state.cat === false) {
           console.log('Search was reset');
-          fetch('https://sharebert.com/login9test.php?page=5', { method: 'GET' })
+          fetch('https://sharebert.com/s/login9test.php?page=5', { method: 'GET' })
             .then(response => response.json())
             .then(responseData => {
               var data2 = [];
@@ -757,7 +759,7 @@ class Explore extends Component {
         try {
           if (Math.floor(Math.random() * (250 - 1) + 1) <= 2 && userID != 0) {
             fetch(
-              'https://sharebert.com/DBAwardPoints.php?uid=' +
+              'https://sharebert.com/s/DBAwardPoints.php?uid=' +
               userID +
               '&type=2',
               { method: 'GET' }
@@ -814,7 +816,7 @@ class Explore extends Component {
 
     if (category != 'All') {
       fetch(
-        'https://sharebert.com/Categoriesios.php?page=5&cat=' +
+        'https://sharebert.com/s/Categoriesios.php?page=5&cat=' +
         category,
         { method: 'GET' }
       )
@@ -850,7 +852,7 @@ class Explore extends Component {
           data2 = shuffle(data2);
           var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
-            'https://sharebert.com/APISEARCH.php?keyword=' +
+            'https://sharebert.com/s/APISEARCH.php?keyword=' +
             category +
             '&page=' + RandomNumber2,
             { method: 'GET' }
@@ -889,7 +891,7 @@ class Explore extends Component {
         })
         .done();
     } else {
-      fetch('https://sharebert.com/login9test.php?page=5', { method: 'GET' })
+      fetch('https://sharebert.com/s/login9test.php?page=5', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
@@ -1011,7 +1013,7 @@ class Explore extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://sharebert.com/DBAwardPoints.php?uid=' +
+                'https://sharebert.com/s/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=3',
                 { method: 'GET' }
@@ -1096,7 +1098,7 @@ class Explore extends Component {
     }
     console.log(searchterm);
     fetch(
-      'https://sharebert.com/APISEARCH.php?keyword=' +
+      'https://sharebert.com/s/APISEARCH.php?keyword=' +
       searchterm +
       '&page=1',
       { method: 'GET' }
@@ -1128,7 +1130,7 @@ class Explore extends Component {
         search = true;
 
         fetch(
-          'https://sharebert.com/search.php?cat=' +
+          'https://sharebert.com/s/search.php?cat=' +
           searchterm +
           '&page=10',
           { method: 'GET' }
@@ -1519,6 +1521,12 @@ class Explore extends Component {
               <View style={styles.listContainer}>
                 <FlatList
                   style={styles.listContainer2}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    refresh = true;
+                    this.grabFrontPage();
+                    refresh = false;
+                  }}
                   data={this.state.trendData}
                   keyExtractor={(item, index) => index}
                   renderItem={this._renderItem}
@@ -2314,7 +2322,7 @@ async function register() {
   const token = await Expo.Notifications.getExpoPushTokenAsync();
   console.log(status, token)
   try {
-    fetch('https://sharebert.com/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
+    fetch('https://sharebert.com/s/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
   }
   catch (error) {
     console.error(error);

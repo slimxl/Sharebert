@@ -49,7 +49,7 @@ class Likes extends Component {
     try {
       if (userID != 0) {
         fetch(
-          'https://sharebert.com/RetrievePointsWeb.php?uid=' +
+          'https://sharebert.com/s/RetrievePointsWeb.php?uid=' +
           userID,
           { method: 'GET' }
         )
@@ -132,7 +132,7 @@ class Likes extends Component {
           try {
             if (userID != 0) {
               fetch(
-                'https://sharebert.com/DBAwardPoints.php?uid=' +
+                'https://sharebert.com/s/DBAwardPoints.php?uid=' +
                 userID +
                 '&type=1',
                 { method: 'GET' }

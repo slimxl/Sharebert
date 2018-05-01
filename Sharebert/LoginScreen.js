@@ -45,7 +45,7 @@ class LoginScreen extends Component {
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
-      this.props.navigation.navigate('Likes', {
+      this.props.navigation.navigate('Explore', {
         id: 0,
         points: 0,
         uri: uri2,
@@ -54,7 +54,7 @@ class LoginScreen extends Component {
     else {
       doubleclick = false;
       //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
-      this.props.navigation.navigate('Likes', {
+      this.props.navigation.navigate('Explore', {
         id: userID,
         points: userPoints,
         uri: uri2,
@@ -317,7 +317,7 @@ class LoginScreen extends Component {
   checkUpdatePoints = () => {
     try {
       fetch(
-        'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+        'https://sharebert.com/s/RetrievePointsWeb.php?uemail=' +
         userEmail2,
         { method: 'GET' }
       )
@@ -393,7 +393,7 @@ class LoginScreen extends Component {
     try {
       if (userEmail2 != '') {
         fetch(
-          'https://sharebert.com/ReturnLoginToServerWeb.php?uemail=' +
+          'https://sharebert.com/s/ReturnLoginToServerWeb.php?uemail=' +
           userEmail2 +
           '&uname=' +
           name2,
@@ -401,7 +401,7 @@ class LoginScreen extends Component {
         )
           .then(() => {
             fetch(
-              'https://sharebert.com/RetrievePointsWeb.php?uemail=' +
+              'https://sharebert.com/s/RetrievePointsWeb.php?uemail=' +
               userEmail2,
               { method: 'GET' }
             )
@@ -416,7 +416,7 @@ class LoginScreen extends Component {
 
 
         fetch(
-          'https://sharebert.com/GetIDfromEmail.php?uemail=' +
+          'https://sharebert.com/s/GetIDfromEmail.php?uemail=' +
           userEmail2,
           { method: 'GET' }
         )
@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
       ios: {
         width: 235,
         height: 40,
-        marginBottom: Dimensions.get('window').height *-.01,
+        marginTop: Dimensions.get('window').height / 3,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
@@ -495,35 +495,29 @@ const styles = StyleSheet.create({
       android: {
         width: 235,
         height: 40,
-        marginBottom: Dimensions.get('window').height * -.2,
+        marginTop: Dimensions.get('window').height / 3,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
       },
-      position: 'absolute',
-      bottom: 0,
     }),
 
   },
   loginf: {
     width: 250,
     height: 40,
-    position: 'absolute',
-    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginBottom: Dimensions.get('window').height * .25,
+    marginTop: Dimensions.get('window').height / 10,
   },
   later: {
-    position: 'absolute',
-    bottom: 0,
     width: 250,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginBottom: Dimensions.get('window').height *.08,
+    marginTop: Dimensions.get('window').height / 8,
   },
   bg: {
     position: 'absolute',

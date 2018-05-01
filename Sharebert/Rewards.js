@@ -34,7 +34,7 @@ class Rewards extends Component {
       userID: userID,
       rewards: [],
     };
-      fetch('https://sharebert.com/RetrieveRewards.php?', { method: 'GET' })
+      fetch('https://sharebert.com/s/RetrieveRewards.php?', { method: 'GET' })
         .then(response => response.json())
         .then(responseData => {
           var data2 = []
@@ -79,13 +79,13 @@ class Rewards extends Component {
       var nb = userPoints - item.Cost;
       if (nb >= 0) {
         fetch(
-          'https://sharebert.com/GiveReward.php?uid=' +
+          'https://sharebert.com/s/GiveReward.php?uid=' +
           userID,
           { method: 'POST' }
         )
           .then(() => {
             fetch(
-              'https://sharebert.com/GiveReward2.php?uid=' +
+              'https://sharebert.com/s/GiveReward2.php?uid=' +
               userID +
               '&qty=1&rwd=' +
               item.ID +
