@@ -57,9 +57,10 @@ class Search extends Component {
             .then(response => response.json())
             .then(responseData => {
                 var data2 = [];
-                var count = responseData[0][0];
-                console.log(count);
-                for (var i = 0; i < count; i++) {
+                var count =  responseData.length;
+
+                console.log( responseData.length);
+                for (var i = 0; i <  responseData.length; i++) {
                     var obj = {};
                     obj['id'] = responseData[i]['id'];
                     obj['Term'] = responseData[i]['Term'];
