@@ -13,9 +13,9 @@
       "image": "./assets/splash.png",
       "resizeMode": "cover"
     },
-    "icon": "https://i.imgur.com/1fSYvFB.jpg",
+    "icon": "https://i.imgur.com/xW6iH48.png",
     "loading": {
-      "icon": "https://i.imgur.com/1fSYvFB.jpg",
+      "icon": "https://i.imgur.com/xW6iH48.png",
       "hideExponentText": false
     },
     "packagerOpts": {
