@@ -123,6 +123,7 @@ class Explore extends Component {
     console.log(userPoints);
     if (userPoints > 100) {
       tutorial = false;
+      console.log(userPoints);
     }
 
     if (this.props.navigation.state.params.brands != undefined) {
@@ -795,7 +796,6 @@ class Explore extends Component {
 
     emptycard = false;
     brand = '';
-    var data2 = [];
     if (category === 'Travel') {
       console.log(category);
       this.props.navigation.navigate('Travel', {
@@ -813,7 +813,8 @@ class Explore extends Component {
         uri: uri2,
       });
     }
-
+    var data2 = [];
+    
     if (category != 'All') {
       fetch(
         'https://sharebert.com/s/Categoriesios.php?page=5&cat=' +
@@ -822,34 +823,41 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          console.log('Grabbing Cat');
-          for (var i = 0; i < 20; i++) {
-            try {
-              var obj = {};
-              obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-              obj['Title'] = responseData['Amazon'][i]['Title'];
-              obj['URL'] = responseData['Amazon'][i]['URL'];
-              obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-              obj['Retailer'] = 'Amazon';
-              var obj2 = {};
-              obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-              obj2['Title'] = responseData['Others'][i]['Title'];
-              obj2['URL'] = responseData['Others'][i]['URL'];
-              obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-              obj2['Retailer'] = responseData['Others'][i]['Website'];
-              if (obj['ASIN'] === obj2['ASIN']) {
-                data2.push(obj2);
-              } else {
-                data2.push(obj);
-                data2.push(obj2);
-              }
-            } catch (error) {
-              console.log(error);
+          console.log('Grabbing Cat: '+category);
+
+          try{
+          for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
+            obj['Title'] = responseData['Amazon'][i]['Title'];
+            obj['URL'] = responseData['Amazon'][i]['URL'];
+            obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+            obj['Retailer'] = 'Amazon';
+            data2.push(obj);
+          }
+
+          for (var i = 0; i < Object.keys(responseData['Others']).length; i++) {
+            var obj2 = {};
+            obj2['ASIN'] = responseData['Others'][i]['ASIN'];
+            obj2['Title'] = responseData['Others'][i]['Title'];
+            obj2['URL'] = responseData['Others'][i]['URL'];
+            obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+            obj2['Retailer'] = responseData['Others'][i]['Website'];
+            if(data2[i].ASIN!=obj2['ASIN'])
+            {
+              data2.push(obj2);
             }
           }
+        } catch (error) {
+          console.error(error);
+        }
+
+
           toofast = false;
 
           data2 = shuffle(data2);
+          console.log('Data2 size:'+data2.length);
+          
           var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
             'https://sharebert.com/s/APISEARCH.php?keyword=' +
@@ -857,19 +865,18 @@ class Explore extends Component {
             '&page=' + RandomNumber2,
             { method: 'GET' }
           )
-            .then(response => response.json())
-            .then(responseData => {
-              var count = responseData['Amazon'][0][7];
+            .then(response2 => response2.json())
+            .then(responseData2 => {
+              var count = responseData2['Amazon'][0][7];
               datasize = count;
               searchcount = datasize;
-              console.log(data2.length);
               console.log(searchcount);
               for (var i = 0; i < count; i++) {
                 var obj = {};
-                obj['ASIN'] = responseData['Amazon'][i][0];
-                obj['Title'] = responseData['Amazon'][i][1];
-                obj['URL'] = responseData['Amazon'][i][3];
-                obj['ImageURL'] = responseData['Amazon'][i][4];
+                obj['ASIN'] = responseData2['Amazon'][i][0];
+                obj['Title'] = responseData2['Amazon'][i][1];
+                obj['URL'] = responseData2['Amazon'][i][3];
+                obj['ImageURL'] = responseData2['Amazon'][i][4];
                 obj['Retailer'] = 'Amazon';
                 data2.push(obj);
               }
@@ -884,7 +891,7 @@ class Explore extends Component {
                 disable: false,
                 category: category,
               });
-              console.log(this.state.dataset.length);
+              console.log(data2.length);
             })
             .done();
 
