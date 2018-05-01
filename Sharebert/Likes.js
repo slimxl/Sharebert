@@ -349,7 +349,7 @@ class Likes extends Component {
         <Image
           resizeMode="contain"
           style={styles.button}
-          source={require('./Logo.png')}
+          source={require('./assets/icons/logo2.png')}
         />
         <TouchableWithoutFeedback
           style={styles.hamburger2}
@@ -636,8 +636,9 @@ const styles = StyleSheet.create({
       },
       android: {
         position: 'absolute',
+        width: 100,
         marginTop: 10,
-        marginLeft: Dimensions.get('window').width / 8.5,
+        left: (Dimensions.get('window').width *.5) - 50,
         height: 30,
         flexDirection: 'row',
       },

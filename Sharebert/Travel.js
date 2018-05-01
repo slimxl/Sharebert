@@ -271,7 +271,7 @@ class Travel extends Component {
         <Image
           resizeMode="contain"
           style={styles.button}
-          source={require('./Logo.png')}
+          source={require('./assets/icons/logo2.png')}
         />
          <TouchableWithoutFeedback
               onPress={() => 
@@ -417,8 +417,9 @@ image: {
       },
       android: {
         position: 'absolute',
+        width: 100,
         marginTop: 10,
-        marginLeft: Dimensions.get('window').width / 8.5,
+        marginLeft: Dimensions.get('window').width * .5 - 50,
         height: 30,
         flexDirection: 'row',
       },
