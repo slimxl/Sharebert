@@ -659,7 +659,7 @@ class Explore extends Component {
     try {
       if (
         this.state.url ===
-        'https://i.imgur.com/qnHscIM.png'||this.state.url ==='https://i.imgur.com/JaG8ovv.gif'
+        'https://i.imgur.com/qnHscIM.png' || this.state.url === 'https://i.imgur.com/JaG8ovv.gif'
       ) {
         return;
       }
@@ -750,7 +750,7 @@ class Explore extends Component {
             .done();
         }
       }
-      
+
       if (this.state.dataset.length > this.state.cardNum + 1) {
         this.setState({
           cardNum: this.state.cardNum + 1,
@@ -792,7 +792,9 @@ class Explore extends Component {
 
     this.setState({
       url: 'https://i.imgur.com/JaG8ovv.gif',
+      disable: true,
     });
+
 
     emptycard = false;
     brand = '';
@@ -814,7 +816,7 @@ class Explore extends Component {
       });
     }
     var data2 = [];
-    
+
     if (category != 'All') {
       fetch(
         'https://sharebert.com/s/Categoriesios.php?page=5&cat=' +
@@ -823,41 +825,40 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          console.log('Grabbing Cat: '+category);
+          console.log('Grabbing Cat: ' + category);
 
-          try{
-          for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
-            var obj = {};
-            obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
-            obj['Title'] = responseData['Amazon'][i]['Title'];
-            obj['URL'] = responseData['Amazon'][i]['URL'];
-            obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
-            obj['Retailer'] = 'Amazon';
-            data2.push(obj);
-          }
-
-          for (var i = 0; i < Object.keys(responseData['Others']).length; i++) {
-            var obj2 = {};
-            obj2['ASIN'] = responseData['Others'][i]['ASIN'];
-            obj2['Title'] = responseData['Others'][i]['Title'];
-            obj2['URL'] = responseData['Others'][i]['URL'];
-            obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
-            obj2['Retailer'] = responseData['Others'][i]['Website'];
-            if(data2[i].ASIN!=obj2['ASIN'])
-            {
-              data2.push(obj2);
+          try {
+            for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
+              var obj = {};
+              obj['ASIN'] = responseData['Amazon'][i]['ASIN'];
+              obj['Title'] = responseData['Amazon'][i]['Title'];
+              obj['URL'] = responseData['Amazon'][i]['URL'];
+              obj['ImageURL'] = responseData['Amazon'][i]['ImageURL'];
+              obj['Retailer'] = 'Amazon';
+              data2.push(obj);
             }
+
+            for (var i = 0; i < Object.keys(responseData['Others']).length; i++) {
+              var obj2 = {};
+              obj2['ASIN'] = responseData['Others'][i]['ASIN'];
+              obj2['Title'] = responseData['Others'][i]['Title'];
+              obj2['URL'] = responseData['Others'][i]['URL'];
+              obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
+              obj2['Retailer'] = responseData['Others'][i]['Website'];
+              if (data2[i].ASIN != obj2['ASIN']) {
+                data2.push(obj2);
+              }
+            }
+          } catch (error) {
+            console.error(error);
           }
-        } catch (error) {
-          console.error(error);
-        }
 
 
           toofast = false;
 
           data2 = shuffle(data2);
-          console.log('Data2 size:'+data2.length);
-          
+          console.log('Data2 size:' + data2.length);
+
           var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
             'https://sharebert.com/s/APISEARCH.php?keyword=' +
@@ -972,12 +973,18 @@ class Explore extends Component {
 
   onSwipedRight = () => {
     if (
-      this.state.url !=
-      'https://i.imgur.com/qnHscIM.png'
+      this.state.url !==
+      'https://i.imgur.com/qnHscIM.png' || this.state.url !== 'https://i.imgur.com/JaG8ovv.gif'
     ) {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
         likes.push(this.state.dataset[this.state.cardNum - 1]);
         this.saveLike();
+        this.notificationLike.show({
+          title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
+          message: 'Saved to your likes list!',
+          icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
+          onPress: () => this.resetTo('Likes')
+        });
       }
 
 
@@ -1391,6 +1398,15 @@ class Explore extends Component {
               />
             </TouchableWithoutFeedback>
 
+            <TouchableWithoutFeedback
+              onPress={this.shareApp}
+              style={styles.button}>
+              <Image
+                resizeMode='contain'
+                style={styles.button}
+                source={require('./assets/headercream.png')}
+              />
+            </TouchableWithoutFeedback>
 
             <Text style={styles.text2}>
               {userPoints + '\n'}
@@ -1398,17 +1414,6 @@ class Explore extends Component {
             <Text style={styles.pointsText}>
               Points
                 </Text>
-
-
-            <TouchableWithoutFeedback
-              onPress={this.shareApp}
-              style={styles.button}>
-              <Image
-                resizeMode='contain'
-                style={styles.button}
-                source={require('./assets/icons/logo2.png')}
-              />
-            </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback
               onPress={() => this.resetTo('Search')}
@@ -1517,7 +1522,7 @@ class Explore extends Component {
             {emptycard
               ?
               <View style={styles.TrendText2}>
-               <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
+                <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
                 <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
               </View>
               :
@@ -1552,17 +1557,17 @@ class Explore extends Component {
             {
               emptycard
                 ?
-                <View style={{overflow: "visible", position: 'absolute', bottom: 0}}>
-                <TouchableOpacity style={styles.footerItem3} onPress={this.shareURL}>
-                  <Image style={styles.footerShare} resizeMode={"contain"} source={require('./assets/share1.png')} />
-                </TouchableOpacity>
+                <View style={{ overflow: "visible", position: 'absolute', bottom: 0 }}>
+                  <TouchableOpacity style={styles.footerItem3} onPress={this.shareURL}>
+                    <Image style={styles.footerShare} resizeMode={"contain"} source={require('./assets/share1.png')} />
+                  </TouchableOpacity>
                 </View>
                 :
-                <View style={{overflow: "visible", position: 'absolute', bottom: 0}}>
-                <TouchableOpacity style={styles.footerItem4} onPress={this.shareURL}>
-                  <Image style={styles.footerShare2} resizeMode={"contain"} source={require('./assets/share2.png')} />
-                </TouchableOpacity>
-                </View>                
+                <View style={{ overflow: "visible", position: 'absolute', bottom: 0 }}>
+                  <TouchableOpacity style={styles.footerItem4} onPress={this.shareURL}>
+                    <Image style={styles.footerShare2} resizeMode={"contain"} source={require('./assets/share2.png')} />
+                  </TouchableOpacity>
+                </View>
             }
 
 
@@ -1633,6 +1638,10 @@ class Explore extends Component {
                 :
                 <View />
             }
+            <Notification
+              ref={(ref) => { this.notificationLike = ref; }}
+              closeInterval={1000}
+            />
           </ImageBackground>
         );
       }
@@ -1640,6 +1649,7 @@ class Explore extends Component {
     } catch (error) {
       console.error(error);
     }
+
   }
 }
 
@@ -1727,10 +1737,10 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginRight: 10,
-        marginTop: -40,
+        marginTop: -45,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
       android: {
@@ -1738,9 +1748,9 @@ const styles = StyleSheet.create({
         marginTop: 0,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
-        elevation: 100,
+
       },
     }),
 
@@ -1784,7 +1794,8 @@ const styles = StyleSheet.create({
         marginTop: -20,
         textAlign: 'right',
         fontSize: 15,
-        color: '#863fba',
+        marginBottom:13,
+        color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
       },
@@ -1794,7 +1805,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'right',
         fontSize: 15,
-        color: '#863fba',
+        color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
 
@@ -1983,19 +1994,20 @@ const styles = StyleSheet.create({
   button: {
     ...Platform.select({
       ios: {
-        width: 90,
-        height: 30,
-        marginTop: -35,
-        marginLeft: Dimensions.get('window').width / 2.6,
+
+        marginTop:-40,     
+        width: '100%',
+        height: 50,
+        marginBottom:5,
+        //marginLeft: Dimensions.get('window').width / 2.6,
         backgroundColor: 'transparent',
-        padding: 20,
       },
       android: {
         position: 'absolute',
-        width: 90,
-        marginTop: 10,
-        marginLeft: (Dimensions.get('window').width *.5) - 45,
-        height: 30,
+        width: '100%',
+        marginTop: -1,
+        //marginLeft: (Dimensions.get('window').width * .5) - 45,
+        height: 50,
         flexDirection: 'row',
       },
     }),
@@ -2035,13 +2047,14 @@ const styles = StyleSheet.create({
         width: 28,
         height: 40,
         marginLeft: 10,
-        marginTop: -40,
+        marginTop: -50,
+        marginBottom:12,
         backgroundColor: 'transparent',
         padding: 0,
       },
       android: {
         position: 'absolute',
-        marginTop: 5,
+        marginTop: 10,
         marginLeft: 5,
         height: 28,
         width: 40,
@@ -2157,20 +2170,20 @@ const styles = StyleSheet.create({
   },
   footerItem3:
     {
-    bottom: Dimensions.get('window').height * .12 ,
-      
+      bottom: Dimensions.get('window').height * .12,
+
       height: 75,
     },
-    footerItem4:
+  footerItem4:
     {
       position: 'absolute',
       bottom: Dimensions.get('window').height * .09,
-      
+
       height: 75,
     },
   footerItem: {
     position: 'absolute',
-    bottom: Dimensions.get('window').height * .25 ,
+    bottom: Dimensions.get('window').height * .25,
   },
   footerItem2: {
     position: "absolute",
@@ -2211,7 +2224,7 @@ const styles = StyleSheet.create({
     overflow: 'visible',
     //offset the margin by half of window width so image is always centered
     //make up for the left-aligned image by subtracting half the image width
-    marginLeft: Dimensions.get('window').width *.50 - 125,
+    marginLeft: Dimensions.get('window').width * .50 - 125,
   },
   footerShare2: {
     height: 75,
@@ -2220,7 +2233,7 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     //offset the margin by half of window width so image is always centered
     //make up for the left-aligned image by subtracting half the image width
-    marginLeft: Dimensions.get('window').width *.50 - 125,
+    marginLeft: Dimensions.get('window').width * .50 - 125,
   },
   extraComponentContainer: {
     // fakes overflow but requires more markup

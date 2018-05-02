@@ -243,11 +243,7 @@ class Likes extends Component {
 
       <TouchableWithoutFeedback
         onPress={() => {
-          this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-            uri: uri,
-          });
+          this.props.navigation.dispatch(backAction);
         }}
       >
         <View style={{
@@ -329,11 +325,12 @@ class Likes extends Component {
       <View style={styles.container}>
         <TouchableWithoutFeedback
           onPress={() => {
-            this.props.navigation.navigate('Explore', {
-              id: userID,
-              points: userPoints,
-              uri: uri,
-            });
+            // this.props.navigation.navigate('Explore', {
+            //   id: userID,
+            //   points: userPoints,
+            //   uri: uri,
+            // });
+            this.props.navigation.dispatch(backAction);
           }}
         >
           <View>
@@ -354,13 +351,13 @@ class Likes extends Component {
         <TouchableWithoutFeedback
           style={styles.hamburger2}
           onPress={() => {
-            //this.props.navigation.dispatch(backAction); //navigate to explore
+            this.props.navigation.dispatch(backAction); //navigate to explore
 
-            this.props.navigation.navigate('Explore', {
-              id: userID,
-              points: userPoints,
-              uri: uri,
-            });
+            // this.props.navigation.navigate('Explore', {
+            //   id: userID,
+            //   points: userPoints,
+            //   uri: uri,
+            // });
           }}>
           <Image
             style={styles.hamburger}
