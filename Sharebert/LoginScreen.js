@@ -550,29 +550,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   button4: {
-    ...Platform.select({
-      ios: {
-        flex: 1,
-        width: 135,
-        height: 10,
-        marginTop: Dimensions.get('window').height / 8,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        padding: 25,
-      },
-      android: {
-        flex: 1,
-        width: 150,
-        height: 10,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-      },
-    }),
-
+    flex: 1,
+    width: 150,
+    height: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
 });
 
