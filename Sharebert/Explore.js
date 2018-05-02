@@ -2352,6 +2352,11 @@ async function register() {
 
 };
 function trunc(text) {
+  if(text.includes('   '))
+  {
+    text = text.substr(0,text.indexOf('   '));
+  }
+  
   return text.length > 30 ? `${text.substr(0, 30)}...` : text;
 }
 function shuffle(array) {

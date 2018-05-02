@@ -57,10 +57,10 @@ class Search extends Component {
             .then(response => response.json())
             .then(responseData => {
                 var data2 = [];
-                var count =  responseData.length;
+                var count = responseData.length;
 
-                console.log( responseData.length);
-                for (var i = 0; i <  responseData.length; i++) {
+                console.log(responseData.length);
+                for (var i = 0; i < responseData.length; i++) {
                     var obj = {};
                     obj['id'] = responseData[i]['id'];
                     obj['Term'] = responseData[i]['Term'];
@@ -84,6 +84,14 @@ class Search extends Component {
             brand: null,
         })
     }
+    resetTo(route) {
+        this.props.navigation.pop(0)
+        this.props.navigation.navigate(route, {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+        })
+      }
     onSubmitEdit = () => {
         Keyboard.dismiss();
         if (this.state.inputValue === '' || this.state.inputValue === null) {
@@ -104,22 +112,25 @@ class Search extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity>
-                    <Image style={styles.header} />
-                </TouchableOpacity>
+
+                <Image
+                    source={require('./assets/searchheader.png')}
+                    style={styles.header} />
+
 
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        this.props.navigation.navigate('Explore', {
-                            id: userID,
-                            points: userPoints,
-                            uri: uri2,
-                        })
+                        // this.props.navigation.navigate('Explore', {
+                        //     id: userID,
+                        //     points: userPoints,
+                        //     uri: uri2,
+                        // })
+                        this.props.navigation.dispatch(backAction);
                     }}>
                     <Image
                         style={styles.hamburger}
                         resizeMode='contain'
-                        source={require('./assets/arrow.png')}
+                        source={require('./assets/arrow_w.png')}
                     />
 
                 </TouchableWithoutFeedback>
@@ -137,13 +148,15 @@ class Search extends Component {
                     onSubmitEditing={this.onSubmitEdit}
                     value={this.state.inputValue}
                     autoFocus={false}
+                    underlineColorAndroid={'transparent'}
                     onFocus={() => {
                         this.setState({
                             inputValue: "",
                         });
                     }}
+                    selectionColor='white'
                     onChangeText={this._handleTextChange}
-                    placeholderTextColor={'#4c515b'}
+                    placeholderTextColor='white'
                     style={styles.searchText}
                 />
                 <Text style={styles.title}>
@@ -169,7 +182,42 @@ class Search extends Component {
                         </TouchableOpacity>
                     )}
                 />
+                <View style={styles.footer}>
+                    <Image style={styles.footer} />
 
+                    <TouchableWithoutFeedback style={styles.footerItem}
+                    // onPress={() => this.props.navigation.navigate('Explore', {
+                    //   id: userID,
+                    //   points: userPoints,
+                    // })}
+                    onPress={()=> this.props.navigation.dispatch(backAction)}
+                    
+                    >
+                        <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                            source={require('./assets/menu/explore.png')}>
+
+                        </Image>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={styles.footerItem} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                        onPress={() => this.resetTo('Rewards')}>
+                        <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
+
+                        </Image>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback style={styles.footerRewards} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                        onPress={() => this.resetTo('Likes')}>
+                        <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
+
+                        </Image>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
+                        onPress={() => this.resetTo('Shipping')}>
+                        <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+
+                        </Image>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         );
     }
@@ -198,7 +246,7 @@ const styles = StyleSheet.create({
             },
             android: {
                 position: 'absolute',
-                marginTop: 5,
+                marginTop: 8,
                 marginLeft: -5,
                 height: 25,
                 width: 70,
@@ -364,7 +412,7 @@ const styles = StyleSheet.create({
         width: '100%',
         position: "absolute",
         bottom: 0,
-        backgroundColor: '#dee6ee',
+        backgroundColor: '#1288f5',
     },
     footerItem: {
         position: "absolute",
@@ -417,15 +465,15 @@ const styles = StyleSheet.create({
                 marginLeft: 70,
             },
             android: {
-              position: 'absolute',
-              height: 44,
-              width: Dimensions.get('window').width-95,
-              marginLeft: 90,
-              textDecorationLine: "none",
-              
+                position: 'absolute',
+                height: 44,
+                width: Dimensions.get('window').width - 120,
+                marginLeft: 90,
+                textDecorationLine: "none",
+
             },
-          }),
-        
+        }),
+
     },
     search: {
         ...Platform.select({
@@ -443,9 +491,9 @@ const styles = StyleSheet.create({
                 marginLeft: 60,
                 height: 20,
                 width: 20,
-              },
-          }),
- 
+            },
+        }),
+
     },
     footerShareText: {
         height: 30,
