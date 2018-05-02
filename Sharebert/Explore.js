@@ -321,6 +321,7 @@ class Explore extends Component {
                 uri: item.image_url
               }}
               resizeMode={'cover'}
+              resizeMethod={'resize'}
               backgroundColor='transparent'
               style={styles.itemImage}
             />}
@@ -2289,7 +2290,7 @@ const styles = StyleSheet.create({
   itemImage: {
     width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
       PRODUCT_ITEM_MARGIN,
-    height: 250,
+    height: 200,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 5,
