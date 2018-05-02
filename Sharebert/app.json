@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "primaryColor": "#ec47ff",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashscreen_n.png",
       "resizeMode": "cover"
     },
     "icon": "https://i.imgur.com/xW6iH48.png",
