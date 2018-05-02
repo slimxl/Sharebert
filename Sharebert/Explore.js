@@ -2166,7 +2166,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: "absolute",
     bottom: 0,
-    backgroundColor: '#dee6ee',
+    backgroundColor: '#1288f5',
   },
   footerItem3:
     {
