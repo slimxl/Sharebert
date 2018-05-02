@@ -25,7 +25,7 @@ const backAction = NavigationActions.back({
 var userPoints = 0;
 var userID = 0;
 var uri2 = '';
-
+var refresh = false;
 // screen sizing
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -47,9 +47,11 @@ class Search extends Component {
         this.state = {
             inputValue: 'Search',
             trendinglist: [],
+            trendData: [],
+            frontTitle: '',
         }
         //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
-
+        this.grabFrontPage();
         fetch(
             'https://sharebert.com/s/Trending.php',
             { method: 'GET' }
@@ -75,6 +77,50 @@ class Search extends Component {
 
 
     }
+    _renderItem = data => {
+        const item = data.item;
+        return (
+            <View style={styles.item}>
+                <TouchableOpacity onPress={() => {
+                    this.props.navigation.navigate('Explore', {
+                        id: userID,
+                        points: userPoints,
+                        uri: uri2,
+                        search: item.term,
+                        brand: null,
+                    });
+                }}>
+                    {!item.image_url
+                        ? <View style={styles.itemImage}>
+                            <Text>No image</Text>
+                        </View>
+                        :
+                        <View>
+
+                            <Image
+                                source={{
+                                    uri: item.image_url
+                                }}
+                                resizeMode={'cover'}
+                                resizeMethod={'resize'}
+                                backgroundColor='transparent'
+                                style={styles.itemImage}
+                            />
+                            <Text style={{
+                                textAlign: 'center',
+                            }}>
+                                {item.term}
+                            </Text>
+                        </View>
+                    }
+                </TouchableOpacity>
+
+                <Text numberOfLines={3} style={styles.itemTitle}>
+                    {item.title}
+                </Text>
+            </View>
+        );
+    };
     _onPress(item) {
         this.props.navigation.navigate('Explore', {
             id: userID,
@@ -87,11 +133,11 @@ class Search extends Component {
     resetTo(route) {
         this.props.navigation.pop(0)
         this.props.navigation.navigate(route, {
-          id: userID,
-          points: userPoints,
-          uri: uri2,
+            id: userID,
+            points: userPoints,
+            uri: uri2,
         })
-      }
+    }
     onSubmitEdit = () => {
         Keyboard.dismiss();
         if (this.state.inputValue === '' || this.state.inputValue === null) {
@@ -109,6 +155,54 @@ class Search extends Component {
     _handleTextChange = inputValue => {
         this.setState({ inputValue });
     };
+
+    _getItemLayout = (data, index) => {
+        const productHeight = PRODUCT_ITEM_HEIGHT + PRODUCT_ITEM_MARGIN;
+        return {
+            length: productHeight,
+            offset: productHeight * index,
+            index,
+        };
+    };
+
+    _keyExtractor = item => {
+        return item.code_group;
+    };
+    grabFrontPage = () => {
+        console.log('refresh trending');
+        fetch('https://sharebert.com/s/Frontpage2.php', { method: 'GET' })
+            .then(response => response.json())
+            .then(responseData => {
+                var data2 = [];
+                var temptitle = '';
+                for (var i = 0; i < responseData.length; i++) {
+                    var obj = {};
+                    if (responseData[i]['id'] === '1') {
+                        temptitle = responseData[i]['term'];
+                    }
+                    else {
+                        obj['term'] = responseData[i]['term'];
+                        obj['image_url'] = responseData[i]['ImageURL'];
+                        data2.push(obj);
+                    }
+
+                }
+                data2 = shuffle(data2);
+                this.setState({
+                    trendData: data2,
+                    url: 'https://i.imgur.com/qnHscIM.png',
+                    frontTitle: temptitle,
+                    // cardNum: this.state.cardNum,
+                    // url: data2[this.state.cardNum].ImageURL,
+                    // title: data2[this.state.cardNum].Title,
+                    // dataset: data2,
+                    // cat: false,
+                });
+                console.log(this.state.trendData);
+            })
+            .done();
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -154,12 +248,13 @@ class Search extends Component {
                             inputValue: "",
                         });
                     }}
+
                     selectionColor='white'
                     onChangeText={this._handleTextChange}
                     placeholderTextColor='white'
                     style={styles.searchText}
                 />
-                <Text style={styles.title}>
+                {/* <Text style={styles.title}>
                     Trending
                 </Text>
                 <Image style={styles.footer} />
@@ -181,17 +276,39 @@ class Search extends Component {
                             </View>
                         </TouchableOpacity>
                     )}
+                /> */}
+
+
+                <View style={styles.TrendText2}>
+                    <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 5, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
+                    <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
+                </View>
+
+
+
+                <FlatList
+                    style={{
+                        marginTop: -55, marginBottom: 60,
+                        paddingBottom: 30
+                    }}
+
+                    data={this.state.trendData}
+                    keyExtractor={(item, index) => index}
+                    renderItem={this._renderItem}
+                    getItemLayout={this._getItemLayout}
+                    numColumns={numColumns}
                 />
+
                 <View style={styles.footer}>
                     <Image style={styles.footer} />
 
                     <TouchableWithoutFeedback style={styles.footerItem}
-                    // onPress={() => this.props.navigation.navigate('Explore', {
-                    //   id: userID,
-                    //   points: userPoints,
-                    // })}
-                    onPress={()=> this.props.navigation.dispatch(backAction)}
-                    
+                        // onPress={() => this.props.navigation.navigate('Explore', {
+                        //   id: userID,
+                        //   points: userPoints,
+                        // })}
+                        onPress={() => this.props.navigation.dispatch(backAction)}
+
                     >
                         <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
                             source={require('./assets/menu/explore.png')}>
@@ -291,9 +408,15 @@ const styles = StyleSheet.create({
     itemImage: {
         width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
             PRODUCT_ITEM_MARGIN,
-        height: 125,
+        height: 150,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 0,
+        borderRadius: 5,
+        borderColor: 'transparent',
+        marginBottom: 0,
+
+
     },
     itemTitle: {
         flex: 1,
@@ -308,12 +431,13 @@ const styles = StyleSheet.create({
     item: {
         margin: PRODUCT_ITEM_OFFSET,
         overflow: 'hidden',
-        borderRadius: 3,
         width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
             PRODUCT_ITEM_MARGIN,
         height: PRODUCT_ITEM_HEIGHT,
         flexDirection: 'column',
-        backgroundColor: colors.snow,
+        borderRadius: 5,
+        borderColor: 'transparent',
+        backgroundColor: 'transparent',
         ...Platform.select({
             ios: {
                 shadowColor: 'rgba(0,0,0, .2)',
@@ -322,7 +446,7 @@ const styles = StyleSheet.create({
                 shadowRadius: 1,
             },
             android: {
-                elevation: 1,
+                elevation: 0,
             },
         }),
     },
@@ -406,7 +530,44 @@ const styles = StyleSheet.create({
             borderRadius: 12,
             backgroundColor: 'transparent',
         },
+    TrendText2:
+        {
+            marginTop: 10,
+            marginBottom: '30%',
+        },
+    TrendText: {
+        ...Platform.select({
+            ios: {
+                fontFamily: 'MontserratBoldItalic',
+                width: Dimensions.get('window').width,
+                height: 30,
+                width: '100%',
+                position: 'absolute',
+                textAlign: 'center',
+                fontSize: 20,
+                marginLeft: Dimensions.get('window').width / 20,
+                marginTop: 20,
+                marginBottom: -40,
+                color: '#ffffff',
 
+            },
+            android:
+                {
+                    fontFamily: 'MontserratBoldItalic',
+                    width: Dimensions.get('window').width,
+                    height: 30,
+                    width: '100%',
+                    position: 'absolute',
+                    textAlign: 'center',
+                    fontSize: 20,
+                    marginLeft: Dimensions.get('window').width / 20,
+                    marginTop: 20,
+                    marginBottom: -40,
+                    color: '#ffffff',
+
+                }
+        }),
+    },
     footer: {
         height: 40,
         width: '100%',
@@ -506,4 +667,19 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 });
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (0 !== currentIndex) {
+
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
 export default Search;
