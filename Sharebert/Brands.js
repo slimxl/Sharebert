@@ -379,6 +379,10 @@ class Brands extends Component {
     Brand67['title'] = '3V Gear';
     Brand67['image_url'] = require('./assets/brands/tvgear.jpg');
 
+    var Brand68 = {};
+    Brand68['Term'] = 'RageOn';
+    Brand68['title'] = 'RageOn';
+    Brand68['image_url'] = require('./assets/brands/rageon.jpg');
 
     if(brandArr.length<10)
     {
@@ -429,6 +433,7 @@ class Brands extends Component {
       //brandArr.push(Brand44);
       brandArr.push(Brand45);
       brandArr.push(Brand46);
+      brandArr.push(Brand68);
       //brandArr.push(Brand47);
       brandArr.push(Brand48);
       brandArr.push(Brand49);
