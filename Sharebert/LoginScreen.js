@@ -444,9 +444,10 @@ class LoginScreen extends Component {
     return (
       <View>
         <Image
-          resizeMode="contain"
+          resizeMode={'cover'}
+          resizeMethod={'resize'}
           style={styles.button}
-          source={require('./sign_bg.png')}
+          source={require('./assets/sign_in_background.png')}
         />
         <View style={styles.bg}>
           <TouchableOpacity
@@ -483,41 +484,32 @@ class LoginScreen extends Component {
 }
 const styles = StyleSheet.create({
   loging: {
-    ...Platform.select({
-      ios: {
-        width: 235,
-        height: 40,
-        marginTop: Dimensions.get('window').height / 3,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-      },
-      android: {
-        width: 235,
-        height: 40,
-        marginTop: Dimensions.get('window').height / 3,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-      },
-    }),
-
-  },
-  loginf: {
+    position: "absolute",
+    bottom: 150,
     width: 250,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 10,
+
+  },
+  loginf: {
+    position: "absolute",
+    bottom: 100,
+    width: 250,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   later: {
+    position: "absolute",
+    bottom: 50,
     width: 250,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 8,
   },
   bg: {
     position: 'absolute',
@@ -549,28 +541,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   button3: {
-    ...Platform.select({
-      ios: {
-        flex: 1,
-        width: 235,
-        height: 50,
-        marginTop: 100,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        padding: 25,
-      },
-      android: {
-        flex: 1,
-        width: 250,
-        height: 25,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-      },
-    }),
+    flex: 1,
+    width: 250,
+    height: 25,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   button4: {
     ...Platform.select({
