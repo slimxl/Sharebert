@@ -323,6 +323,9 @@ class Likes extends Component {
     const { showAlert } = this.state;
     return (
       <View style={styles.container}>
+              <Image style={styles.dividerTop}
+          source={require('./assets/likesbg.png')}
+        />
         <TouchableWithoutFeedback
           onPress={() => {
             // this.props.navigation.navigate('Explore', {
@@ -346,7 +349,7 @@ class Likes extends Component {
         <Image
           resizeMode="contain"
           style={styles.button}
-          source={require('./assets/icons/logo2.png')}
+          source={require('./assets/icons/logoicon.png')}
         />
         <TouchableWithoutFeedback
           style={styles.hamburger2}
@@ -362,21 +365,14 @@ class Likes extends Component {
           <Image
             style={styles.hamburger}
             resizeMode='contain'
-            source={require('./explore2.png')}
+            source={require('./assets/arrow_w.png')}
           />
         </TouchableWithoutFeedback>
 
-
-        <Image
-          resizeMode="contain"
-          style={styles.heart}
-          source={require('./assets/icons/heart_button.png')} />
         <Text style={styles.title}>
           Things You Like
         </Text>
-        <Image style={styles.dividerTop}
-          source={require('./assets/empty2.png')}
-        />
+
 
         <ImageBackground
           source={require('./like_background.png')}
@@ -459,7 +455,7 @@ const styles = StyleSheet.create({
         marginTop: -40,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
       android: {
@@ -467,7 +463,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
     }),
@@ -476,11 +472,11 @@ const styles = StyleSheet.create({
   pointsText: {
     ...Platform.select({
       ios: {
-        marginRight: 10,
+        marginRight: 15,
         marginTop: -20,
         textAlign: 'right',
         fontSize: 15,
-        color: '#863fba',
+        color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
         marginBottom: 30,
@@ -491,7 +487,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'right',
         fontSize: 15,
-        color: '#863fba',
+        color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
       },
@@ -500,19 +496,20 @@ const styles = StyleSheet.create({
   hamburger: {
     ...Platform.select({
       ios: {
-        marginTop: -80,
+        position: 'absolute',
+        top: 5,
         width: 100,
         height: 30,
-        marginLeft: 10,
+        left: -25,
         backgroundColor: 'transparent',
         padding: 0,
-        marginBottom: 30,
 
       },
       android: {
         position: 'absolute',
-        marginTop: 5,
-        marginLeft: 15,
+        backgroundColor: 'transparent',
+        top: 5,
+        left: -25,
         height: 40,
         width: 90,
       },
@@ -527,18 +524,19 @@ const styles = StyleSheet.create({
       },
       android: {
         width: '100%',
-        height: '70%',
+        height: '80%',
       },
     }),
   },
   hamburger2: {
     ...Platform.select({
       ios: {
+        backgroundColor: 'transparent',
       },
       android: {
         position: 'absolute',
-        marginTop: 5,
-        marginLeft: 10,
+        top: 5,
+        left: 5,
         height: 50,
         width: 150,
       },
@@ -552,7 +550,7 @@ const styles = StyleSheet.create({
       paddingTop: 30,
       marginTop: -15,
       marginBottom: 26,
-      backgroundColor: 'white',
+      backgroundColor: 'transparent',
 
     },
   bg: {
@@ -598,20 +596,47 @@ const styles = StyleSheet.create({
     },
   dividerTop:
     {
-      width: Dimensions.get('window').width,
-      height: 3,
-      backgroundColor: '#dee6ee',
+      ...Platform.select({
+        ios: {
+          width: Dimensions.get('window').width,
+          position: "absolute",
+          top: -25,
+          height: 100,
+          backgroundColor: 'transparent',
+        },
+        android: {
+          width: Dimensions.get('window').width,
+          position: "absolute",
+          top: 0,
+          height: 100,
+          backgroundColor: 'transparent',
+        },
+      }),
+
     },
   title: {
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#ff2eff',
-    marginTop: -26,
-    marginBottom: 0,
-    paddingBottom: 6,
-    backgroundColor: 'white',
+    ...Platform.select({
+      ios: {
+        fontFamily: "MontserratLight",
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white',
+        marginTop: -20,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        fontFamily: "MontserratLight",
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white',
+        marginTop: 0,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'transparent',
+      },
+    }),
   },
   image: {
     borderRadius: 20,
@@ -623,20 +648,21 @@ const styles = StyleSheet.create({
   button: {
     ...Platform.select({
       ios: {
-        width: 100,
-        height: 70,
+        width: 150,
+        height: 50,
         marginTop: -75,
-        marginLeft: Dimensions.get('window').width / 2.6,
+        marginLeft: Dimensions.get('window').width *.5 - 75,
         backgroundColor: 'transparent',
         padding: 20,
         marginBottom: 30,
       },
       android: {
         position: 'absolute',
-        width: 100,
+        width: 150,
+        height: 50,
         marginTop: 10,
-        left: (Dimensions.get('window').width *.5) - 50,
-        height: 30,
+        left: (Dimensions.get('window').width *.5) - 75,
+        backgroundColor: 'transparent',
         flexDirection: 'row',
       },
     }),
@@ -647,14 +673,14 @@ const styles = StyleSheet.create({
         marginTop: 0,
         width: '100%',
         height: 40,
-        backgroundColor: '#dee6ee',
+        backgroundColor: 'transparent',
       },
       android: {
         position: 'absolute',
         marginTop: 0,
         width: '100%',
         height: 50,
-        backgroundColor: '#dee6ee',
+        backgroundColor: 'transparent',
       },
     }),
 
