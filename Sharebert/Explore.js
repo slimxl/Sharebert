@@ -1640,7 +1640,7 @@ class Explore extends Component {
             }
             <Notification
               ref={(ref) => { this.notificationLike = ref; }}
-              closeInterval={1000}
+              closeInterval={2000}
             />
           </ImageBackground>
         );
@@ -2356,7 +2356,7 @@ function trunc(text) {
   {
     text = text.substr(0,text.indexOf('   '));
   }
-  
+
   return text.length > 30 ? `${text.substr(0, 30)}...` : text;
 }
 function shuffle(array) {
