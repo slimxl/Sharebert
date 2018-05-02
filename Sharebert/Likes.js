@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
       android: {
         position: 'absolute',
         backgroundColor: 'transparent',
-        top: 5,
+        top: 15,
         left: -25,
         height: 30,
         width: 90,
