@@ -2170,7 +2170,7 @@ const styles = StyleSheet.create({
   },
   footerItem3:
     {
-      bottom: Dimensions.get('window').height * .12,
+      bottom: Dimensions.get('window').height * .1,
 
       height: 75,
     },
