@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
       },
       android: {
-        marginRight: 10,
+        marginRight: 8,
         marginTop: 10,
         textAlign: 'right',
         fontSize: 15,
@@ -472,8 +472,8 @@ const styles = StyleSheet.create({
   pointsText: {
     ...Platform.select({
       ios: {
-        marginRight: 15,
-        marginTop: -20,
+        marginRight: 10,
+        marginTop: -17,
         textAlign: 'right',
         fontSize: 15,
         color: 'white',
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
       },
       android: {
         marginRight: 10,
-        marginTop: -10,
+        marginTop: -7,
         marginBottom: 20,
         textAlign: 'right',
         fontSize: 15,
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         top: 5,
         left: -25,
-        height: 40,
+        height: 30,
         width: 90,
       },
     }),
@@ -621,7 +621,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         color: 'white',
-        marginTop: -20,
+        marginTop: -30,
         marginBottom: 0,
         paddingBottom: 6,
         backgroundColor: 'transparent',
@@ -650,7 +650,7 @@ const styles = StyleSheet.create({
       ios: {
         width: 150,
         height: 50,
-        marginTop: -75,
+        marginTop: -65,
         marginLeft: Dimensions.get('window').width *.5 - 75,
         backgroundColor: 'transparent',
         padding: 20,
