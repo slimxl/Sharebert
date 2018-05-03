@@ -360,8 +360,7 @@ class LoginScreen extends Component {
         token,
       } = await Facebook.logInWithReadPermissionsAsync(
         '1841427549503210', // Replace with your own app id in standalone app
-        { permissions: ['public_profile', 'email'],
-        behavior: 'system', }
+        { permissions: ['public_profile', 'email'] }
       );
 
       switch (type) {
