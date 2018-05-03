@@ -132,23 +132,31 @@ class LoginScreen extends Component {
       this._handleFinalGoogleLogin();
     }
     else {
-      Alert.alert(
-        'Login as ' + name2 + "?", "",
-        [
-          {
-            text: 'No',
-            onPress: () => { this._handleFinalGoogleLogin() },
-            style: 'cancel',
-          },
-          {
-            text: 'Yes',
-            onPress: () => {
-              this.checkUpdatePoints();
+      if(Platform.OS === 'ios')
+      {
+        Alert.alert(
+          'Login as ' + name2 + "?", "",
+          [
+            {
+              text: 'No',
+              onPress: () => { this._handleFinalGoogleLogin() },
+              style: 'cancel',
             },
-          },
-        ],
-        { cancelable: false }
-      );
+            {
+              text: 'Yes',
+              onPress: () => {
+                this.checkUpdatePoints();
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+      else
+      {
+        this._handleFinalGoogleLogin();
+      }
+     
     }
   };
 
@@ -161,24 +169,31 @@ class LoginScreen extends Component {
       this._handleFinalFacebookLogin();
     }
     else {
-
-      Alert.alert(
-        'Login as ' + name2 + "?", "",
-        [
-          {
-            text: 'No',
-            onPress: () => { this._handleFinalFacebookLogin() },
-            style: 'cancel',
-          },
-          {
-            text: 'Yes',
-            onPress: () => {
-              this.checkUpdatePoints();
+      if(Platform.OS === 'ios')
+      {
+        Alert.alert(
+          'Login as ' + name2 + "?", "",
+          [
+            {
+              text: 'No',
+              onPress: () => { this._handleFinalFacebookLogin() },
+              style: 'cancel',
             },
-          },
-        ],
-        { cancelable: false }
-      );
+            {
+              text: 'Yes',
+              onPress: () => {
+                this.checkUpdatePoints();
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+      else
+      {
+        this._handleFinalFacebookLogin();
+      }
+      
     }
   };
   _handlePressAsync = async () => {
@@ -345,7 +360,8 @@ class LoginScreen extends Component {
         token,
       } = await Facebook.logInWithReadPermissionsAsync(
         '1841427549503210', // Replace with your own app id in standalone app
-        { permissions: ['public_profile', 'email'] }
+        { permissions: ['public_profile', 'email'],
+        behavior: 'system', }
       );
 
       switch (type) {
