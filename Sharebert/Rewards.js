@@ -135,6 +135,8 @@ class Rewards extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+      
         <TouchableOpacity
         onPress={() => {
           this.props.navigation.dispatch(backAction);
@@ -151,7 +153,7 @@ class Rewards extends Component {
         <Image
           resizeMode="contain"
           style={styles.button}
-          source={require('./assets/icons/logo2.png')}
+          source={require('./assets/icons/logoicon.png')}
         />
         <TouchableWithoutFeedback
           onPress={() => {
@@ -160,23 +162,18 @@ class Rewards extends Component {
           <Image
             style={styles.hamburger}
             resizeMode='contain'
-            source={require('./assets/arrow.png')}
+            source={require('./assets/arrow_w.png')}
           />
         </TouchableWithoutFeedback>
-        <Image
-          resizeMode="contain"
-          style={styles.heart}
-          source={require('./assets/icons/Reward_Icon.png')} />
         <Text style={styles.title}>
-          Rewards
+          Sharebert Rewards
         </Text>
-        <Image style={styles.dividerTop} source={require('./assets/empty2.png')} />
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
-          <View style={{ width: '100%', height: '80%' }}>
+          <View style={{ width: '100%', height: Dimensions.get('window').height -130 }}>
             <FlatList backgroundColor={'transparent'}
-              style={{ width: '100%', height: '80%' }}
+              style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
               data={this.state.rewards}
               keyExtractor={(item, index) => index}
               ListEmptyComponent={this.showEmptyListView()}              
@@ -230,15 +227,15 @@ const styles = StyleSheet.create({
         marginTop: -40,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
       android: {
-        marginRight: 10,
-        marginTop: 0,
+        marginRight: 8,
+        marginTop: 10,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
     }),
@@ -248,19 +245,21 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginRight: 10,
-        marginTop: -20,
+        marginTop: -17,
         textAlign: 'right',
         fontSize: 15,
-        color: '#863fba',
+        color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
+        marginBottom: 30,
       },
       android: {
         marginRight: 10,
-        marginTop: -10,
+        marginTop: -7,
+        marginBottom: 20,
         textAlign: 'right',
         fontSize: 15,
-        color: '#863fba',
+        color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
       },
@@ -269,19 +268,22 @@ const styles = StyleSheet.create({
   hamburger: {
     ...Platform.select({
       ios: {
-        width: 30,
-        height: 23,
-        marginLeft: 10,
-        marginTop: -48,
+        position: 'absolute',
+        top: 5,
+        width: 100,
+        height: 30,
+        left: -25,
         backgroundColor: 'transparent',
         padding: 0,
+
       },
       android: {
         position: 'absolute',
-        marginTop: 10,
-        marginLeft: 0,
-        height: 25,
-        width: 45,
+        backgroundColor: 'transparent',
+        top: 15,
+        left: -25,
+        height: 30,
+        width: 90,
       },
     }),
 
@@ -340,34 +342,44 @@ const styles = StyleSheet.create({
     },
   dividerTop:
     {
-      width: Dimensions.get('window').width,
-      height: 3,
-      backgroundColor: '#dee6ee',
+      ...Platform.select({
+        ios: {
+          width: Dimensions.get('window').width,
+          position: "absolute",
+          top: -25,
+          height: 100,
+          backgroundColor: 'transparent',
+        },
+        android: {
+          width: Dimensions.get('window').width,
+          position: "absolute",
+          top: 0,
+          height: 100,
+          backgroundColor: 'transparent',
+        },
+      }),
     },
   title: {
     ...Platform.select({
       ios: {
-        fontFamily: "Montserrat",
+        fontFamily: "MontserratLight",
         fontSize: 18,
-        fontWeight: 'bold',
         textAlign: 'center',
-        color: '#ff2eff',
-        marginTop: -20,
+        color: 'white',
+        marginTop: -30,
         marginBottom: 0,
         paddingBottom: 6,
         backgroundColor: 'transparent',
       },
       android: {
-        fontFamily: "Montserrat",
+        fontFamily: "MontserratLight",
         fontSize: 18,
-        fontWeight: 'bold',
         textAlign: 'center',
-        color: '#ff2eff',
-        marginTop: -20,
+        color: 'white',
+        marginTop: 0,
         marginBottom: 0,
         paddingBottom: 6,
-        backgroundColor: 'white',
-
+        backgroundColor: 'transparent',
       },
     }),
 
@@ -383,19 +395,21 @@ const styles = StyleSheet.create({
   button: {
     ...Platform.select({
       ios: {
-        width: 100,
-        height: 70,
-        marginTop: -44,
-        marginLeft: Dimensions.get('window').width / 2.6,
+        width: 150,
+        height: 50,
+        marginTop: -65,
+        marginLeft: Dimensions.get('window').width *.5 - 75,
         backgroundColor: 'transparent',
         padding: 20,
+        marginBottom: 30,
       },
       android: {
         position: 'absolute',
-        width: 100,
+        width: 150,
+        height: 50,
         marginTop: 10,
-        marginLeft: Dimensions.get('window').width * .5 - 50,
-        height: 30,
+        left: (Dimensions.get('window').width *.5) - 75,
+        backgroundColor: 'transparent',
         flexDirection: 'row',
       },
     }),
@@ -406,12 +420,12 @@ const styles = StyleSheet.create({
         marginTop: 0,
         width: '100%',
         height: 40,
-        backgroundColor: '#dee6ee',
+        backgroundColor: 'transparent',
       },
       android: {
         marginTop: -10,
         height: 100,
-        backgroundColor: '#dee6ee',
+        backgroundColor: 'transparent',
 
       },
     }),
