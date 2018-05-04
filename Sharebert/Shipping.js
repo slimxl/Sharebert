@@ -207,6 +207,12 @@ class Shipping extends Component {
   render() {
     return (
       <View style={styles.container}>
+
+        <ImageBackground
+          source={require('./like_background.png')}
+          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, position: 'absolute', top: 0 }}>
+          <View style={{ width: '100%', height: Dimensions.get('window').height }}>
+          <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.dispatch(backAction);
@@ -223,7 +229,7 @@ class Shipping extends Component {
         <Image
           resizeMode="contain"
           style={styles.button}
-          source={require('./assets/icons/logo2.png')}
+          source={require('./assets/icons/logoicon.png')}
         />
         <TouchableWithoutFeedback
           onPress={() => {
@@ -232,18 +238,17 @@ class Shipping extends Component {
           <Image
             style={styles.hamburger}
             resizeMode='contain'
-            source={require('./assets/arrow.png')}
+            source={require('./assets/arrow_w.png')}
           />
         </TouchableWithoutFeedback>
-        <ImageBackground
-          source={require('./like_background.png')}
-          style={{ width: '100%', height: '100%', marginTop: 10 }}>
-          <View style={{ width: '100%', height: '90%' }}>
+        <Text style={styles.title}>
+          My Profile
+        </Text>
             <ScrollView
-              style={{ marginTop: 20, backgroundColor: 'transparent', }}
+              style={{ marginTop: 20, backgroundColor: 'transparent',}}
               vertical={true}>
               <Text style={styles.paragraph}>
-                Name
+                Name:
             </Text>
               <TextInput
                 textAlign="left"
@@ -253,43 +258,11 @@ class Shipping extends Component {
                   user.Name = text;
                   this.setState({ name: text })
                 }}
-                placeholderTextColor={'#4c515b'}
-                style={{
-                  fontSize: 20,
-                  backgroundColor: '#d9dbdd',
-                  width: Dimensions.get('window').width - 40,
-                  height: 44,
-                  padding: 8,
-                  marginTop: 0,
-                  marginLeft: 20,
-                  borderRadius: 8,
-                }}
+                placeholderTextColor={'#01284e'}
+                style={styles.textField}
               />
               <Text style={styles.paragraph}>
-                Phone
-            </Text>
-              <TextInput
-                textAlign="left"
-                onSubmitEditing={this.onSubmitEdit}
-                value={this.state.phone}
-                onChangeText={(text) => {
-                  user.Phone = text;
-                  this.setState({ phone: text })
-                }}
-                placeholderTextColor={'#4c515b'}
-                style={{
-                  fontSize: 20,
-                  backgroundColor: '#d9dbdd',
-                  width: Dimensions.get('window').width - 40,
-                  height: 44,
-                  padding: 8,
-                  marginTop: 0,
-                  marginLeft: 20,
-                  borderRadius: 8,
-                }}
-              />
-              <Text style={styles.paragraph}>
-                Address
+                Address:
             </Text>
               <TextInput
                 textAlign="left"
@@ -299,20 +272,11 @@ class Shipping extends Component {
                   user.Address = text;
                   this.setState({ address: text })
                 }}
-                placeholderTextColor={'#4c515b'}
-                style={{
-                  fontSize: 20,
-                  backgroundColor: '#d9dbdd',
-                  width: Dimensions.get('window').width - 40,
-                  height: 44,
-                  padding: 8,
-                  marginTop: 0,
-                  marginLeft: 20,
-                  borderRadius: 8
-                }}
+                placeholderTextColor={'#01284e'}
+                style={styles.textField}
               />
               <Text style={styles.paragraph}>
-                City
+                City:
             </Text>
               <TextInput
                 textAlign="left"
@@ -322,23 +286,14 @@ class Shipping extends Component {
                   user.City = text;
                   this.setState({ city: text })
                 }}
-                placeholderTextColor={'#4c515b'}
-                style={{
-                  fontSize: 20,
-                  backgroundColor: '#d9dbdd',
-                  width: Dimensions.get('window').width - 40,
-                  height: 44,
-                  padding: 8,
-                  marginTop: 0,
-                  marginLeft: 20,
-                  borderRadius: 8
-                }}
+              placeholderTextColor={'#01284e'}
+                style={styles.textField}
               />
-              <Text style={styles.paragraph}>
-                State
+              <Text style={styles.paragraphS}>
+                State:
             </Text>
               <Picker
-                style={{ marginTop: -25 }}
+                style={styles.textFieldS}
                 selectedValue={this.state.state}
                 onValueChange={(itemValue, itemIndex) => {
                   user['State'] = itemValue;
@@ -398,8 +353,8 @@ class Shipping extends Component {
                 <Picker.Item label="Wyoming" value="WY" />
               </Picker>
 
-              <Text style={styles.paragraph}>
-                Postal Code
+              <Text style={styles.paragraphZ}>
+                Zip:
             </Text>
               <TextInput
                 textAlign="left"
@@ -409,62 +364,68 @@ class Shipping extends Component {
                   user.Zip = text;
                   this.setState({ zip: text })
                 }}
-                placeholderTextColor={'#4c515b'}
-                style={{
-                  fontSize: 20,
-                  backgroundColor: '#d9dbdd',
-                  width: Dimensions.get('window').width - 40,
-                  height: 44,
-                  padding: 8,
-                  marginTop: 0,
-                  marginLeft: 20,
-                  marginBottom: 20,
-                  borderRadius: 8
-                }}
+                placeholderTextColor={'#01284e'}
+                style={styles.textField}
               />
-              <TouchableOpacity onPress={this.saveForm}>
+              <TouchableOpacity onPress={this.saveForm} 
+              style={{
+                width: 100, height: 75, 
+                marginLeft: (Dimensions.get('window').width * .5) - 50
+              }}>
                 <Image
                   resizeMode="contain"
                   style={styles.button2}
-                  source={require('./assets/icons/save.png')}
+                  source={require('./assets/icons/save_button.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
+              <TouchableOpacity style={{
+                width: 250, height: 50, 
+                marginLeft: (Dimensions.get('window').width * .5) - 125
+              }}
+              onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
                 <Image
                   resizeMode="contain"
-                  style={styles.button2}
-                  source={require('./assets/icons/privacy.png')}
+                  style={styles.button3}
+                  source={require('./assets/icons/policy.png')}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={this.clearLikes}
+              style={{
+                width: 250, height: 50, 
+                marginLeft: (Dimensions.get('window').width * .5) - 125,
+              }}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.button3}
+                  source={require('./assets/icons/delete_likes.png')}
                 />
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => {
                 this.clearFile();
+              }}
+              style={{
+                width: 250, height: 50, 
+                marginLeft: (Dimensions.get('window').width * .5) - 125
               }}>
                 {!loggedbool
                   ? <Image
                     resizeMode="contain"
-                    style={styles.button2}
+                    style={styles.button3}
                     source={require('./assets/icons/btn_login.png')}
                   />
                   : <Image
                     resizeMode="contain"
-                    style={styles.button2}
-                    source={require('./assets/icons/btn_logout.png')}
+                    style={styles.button3}
+                    source={require('./assets/icons/logout.png')}
                   />}
-              </TouchableOpacity>
-
-
-              <TouchableOpacity onPress={this.clearLikes}>
-                <Image
-                  resizeMode="contain"
-                  style={styles.button2}
-                  source={require('./assets/icons/clear.png')}
-                />
               </TouchableOpacity>
 
             </ScrollView>
             <Text style={styles.text}>
-          We do not sell, trade, or otherwise share your personal information with any other company or agency. By submitting your information, you agree to have your name, address, phone number, and email stored on our secured servers.
+          We take privacy seriously.{"\n"}
+          We'll never sell or trade your data.
           </Text>
           </View>
           
@@ -486,11 +447,37 @@ const styles = StyleSheet.create({
         marginTop: 0,
         width: '100%',
         height: 40,
-        backgroundColor: '#dee6ee',
+        backgroundColor: 'transparent',
       },
       android: {
         marginTop: -10,
+        backgroundColor: 'transparent',
         height: 100,
+      },
+    }),
+
+  },
+  title: {
+    ...Platform.select({
+      ios: {
+        fontFamily: "MontserratLight",
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white',
+        marginTop: -30,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        fontFamily: "MontserratLight",
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white',
+        marginTop: 0,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'transparent',
       },
     }),
 
@@ -498,49 +485,221 @@ const styles = StyleSheet.create({
   button: {
     ...Platform.select({
       ios: {
-        width: 100,
-        height: 70,
-        marginTop: -50,
-        marginLeft: Dimensions.get('window').width / 2.6,
+        width: 150,
+        height: 50,
+        marginTop: -65,
+        marginLeft: Dimensions.get('window').width *.5 - 75,
         backgroundColor: 'transparent',
-        padding: 40,
+        padding: 20,
+        marginBottom: 30,
       },
       android: {
         position: 'absolute',
-        width: 100,
+        width: 150,
+        height: 50,
         marginTop: 10,
-        marginLeft: Dimensions.get('window').width * .5 - 50,
-        height: 30,
+        left: (Dimensions.get('window').width *.5) - 75,
+        backgroundColor: 'transparent',
         flexDirection: 'row',
       },
     }),
   },
-  button2: {
+  button2: {//save
     ...Platform.select({
       ios: {
-        width: '75%',
-        height: 70,
-        marginTop: 10,
-        marginLeft: Dimensions.get('window').width / 8,
+        width: 100,
+        height: 75,
         backgroundColor: 'transparent',
-        padding: 30,
       },
       android: {
-        width: '75%',
-        height: 70,
-        marginTop: 10,
-        marginLeft: Dimensions.get('window').width / 8,
+        width: 100,
+        height: 75,
         backgroundColor: 'transparent',
-        padding: 30,
       },
     }),
   },
+  button3: {//others
+    ...Platform.select({
+      ios: {
+        marginTop: -10,
+        width: 250,
+        height: 75,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginTop: -10,
+        width: 250,
+        height: 75,
+        backgroundColor: 'transparent',
+      },
+    }),
+  },
+  dividerTop:
+  {
+    ...Platform.select({
+      ios: {
+        width: Dimensions.get('window').width,
+        position: "absolute",
+        top: -25,
+        height: 100,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        width: Dimensions.get('window').width,
+        position: "absolute",
+        top: 0,
+        height: 100,
+        backgroundColor: 'transparent',
+      },
+    }),
+  },
+  textField: {
+    ...Platform.select({
+      ios: {
+        fontSize: 20,
+        right: 10,
+        color: '#f310a0',
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width - 100,
+        height: 44,
+        padding: 8,
+        marginTop: -42,
+        marginLeft: 100,    
+        borderRadius: 8
+      },
+      android: {
+        fontSize: 20,
+        right: 10,
+        color: '#01284e',        
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width - 100,
+        height: 44,
+        padding: 8,
+        marginTop: -42,
+        marginLeft: 100,    
+        borderRadius: 8
+      },
+    }),
+
+  },
+  textFieldZ: {
+    ...Platform.select({
+      ios: {
+        fontSize: 20,
+        right: 10,
+        color: '#f310a0',
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width - 100,
+        height: 44,
+        padding: 8,
+        marginTop: 108,
+        marginLeft: 100,    
+        borderRadius: 8
+      },
+      android: {
+        fontSize: 20,
+        right: 10,
+        color: '#01284e',        
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width - 100,
+        height: 44,
+        padding: 8,
+        marginTop: -42,
+        marginLeft: 100,    
+        borderRadius: 8
+      },
+    }),
+  },
+  textFieldS: {
+    ...Platform.select({
+      ios: {
+        right: 10,
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width,
+        height: 44,
+        padding: 8,
+        marginTop: -137,
+        marginBottom: 5,
+        borderRadius: 8
+      },
+      android: {
+        right: 10,
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width - 100,
+        height: 44,
+        padding: 8,
+        marginTop: -45,
+        marginLeft: 100,
+        borderRadius: 8
+      },
+    }),
+
+  },
   paragraph: {
-    margin: 24,
+    ...Platform.select({
+    ios: {
+      color: '#01284e',
+      marginBottom: 10,
+      marginTop: 10,
+      marginLeft: 15,
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'left',
+    },
+    android: {
+        color: '#f310a0',
+      marginBottom: 10,
+      marginTop: 10,
+      marginLeft: 15,
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'left',
+    },
+  }),
+},
+paragraphS: {
+  ...Platform.select({
+  ios: {
+    color: '#01284e',
+    marginBottom: 10,
+    marginTop: 85,
+    marginLeft: 15,
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
+    textAlign: 'left',
+  },
+  android: {
+    color: '#f310a0',
+    marginBottom: 10,
+    marginTop: 10,
+    marginLeft: 15,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
+}),
+},
+  paragraphZ: {
+    ...Platform.select({
+    ios: {
+      color: '#01284e',
+      marginBottom: 10,
+      marginTop: 165,
+      marginLeft: 15,
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'left',
+    },
+    android: {
+      color: '#f310a0',
+      marginBottom: 10,
+      marginTop: 10,
+      marginLeft: 15,
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'left',
+    },
+  }),
   },
   paragraph2: {
     margin: 24,
@@ -559,40 +718,42 @@ const styles = StyleSheet.create({
         marginTop: -40,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
       android: {
-        marginRight: 10,
-        marginTop: 0,
+        marginRight: 8,
+        marginTop: 10,
         textAlign: 'right',
         fontSize: 15,
-        color: '#f427f3',
+        color: 'white',
         backgroundColor: 'transparent',
       },
     }),
 
   },
   pointsText: {
-    ...Platform.select({
-      ios: {
-        marginRight: 10,
-        marginTop: -20,
-        textAlign: 'right',
-        fontSize: 15,
-        color: '#863fba',
-        fontWeight: 'bold',
-        backgroundColor: 'transparent',
-      },
-      android: {
-        marginRight: 10,
-        marginTop: -10,
-        textAlign: 'right',
-        fontSize: 15,
-        color: '#863fba',
-        fontWeight: 'bold',
-        backgroundColor: 'transparent',
-      },
+      ...Platform.select({
+        ios: {
+          marginRight: 10,
+          marginTop: -17,
+          textAlign: 'right',
+          fontSize: 15,
+          color: 'white',
+          fontWeight: 'bold',
+          backgroundColor: 'transparent',
+          marginBottom: 30,
+        },
+        android: {
+          marginRight: 10,
+          marginTop: -7,
+          marginBottom: 20,
+          textAlign: 'right',
+          fontSize: 15,
+          color: 'white',
+          fontWeight: 'bold',
+          backgroundColor: 'transparent',
+        },
     }),
   },
   exploreBut:
@@ -691,9 +852,11 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: 10,
+    fontFamily: 'Montserrat',
+    fontSize: 12,
+    color: '#ec47ff',
     backgroundColor: 'transparent',
-    marginBottom:10,
+    marginBottom:35,
   },
   image: {
     width,
@@ -702,19 +865,22 @@ const styles = StyleSheet.create({
   hamburger: {
     ...Platform.select({
       ios: {
-        width: 30,
-        height: 23,
-        marginLeft: 10,
-        marginTop: -55,
+        position: 'absolute',
+        top: 5,
+        width: 100,
+        height: 30,
+        left: -25,
         backgroundColor: 'transparent',
         padding: 0,
+
       },
       android: {
         position: 'absolute',
-        marginTop: 10,
-        marginLeft: 0,
-        height: 25,
-        width: 45,
+        backgroundColor: 'transparent',
+        top: 15,
+        left: -25,
+        height: 30,
+        width: 90,
       },
     }),
   },
