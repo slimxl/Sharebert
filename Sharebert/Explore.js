@@ -1281,11 +1281,9 @@ class Explore extends Component {
             </TouchableWithoutFeedback>
 
             <ImageSlider
-              loop
-              loopBothSides
-              autoPlayWithInterval={3000}
+              autoPlayWithInterval={5000}
               images={images}
-             
+              
             />
 
 
@@ -1669,27 +1667,7 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
-  button5: {
-    margin: 3,
-    width: 15,
-    height: 15,
-    opacity: 0.9,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttons: {
-    zIndex: 1,
-    height: 15,
-    marginTop: -25,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  buttonSelected: {
-    opacity: 1,
-    color: 'red',
-  },
+  
   container: {
     ...Platform.select({
       ios: {
