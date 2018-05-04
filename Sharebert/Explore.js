@@ -7,6 +7,7 @@ import Menu from './Menu';
 import LoadingView from 'rn-loading-view';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Notification from 'react-native-in-app-notification';
+import ImageSlider from 'react-native-image-slider';
 import {
   StyleSheet,
   AsyncStorage,
@@ -22,6 +23,7 @@ import {
   Platform,
   ActivityIndicator,
   TouchableOpacity,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   TextInput,
   Dimensions,
@@ -282,8 +284,6 @@ class Explore extends Component {
       randomPROFILEIMAGE.push(imgUrl);
     }
     this.grabRandoLikes();
-    this.getNewUser();
-    setInterval(this.getNewUser, 17000);//every 17 seconds
 
   }
 
@@ -1258,6 +1258,11 @@ class Explore extends Component {
 
   render() {
     const { showAlert } = this.state;
+    const images = [
+      require('./assets/tutorial/1.png'),
+      require('./assets/tutorial/2.png'),
+      require('./assets/tutorial/3.png'),
+    ];
     try {
       if (tutorial) {
         return (
@@ -1274,10 +1279,16 @@ class Explore extends Component {
                 source={require('./assets/icons/close.png')}
               />
             </TouchableWithoutFeedback>
-            <WebView
-              source={{ uri: 'http://www.appdemostore.com/m/6591960073633792' }}
-              style={{ width: '100%', height: '80%', marginTop: 5 }}
+
+            <ImageSlider
+              loop
+              loopBothSides
+              autoPlayWithInterval={3000}
+              images={images}
+             
             />
+
+
 
           </View>
 
@@ -1551,10 +1562,7 @@ class Explore extends Component {
               <View />
             }
 
-            <TouchableOpacity disabled={true} style={styles.footerTicker}>
-              <Animatable.Image ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikes} resizeMode={"contain"} source={{ uri: this.state.randomPROFILEIMAGEstring }}></Animatable.Image>
-              <Animatable.Text ref='animatedTextref' animation={animationz ? 'fadeIn' : 'fadeOut'} iterationCount='infinite' delay={300} duration={16000} easing='ease-in-out-back' style={styles.footerLikeText} numberOfLines={1} ref={this.handleTextRef}>{this.state.UserStringLike}</Animatable.Text>
-            </TouchableOpacity>
+           
             {
               emptycard
                 ?
@@ -1661,7 +1669,27 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
-
+  button5: {
+    margin: 3,
+    width: 15,
+    height: 15,
+    opacity: 0.9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttons: {
+    zIndex: 1,
+    height: 15,
+    marginTop: -25,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonSelected: {
+    opacity: 1,
+    color: 'red',
+  },
   container: {
     ...Platform.select({
       ios: {
@@ -1795,7 +1823,7 @@ const styles = StyleSheet.create({
         marginTop: -20,
         textAlign: 'right',
         fontSize: 15,
-        marginBottom:13,
+        marginBottom: 13,
         color: 'white',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
@@ -1996,10 +2024,10 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
 
-        marginTop:-40,     
+        marginTop: -40,
         width: '100%',
         height: 50,
-        marginBottom:5,
+        marginBottom: 5,
         //marginLeft: Dimensions.get('window').width / 2.6,
         backgroundColor: 'transparent',
       },
@@ -2049,7 +2077,7 @@ const styles = StyleSheet.create({
         height: 40,
         marginLeft: 10,
         marginTop: -50,
-        marginBottom:12,
+        marginBottom: 12,
         backgroundColor: 'transparent',
         padding: 0,
       },
@@ -2171,7 +2199,7 @@ const styles = StyleSheet.create({
   },
   footerItem3:
     {
-      bottom: Dimensions.get('window').height * .1,
+      bottom: Dimensions.get('window').height * .09,
 
       height: 75,
     },
@@ -2220,7 +2248,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   footerShare: {
-    height: 75,
+    height: 95,
     width: 250,
     overflow: 'visible',
     //offset the margin by half of window width so image is always centered
@@ -2228,7 +2256,7 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width * .50 - 125,
   },
   footerShare2: {
-    height: 75,
+    height: 95,
     width: 250,
     overflow: 'visible',
     marginBottom: 100,
@@ -2353,9 +2381,8 @@ async function register() {
 
 };
 function trunc(text) {
-  if(text.includes('   '))
-  {
-    text = text.substr(0,text.indexOf('   '));
+  if (text.includes('   ')) {
+    text = text.substr(0, text.indexOf('   '));
   }
 
   return text.length > 30 ? `${text.substr(0, 30)}...` : text;
