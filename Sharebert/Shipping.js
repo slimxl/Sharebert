@@ -413,7 +413,7 @@ class Shipping extends Component {
                   ? <Image
                     resizeMode="contain"
                     style={styles.button3}
-                    source={require('./assets/icons/btn_login.png')}
+                    source={require('./assets/icons/login_n.png')}
                   />
                   : <Image
                     resizeMode="contain"
