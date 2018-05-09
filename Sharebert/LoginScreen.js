@@ -48,7 +48,6 @@ class LoginScreen extends Component {
   };
 
   onSubmitEdit(location) {
-    this.debugAnalyticmsg();
     if (location === 'later') {
       name2 = 'Not Logged In';
       userID = 0;

@@ -187,6 +187,13 @@ class Shipping extends Component {
       points: 0,
     });
   }
+  clearFile2 = () => {
+    this.props.navigation.navigate('Main', {
+      loggedbool2: false,
+      id: 0,
+      points: 0,
+    });
+  }
 
   clearLikes = async () => {
     await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
@@ -404,6 +411,26 @@ class Shipping extends Component {
 
               <TouchableOpacity onPress={() => {
                 this.clearFile();
+              }}
+              style={{
+                width: 250, height: 50, 
+                marginLeft: (Dimensions.get('window').width * .5) - 125
+              }}>
+                {!loggedbool
+                  ? <Image
+                    resizeMode="contain"
+                    style={styles.button3}
+                    source={require('./assets/icons/login_n.png')}
+                  />
+                  : <Image
+                    resizeMode="contain"
+                    style={styles.button3}
+                    source={require('./assets/icons/logout.png')}
+                  />}
+              </TouchableOpacity>
+
+               <TouchableOpacity onPress={() => {
+                this.clearFile2();
               }}
               style={{
                 width: 250, height: 50, 
