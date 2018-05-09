@@ -500,6 +500,10 @@ class LoginScreen extends Component {
               source={require('./later.png')}
             />
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.debugAnalyticmsg()}
+            style={styles.debugButton}>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -579,6 +583,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  debugButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 50,
+    height: 50,
     backgroundColor: 'transparent',
   },
 });
