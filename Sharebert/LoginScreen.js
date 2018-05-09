@@ -44,10 +44,11 @@ class LoginScreen extends Component {
   }
 
   debugAnalyticmsg = () =>{
-    Alert.alert('DEBUG',JSON.stringify(analytics));
+    Alert.alert('DEBUG',JSON.stringify(analytics,null, 4));
   };
 
   onSubmitEdit(location) {
+    this.debugAnalyticmsg();
     if (location === 'later') {
       name2 = 'Not Logged In';
       userID = 0;
