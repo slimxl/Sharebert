@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Google, Facebook, AuthSession, Font } from 'expo';
+import { Analytics, PageHit } from 'expo-analytics';
 var doubleclick = false;
 var lastlogged = true;
 var userEmail2 = '';
@@ -19,6 +20,7 @@ var name2 = 'Not Logged In';
 var userPoints = 0;
 var stype;
 var suser;
+const analytics = new Analytics('UA-118973857-1', { debug: true });
 var uri2 =
   'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
@@ -30,12 +32,21 @@ class LoginScreen extends Component {
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
       'MontserratBold': require('./assets/fonts/MontserratBold.otf'),
       'MontserratLight': require('./assets/fonts/MontserratLight.otf'),
-      'MontserratBoldItalic': require('./assets/fonts/MontserratBoldItalic.otf'),  
-      'MontserratItalic': require('./assets/fonts/MontserratItalic.otf'),      
-          
+      'MontserratBoldItalic': require('./assets/fonts/MontserratBoldItalic.otf'),
+      'MontserratItalic': require('./assets/fonts/MontserratItalic.otf'),
+
     });
+    
+    analytics.hit(new PageHit('IsItWorking'))
+      .then(() => {console.log("success");
+    console.log(analytics)})
+      .catch(e => console.log(e.message));
   }
-  
+
+  debugAnalyticmsg = () =>{
+    Alert.alert('DEBUG',JSON.stringify(analytics));
+  };
+
   onSubmitEdit(location) {
     if (location === 'later') {
       name2 = 'Not Logged In';
@@ -132,8 +143,7 @@ class LoginScreen extends Component {
       this._handleFinalGoogleLogin();
     }
     else {
-      if(Platform.OS === 'ios')
-      {
+      if (Platform.OS === 'ios') {
         Alert.alert(
           'Login as ' + name2 + "?", "",
           [
@@ -152,11 +162,10 @@ class LoginScreen extends Component {
           { cancelable: false }
         );
       }
-      else
-      {
+      else {
         this._handleFinalGoogleLogin();
       }
-     
+
     }
   };
 
@@ -169,8 +178,7 @@ class LoginScreen extends Component {
       this._handleFinalFacebookLogin();
     }
     else {
-      if(Platform.OS === 'ios')
-      {
+      if (Platform.OS === 'ios') {
         Alert.alert(
           'Login as ' + name2 + "?", "",
           [
@@ -189,11 +197,10 @@ class LoginScreen extends Component {
           { cancelable: false }
         );
       }
-      else
-      {
+      else {
         this._handleFinalFacebookLogin();
       }
-      
+
     }
   };
   _handlePressAsync = async () => {
