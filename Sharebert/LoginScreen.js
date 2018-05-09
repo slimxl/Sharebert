@@ -48,7 +48,7 @@ class LoginScreen extends Component {
   };
 
   onSubmitEdit(location) {
-    this.debugAnalyticmsg();
+    //this.debugAnalyticmsg();
     if (location === 'later') {
       name2 = 'Not Logged In';
       userID = 0;
@@ -500,11 +500,12 @@ class LoginScreen extends Component {
               source={require('./later.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+
+        </View>
+        <TouchableOpacity
             onPress={() => this.debugAnalyticmsg()}
             style={styles.debugButton}>
           </TouchableOpacity>
-        </View>
       </View>
     );
   }
