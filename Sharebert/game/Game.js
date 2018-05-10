@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View,Text,Alert,TouchableWithoutFeedback,Image,Platform,Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Alert, TouchableWithoutFeedback, Image, Platform, Dimensions } from 'react-native';
 import { Constants } from 'expo';
 import Files from './Files';
 import * as THREE from 'three'; // 0.88.0
@@ -9,9 +9,12 @@ import { Group, Node, Sprite, SpriteView } from '../GameKit';
 const SPEED = 1.6;
 const GRAVITY = 1100;
 const FLAP = 320;
-const SPAWN_RATE = 1600;
-const OPENING = 120;
+const SPAWN_RATE = 2600;
+const OPENING = 350;
 const GROUND_HEIGHT = 112;
+const MAXJUMPS = 2;
+
+var doublejumpint = 0;
 var userID;
 var userPoints;
 var uri2;
@@ -21,7 +24,7 @@ export default class Game extends React.Component {
   pipes = new Group();
   deadPipeTops = [];
   deadPipeBottoms = [];
-  
+
   gameStarted = false;
   gameOver = false;
   velocity = 0;
@@ -33,7 +36,7 @@ export default class Game extends React.Component {
   componentWillMount() {
     THREE.suppressExpoWarnings(true);
     /// Audio is currently broken in snack :/
-     this.setupAudio();
+    this.setupAudio();
   }
 
   setupAudio = async () => {
@@ -48,7 +51,7 @@ export default class Game extends React.Component {
       interruptionModeAndroid: Expo.Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
     });
 
-    /* @(Evan Bacon) 
+    /* @(Evan Bacon)
       Now we parse the preloaded audio assets and create a helper object for playing sounds.
     */
     this.audio = {};
@@ -77,9 +80,9 @@ export default class Game extends React.Component {
       height: 26 * this.scale,
     };
 
-    /* @(Evan Bacon) 
+    /* @(Evan Bacon)
       This is where we define the properties of our sprite sheet.
-      We have an image that is 108x26, and this image has 3 birds on it. 
+      We have an image that is 108x26, and this image has 3 birds on it.
       We divide the width by the number of sprites and in our case this gives us 36x26.
       Notice that we also define how many sprites there are vertically, horizontally, and in total.
       Finally we define the duration of each sprite frame.
@@ -110,8 +113,8 @@ export default class Game extends React.Component {
     };
     this.groundNode = new Group();
 
-    /* @(Evan Bacon) 
-      Notice that we build two copies of the ground. 
+    /* @(Evan Bacon)
+      Notice that we build two copies of the ground.
       This is because texture wrapping isn't supported yet (Canvas is required)
       Once one floor goes off screen we place it to the back and that creates our floor loop!
     */
@@ -240,10 +243,13 @@ export default class Game extends React.Component {
       this.scene.size.height / 2 +
       (Math.random() - 0.5) * this.scene.size.height * 0.2;
     //@(Evan Bacon) Spawn both pipes around this point.
-    this.spawnPipe(pipeY);
+    //this.spawnPipe(pipeY);
     this.spawnPipe(pipeY, true);
   };
 
+  resetJump = () => {
+    doublejumpint = 0;
+  }
   tap = () => {
     // @(Evan Bacon) on the first tap we start the game
     if (!this.gameStarted) {
@@ -257,8 +263,12 @@ export default class Game extends React.Component {
 
     if (!this.gameOver) {
       // @(Evan Bacon) These are in-game taps for making the bird flap
-      this.velocity = FLAP;
-       this.audio.wing();
+      if (doublejumpint < MAXJUMPS) {
+        this.velocity = FLAP;
+        doublejumpint += 1;
+      }
+
+      //this.audio.wing();
     } else {
       // @(Evan Bacon) This is an end-game tap to reset the game
       // fetch(
@@ -281,22 +291,22 @@ export default class Game extends React.Component {
   //@(Evan Bacon) Update the state with the new score so our React component knows to update... Then play cool noise!
   addScore = () => {
     this.setState({ score: this.state.score + 1 });
-     this.audio.point();
+    this.audio.point();
   };
 
   //@(Evan Bacon) stop the pipe spawning and play that fresh slapping sound.
   setGameOver = () => {
     this.gameOver = true;
-
     clearInterval(this.pillarInterval);
 
-     this.audio.hit();
+    this.audio.hit();
   };
 
   //@(Evan Bacon) This is the clean state before each game.
   reset = () => {
     this.gameStarted = false;
     this.gameOver = false;
+    this.resetJump();
     this.setState({ score: 'Get Ready!' });
 
     this.player.reset(this.scene.size.width * -0.3, 0);
@@ -344,36 +354,44 @@ export default class Game extends React.Component {
         });
 
         //@(Evan Bacon) Here we set the player rotation (in radians). Notice how we clamp it with min/max.
-        this.player.angle = Math.min(
-          Math.PI / 4,
-          Math.max(-Math.PI / 2, (FLAP + this.velocity) / FLAP)
-        );
+        // if (this.player.y >= target) {
+        //   this.player.angle = Math.min(
+        //     Math.PI / 4,
+        //     Math.max(-Math.PI / 2, (FLAP + this.velocity) / FLAP)
+        //   );
+        //   this.player.update(delta);
+        // }
 
-        //@(Evan Bacon) Check to see if the user's y position is lower than the floor, if so then we end the game.
-        if (this.player.y <= target) {
-          this.setGameOver();
-        }
-        //@(Evan Bacon) Update the player sprite animation.
         this.player.update(delta);
+        //@(Evan Bacon) Check to see if the user's y position is lower than the floor, if so then we end the game.
+        // if (this.player.y <= target) {
+        //   this.setGameOver();
+        // }
+        //@(Evan Bacon) Update the player sprite animation.
+
       }
 
       //@(Evan Bacon) If the game is over than let the player continue to fall until they hit the floor.
       if (this.player.y <= target) {
-        this.player.angle = -Math.PI / 2;
+        //this.player.angle = -Math.PI / 2;
         this.player.y = target;
-        this.velocity = 0;
-      } else {
-        this.player.y += this.velocity * delta;
+        this.resetJump();
       }
+
+      // this.velocity = 0;
+
+      this.player.y += this.velocity * delta;
+
     } else {
       //@(Evan Bacon) This is the dope bobbing bird animation before we start. Notice the cool use of Math.cos
       this.player.update(delta);
       this.player.y = 8 * Math.cos(Date.now() / 200);
       this.player.angle = 0;
+
     }
 
+        //@(Evan Bacon) This is where we do the floor looping animation
     if (!this.gameOver) {
-      //@(Evan Bacon) This is where we do the floor looping animation
       this.groundNode.children.map((node, index) => {
         node.x -= SPEED;
         //@(Evan Bacon) If the floor component is off screen then get the next item and move it behind that.
@@ -411,22 +429,22 @@ export default class Game extends React.Component {
       <View style={styles.container}>
         <SpriteView
           touchDown={() => this.tap()}
-          touchMoved={() => {}}
-          touchUp={() => {}}
+          touchMoved={() => { }}
+          touchUp={() => { }}
           update={this.updateGame}
           onSetup={this.onSetup}
         />
         {this.renderScore()}
         <TouchableWithoutFeedback
-            onPress={() => {
-              this.props.goBack();
-            }}>
-            <Image
-              style={styles.hamburger}
-              resizeMode='contain'
-              source={require('../assets/arrow_w.png')}
-            />
-          </TouchableWithoutFeedback>
+          onPress={() => {
+            this.props.goBack();
+          }}>
+          <Image
+            style={styles.hamburger}
+            resizeMode='contain'
+            source={require('../assets/arrow_w.png')}
+          />
+        </TouchableWithoutFeedback>
       </View>
     );
   }
