@@ -27,7 +27,7 @@ export default class Game extends React.Component {
   velocity = 0;
 
   state = {
-    score: 'Sharebert!',
+    score: 'Get Ready!',
   };
 
   componentWillMount() {
@@ -297,7 +297,7 @@ export default class Game extends React.Component {
   reset = () => {
     this.gameStarted = false;
     this.gameOver = false;
-    this.setState({ score: 'Sharebert!' });
+    this.setState({ score: 'Get Ready!' });
 
     this.player.reset(this.scene.size.width * -0.3, 0);
     this.player.angle = 0;
