@@ -12,7 +12,7 @@ const FLAP = 320;
 const SPAWN_RATE = 2600;
 const OPENING = 350;
 const GROUND_HEIGHT = 112;
-const MAXJUMPS = 2;
+const MAXJUMPS = 1;
 
 var doublejumpint = 0;
 var userID;
@@ -291,7 +291,7 @@ export default class Game extends React.Component {
   //@(Evan Bacon) Update the state with the new score so our React component knows to update... Then play cool noise!
   addScore = () => {
     this.setState({ score: this.state.score + 1 });
-    this.audio.point();
+    //this.audio.point();
   };
 
   //@(Evan Bacon) stop the pipe spawning and play that fresh slapping sound.
@@ -299,7 +299,7 @@ export default class Game extends React.Component {
     this.gameOver = true;
     clearInterval(this.pillarInterval);
 
-    this.audio.hit();
+    //this.audio.hit();
   };
 
   //@(Evan Bacon) This is the clean state before each game.
@@ -326,8 +326,12 @@ export default class Game extends React.Component {
 
   updateGame = delta => {
     if (this.gameStarted) {
-      this.velocity -= GRAVITY * delta;
-      const target = this.groundNode.top;
+
+      const target = this.groundNode.top+20; //offset so its just above the ground
+
+      if (this.player.y > target) {
+        this.velocity -= GRAVITY * delta;
+      }
 
       if (!this.gameOver) {
         const playerBox = new THREE.Box3().setFromObject(this.player);
@@ -390,7 +394,7 @@ export default class Game extends React.Component {
 
     }
 
-        //@(Evan Bacon) This is where we do the floor looping animation
+    //@(Evan Bacon) This is where we do the floor looping animation
     if (!this.gameOver) {
       this.groundNode.children.map((node, index) => {
         node.x -= SPEED;
