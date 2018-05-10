@@ -9,6 +9,7 @@ import Game from './game/Game';
   This is the base class. 
   Here we preload the assets and present the Game.
 */
+
 class Main extends React.Component {
   state = { assetsLoaded: false };
 
@@ -33,7 +34,7 @@ class Main extends React.Component {
   };
 
   render() {
-    return this.state.assetsLoaded ? <Game /> : <AppLoading />;
+    return this.state.assetsLoaded ? <Game name='Rexxar' /> : <AppLoading />;
   }
 }
 export default Main;

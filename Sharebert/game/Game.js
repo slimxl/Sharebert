@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View,Text } from 'react-native';
+import { StyleSheet, View,Text,Alert } from 'react-native';
 import Files from './Files';
 import * as THREE from 'three'; // 0.88.0
 import Expo from 'expo';
@@ -9,15 +9,18 @@ const SPEED = 1.6;
 const GRAVITY = 1100;
 const FLAP = 320;
 const SPAWN_RATE = 2600;
-const OPENING = 120;
+const OPENING = 300;
 const GROUND_HEIGHT = 64;
+var userID;
+var userPoints;
+var uri2;
 
 export default class Game extends React.Component {
   scale = 1;
   pipes = new Group();
   deadPipeTops = [];
   deadPipeBottoms = [];
-
+  
   gameStarted = false;
   gameOver = false;
   velocity = 0;
@@ -94,6 +97,8 @@ export default class Game extends React.Component {
       sprite,
     });
     this.scene.add(this.player);
+
+    console.log(this.props.name);
   };
 
   setupGround = async () => {
@@ -252,6 +257,19 @@ export default class Game extends React.Component {
       // this.audio.wing();
     } else {
       // @(Evan Bacon) This is an end-game tap to reset the game
+      // fetch(
+      //   'https://sharebert.com/s/DBAwardPoints.php?uid=' +
+      //   '2417' +
+      //   '&type=2',
+      //   { method: 'GET' }
+      // )
+      //   .then(response2 => response2.json())
+      //   .then(responseData2 => {
+      //       Alert.alert('You earned 5 points!', "Keep swiping to earn more!");
+
+      //       userPoints = responseData2['Points'];
+      //   })
+      //   .done();
       this.reset();
     }
   };
@@ -379,7 +397,7 @@ export default class Game extends React.Component {
         top: 64,
         backgroundColor: 'transparent',
       }}>
-      {this.state.score}
+      {this.gameStarted?this.state.score:'Sharebert!'}
     </Text>
   );
 

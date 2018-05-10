@@ -99,7 +99,7 @@ class Travel extends Component {
     var Brand9 = {};
     Brand9['Term'] = 'HotelPlanner.com';
     Brand9['title'] = 'HotelPlanner.com';
-    Brand9['link'] =  'http://www.jdoqocy.com/click-8331277-10391851';
+    Brand9['link'] = 'http://www.jdoqocy.com/click-8331277-10391851';
     Brand9['image_url'] = require('./assets/travel/hotelplanner.png');
 
     var Brand10 = {};
@@ -176,10 +176,9 @@ class Travel extends Component {
 
 
 
-  
-    
-    if(brandArr.length<1)
-    {
+
+
+    if (brandArr.length < 1) {
       brandArr.push(Brand1);
       brandArr.push(Brand2);
       brandArr.push(Brand3);
@@ -204,8 +203,8 @@ class Travel extends Component {
 
 
     }
-    
-    
+
+
   }
 
   _getItemLayout = (data, index) => {
@@ -227,7 +226,7 @@ class Travel extends Component {
     return item.code_group;
   };
 
-  
+
   _onPress(item) {
 
   }
@@ -236,22 +235,21 @@ class Travel extends Component {
     const item = data.item;
     return (
       <View style={styles.item}>
-      <TouchableOpacity onPress={() => 
-              {
-                //console.log(item.link);
-                this.openURL(item.link);
-              }}>
-        {!item.image_url
-          ? <View style={styles.itemImage}>
+        <TouchableOpacity onPress={() => {
+          //console.log(item.link);
+          this.openURL(item.link);
+        }}>
+          {!item.image_url
+            ? <View style={styles.itemImage}>
               <Text>No image</Text>
             </View>
-          : <Image
+            : <Image
               source={item.image_url}
               resizeMode={'contain'}
               style={styles.itemImage}
             />}
         </TouchableOpacity>
-            
+
         <Text numberOfLines={3} style={styles.itemTitle}>
           {item.title}
         </Text>
@@ -262,29 +260,28 @@ class Travel extends Component {
   render() {
     return (
       <View style={styles.container}>
- <TouchableOpacity
+        <TouchableOpacity
           onPress={() => {
-            this.props.navigation.dispatch(backAction);
+            this.props.navigation.goBack();
           }}>
-        <Image style={styles.header} />
+          <Image style={styles.header} />
         </TouchableOpacity>
         <Image
           resizeMode="contain"
           style={styles.button}
           source={require('./assets/icons/logo2.png')}
         />
-         <TouchableWithoutFeedback
-              onPress={() => 
-              {
-                this.props.navigation.dispatch(backAction);
-              }}>
-              <Image
-                style={styles.hamburger}
-                resizeMode='contain'
-                source={require('./assets/arrow.png')}
-              />
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}>
+          <Image
+            style={styles.hamburger}
+            resizeMode='contain'
+            source={require('./assets/arrow.png')}
+          />
 
-            </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
         <Text style={styles.title}>
           Travel
         </Text>
@@ -301,10 +298,10 @@ class Travel extends Component {
   }
 }
 const colors = {
-    snow: 'white',
-    darkPurple: '#140034',
-    placeholder: '#eee',
-  };
+  snow: 'white',
+  darkPurple: '#140034',
+  placeholder: '#eee',
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -334,31 +331,31 @@ const styles = StyleSheet.create({
   },
   title: {
     ...Platform.select({
-        ios: {
-          fontFamily: "Montserrat",
-          fontSize: 18,
-          fontWeight: 'bold',
-          textAlign: 'center',
-          color: '#0d2754',
-          marginTop: 30,
-          marginBottom: 0,
-          paddingBottom: 6,
-          backgroundColor: 'white',
-        },
-        android: {
-            fontFamily: "Montserrat",
-            fontSize: 18,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: '#0d2754',
-            marginTop: 60,
-            marginBottom: 0,
-            paddingBottom: 6,
-            backgroundColor: 'white',
-        },
+      ios: {
+        fontFamily: "Montserrat",
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#0d2754',
+        marginTop: 30,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'white',
+      },
+      android: {
+        fontFamily: "Montserrat",
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#0d2754',
+        marginTop: 60,
+        marginBottom: 0,
+        paddingBottom: 6,
+        backgroundColor: 'white',
+      },
     }),
-},
-image: {
+  },
+  image: {
     width: 100,
     height: 100,
     marginTop: 0,
@@ -431,7 +428,7 @@ image: {
     backgroundColor: '#dee6ee',
     marginTop: 0,
   },
-text: {
+  text: {
     textAlign: 'left',
     fontSize: 12,
     marginTop: 40,

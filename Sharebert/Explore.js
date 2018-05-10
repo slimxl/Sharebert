@@ -801,7 +801,7 @@ class Explore extends Component {
     brand = '';
     if (category === 'Travel') {
       console.log(category);
-      this.props.navigation.navigate('Travel', {
+      this.props.navigation.push('Travel', {
         id: userID,
         points: userPoints,
         uri: uri2,
@@ -810,7 +810,7 @@ class Explore extends Component {
 
     else if (category === 'groceries') {
       console.log(category);
-      this.props.navigation.navigate('Grocery', {
+      this.props.navigation.push('Grocery', {
         id: userID,
         points: userPoints,
         uri: uri2,
@@ -1248,8 +1248,7 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
-    this.props.navigation.pop(0)
-    this.props.navigation.navigate(route, {
+    this.props.navigation.push(route, {
       id: userID,
       points: userPoints,
       uri: uri2,
@@ -1443,7 +1442,7 @@ class Explore extends Component {
                 backgroundColor={'white'}
                 style={styles.scrollbar}
               >
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Brands', {
+                <TouchableOpacity onPress={() => this.props.navigation.push('Brands', {
                   id: userID,
                   points: userPoints,
                   uri: uri2,
@@ -1465,7 +1464,7 @@ class Explore extends Component {
                     source={require('./assets/Category/groceries.png')}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Deals', {
+                <TouchableOpacity onPress={() => this.props.navigation.push('Deals', {
                   id: userID,
                   points: userPoints,
                   uri: uri2,

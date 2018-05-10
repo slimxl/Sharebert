@@ -139,7 +139,7 @@ class Rewards extends Component {
       
         <TouchableOpacity
         onPress={() => {
-          this.props.navigation.dispatch(backAction);
+          this.props.navigation.goBack();
         }}>
 
           <Image style={styles.header} />
@@ -157,7 +157,7 @@ class Rewards extends Component {
         />
         <TouchableWithoutFeedback
           onPress={() => {
-            this.props.navigation.dispatch(backAction);
+            this.props.navigation.goBack();
           }}>
           <Image
             style={styles.hamburger}
