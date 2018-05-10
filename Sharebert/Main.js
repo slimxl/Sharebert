@@ -25,7 +25,7 @@ class Main extends React.Component {
     } catch (e) {
       console.warn(
         'There was an error caching assets (see: app.js), perhaps due to a ' +
-          'network timeout, so we skipped caching. Reload the app to try again.'
+        'network timeout, so we skipped caching. Reload the app to try again.'
       );
       console.log(e.message);
     } finally {
@@ -34,7 +34,18 @@ class Main extends React.Component {
   };
 
   render() {
-    return this.state.assetsLoaded ? <Game name='Rexxar' /> : <AppLoading />;
+    if(this.state.assetsLoaded)
+    {
+      return(
+        <Game name='Rexxar' />
+      );
+    }
+    else
+    { 
+      return(
+      <AppLoading />
+      );
+    }
   }
 }
 export default Main;

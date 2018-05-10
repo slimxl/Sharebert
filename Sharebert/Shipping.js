@@ -437,17 +437,11 @@ class Shipping extends Component {
                 width: 250, height: 50, 
                 marginLeft: (Dimensions.get('window').width * .5) - 125
               }}>
-                {!loggedbool
-                  ? <Image
+                 <Image
                     resizeMode="contain"
                     style={styles.button3}
-                    source={require('./assets/icons/login_n.png')}
+                    source={require('./assets/icons/play.png')}
                   />
-                  : <Image
-                    resizeMode="contain"
-                    style={styles.button3}
-                    source={require('./assets/icons/logout.png')}
-                  />}
               </TouchableOpacity>
 
             </ScrollView>
