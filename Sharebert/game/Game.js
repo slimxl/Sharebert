@@ -11,7 +11,7 @@ const GRAVITY = 1100;
 const FLAP = 320;
 const SPAWN_RATE = 1600;
 const OPENING = 120;
-const GROUND_HEIGHT = 64;
+const GROUND_HEIGHT = 112;
 var userID;
 var userPoints;
 var uri2;
