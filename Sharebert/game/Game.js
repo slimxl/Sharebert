@@ -27,7 +27,7 @@ export default class Game extends React.Component {
   velocity = 0;
 
   state = {
-    score: 0,
+    score: 'Sharebert!',
   };
 
   componentWillMount() {
@@ -248,6 +248,9 @@ export default class Game extends React.Component {
     // @(Evan Bacon) on the first tap we start the game
     if (!this.gameStarted) {
       this.gameStarted = true;
+      this.setState({
+        score: 0,
+      })
       // @(Evan Bacon) here we build a timer to spawn pipes
       this.pillarInterval = setInterval(this.spawnPipes, SPAWN_RATE);
     }
@@ -294,7 +297,7 @@ export default class Game extends React.Component {
   reset = () => {
     this.gameStarted = false;
     this.gameOver = false;
-    this.setState({ score: 0 });
+    this.setState({ score: 'Sharebert!' });
 
     this.player.reset(this.scene.size.width * -0.3, 0);
     this.player.angle = 0;
@@ -394,11 +397,11 @@ export default class Game extends React.Component {
         position: 'absolute',
         left: 0,
         right: 0,
-        color: 'white',
+        color: '#f427f3',
         top: 64,
         backgroundColor: 'transparent',
       }}>
-      {this.gameStarted?this.state.score:'Sharebert!'}
+      {this.state.score}
     </Text>
   );
 
