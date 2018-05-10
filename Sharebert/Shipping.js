@@ -181,17 +181,18 @@ class Shipping extends Component {
   };
 
   clearFile = () => {
-    this.props.navigation.navigate('LoginScreen', {
+    this.props.navigation.push('LoginScreen', {
       loggedbool2: false,
       id: 0,
       points: 0,
     });
   }
   clearFile2 = () => {
-    this.props.navigation.navigate('Main', {
+    this.props.navigation.push('Main', {
       loggedbool2: false,
-      id: 0,
-      points: 0,
+      id: userID,
+      points: userPoints,
+      uri: uri2,
     });
   }
 
@@ -222,7 +223,7 @@ class Shipping extends Component {
           <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.dispatch(backAction);
+            this.props.navigation.goBack();
           }}>
 
           <Image style={styles.header} />
@@ -240,7 +241,7 @@ class Shipping extends Component {
         />
         <TouchableWithoutFeedback
           onPress={() => {
-            this.props.navigation.dispatch(backAction);
+            this.props.navigation.goBack();
           }}>
           <Image
             style={styles.hamburger}
@@ -436,17 +437,11 @@ class Shipping extends Component {
                 width: 250, height: 50, 
                 marginLeft: (Dimensions.get('window').width * .5) - 125
               }}>
-                {!loggedbool
-                  ? <Image
+                 <Image
                     resizeMode="contain"
                     style={styles.button3}
-                    source={require('./assets/icons/login_n.png')}
+                    source={require('./assets/icons/play.png')}
                   />
-                  : <Image
-                    resizeMode="contain"
-                    style={styles.button3}
-                    source={require('./assets/icons/logout.png')}
-                  />}
               </TouchableOpacity>
 
             </ScrollView>

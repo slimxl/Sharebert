@@ -243,7 +243,11 @@ class Likes extends Component {
 
       <TouchableWithoutFeedback
         onPress={() => {
-          this.props.navigation.dispatch(backAction);
+          this.props.navigation.push('Explore', {
+            id: userID,
+            points: userPoints,
+            uri: uri2,
+          })
         }}
       >
         <View style={{
@@ -333,7 +337,7 @@ class Likes extends Component {
             //   points: userPoints,
             //   uri: uri,
             // });
-            this.props.navigation.dispatch(backAction);
+            this.props.navigation.goBack();
           }}
         >
           <View>

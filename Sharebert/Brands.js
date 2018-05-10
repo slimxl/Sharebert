@@ -519,7 +519,7 @@ class Brands extends Component {
 
       <TouchableOpacity
           onPress={() => {
-            this.props.navigation.dispatch(backAction);
+            this.props.navigation.goBack();
           }}>
         <Image style={styles.header} />
         </TouchableOpacity>
@@ -531,7 +531,7 @@ class Brands extends Component {
         <TouchableWithoutFeedback
               onPress={() => 
               {
-                this.props.navigation.dispatch(backAction);
+                this.props.navigation.goBack();
               }}>
               <Image
                 style={styles.hamburger}

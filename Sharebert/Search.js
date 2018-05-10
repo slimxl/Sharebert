@@ -131,8 +131,7 @@ class Search extends Component {
         })
     }
     resetTo(route) {
-        this.props.navigation.pop(0)
-        this.props.navigation.navigate(route, {
+        this.props.navigation.push(route, {
             id: userID,
             points: userPoints,
             uri: uri2,
@@ -219,7 +218,7 @@ class Search extends Component {
                         //     points: userPoints,
                         //     uri: uri2,
                         // })
-                        this.props.navigation.dispatch(backAction);
+                        this.props.navigation.goBack();
                     }}>
                     <Image
                         style={styles.hamburger}
@@ -307,7 +306,7 @@ class Search extends Component {
                         //   id: userID,
                         //   points: userPoints,
                         // })}
-                        onPress={() => this.props.navigation.dispatch(backAction)}
+                        onPress={() => this.props.navigation.goBack()}
 
                     >
                         <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
