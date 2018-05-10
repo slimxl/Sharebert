@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View,Text,Alert } from 'react-native';
+import { StyleSheet, View,Text,Alert,TouchableWithoutFeedback,Image,Platform,Dimensions } from 'react-native';
+import { Constants } from 'expo';
 import Files from './Files';
 import * as THREE from 'three'; // 0.88.0
 import Expo from 'expo';
@@ -98,7 +99,7 @@ export default class Game extends React.Component {
     });
     this.scene.add(this.player);
 
-    console.log(this.props.name);
+    console.log(this.props);
   };
 
   setupGround = async () => {
@@ -404,7 +405,7 @@ export default class Game extends React.Component {
   render() {
     //@(Evan Bacon) This is a dope SpriteView based on SpriteKit that surfaces touches, render, and setup!
     return (
-      <View style={StyleSheet.absoluteFill}>
+      <View style={styles.container}>
         <SpriteView
           touchDown={() => this.tap()}
           touchMoved={() => {}}
@@ -413,7 +414,58 @@ export default class Game extends React.Component {
           onSetup={this.onSetup}
         />
         {this.renderScore()}
+        <TouchableWithoutFeedback
+            onPress={() => {
+              this.props.goBack();
+            }}>
+            <Image
+              style={styles.hamburger}
+              resizeMode='contain'
+              source={require('../assets/arrow_w.png')}
+            />
+          </TouchableWithoutFeedback>
       </View>
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    ...Platform.select({
+      ios: {
+        marginTop: Constants.statusBarHeight,
+        height: 100,
+        flex: 1,
+        //backgroundColor: '#F5FCFF',
+      },
+      android: {
+        marginTop: Constants.statusBarHeight,
+        flex: 1,
+        height: Dimensions.get('window').height,
+        backgroundColor: '#dee6ee',
+
+      },
+    }),
+  },
+  hamburger: {
+    ...Platform.select({
+      ios: {
+        position: 'absolute',
+        top: 5,
+        width: 100,
+        height: 30,
+        left: -25,
+        backgroundColor: 'transparent',
+        padding: 0,
+
+      },
+      android: {
+        position: 'absolute',
+        backgroundColor: 'transparent',
+        top: 15,
+        left: -25,
+        height: 30,
+        width: 90,
+      },
+    }),
+  },
+});
