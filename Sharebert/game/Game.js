@@ -14,6 +14,10 @@ const OPENING = 350;
 const GROUND_HEIGHT = 112;
 const MAXJUMPS = 1;
 
+const PIPEWIDTH = 25;
+const PIPEHEIGHT_MAX = 100;
+const PIPEHEIGHT_MIN = 25
+
 var doublejumpint = 0;
 var userID;
 var userPoints;
@@ -76,7 +80,7 @@ export default class Game extends React.Component {
   /// Sprites
   setupPlayer = async () => {
     const size = {
-      width: 36 * this.scale,
+      width: 26 * this.scale,
       height: 26 * this.scale,
     };
 
@@ -156,7 +160,7 @@ export default class Game extends React.Component {
   };
 
   setupPipe = async ({ key, y }) => {
-    const size = { width: 52, height: 320 };
+    const size = { width: PIPEWIDTH, height: Math.floor(Math.random() * PIPEHEIGHT_MAX + 1) + PIPEHEIGHT_MIN};
 
     const tbs = {
       top: Files.sprites.pipe_top,
@@ -240,8 +244,9 @@ export default class Game extends React.Component {
 
     //@(Evan Bacon) Get a random spot for the center of the two pipes.
     const pipeY =
-      this.scene.size.height / 2 +
-      (Math.random() - 0.5) * this.scene.size.height * 0.2;
+      this.scene.size.height * .7
+      // 2 +
+      //(Math.random() - 0.5) * this.scene.size.height * 0.2;
     //@(Evan Bacon) Spawn both pipes around this point.
     //this.spawnPipe(pipeY);
     this.spawnPipe(pipeY, true);
