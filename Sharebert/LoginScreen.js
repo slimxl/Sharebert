@@ -56,7 +56,7 @@ class LoginScreen extends Component {
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
-      this.props.navigation.navigate('Main', {
+      this.props.navigation.navigate('Explore', {
         id: 0,
         points: 0,
         uri: uri2,

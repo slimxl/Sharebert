@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Image,
   Platform,
+  Linking,
   Dimensions,
   StyleSheet,
   Alert,
@@ -45,6 +46,7 @@ class Rewards extends Component {
             obj['ImageURL'] = responseData[i]['ImageURL'];
             obj['Cost'] = responseData[i]['Cost'];
             obj['ID'] = responseData[i]['id'];
+            obj['Link'] = responseData[i]['Link'];
             data2.push(obj);
           }
           var reversed = data2.reverse(); 
@@ -77,7 +79,15 @@ class Rewards extends Component {
   checkout(item) {
     if (userID != 0) {
       var nb = userPoints - item.Cost;
-      if (nb >= 0) {
+      if(item.Cost==='0')
+      {
+        try {
+          Linking.openURL(item.Link);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      else if (nb >= 0) {
         fetch(
           'https://sharebert.com/s/GiveReward.php?uid=' +
           userID,

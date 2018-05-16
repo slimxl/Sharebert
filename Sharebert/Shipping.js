@@ -430,7 +430,7 @@ class Shipping extends Component {
                   />}
               </TouchableOpacity>
 
-               <TouchableOpacity onPress={() => {
+               {/* <TouchableOpacity onPress={() => {
                 this.clearFile2();
               }}
               style={{
@@ -442,7 +442,7 @@ class Shipping extends Component {
                     style={styles.button3}
                     source={require('./assets/icons/play.png')}
                   />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
             </ScrollView>
             <Text style={styles.text}>
