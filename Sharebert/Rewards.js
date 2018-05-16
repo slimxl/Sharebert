@@ -35,26 +35,26 @@ class Rewards extends Component {
       userID: userID,
       rewards: [],
     };
-      fetch('https://sharebert.com/s/RetrieveRewards.php?', { method: 'GET' })
-        .then(response => response.json())
-        .then(responseData => {
-          var data2 = []
-          for (var i = 0; i < responseData.length; i++) {
-            var obj = {};
+    fetch('https://sharebert.com/s/RetrieveRewards.php?', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = []
+        for (var i = 0; i < responseData.length; i++) {
+          var obj = {};
 
-            obj['Title'] = responseData[i]['Title'];
-            obj['ImageURL'] = responseData[i]['ImageURL'];
-            obj['Cost'] = responseData[i]['Cost'];
-            obj['ID'] = responseData[i]['id'];
-            obj['Link'] = responseData[i]['Link'];
-            data2.push(obj);
-          }
-          var reversed = data2.reverse(); 
-          this.setState({
-            rewards: reversed,
-          })
+          obj['Title'] = responseData[i]['Title'];
+          obj['ImageURL'] = responseData[i]['ImageURL'];
+          obj['Cost'] = responseData[i]['Cost'];
+          obj['ID'] = responseData[i]['id'];
+          obj['Link'] = responseData[i]['Link'];
+          data2.push(obj);
+        }
+        //var reversed = data2.reverse(); 
+        this.setState({
+          rewards: data2,
         })
-        .done();
+      })
+      .done();
   }
   _onPress(item) {
     Alert.alert(
@@ -79,15 +79,7 @@ class Rewards extends Component {
   checkout(item) {
     if (userID != 0) {
       var nb = userPoints - item.Cost;
-      if(item.Cost==='0')
-      {
-        try {
-          Linking.openURL(item.Link);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      else if (nb >= 0) {
+      if (nb >= 0) {
         fetch(
           'https://sharebert.com/s/GiveReward.php?uid=' +
           userID,
@@ -105,6 +97,15 @@ class Rewards extends Component {
             )
               .then(response => response.json())
               .then(responseData => {
+                if (item.Cost === '100') {
+                  try {
+                    Linking.openURL(item.Link);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }
+                userPoints = nb;
+                this.forceUpdate();
                 Alert.alert('Success!', 'Enjoy your reward!');
               })
               .done();
@@ -146,11 +147,11 @@ class Rewards extends Component {
     return (
       <View style={styles.container}>
         <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
-      
+
         <TouchableOpacity
-        onPress={() => {
-          this.props.navigation.goBack();
-        }}>
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}>
 
           <Image style={styles.header} />
           <Text style={styles.text2}>
@@ -181,12 +182,12 @@ class Rewards extends Component {
         <ImageBackground
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
-          <View style={{ width: '100%', height: Dimensions.get('window').height -130 }}>
+          <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
             <FlatList backgroundColor={'transparent'}
               style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
               data={this.state.rewards}
               keyExtractor={(item, index) => index}
-              ListEmptyComponent={this.showEmptyListView()}              
+              ListEmptyComponent={this.showEmptyListView()}
               renderItem={({ item, separators }) => (
                 <TouchableOpacity
                   onPress={() => this._onPress(item)}
@@ -408,7 +409,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         marginTop: -65,
-        marginLeft: Dimensions.get('window').width *.5 - 75,
+        marginLeft: Dimensions.get('window').width * .5 - 75,
         backgroundColor: 'transparent',
         padding: 20,
         marginBottom: 30,
@@ -418,7 +419,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         marginTop: 10,
-        left: (Dimensions.get('window').width *.5) - 75,
+        left: (Dimensions.get('window').width * .5) - 75,
         backgroundColor: 'transparent',
         flexDirection: 'row',
       },
