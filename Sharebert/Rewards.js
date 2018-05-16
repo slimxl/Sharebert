@@ -195,7 +195,7 @@ class Rewards extends Component {
                   onHideUnderlay={separators.unhighlight}>
                   <View style={{ backgroundColor: 'transparent' }}>
                     <Text style={styles.text3}>{item.Title}</Text>
-                    <Text style={styles.text4}>{item.Cost} Points</Text>
+                    <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>
                     <Image
                       style={styles.image}
                       resizeMode='contain'
