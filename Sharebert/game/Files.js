@@ -5,6 +5,7 @@ export default {
     ground: require('../assets/sprites/ground2.png'),
     pipe_bottom: require('../assets/sprites/pipe_bottom.png'),
     pipe_top: require('../assets/sprites/pipe_top.png'),
+    coin: require('../assets/sprites/coin.png'),
   },
   audio: {
     hit: require('../assets/audio/hit.mp3'),

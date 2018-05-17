@@ -26,6 +26,8 @@ var uri2;
 export default class Game extends React.Component {
   scale = 1;
   pipes = new Group();
+  coins = new Group();
+  deadCoins = [];
   deadPipeTops = [];
   deadPipeBottoms = [];
 
@@ -176,6 +178,23 @@ export default class Game extends React.Component {
     return pipe;
   };
 
+  setupCoin = async ({ key, y }) => {
+    const size = { width: 500, height: 500};
+
+    const tbs = {
+      top: Files.sprites.coin,
+      bottom: Files.sprites.coin,
+    };
+    const coin = await this.setupStaticNode({
+      image: tbs[key],
+      size,
+      name: key,
+    });
+    coin.y = y;
+
+    return coin;
+  };
+
   setupStaticNode = async ({ image, size, name, scale }) => {
     scale = scale || this.scale;
     // @(Evan Bacon): Initialize empty sprite element
@@ -196,6 +215,55 @@ export default class Game extends React.Component {
     });
     node.name = name;
     return node;
+  };
+
+  spawnCoin = async (openPos) => {
+    let pipeY;
+    let pipeKey = 'top';
+    let coin;
+
+    const end = this.scene.bounds.right + 26;
+    if (this.deadCoins.length > 0 && pipeKey === 'top') {
+      coin = this.deadPipeTops.pop().revive();
+      coin.reset(end, pipeY);
+    } else if (this.deadCoins.length > 0 && pipeKey === 'bottom') {
+      coin = this.deadCoins.pop().revive();
+      coin.reset(end, pipeY);
+    } else {
+      coin = await this.setupCoin({
+        scene: this.scene,
+        y: pipeY,
+        key: pipeKey,
+      });
+      coin.x = end;
+
+      this.coins.add(coin);
+    }
+    coin.velocity = -SPEED;
+    return coin;
+  };
+
+  spawnCoins = () => {
+    this.coins.forEachAlive(coin => {
+      //@(Evan Bacon) If any pipes are off screen then we want to flag them as "dead" so we can recycle them!
+      if (coin.size && coin.x + coin.size.width < this.scene.bounds.left) {
+        if (coin.name === 'top') {
+          this.deadCoins.push(coin.kill());
+        }
+        if (coin.name === 'bottom') {
+          this.deadCoins.push(coin.kill());
+        }
+      }
+    });
+
+    //@(Evan Bacon) Get a random spot for the center of the two pipes.
+    const pipeY =
+      this.scene.size.height * .7;
+      // 2 +
+      //(Math.random() - 0.5) * this.scene.size.height * 0.2;
+    //@(Evan Bacon) Spawn both pipes around this point.
+    //this.spawnPipe(pipeY);
+    this.spawnCoin(pipeY);
   };
 
   spawnPipe = async (openPos, flipped) => {
@@ -244,7 +312,7 @@ export default class Game extends React.Component {
 
     //@(Evan Bacon) Get a random spot for the center of the two pipes.
     const pipeY =
-      this.scene.size.height * .7
+      this.scene.size.height * .7;
       // 2 +
       //(Math.random() - 0.5) * this.scene.size.height * 0.2;
     //@(Evan Bacon) Spawn both pipes around this point.
@@ -264,6 +332,7 @@ export default class Game extends React.Component {
       })
       // @(Evan Bacon) here we build a timer to spawn pipes
       this.pillarInterval = setInterval(this.spawnPipes, SPAWN_RATE);
+      this.pillarInterval = setInterval(this.spawnCoins, SPAWN_RATE);
     }
 
     if (!this.gameOver) {
@@ -317,11 +386,13 @@ export default class Game extends React.Component {
     this.player.reset(this.scene.size.width * -0.3, 0);
     this.player.angle = 0;
     this.pipes.removeAll();
+    this.coins.removeAll();
   };
 
   onSetup = async ({ scene }) => {
     this.scene = scene;
     this.scene.add(this.pipes);
+    this.scene.add(this.coins);
     await this.setupBackground();
     await this.setupGround();
     await this.setupPlayer();
@@ -361,6 +432,18 @@ export default class Game extends React.Component {
             this.addScore();
           }
         });
+
+        this.coins.forEachAlive(coin => {
+          coin.x += coin.velocity;
+          const coinBox = new THREE.Box3().setFromObject(coin);
+
+          //@(Evan Bacon) We check if the user collided with any of the pipes.
+          if (coinBox.intersectsBox(playerBox)) {
+            //this.setGameOver();
+          }
+
+        });
+
 
         //@(Evan Bacon) Here we set the player rotation (in radians). Notice how we clamp it with min/max.
         // if (this.player.y >= target) {
