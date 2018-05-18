@@ -179,14 +179,14 @@ export default class Game extends React.Component {
   };
 
   setupCoin = async ({ key, y }) => {
-    const size = { width: 500, height: 500};
+    const size = { width: 25, height: 25};
 
-    const tbs = {
+    const tbs1 = {
       top: Files.sprites.coin,
       bottom: Files.sprites.coin,
     };
     const coin = await this.setupStaticNode({
-      image: tbs[key],
+      image: tbs1[key],
       size,
       name: key,
     });
@@ -218,22 +218,22 @@ export default class Game extends React.Component {
   };
 
   spawnCoin = async (openPos) => {
-    let pipeY;
-    let pipeKey = 'top';
+    let coinY;
+    let coinKey = 'bottom';
     let coin;
 
     const end = this.scene.bounds.right + 26;
-    if (this.deadCoins.length > 0 && pipeKey === 'top') {
-      coin = this.deadPipeTops.pop().revive();
-      coin.reset(end, pipeY);
-    } else if (this.deadCoins.length > 0 && pipeKey === 'bottom') {
+    if (this.deadCoins.length > 0 && coinKey === 'top') {
       coin = this.deadCoins.pop().revive();
-      coin.reset(end, pipeY);
+      coin.reset(end, coinY);
+    } else if (this.deadCoins.length > 0 && coinKey === 'bottom') {
+      coin = this.deadCoins.pop().revive();
+      coin.reset(end, coinY);
     } else {
       coin = await this.setupCoin({
         scene: this.scene,
-        y: pipeY,
-        key: pipeKey,
+        y: coinY,
+        key: coinKey,
       });
       coin.x = end;
 
@@ -257,13 +257,15 @@ export default class Game extends React.Component {
     });
 
     //@(Evan Bacon) Get a random spot for the center of the two pipes.
-    const pipeY =
-      this.scene.size.height * .7;
-      // 2 +
+    
+    const coinY =
+    this.scene.size.height * .5;
+      //this.scene.size.height 
+     //  2 +
       //(Math.random() - 0.5) * this.scene.size.height * 0.2;
     //@(Evan Bacon) Spawn both pipes around this point.
     //this.spawnPipe(pipeY);
-    this.spawnCoin(pipeY);
+    this.spawnCoin(coinY);
   };
 
   spawnPipe = async (openPos, flipped) => {
@@ -437,9 +439,24 @@ export default class Game extends React.Component {
           coin.x += coin.velocity;
           const coinBox = new THREE.Box3().setFromObject(coin);
 
+            //@(Evan Bacon) We check to see if a user has passed a pipe, if so then we update the score!
+          if (
+          coin.name === 'bottom' &&
+          !coin.passed &&
+          coin.x < this.player.x
+          ) {
+            coin.passed = true;
+            this.addScore();
+          }
+
           //@(Evan Bacon) We check if the user collided with any of the pipes.
           if (coinBox.intersectsBox(playerBox)) {
             //this.setGameOver();
+            if(!coin.passed)
+            {
+              this.addScore();
+              coin.passed = true;
+            }
           }
 
         });
