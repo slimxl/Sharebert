@@ -10,6 +10,7 @@ const SPEED = 1.6;
 const GRAVITY = 1100;
 const FLAP = 320;
 const SPAWN_RATE = 2600;
+const SPAWN_RATE_COIN = 3200;
 const OPENING = 350;
 const GROUND_HEIGHT = 112;
 const MAXJUMPS = 1;
@@ -218,7 +219,8 @@ export default class Game extends React.Component {
   };
 
   spawnCoin = async (openPos) => {
-    let coinY = 50; //INSERT RANDOM NUMBER HERE
+    let coinY = Math.floor(Math.random() * -49) - 100  //INSERT RANDOM NUMBER HERE
+    console.log(coinY);
     let coinKey = 'bottom';
     let coin;
 
@@ -334,7 +336,7 @@ export default class Game extends React.Component {
       })
       // @(Evan Bacon) here we build a timer to spawn pipes
       this.pillarInterval = setInterval(this.spawnPipes, SPAWN_RATE);
-      this.pillarInterval2 = setInterval(this.spawnCoins, SPAWN_RATE);
+      this.pillarInterval2 = setInterval(this.spawnCoins, SPAWN_RATE_COIN);
     }
 
     if (!this.gameOver) {
@@ -448,6 +450,7 @@ export default class Game extends React.Component {
             {
               this.addScore();
               coin.passed = true;
+              coin.kill();
             }
           }
 
