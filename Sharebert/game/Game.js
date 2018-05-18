@@ -108,7 +108,7 @@ export default class Game extends React.Component {
     });
     this.scene.add(this.player);
 
-    console.log(this.props);
+    //console.log(this.props);
   };
 
   setupGround = async () => {
@@ -218,7 +218,7 @@ export default class Game extends React.Component {
   };
 
   spawnCoin = async (openPos) => {
-    let coinY;
+    let coinY = 50; //INSERT RANDOM NUMBER HERE
     let coinKey = 'bottom';
     let coin;
 
@@ -334,11 +334,12 @@ export default class Game extends React.Component {
       })
       // @(Evan Bacon) here we build a timer to spawn pipes
       this.pillarInterval = setInterval(this.spawnPipes, SPAWN_RATE);
-      this.pillarInterval = setInterval(this.spawnCoins, SPAWN_RATE);
+      this.pillarInterval2 = setInterval(this.spawnCoins, SPAWN_RATE);
     }
 
     if (!this.gameOver) {
       // @(Evan Bacon) These are in-game taps for making the bird flap
+     
       if (doublejumpint < MAXJUMPS) {
         this.velocity = FLAP;
         doublejumpint += 1;
@@ -374,6 +375,7 @@ export default class Game extends React.Component {
   setGameOver = () => {
     this.gameOver = true;
     clearInterval(this.pillarInterval);
+    clearInterval(this.pillarInterval2);
 
     //this.audio.hit();
   };
@@ -393,8 +395,8 @@ export default class Game extends React.Component {
 
   onSetup = async ({ scene }) => {
     this.scene = scene;
-    this.scene.add(this.pipes);
     this.scene.add(this.coins);
+    this.scene.add(this.pipes);
     await this.setupBackground();
     await this.setupGround();
     await this.setupPlayer();
@@ -438,16 +440,6 @@ export default class Game extends React.Component {
         this.coins.forEachAlive(coin => {
           coin.x += coin.velocity;
           const coinBox = new THREE.Box3().setFromObject(coin);
-
-            //@(Evan Bacon) We check to see if a user has passed a pipe, if so then we update the score!
-          if (
-          coin.name === 'bottom' &&
-          !coin.passed &&
-          coin.x < this.player.x
-          ) {
-            coin.passed = true;
-            this.addScore();
-          }
 
           //@(Evan Bacon) We check if the user collided with any of the pipes.
           if (coinBox.intersectsBox(playerBox)) {
