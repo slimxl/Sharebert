@@ -67,7 +67,7 @@ class Rewards extends Component {
           style: 'cancel',
         },
         {
-          text: 'Buy',
+          text: 'Claim',
           onPress: () => {
             this.checkout(item);
           },
