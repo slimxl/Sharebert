@@ -58,7 +58,7 @@ class Rewards extends Component {
   }
   _onPress(item) {
     Alert.alert(
-      'Buy Reward',
+      'Claim Prize',
       item.Title,
       [
         {
@@ -195,7 +195,7 @@ class Rewards extends Component {
                   onHideUnderlay={separators.unhighlight}>
                   <View style={{ backgroundColor: 'transparent' }}>
                     <Text style={styles.text3}>{item.Title}</Text>
-                    <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>
+                    {item.Cost==='100'?<Text style={styles.text4}>{item.Cost} Points + Shipping</Text>: <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
                     <Image
                       style={styles.image}
                       resizeMode='contain'
