@@ -154,26 +154,24 @@ class Rewards extends Component {
   }
 
   setUserDaily = () => {
-    if(this.state.DailyGiveaway===false)
-    {
+    if (this.state.DailyGiveaway === false) {
       fetch('https://sharebert.com/s/SetDailyGiveaway.php?uid=' + userID, { method: 'GET' })
-      .then(response => {
-        this.setState({
-          DailyGiveaway: true,
+        .then(response => {
+          this.setState({
+            DailyGiveaway: true,
+          })
+          userPoints -= 10;
+          this.forceUpdate();
         })
-        userPoints -= 10;
-        this.forceUpdate();
-      })
-      .done();
+        .done();
     }
-   
-      try{
-        Linking.openURL('https://sharebert.com/shop/')
-      }
-      catch(error)
-      {
-        console.log(error);
-      }
+
+    try {
+      Linking.openURL('https://sharebert.com/shop/')
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
   showEmptyListView = () => {
 
@@ -199,7 +197,7 @@ class Rewards extends Component {
           onPress={() => {
             this.props.navigation.goBack();
             this.props.navigation.state.params.updateData(userPoints);
-            
+
           }}>
 
           <Image style={styles.header} />
@@ -217,9 +215,8 @@ class Rewards extends Component {
         />
         <TouchableWithoutFeedback
           onPress={() => {
-            var points = userPoints;
             this.props.navigation.goBack();
-            this.props.navigation.state.params.updateData(points);
+            this.props.navigation.state.params.updateData(userPoints);
           }}>
           <Image
             style={styles.hamburger}
@@ -260,8 +257,8 @@ class Rewards extends Component {
                       resizeMode='contain'
                       source={require('./assets/giveaway/tap.png')}
                     />
-                  }
-                 
+                }
+
               </TouchableWithoutFeedback>
             </View>
 
@@ -362,6 +359,7 @@ const styles = StyleSheet.create({
   giveawaycenter: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 5,
   },
   giveawaycenter2: {
     justifyContent: 'center',
