@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   ImageBackground,
   Image,
+  WebView,
   Platform,
   Linking,
   Dimensions,
@@ -20,6 +21,9 @@ const backAction = NavigationActions.back({
 import { Constants } from 'expo';
 var rdata = [];
 var userID = 0;
+var currentreward = '';
+var web = false;
+var giveaway = false;
 var userPoints = 0;
 const { width, height } = Dimensions.get('window');
 class Rewards extends Component {
@@ -107,7 +111,9 @@ class Rewards extends Component {
               .then(responseData => {
                 if (item.Cost === '100') {
                   try {
-                    Linking.openURL(item.Link);
+                    //Linking.openURL(item.Link);
+                    web = true;
+                    currentreward = item.Link;
                   } catch (error) {
                     console.error(error);
                   }
@@ -154,24 +160,60 @@ class Rewards extends Component {
   }
 
   setUserDaily = () => {
-    if (this.state.DailyGiveaway === false) {
-      fetch('https://sharebert.com/s/SetDailyGiveaway.php?uid=' + userID, { method: 'GET' })
-        .then(response => {
-          this.setState({
-            DailyGiveaway: true,
-          })
-          userPoints -= 10;
-          this.forceUpdate();
-        })
-        .done();
+    if (userPoints - 10 < 0 && this.state.DailyGiveaway === false) {
+      Alert.alert('Points Error!', 'Insufficient Points');
+      return;
+    }
+    else if (this.state.DailyGiveaway === false) {
+
+      Alert.alert(
+        'Unlock Daily Giveaway (24 Hours)',
+        'Uses 10 Points',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Unlock',
+            onPress: () => {
+              fetch('https://sharebert.com/s/SetDailyGiveaway.php?uid=' + userID, { method: 'GET' })
+                .then(response => {
+                  this.setState({
+                    DailyGiveaway: true,
+                  })
+                  userPoints -= 10;
+                  try {
+                    //Linking.openURL('https://sharebert.com/shop/dailygiveaway')
+                    giveaway = true;
+                    web = false;
+                    this.forceUpdate();
+                  }
+                  catch (error) {
+                    console.log(error);
+                  }
+
+                })
+                .done();
+            },
+          }
+        ],
+        { cancelable: false }
+      );
+    }
+    else {
+      try {
+        //Linking.openURL('https://sharebert.com/shop/dailygiveaway')
+        giveaway = true;
+        web = false;
+        this.forceUpdate();
+      }
+      catch (error) {
+        console.log(error);
+      }
     }
 
-    try {
-      Linking.openURL('https://sharebert.com/shop/')
-    }
-    catch (error) {
-      console.log(error);
-    }
   }
   showEmptyListView = () => {
 
@@ -188,109 +230,241 @@ class Rewards extends Component {
     )
   };
 
-  render() {
+  renderHeader = () => {
     return (
-      <View style={styles.container}>
-        <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
-
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.goBack();
-            this.props.navigation.state.params.updateData(userPoints);
-
-          }}>
-
-          <Image style={styles.header} />
-          <Text style={styles.text2}>
-            {userPoints + '\n'}
-          </Text>
-          <Text style={styles.pointsText}>
-            Points
-              </Text>
-        </TouchableOpacity>
+      <View style={styles.giveawaycenterview}>
         <Image
-          resizeMode="contain"
-          style={styles.button}
-          source={require('./assets/icons/logoicon.png')}
+          style={styles.giveawaycenter}
+          resizeMode='contain'
+          source={require('./assets/giveaway/header.png')}
+        />
+        <Image
+          style={styles.giveawaycenter2}
+          resizeMode='contain'
+          source={require('./assets/giveaway/logo.png')}
         />
         <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.goBack();
-            this.props.navigation.state.params.updateData(userPoints);
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow_w.png')}
-          />
+          style={styles.giveawaycenter3}
+          onPress={() => this.setUserDaily()}
+        >
+          {
+            this.state.DailyGiveaway ? <Image
+              style={styles.giveawaycenter3}
+              resizeMode='contain'
+              source={require('./assets/giveaway/tap2.png')}
+            /> :
+              <Image
+                style={styles.giveawaycenter3}
+                resizeMode='contain'
+                source={require('./assets/giveaway/tap.png')}
+              />
+          }
         </TouchableWithoutFeedback>
-        <Text style={styles.title}>
-          Sharebert Rewards
-        </Text>
-        <ImageBackground
-          source={require('./like_background.png')}
-          style={{ width: '100%', height: '100%' }}>
-          <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
-            <View style={styles.giveawaycenter}>
-              <Image
-                style={styles.giveawaycenter}
-                resizeMode='contain'
-                source={require('./assets/giveaway/header.png')}
-              />
-              <Image
-                style={styles.giveawaycenter2}
-                resizeMode='contain'
-                source={require('./assets/giveaway/logo.png')}
-              />
-              <TouchableWithoutFeedback
-                style={styles.giveawaycenter2}
-                onPress={() => this.setUserDaily()}
-              >
-                {
-                  this.state.DailyGiveaway ? <Image
-                    style={styles.giveawaycenter2}
-                    resizeMode='contain'
-                    source={require('./assets/giveaway/tap2.png')}
-                  /> :
-                    <Image
-                      style={styles.giveawaycenter2}
-                      resizeMode='contain'
-                      source={require('./assets/giveaway/tap.png')}
-                    />
-                }
-
-              </TouchableWithoutFeedback>
-            </View>
-
-
-            <FlatList backgroundColor={'transparent'}
-              style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
-              data={this.state.rewards}
-              keyExtractor={(item, index) => index}
-              ListEmptyComponent={this.showEmptyListView()}
-              renderItem={({ item, separators }) => (
-                <TouchableOpacity
-                  onPress={() => this._onPress(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <View style={{ backgroundColor: 'transparent' }}>
-                    <Text style={styles.text3}>{item.Title}</Text>
-                    {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
-                    <Image
-                      style={styles.image}
-                      resizeMode='contain'
-                      source={{
-                        uri: item.ImageURL,
-                      }}
-                    />
-                  </View>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </ImageBackground>
+        <Image style={styles.divider}
+          source={require('./assets/empty2.png')}
+        />
       </View>
     );
+  };
+  render() {
+    if (web) {
+      return (
+        <View style={styles.container}>
+          <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+
+          <TouchableOpacity
+            onPress={() => {
+              web = false;
+              this.forceUpdate();
+
+            }}>
+
+            <Image style={styles.header} />
+            <Text style={styles.text2}>
+              {userPoints + '\n'}
+            </Text>
+            <Text style={styles.pointsText}>
+              Points
+                </Text>
+          </TouchableOpacity>
+          <Image
+            resizeMode="contain"
+            style={styles.button}
+            source={require('./assets/icons/logoicon.png')}
+          />
+          <TouchableWithoutFeedback
+            onPress={() => {
+              web = false;
+              this.forceUpdate();
+            }}>
+            <Image
+              style={styles.hamburger}
+              resizeMode='contain'
+              source={require('./assets/arrow_w.png')}
+            />
+          </TouchableWithoutFeedback>
+          <Text style={styles.title}>
+            Sharebert Rewards
+          </Text>
+          <WebView
+            source={{ uri: currentreward }}
+            style={{ marginTop: 15 }}
+          />
+        </View>
+      );
+    }
+    else if (giveaway) {
+      return (
+        <View style={styles.container}>
+          <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+
+          <TouchableOpacity
+            onPress={() => {
+              giveaway = false;
+
+              this.forceUpdate();
+
+            }}>
+
+            <Image style={styles.header} />
+            <Text style={styles.text2}>
+              {userPoints + '\n'}
+            </Text>
+            <Text style={styles.pointsText}>
+              Points
+                </Text>
+          </TouchableOpacity>
+          <Image
+            resizeMode="contain"
+            style={styles.button}
+            source={require('./assets/icons/logoicon.png')}
+          />
+          <TouchableWithoutFeedback
+            onPress={() => {
+              giveaway = false;
+              this.forceUpdate();
+            }}>
+            <Image
+              style={styles.hamburger}
+              resizeMode='contain'
+              source={require('./assets/arrow_w.png')}
+            />
+          </TouchableWithoutFeedback>
+          <Text style={styles.title}>
+            Sharebert Rewards
+          </Text>
+          <WebView
+            source={{ uri: 'https://sharebert.com/shop/dailygiveaway' }}
+            style={{ marginTop: 15 }}
+          />
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.goBack();
+              this.props.navigation.state.params.updateData(userPoints);
+
+            }}>
+
+            <Image style={styles.header} />
+            <Text style={styles.text2}>
+              {userPoints + '\n'}
+            </Text>
+            <Text style={styles.pointsText}>
+              Points
+                </Text>
+          </TouchableOpacity>
+          <Image
+            resizeMode="contain"
+            style={styles.button}
+            source={require('./assets/icons/logoicon.png')}
+          />
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.props.navigation.goBack();
+              this.props.navigation.state.params.updateData(userPoints);
+            }}>
+            <Image
+              style={styles.hamburger}
+              resizeMode='contain'
+              source={require('./assets/arrow_w.png')}
+            />
+          </TouchableWithoutFeedback>
+          <Text style={styles.title}>
+            Sharebert Rewards
+          </Text>
+          <ImageBackground
+            source={require('./like_background.png')}
+            style={{ width: '100%', height: '100%' }}>
+            <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
+              {/* <View style={styles.giveawaycenter}>
+                <Image
+                  style={styles.giveawaycenter}
+                  resizeMode='contain'
+                  source={require('./assets/giveaway/header.png')}
+                />
+                <Image
+                  style={styles.giveawaycenter2}
+                  resizeMode='contain'
+                  source={require('./assets/giveaway/logo.png')}
+                />
+                <TouchableWithoutFeedback
+                  style={styles.giveawaycenter2}
+                  onPress={() => this.setUserDaily()}
+                >
+                  {
+                    this.state.DailyGiveaway ? <Image
+                      style={styles.giveawaycenter2}
+                      resizeMode='contain'
+                      source={require('./assets/giveaway/tap2.png')}
+                    /> :
+                      <Image
+                        style={styles.giveawaycenter2}
+                        resizeMode='contain'
+                        source={require('./assets/giveaway/tap.png')}
+                      />
+                  }
+
+                </TouchableWithoutFeedback>
+              </View> */}
+
+              <FlatList backgroundColor={'transparent'}
+                style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
+                data={this.state.rewards}
+                keyExtractor={(item, index) => index}
+                ListEmptyComponent={this.showEmptyListView()}
+                ListHeaderComponent={() => this.renderHeader()}
+                renderItem={({ item, separators }) => (
+                  <TouchableOpacity
+                    onPress={() => this._onPress(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <View style={{ backgroundColor: 'transparent' }}>
+                      <Text style={styles.text3}>{item.Title}</Text>
+                      {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
+                      <Image
+                        style={styles.image}
+                        resizeMode='contain'
+                        source={{
+                          uri: item.ImageURL,
+                        }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </ImageBackground>
+        </View>
+      );
+    }
+
   }
 }
 
@@ -330,7 +504,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
       },
     }),
-
   },
   pointsText: {
     ...Platform.select({
@@ -356,15 +529,32 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  giveawaycenterview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5,
+  },
   giveawaycenter: {
     justifyContent: 'center',
     alignItems: 'center',
+    height: 100,
+    width: '80%',
     marginTop: 5,
   },
   giveawaycenter2: {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+    height: 100,
+    width: '70%',
+
+  },
+  giveawaycenter3: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 100,
+    width: '70%',
+
   },
   hamburger: {
     ...Platform.select({
@@ -424,7 +614,7 @@ const styles = StyleSheet.create({
       width: Dimensions.get('window').width - 30,
       height: 2,
       marginLeft: 15,
-      marginTop: 30,
+      marginTop: 5,
       backgroundColor: '#dee6ee',
     },
   shareBut:
