@@ -30,11 +30,17 @@ class Rewards extends Component {
     uri2 = this.props.navigation.state.params.uri;
     this.state = {
       isOpen: false,
+      DailyGiveaway: false,
       selectedItem: 'Rewards',
       userPoints: userPoints,
       userID: userID,
       rewards: [],
     };
+    if (userID != 0) {
+      //this.setUserDaily();  // Checking the set function...Success!
+      this.checkUserDaily();  //Checking the check function...Success!
+
+    }
     fetch('https://sharebert.com/s/RetrieveRewards.php?', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
@@ -55,6 +61,8 @@ class Rewards extends Component {
         })
       })
       .done();
+
+
   }
   _onPress(item) {
     Alert.alert(
@@ -127,7 +135,46 @@ class Rewards extends Component {
       uri: uri2,
     })
   };
+  checkUserDaily = () => {
+    fetch('https://sharebert.com/s/UserCheckALL.php?uid=' + userID, { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        if (responseData[0]['DailyGiveaway'] === '1') {
+          this.setState({
+            DailyGiveaway: true,
+          })
+          this.forceUpdate();
+          console.log('True');
+        }
+        else {
+          console.log('False');
+        }
+      })
+      .done();
+  }
 
+  setUserDaily = () => {
+    if(this.state.DailyGiveaway===false)
+    {
+      fetch('https://sharebert.com/s/SetDailyGiveaway.php?uid=' + userID, { method: 'GET' })
+      .then(response => {
+        this.setState({
+          DailyGiveaway: true,
+        })
+        userPoints -= 10;
+        this.forceUpdate();
+      })
+      .done();
+    }
+   
+      try{
+        Linking.openURL('https://sharebert.com/shop/')
+      }
+      catch(error)
+      {
+        console.log(error);
+      }
+  }
   showEmptyListView = () => {
 
     return (
@@ -151,6 +198,8 @@ class Rewards extends Component {
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.goBack();
+            this.props.navigation.state.params.updateData(userPoints);
+            
           }}>
 
           <Image style={styles.header} />
@@ -168,7 +217,9 @@ class Rewards extends Component {
         />
         <TouchableWithoutFeedback
           onPress={() => {
+            var points = userPoints;
             this.props.navigation.goBack();
+            this.props.navigation.state.params.updateData(points);
           }}>
           <Image
             style={styles.hamburger}
@@ -183,6 +234,38 @@ class Rewards extends Component {
           source={require('./like_background.png')}
           style={{ width: '100%', height: '100%' }}>
           <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
+            <View style={styles.giveawaycenter}>
+              <Image
+                style={styles.giveawaycenter}
+                resizeMode='contain'
+                source={require('./assets/giveaway/header.png')}
+              />
+              <Image
+                style={styles.giveawaycenter2}
+                resizeMode='contain'
+                source={require('./assets/giveaway/logo.png')}
+              />
+              <TouchableWithoutFeedback
+                style={styles.giveawaycenter2}
+                onPress={() => this.setUserDaily()}
+              >
+                {
+                  this.state.DailyGiveaway ? <Image
+                    style={styles.giveawaycenter2}
+                    resizeMode='contain'
+                    source={require('./assets/giveaway/tap2.png')}
+                  /> :
+                    <Image
+                      style={styles.giveawaycenter2}
+                      resizeMode='contain'
+                      source={require('./assets/giveaway/tap.png')}
+                    />
+                  }
+                 
+              </TouchableWithoutFeedback>
+            </View>
+
+
             <FlatList backgroundColor={'transparent'}
               style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
               data={this.state.rewards}
@@ -195,7 +278,7 @@ class Rewards extends Component {
                   onHideUnderlay={separators.unhighlight}>
                   <View style={{ backgroundColor: 'transparent' }}>
                     <Text style={styles.text3}>{item.Title}</Text>
-                    {item.Cost==='100'?<Text style={styles.text4}>{item.Cost} Points + Shipping</Text>: <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
+                    {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
                     <Image
                       style={styles.image}
                       resizeMode='contain'
@@ -275,6 +358,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
       },
     }),
+  },
+  giveawaycenter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  giveawaycenter2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   hamburger: {
     ...Platform.select({

@@ -638,6 +638,12 @@ class Explore extends Component {
     );
   };
 
+  updateData  = (points) => {
+    userPoints = points;
+    this.forceUpdate();
+    //some other stuff
+  };
+
   printURL = () => {
     Alert.alert('TEST', this.state.url);
   };
@@ -1252,6 +1258,7 @@ class Explore extends Component {
       id: userID,
       points: userPoints,
       uri: uri2,
+      updateData:this.updateData
     })
   }
 
