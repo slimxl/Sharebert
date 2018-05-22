@@ -47,6 +47,7 @@ class Search extends Component {
         this.state = {
             inputValue: 'Search',
             trendinglist: [],
+            userPoints: userPoints,
             trendData: [],
             frontTitle: '',
         }
@@ -121,6 +122,13 @@ class Search extends Component {
             </View>
         );
     };
+    updateData = (points) => {
+        userPoints = points;
+        this.setState({
+            userPoints: userPoints,
+          });
+        //some other stuff
+    };
     _onPress(item) {
         this.props.navigation.navigate('Explore', {
             id: userID,
@@ -135,6 +143,7 @@ class Search extends Component {
             id: userID,
             points: userPoints,
             uri: uri2,
+            updateData: this.updateData,
         })
     }
     onSubmitEdit = () => {
@@ -219,6 +228,8 @@ class Search extends Component {
                         //     uri: uri2,
                         // })
                         this.props.navigation.goBack();
+                        this.props.navigation.state.params.updateData(userPoints);
+
                     }}>
                     <Image
                         style={styles.hamburger}
@@ -306,7 +317,10 @@ class Search extends Component {
                         //   id: userID,
                         //   points: userPoints,
                         // })}
-                        onPress={() => this.props.navigation.goBack()}
+                        onPress={() => {
+                            this.props.navigation.goBack();
+                            this.props.navigation.state.params.updateData(userPoints);
+                        }}
 
                     >
                         <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}

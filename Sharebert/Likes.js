@@ -42,7 +42,6 @@ class Likes extends Component {
       isOpen: false,
       selectedItem: 'Likes',
       showAlert: false,
-      userPoints: userPoints,
       userID: userID,
     };
     this.getFile();
@@ -57,9 +56,7 @@ class Likes extends Component {
           .then(responseData => {
             var test = responseData['Points'];
             userPoints = test;
-            this.setState({
-              userPoints: test,
-            })
+            this.forceUpdate();
           })
           .done();
       }
@@ -142,9 +139,7 @@ class Likes extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    this.setState({
-                      userPoints:responseData2['Points'],
-                    })
+
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
@@ -338,12 +333,14 @@ class Likes extends Component {
             //   uri: uri,
             // });
             this.props.navigation.goBack();
+            this.props.navigation.state.params.updateData(userPoints);
+            
           }}
         >
           <View>
             <Image style={styles.header} />
             <Text style={styles.text2}>
-              {this.state.userPoints + '\n'}
+              {userPoints + '\n'}
             </Text>
             <Text style={styles.pointsText}>
               Points
@@ -358,8 +355,9 @@ class Likes extends Component {
         <TouchableWithoutFeedback
           style={styles.hamburger2}
           onPress={() => {
-            this.props.navigation.dispatch(backAction); //navigate to explore
-
+            //this.props.navigation.dispatch(backAction); //navigate to explore
+            this.props.navigation.goBack();
+            this.props.navigation.state.params.updateData(userPoints);
             // this.props.navigation.navigate('Explore', {
             //   id: userID,
             //   points: userPoints,
@@ -837,4 +835,5 @@ const styles = StyleSheet.create({
 
     },
 });
+
 export default Likes;

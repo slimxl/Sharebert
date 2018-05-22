@@ -86,7 +86,7 @@ const PRODUCT_ITEM_MARGIN = PRODUCT_ITEM_OFFSET * 2;
 class Explore extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params);
+    //console.log(this.props.navigation.state.params);
     userID = this.props.navigation.state.params.id;
     try {
       userPoints = this.props.navigation.state.params.points;
@@ -104,6 +104,7 @@ class Explore extends Component {
       selectedItem: 'Explore',
       swipedAllCards: false,
       swipeDirection: '',
+      userPoints: userPoints,
       frontTitle: '',
       disable: true,
       isSwipingBack: false,
@@ -122,10 +123,10 @@ class Explore extends Component {
       color: "#ff2eff",
       trendData: [],
     };
-    console.log(userPoints);
+    //console.log(userPoints);
     if (userPoints > 100) {
       tutorial = false;
-      console.log(userPoints);
+      //console.log(userPoints);
     }
 
     if (this.props.navigation.state.params.brands != undefined) {
@@ -174,7 +175,7 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          console.log(Object.keys(responseData['Amazon']).length);
+          //console.log(Object.keys(responseData['Amazon']).length);
           // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
           //   Alert.alert("No Results Found");
           //   emptycard = true;
@@ -186,7 +187,7 @@ class Explore extends Component {
           //var count = responseData['Amazon'][0][7];
           //datasize = count;
           //searchcount = datasize;
-          console.log(searchcount);
+          //console.log(searchcount);
           for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
             var obj = {};
             obj['ASIN'] = responseData['Amazon'][i][0];
@@ -206,7 +207,7 @@ class Explore extends Component {
           )
             .then(response2 => response2.json())
             .then(responseData2 => {
-              console.log(Object.keys(responseData2['Amazon']).length);
+              //console.log(Object.keys(responseData2['Amazon']).length);
               // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
               //   Alert.alert("No Results Found");
               //   emptycard = true;
@@ -367,7 +368,7 @@ class Explore extends Component {
           // dataset: data2,
           // cat: false,
         });
-        console.log(this.state.trendData);
+        //console.log(this.state.trendData);
       })
       .done();
   }
@@ -567,6 +568,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
+                    
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
@@ -620,6 +622,7 @@ class Explore extends Component {
         .then(responseData => {
           var test = responseData['Points'];
           userPoints = test;
+         
           this.forceUpdate();
         })
         .done();
@@ -641,7 +644,6 @@ class Explore extends Component {
   updateData  = (points) => {
     userPoints = points;
     this.forceUpdate();
-    //some other stuff
   };
 
   printURL = () => {
@@ -778,6 +780,7 @@ class Explore extends Component {
                   Alert.alert('You earned 5 points!', "Keep swiping to earn more!");
 
                   userPoints = responseData2['Points'];
+                 
                   this.forceUpdate();
                 }
               })
@@ -806,7 +809,7 @@ class Explore extends Component {
     emptycard = false;
     brand = '';
     if (category === 'Travel') {
-      console.log(category);
+      //console.log(category);
       this.props.navigation.push('Travel', {
         id: userID,
         points: userPoints,
@@ -815,7 +818,7 @@ class Explore extends Component {
     }
 
     else if (category === 'groceries') {
-      console.log(category);
+      //console.log(category);
       this.props.navigation.push('Grocery', {
         id: userID,
         points: userPoints,
@@ -878,7 +881,7 @@ class Explore extends Component {
               var count = responseData2['Amazon'][0][7];
               datasize = count;
               searchcount = datasize;
-              console.log(searchcount);
+              //console.log(searchcount);
               for (var i = 0; i < count; i++) {
                 var obj = {};
                 obj['ASIN'] = responseData2['Amazon'][i][0];
@@ -899,7 +902,7 @@ class Explore extends Component {
                 disable: false,
                 category: category,
               });
-              console.log(data2.length);
+              //console.log(data2.length);
             })
             .done();
 
@@ -929,7 +932,7 @@ class Explore extends Component {
             data2.push(obj2);
 
           }
-          console.log(data2.length);
+         // console.log(data2.length);
           toofast = false;
           data2 = shuffle(data2);
           this.setState({
@@ -1044,6 +1047,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
+                    
                     Alert.alert('You earned 35 points!', "Share the app weekly to earn more!");
                     this.forceUpdate();
                   }
@@ -1103,7 +1107,7 @@ class Explore extends Component {
       }
       else {
       }
-      this.forceUpdate();
+      //this.forceUpdate();
     } catch (error) {
       // Error retrieving data
     }
