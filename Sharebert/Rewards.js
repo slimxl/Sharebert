@@ -167,8 +167,8 @@ class Rewards extends Component {
     else if (this.state.DailyGiveaway === false) {
 
       Alert.alert(
-        'Unlock Daily Giveaway (24 Hours)',
-        'Uses 10 Points',
+        'Unlocking the daily giveaway only costs 10 points',
+        'Are you ready?',
         [
           {
             text: 'Cancel',
