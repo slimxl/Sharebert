@@ -463,48 +463,56 @@ class Explore extends Component {
     }
     else {
       var imageURL2 = this.state.dataset[this.state.cardNum].ImageURL;
-      if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
+      if (imageURL2 !== null || imageURL2 === undefined) {
+        if (this.state.dataset[this.state.cardNum].ImageURL.includes('tillys')) {
 
-        imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
+          imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
 
 
+        }
+        var retailfinal = '';
+        if (this.state.dataset[this.state.cardNum].Retailer === 'shopDisney') {
+          retailfinal = 'Paid Partnership with Disney';
+        }
+        else {
+          retailfinal = this.state.dataset[this.state.cardNum].Retailer
+        }
+        var finaltitle = trunc(this.state.dataset[this.state.cardNum].Title)
+        try {
+          return (
+            <View style={styles.card}>
+
+              <Image2
+                resizeMode="contain"
+                indicator={ProgressBar}
+                indicatorProps={{
+                  color: '#ff2eff',
+                  unfilledColor: 'rgba(200, 200, 200, 0.2)'
+                }}
+                style={styles.image}
+
+                source={{
+                  uri: imageURL2,
+                }}
+              />
+              <Text numberOfLines={1} style={styles.text}>
+                {finaltitle}
+              </Text>
+              <Text style={styles.retail2}>
+                (Tap for Price)
+            </Text>
+              <Text style={styles.retail}>
+                Sold by <Text style={{ color: '#858a8f' }}>{retailfinal}</Text>
+              </Text>
+            </View>
+          );
+        }
+        catch (error) {
+          console.log(error);
+        }
       }
-      var retailfinal = '';
-      if (this.state.dataset[this.state.cardNum].Retailer === 'shopDisney') {
-        retailfinal = 'Paid Partnership with Disney';
-      }
-      else {
-        retailfinal = this.state.dataset[this.state.cardNum].Retailer
-      }
-      var finaltitle = trunc(this.state.dataset[this.state.cardNum].Title)
-      return (
-        <View style={styles.card}>
-
-          <Image2
-            resizeMode="contain"
-            indicator={ProgressBar}
-            indicatorProps={{
-              color: '#ff2eff',
-              unfilledColor: 'rgba(200, 200, 200, 0.2)'
-            }}
-            style={styles.image}
-
-            source={{
-              uri: imageURL2,
-            }}
-          />
-          <Text numberOfLines={1} style={styles.text}>
-            {finaltitle}
-          </Text>
-          <Text style={styles.retail2}>
-            (Tap for Price)
-          </Text>
-          <Text style={styles.retail}>
-            Sold by <Text style={{ color: '#858a8f' }}>{retailfinal}</Text>
-          </Text>
-        </View>
-      );
     }
+
   };
 
   onSwipedAllCards = () => {
@@ -568,7 +576,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    
+
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
                     if (Platform.OS === 'android') {
                       this.notification.show({
@@ -622,7 +630,7 @@ class Explore extends Component {
         .then(responseData => {
           var test = responseData['Points'];
           userPoints = test;
-         
+
           this.forceUpdate();
         })
         .done();
@@ -641,7 +649,7 @@ class Explore extends Component {
     );
   };
 
-  updateData  = (points) => {
+  updateData = (points) => {
     userPoints = points;
     this.forceUpdate();
   };
@@ -780,7 +788,7 @@ class Explore extends Component {
                   Alert.alert('You earned 5 points!', "Keep swiping to earn more!");
 
                   userPoints = responseData2['Points'];
-                 
+
                   this.forceUpdate();
                 }
               })
@@ -829,7 +837,7 @@ class Explore extends Component {
 
     if (category != 'All') {
       fetch(
-        'https://sharebert.com/s/Categoriesios.php?page=5&cat=' +
+        'https://sharebert.com/s/Categoriesios2.php?page=5&cat=' +
         category,
         { method: 'GET' }
       )
@@ -855,9 +863,7 @@ class Explore extends Component {
               obj2['URL'] = responseData['Others'][i]['URL'];
               obj2['ImageURL'] = responseData['Others'][i]['ImageURL'];
               obj2['Retailer'] = responseData['Others'][i]['Website'];
-              if (data2[i].ASIN != obj2['ASIN']) {
-                data2.push(obj2);
-              }
+              data2.push(obj2);
             }
           } catch (error) {
             console.error(error);
@@ -867,7 +873,6 @@ class Explore extends Component {
           toofast = false;
 
           data2 = shuffle(data2);
-          console.log('Data2 size:' + data2.length);
 
           var RandomNumber2 = Math.floor(Math.random() * 10) + 1
           fetch(
@@ -902,7 +907,8 @@ class Explore extends Component {
                 disable: false,
                 category: category,
               });
-              //console.log(data2.length);
+              console.log('Data2 size:' + data2.length);
+
             })
             .done();
 
@@ -932,7 +938,7 @@ class Explore extends Component {
             data2.push(obj2);
 
           }
-         // console.log(data2.length);
+          // console.log(data2.length);
           toofast = false;
           data2 = shuffle(data2);
           this.setState({
@@ -1047,7 +1053,7 @@ class Explore extends Component {
                   if (responseData2['Points'] != userPoints) {
 
                     userPoints = responseData2['Points'];
-                    
+
                     Alert.alert('You earned 35 points!', "Share the app weekly to earn more!");
                     this.forceUpdate();
                   }
@@ -1262,7 +1268,7 @@ class Explore extends Component {
       id: userID,
       points: userPoints,
       uri: uri2,
-      updateData:this.updateData
+      updateData: this.updateData
     })
   }
 
@@ -1293,7 +1299,7 @@ class Explore extends Component {
             <ImageSlider
               autoPlayWithInterval={5000}
               images={images}
-              
+
             />
 
 
@@ -1570,7 +1576,7 @@ class Explore extends Component {
               <View />
             }
 
-           
+
             {
               emptycard
                 ?
@@ -1677,7 +1683,7 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
-  
+
   container: {
     ...Platform.select({
       ios: {
