@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation'
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 import {
   View,
   Text,
@@ -57,6 +58,7 @@ class Rewards extends Component {
           obj['Cost'] = responseData[i]['Cost'];
           obj['ID'] = responseData[i]['id'];
           obj['Link'] = responseData[i]['Link'];
+          //if(obj['Cost']!=='100'|| parseInt(obj['Cost'],10)>25000)
           data2.push(obj);
         }
         //var reversed = data2.reverse(); 
@@ -266,6 +268,26 @@ class Rewards extends Component {
       </View>
     );
   };
+
+  _renderItem = data => {
+    const item = data.item;
+    return (
+    <TouchableOpacity
+      onPress={() => this._onPress(item)}>
+      <View style={{ backgroundColor: 'transparent' }}>
+        <Text style={styles.text3}>{item.Title}</Text>
+        {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
+        <Image
+          style={styles.image}
+          resizeMode='contain'
+          source={{
+            uri: item.ImageURL,
+          }}
+        />
+      </View>
+    </TouchableOpacity>
+    );
+  }
   render() {
     if (web) {
       return (
@@ -403,61 +425,13 @@ class Rewards extends Component {
             source={require('./like_background.png')}
             style={{ width: '100%', height: '100%' }}>
             <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
-              {/* <View style={styles.giveawaycenter}>
-                <Image
-                  style={styles.giveawaycenter}
-                  resizeMode='contain'
-                  source={require('./assets/giveaway/header.png')}
-                />
-                <Image
-                  style={styles.giveawaycenter2}
-                  resizeMode='contain'
-                  source={require('./assets/giveaway/logo.png')}
-                />
-                <TouchableWithoutFeedback
-                  style={styles.giveawaycenter2}
-                  onPress={() => this.setUserDaily()}
-                >
-                  {
-                    this.state.DailyGiveaway ? <Image
-                      style={styles.giveawaycenter2}
-                      resizeMode='contain'
-                      source={require('./assets/giveaway/tap2.png')}
-                    /> :
-                      <Image
-                        style={styles.giveawaycenter2}
-                        resizeMode='contain'
-                        source={require('./assets/giveaway/tap.png')}
-                      />
-                  }
-
-                </TouchableWithoutFeedback>
-              </View> */}
-
-              <FlatList backgroundColor={'transparent'}
+              <OptimizedFlatList backgroundColor={'transparent'}
                 style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
                 data={this.state.rewards}
                 keyExtractor={(item, index) => index}
                 ListEmptyComponent={this.showEmptyListView()}
                 ListHeaderComponent={() => this.renderHeader()}
-                renderItem={({ item, separators }) => (
-                  <TouchableOpacity
-                    onPress={() => this._onPress(item)}
-                    onShowUnderlay={separators.highlight}
-                    onHideUnderlay={separators.unhighlight}>
-                    <View style={{ backgroundColor: 'transparent' }}>
-                      <Text style={styles.text3}>{item.Title}</Text>
-                      {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
-                      <Image
-                        style={styles.image}
-                        resizeMode='contain'
-                        source={{
-                          uri: item.ImageURL,
-                        }}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
+                renderItem={this._renderItem}
               />
             </View>
           </ImageBackground>
@@ -468,6 +442,27 @@ class Rewards extends Component {
   }
 }
 
+class RewardItem extends React.PureComponent {
+  render() {
+    return (
+        <View 
+                style={{
+                  paddingVertical: 10,
+                }}>
+                  <TouchableOpacity onPress={() => null}>
+                    <Text 
+                      style={{
+                        color: '#000', 
+                        height: 40,
+                        justifyContent: 'center'
+                      }}>
+                      {this.props.produto.descricao}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+    )
+  }
+}
 const styles = StyleSheet.create({
   container: {
     ...Platform.select({
