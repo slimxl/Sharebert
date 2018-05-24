@@ -1,6 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, Alert, TouchableWithoutFeedback, Image, Platform, Dimensions } from 'react-native';
+import {
+  StyleSheet, View, Text, Alert,
+  TouchableWithoutFeedback, Image, Platform, Dimensions, FlatList
+} from 'react-native';
 import { Constants } from 'expo';
+import { NavigationActions } from 'react-navigation';
 import Files from './Files';
 import * as THREE from 'three'; // 0.88.0
 import Expo from 'expo';
@@ -24,6 +28,10 @@ var userID;
 var userPoints;
 var uri2;
 
+var ScoreSend = false;
+var retry = false;
+var showScores = false;
+
 export default class Game extends React.Component {
   scale = 1;
   pipes = new Group();
@@ -38,6 +46,7 @@ export default class Game extends React.Component {
 
   state = {
     score: 'Get Ready!',
+    HS: [],
   };
 
   componentWillMount() {
@@ -109,7 +118,7 @@ export default class Game extends React.Component {
     });
     this.scene.add(this.player);
 
-    //console.log(this.props);
+    console.log(this.props.state.id);
   };
 
   setupGround = async () => {
@@ -163,7 +172,7 @@ export default class Game extends React.Component {
   };
 
   setupPipe = async ({ key, y }) => {
-    const size = { width: PIPEWIDTH, height: Math.floor(Math.random() * PIPEHEIGHT_MAX + 1) + PIPEHEIGHT_MIN};
+    const size = { width: PIPEWIDTH, height: Math.floor(Math.random() * PIPEHEIGHT_MAX + 1) + PIPEHEIGHT_MIN };
 
     const tbs = {
       top: Files.sprites.pipe_top,
@@ -180,7 +189,7 @@ export default class Game extends React.Component {
   };
 
   setupCoin = async ({ key, y }) => {
-    const size = { width: 25, height: 25};
+    const size = { width: 25, height: 25 };
 
     const tbs1 = {
       top: Files.sprites.coin,
@@ -259,12 +268,12 @@ export default class Game extends React.Component {
     });
 
     //@(Evan Bacon) Get a random spot for the center of the two pipes.
-    
+
     const coinY =
-    this.scene.size.height * .5;
-      //this.scene.size.height 
-     //  2 +
-      //(Math.random() - 0.5) * this.scene.size.height * 0.2;
+      this.scene.size.height * .5;
+    //this.scene.size.height 
+    //  2 +
+    //(Math.random() - 0.5) * this.scene.size.height * 0.2;
     //@(Evan Bacon) Spawn both pipes around this point.
     //this.spawnPipe(pipeY);
     this.spawnCoin(coinY);
@@ -317,8 +326,8 @@ export default class Game extends React.Component {
     //@(Evan Bacon) Get a random spot for the center of the two pipes.
     const pipeY =
       this.scene.size.height * .7;
-      // 2 +
-      //(Math.random() - 0.5) * this.scene.size.height * 0.2;
+    // 2 +
+    //(Math.random() - 0.5) * this.scene.size.height * 0.2;
     //@(Evan Bacon) Spawn both pipes around this point.
     //this.spawnPipe(pipeY);
     this.spawnPipe(pipeY, true);
@@ -341,7 +350,7 @@ export default class Game extends React.Component {
 
     if (!this.gameOver) {
       // @(Evan Bacon) These are in-game taps for making the bird flap
-     
+
       if (doublejumpint < MAXJUMPS) {
         this.velocity = FLAP;
         doublejumpint += 1;
@@ -363,7 +372,32 @@ export default class Game extends React.Component {
       //       userPoints = responseData2['Points'];
       //   })
       //   .done();
-      this.reset();
+
+      //if (!ScoreSend && retry) {
+      //  this.reset();
+      //}
+      //if (ScoreSend) {
+      //  this.sendScore();
+
+
+      fetch('https://sharebert.com/s/Checkscore.php', { method: 'GET' })
+        .then(response => response.json())
+        .then(responseData => {
+          var data2 = []
+          for (var i = 0; i < responseData.length; i++) {
+            var obj = {};
+
+            obj['User'] = responseData[i]['User_Name'];
+            obj['Score'] = responseData[i]['DailyScore'];
+            data2.push(obj);
+          }
+          //var reversed = data2.reverse(); 
+          this.setState({
+            HS: data2,
+          })
+        })
+        .done();
+      showScores = true;
     }
   };
 
@@ -388,6 +422,9 @@ export default class Game extends React.Component {
     this.gameOver = false;
     this.resetJump();
     this.setState({ score: 'Get Ready!' });
+    showScores = false;
+    reset = false;
+    sendScore = false;
 
     this.player.reset(this.scene.size.width * -0.3, 0);
     this.player.angle = 0;
@@ -406,10 +443,19 @@ export default class Game extends React.Component {
     this.reset();
   };
 
+  sendScore = () => {
+    fetch(
+      'https://sharebert.com/s/SetDailyScore.php?score=' + this.state.score +
+      '&ui=' +
+      +this.props.state.params.id,
+      { method: 'GET' }
+    ).done();
+  };
+
   updateGame = delta => {
     if (this.gameStarted) {
 
-      const target = this.groundNode.top+20; //offset so its just above the ground
+      const target = this.groundNode.top + 20; //offset so its just above the ground
 
       if (this.player.y > target) {
         this.velocity -= GRAVITY * delta;
@@ -446,14 +492,12 @@ export default class Game extends React.Component {
           //@(Evan Bacon) We check if the user collided with any of the pipes.
           if (coinBox.intersectsBox(playerBox)) {
             //this.setGameOver();
-            if(!coin.passed)
-            {
+            if (!coin.passed) {
               this.addScore();
               coin.passed = true;
               coin.kill();
             }
           }
-
         });
 
 
@@ -509,7 +553,9 @@ export default class Game extends React.Component {
         }
       });
     }
+
   };
+
 
   renderScore = () => (
     <Text
@@ -549,9 +595,64 @@ export default class Game extends React.Component {
             source={require('../assets/arrow_w.png')}
           />
         </TouchableWithoutFeedback>
+        {(showScores == true) ?
+
+          <FlatList backgroundColor={'transparent'}
+            style={styles.likesviewscroll}
+            data={this.state.HS}
+            keyExtractor={(item, index) => index}
+            renderItem={this._renderItem}
+          />
+          :
+          <View>
+          </View>
+        }
+
+        {(this.gameOver == true)
+          ?
+          <View>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.props.sendScore();
+              }}>
+              <Text
+                style={styles.text}>
+                Send Score
+            </Text>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.props.reset();
+              }}>
+              <Text
+                style={styles.text}>
+                Retry
+            </Text>
+            </TouchableWithoutFeedback>
+          </View>
+          :
+          <View>
+          </View>
+        }
       </View>
     );
   }
+
+  _renderItem = data => {
+    const item = data.item;
+    var imageURL2 = ""
+    try {
+      var scoretext = item.User + " " + item.Score;
+      return (
+        <View >
+          <Text numberOfLines={2} style={styles.text}>{scoretext}</Text>
+        </View>
+      );
+    } catch (error) {
+
+    }
+  };
 }
 const styles = StyleSheet.create({
   container: {
@@ -568,6 +669,25 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
         backgroundColor: '#dee6ee',
 
+      },
+    }),
+  },
+  text: {
+    textAlign: 'left',
+    fontSize: 12,
+    marginTop: 40,
+    marginLeft: 110,
+    backgroundColor: 'transparent',
+  },
+  likesviewscroll: {
+    ...Platform.select({
+      ios: {
+        width: '100%',
+        height: '80%',
+      },
+      android: {
+        width: '100%',
+        height: '80%',
       },
     }),
   },
