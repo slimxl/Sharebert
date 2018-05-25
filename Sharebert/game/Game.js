@@ -617,7 +617,7 @@ export default class Game extends React.Component {
           <View>
             <TouchableWithoutFeedback
               onPress={() => {
-                this.props.sendScore();
+                this.sendScore();
               }}>
               <Text
                 style={styles.text}>
