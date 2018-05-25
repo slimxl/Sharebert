@@ -2,9 +2,9 @@ export default {
   sprites: {
     bg: require('../assets/sprites/bg2.png'),
     bird: require('../assets/sprites/bird3.png'),
-    ground: require('../assets/sprites/ground2.png'),
-    pipe_bottom: require('../assets/sprites/pipe_bottom.png'),
-    pipe_top: require('../assets/sprites/pipe_top.png'),
+    ground: require('../assets/sprites/ground3.png'),
+    pipe_bottom: require('../assets/sprites/pipe_bottom2.png'),
+    pipe_top: require('../assets/sprites/pipe_top2.png'),
     coin: require('../assets/sprites/coin.png'),
   },
   audio: {

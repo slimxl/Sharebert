@@ -10,7 +10,7 @@ const SPEED = 1.6;
 const GRAVITY = 1100;
 const FLAP = 320;
 const SPAWN_RATE = 2600;
-const SPAWN_RATE_COIN = 3200;
+const SPAWN_RATE_COIN = 3000;
 const OPENING = 350;
 const GROUND_HEIGHT = 112;
 const MAXJUMPS = 1;
@@ -219,7 +219,9 @@ export default class Game extends React.Component {
   };
 
   spawnCoin = async (openPos) => {
-    let coinY = Math.floor(Math.random() * -49) - 100  //INSERT RANDOM NUMBER HERE
+    
+    let coinY = Math.floor(Math.random() * -49) -50  //INSERT RANDOM NUMBER HERE
+
     console.log(coinY);
     let coinKey = 'bottom';
     let coin;
@@ -541,6 +543,8 @@ export default class Game extends React.Component {
         {this.renderScore()}
         <TouchableWithoutFeedback
           onPress={() => {
+            clearInterval(this.pillarInterval);
+            clearInterval(this.pillarInterval2);
             this.props.goBack();
           }}>
           <Image
