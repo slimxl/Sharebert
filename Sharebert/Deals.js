@@ -13,6 +13,7 @@ import {
     Linking,
     Keyboard,
     Alert,
+    WebView,
     FlatList,
     Share,
     Platform,
@@ -43,232 +44,163 @@ class Deals extends Component {
         userID = this.props.navigation.state.params.id;
         userPoints = this.props.navigation.state.params.points;
         uri2 = this.props.navigation.state.params.uri;
-        this.state = {
-            inputValue: 'Search',
-            trendinglist: [],
-        }
-        //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
-        fetch('https://sharebert.com/feed/?post_type=deals')
-            .then((response) => response.text())
-            .then((responseData) => rssParser.parse(responseData))
-            .then((rss) => {
-                var data2 = [];
-                console.log(rss.items.length);
-                //console.log(rss.items[0]['description']);
-                for (var i = 0; i < rss.items.length; i++) {
-                    var obj = {};
-                    obj['link'] = rss.items[i]['links'][0]['url'];
-                    var linkfull = rss.items[i]['description'];
-                    obj['link'] = linkfull.substr(linkfull.indexOf('<p>') + 3, linkfull.indexOf('</p>') - 3);
-                    obj['title'] = rss.items[i].title;
-                    obj['name'] = rss.items[i].title.substr(0, rss.items[i].title.indexOf('posted') - 1);
-                    obj['title'] = rss.items[i].title.substr(rss.items[i].title.indexOf('posted') + 7);
-                    console.log(obj.title);
-                    data2.push(obj);
-                }
-                this.setState({
-                    trendinglist: data2,
-                })
-            });
-
-
     }
-    getNews() {
-        var url = "https://sharebert.com/feed/?post_type=deals"
-        fetch(url)
-            .then((response) => response.text())
-            .then((responseText) => {
-                const doc = new DOMParser().parseFromString(responseText, "text/xml");
-                var item = doc.getElementsByTagName('item');
-
-                for (i = 0; i < item.length; i++) {
-
-                    var title = item[i].getElementsByTagName('title');
-                    console.log(title[0]);
-
-                }
-
-            })
-            .catch((error) => {
-                console.log('Error fetching the feed: ', error);
-            });
-    }
-    _onPress(item) {
-        try {
-            Linking.openURL(item.link);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    onSubmitEdit = () => {
-        Keyboard.dismiss();
-        this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-            uri: uri2,
-            search: this.state.inputValue
-        })
-    };
-
-    _handleTextChange = inputValue => {
-        this.setState({ inputValue });
-    };
-
 
     showEmptyListView = () => {
 
-        return(
+        return (
             <View style={styles.card}>
-      
+
                 <Image
-                  resizeMode="contain"
-                  style={styles.imageload}
-      
-                  source={require('./assets/loading3.gif')}
+                    resizeMode="contain"
+                    style={styles.imageload}
+
+                    source={require('./assets/loading4.gif')}
                 />
-              </View>
-            )
+            </View>
+        )
     };
+    renderLoadingView() {
+        return (
+
+            <View style={styles.giveawaycenterview}>
+
+                <Image
+                    resizeMode="contain"
+                    style={styles.imageload}
+
+                    source={require('./assets/loading4.gif')}
+                />
+            </View>
+        );
+    }
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.props.navigation.goBack();
-                    }}>
-                    <Image style={styles.header} />
-                </TouchableOpacity>
+
+                <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+                <Image style={styles.header} />
+                <Text style={styles.text2}>
+                    {userPoints + '\n'}
+                </Text>
+                <Text style={styles.pointsText}>
+                    Points
+                </Text>
+                <Image
+                    resizeMode="contain"
+                    style={styles.button}
+                    source={require('./assets/icons/logoicon.png')}
+                />
                 <TouchableWithoutFeedback
                     onPress={() => {
                         this.props.navigation.goBack();
                     }}>
                     <Image
-                        resizeMode='contain'
                         style={styles.hamburger}
-                        source={require('./assets/arrow.png')}
+                        resizeMode='contain'
+                        source={require('./assets/arrow_w.png')}
                     />
-
                 </TouchableWithoutFeedback>
-                <Image
-                    resizeMode="contain"
-                    style={styles.button}
-                    source={require('./assets/icons/logo2.png')}
-                />
-                <Text style={styles.title}>
-                    Daily Deals
-                </Text>
-                <Image style={styles.footer} />
-
-                <FlatList
-                    style={{
-                        marginTop: 0, marginBottom: 60,
-                        paddingBottom: 30
-                    }}
-                    data={this.state.trendinglist}
-                    ListEmptyComponent={this.showEmptyListView()}
-                    keyExtractor={(item, index) => index}
-                    renderItem={({ item, separators }) => (
-                        <TouchableOpacity
-                            onPress={() => this._onPress(item)}
-                            onShowUnderlay={separators.highlight}
-                            onHideUnderlay={separators.unhighlight}>
-                            <View style={{ backgroundColor: 'white' }}>
-
-                                <Text style={styles.text}>
-
-                                    <Text style={{ fontWeight: 'bold', fontSize: 13 }}> {item.name} </Text>
-                                    <Text >posted</Text>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 13 }}> {item.title} </Text>
-
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
+                <WebView
+                    source={{ uri: 'https://sharebert.com/shop' }}
+                    style={{ marginTop: 15 }}
+                    renderLoading={this.renderLoadingView} startInLoadingState={true}
                 />
 
-
-
-                <TouchableOpacity style={styles.footerItem}
-                    onPress={() => this.props.navigation.navigate('Explore', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.exploreBut} resizeMode={"contain"} source={require('./assets/menu/explore.png')}>
-
-                    </Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerItem}
-                    onPress={() => this.props.navigation.navigate('Likes', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.likesBut} resizeMode={"contain"} source={require('./assets/menu/likes.png')}>
-
-                    </Image>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerRewards}
-                    onPress={() => this.props.navigation.navigate('Rewards', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.rewardsBut} resizeMode={"contain"} source={require('./assets/menu/rewards.png')}>
-
-                    </Image>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.footerProfile}
-                    onPress={() => this.props.navigation.navigate('Shipping', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                    })}>
-                    <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
-
-                    </Image>
-                </TouchableOpacity>
-            </View>
+            </View >
         );
     }
 }
-const colors = {
-    snow: 'white',
-    darkPurple: '#140034',
-    placeholder: '#eee',
-};
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: Constants.statusBarHeight,
+        ...Platform.select({
+            ios: {
+                marginTop: Constants.statusBarHeight,
+                backgroundColor: 'transparent',
+
+            },
+            android: {
+                marginTop: Constants.statusBarHeight,
+                backgroundColor: '#dee6ee',
+            },
+        }),
+
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#F5FCFF',
+    },
+    imageload: {
+        width: 128,
+        height: 128,
+        marginTop: Dimensions.get('window').width/2,
+        
+    },
+    giveawaycenterview: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 5,
     },
     dividerTop:
         {
-            width: Dimensions.get('window').width,
-            height: 3,
-            backgroundColor: '#dee6ee',
+            ...Platform.select({
+                ios: {
+                    width: Dimensions.get('window').width,
+                    position: "absolute",
+                    top: -25,
+                    height: 100,
+                    backgroundColor: 'transparent',
+                },
+                android: {
+                    width: Dimensions.get('window').width,
+                    position: "absolute",
+                    top: 0,
+                    height: 100,
+                    backgroundColor: 'transparent',
+                },
+            }),
         },
+    text2: {
+        ...Platform.select({
+            ios: {
+                marginRight: 10,
+                marginTop: -40,
+                textAlign: 'right',
+                fontSize: 15,
+                color: 'white',
+                backgroundColor: 'transparent',
+            },
+            android: {
+                marginRight: 8,
+                marginTop: 10,
+                textAlign: 'right',
+                fontSize: 15,
+                color: 'white',
+                backgroundColor: 'transparent',
+            },
+        }),
+    },
     hamburger: {
         ...Platform.select({
             ios: {
-                width: 30,
-                height: 23,
-                marginLeft: 10,
-                marginTop: -32,
+                position: 'absolute',
+                top: 5,
+                width: 100,
+                height: 30,
+                left: -25,
                 backgroundColor: 'transparent',
                 padding: 0,
+
             },
             android: {
                 position: 'absolute',
-                marginTop: 5,
-                marginLeft: -5,
-                height: 25,
-                width: 70,
+                backgroundColor: 'transparent',
+                top: 15,
+                left: -25,
+                height: 30,
+                width: 90,
             },
         }),
+
     },
 
     title: {
@@ -297,50 +229,27 @@ const styles = StyleSheet.create({
             },
         }),
     },
-    image: {
-        width: 100,
-        height: 100,
-        marginTop: 0,
-    },
-    listContainer: {
-        flex: 1,
-        padding: PRODUCT_ITEM_OFFSET,
-    },
-    itemImage: {
-        width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
-            PRODUCT_ITEM_MARGIN,
-        height: 125,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    itemTitle: {
-        flex: 1,
-        textAlign: 'center',
+    pointsText: {
         ...Platform.select({
             ios: {
-                fontWeight: '400',
-            },
-        }),
-        margin: PRODUCT_ITEM_OFFSET * 2,
-    },
-    item: {
-        margin: PRODUCT_ITEM_OFFSET,
-        overflow: 'hidden',
-        borderRadius: 3,
-        width: (SCREEN_WIDTH - PRODUCT_ITEM_MARGIN) / numColumns -
-            PRODUCT_ITEM_MARGIN,
-        height: PRODUCT_ITEM_HEIGHT,
-        flexDirection: 'column',
-        backgroundColor: colors.snow,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'rgba(0,0,0, .2)',
-                shadowOffset: { height: 0, width: 0 },
-                shadowOpacity: 1,
-                shadowRadius: 1,
+                marginRight: 10,
+                marginTop: -17,
+                textAlign: 'right',
+                fontSize: 15,
+                color: 'white',
+                fontWeight: 'bold',
+                backgroundColor: 'transparent',
+                marginBottom: 30,
             },
             android: {
-                elevation: 1,
+                marginRight: 10,
+                marginTop: -7,
+                marginBottom: 20,
+                textAlign: 'right',
+                fontSize: 15,
+                color: 'white',
+                fontWeight: 'bold',
+                backgroundColor: 'transparent',
             },
         }),
     },
@@ -348,35 +257,47 @@ const styles = StyleSheet.create({
     button: {
         ...Platform.select({
             ios: {
-                width: 100,
-                height: 70,
-                marginTop: -45,
-                marginLeft: Dimensions.get('window').width / 2.6,
+                width: 150,
+                height: 50,
+                marginTop: -65,
+                marginLeft: Dimensions.get('window').width * .5 - 75,
                 backgroundColor: 'transparent',
                 padding: 20,
+                marginBottom: 30,
             },
             android: {
                 position: 'absolute',
-                width: 100,
+                width: 150,
+                height: 50,
                 marginTop: 10,
-                marginLeft: Dimensions.get('window').width *.5 - 50,
-                height: 30,
+                left: (Dimensions.get('window').width * .5) - 75,
+                backgroundColor: 'transparent',
                 flexDirection: 'row',
             },
         }),
     },
     header: {
-        width: '100%',
-        height: 40,
-        backgroundColor: '#dee6ee',
-        marginTop: 0,
+        ...Platform.select({
+            ios: {
+                marginTop: 0,
+                width: '100%',
+                height: 40,
+                backgroundColor: 'transparent',
+            },
+            android: {
+                marginTop: -10,
+                height: 100,
+                backgroundColor: 'transparent',
+
+            },
+        }),
+
     },
     text: {
         textAlign: 'left',
         fontSize: 12,
         marginTop: 40,
-        marginLeft: 30,
-        color: '#0d2754',
+        marginLeft: 110,
         backgroundColor: 'transparent',
     },
 
@@ -437,13 +358,6 @@ const styles = StyleSheet.create({
             borderRadius: 12,
             backgroundColor: 'transparent',
         },
-    imageload: {
-        width,
-        marginLeft: Dimensions.get('window').width / 70,
-        marginTop: Dimensions.get('window').height / 4.5,
-
-        flex: 1,
-    },
     footer: {
         height: 40,
         width: '100%',

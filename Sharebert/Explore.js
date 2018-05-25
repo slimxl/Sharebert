@@ -87,6 +87,7 @@ class Explore extends Component {
   constructor(props) {
     super(props);
     //console.log(this.props.navigation.state.params);
+    console.disableYellowBox = true;
     userID = this.props.navigation.state.params.id;
     try {
       userPoints = this.props.navigation.state.params.points;
