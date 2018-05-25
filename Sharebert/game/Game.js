@@ -33,6 +33,10 @@ var retry = false;
 var showScores = false;
 
 export default class Game extends React.Component {
+  constructor(){
+    super();
+    console.disableYellowBox = true;
+  }
   scale = 1;
   pipes = new Group();
   coins = new Group();
@@ -43,12 +47,12 @@ export default class Game extends React.Component {
   gameStarted = false;
   gameOver = false;
   velocity = 0;
-
+  
   state = {
     score: 'Get Ready!',
     HS: [],
   };
-
+  
   componentWillMount() {
     THREE.suppressExpoWarnings(true);
     /// Audio is currently broken in snack :/
@@ -627,7 +631,7 @@ export default class Game extends React.Component {
 
             <TouchableWithoutFeedback
               onPress={() => {
-                this.props.reset();
+                this.reset();
               }}>
               <Text
                 style={styles.text}>
