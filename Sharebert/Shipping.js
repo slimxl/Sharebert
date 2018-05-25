@@ -430,6 +430,22 @@ class Shipping extends Component {
                   />}
               </TouchableOpacity>
 
+              <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('Main', 
+                {
+                  id: userID,
+                  points: userPoints,
+                });
+              }}
+              style={{
+                width: 250, height: 50, 
+                marginLeft: (Dimensions.get('window').width * .5) - 125
+              }}>
+                   <Text style={{backgroundColor: 'white'}}>
+                    Super secret game button
+                  </Text>
+              </TouchableOpacity>
+
                {/* <TouchableOpacity onPress={() => {
                 this.clearFile2();
               }}
