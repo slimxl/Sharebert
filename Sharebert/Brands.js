@@ -427,7 +427,7 @@ class Brands extends Component {
       brandArr.push(Brand39);
       brandArr.push(Brand40);
   
-      brandArr.push(Brand41);
+      //brandArr.push(Brand41);
       //brandArr.push(Brand42);
       //brandArr.push(Brand43);
       //brandArr.push(Brand44);
