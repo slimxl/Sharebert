@@ -102,7 +102,7 @@ class Deals extends Component {
                     />
                 </TouchableWithoutFeedback>
                 <WebView
-                    source={{ uri: 'https://sharebert.com/shop' }}
+                    source={{ uri: 'https://sharebert.com/shop/deals/' }}
                     style={{ marginTop: 15 }}
                     renderLoading={this.renderLoadingView} startInLoadingState={true}
                 />

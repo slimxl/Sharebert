@@ -36,15 +36,17 @@ class LoginScreen extends Component {
       'MontserratItalic': require('./assets/fonts/MontserratItalic.otf'),
 
     });
-    
+
     analytics.hit(new PageHit('IsItWorking'))
-      .then(() => {console.log("success");
-    console.log(analytics)})
+      .then(() => {
+        console.log("success");
+        console.log(analytics)
+      })
       .catch(e => console.log(e.message));
   }
 
-  debugAnalyticmsg = () =>{
-    Alert.alert('DEBUG',JSON.stringify(analytics,null, 4));
+  debugAnalyticmsg = () => {
+    Alert.alert('DEBUG', JSON.stringify(analytics, null, 4));
   };
 
   onSubmitEdit(location) {
@@ -56,10 +58,14 @@ class LoginScreen extends Component {
       uri2 =
         'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
 
-      this.props.navigation.navigate('Main', {
-        id: 0,
-        points: 0,
+      this.props.navigation.navigate('Explore', {
+        id: userID,
+        points: userPoints,
         uri: uri2,
+        //this.props.navigation.navigate('Main', {
+        //  id: 0,
+        //  points: 0,
+        //  uri: uri2,
       });
     }
     else {
@@ -366,9 +372,9 @@ class LoginScreen extends Component {
         type,
         token,
       } = await Facebook.logInWithReadPermissionsAsync(
-        '1841427549503210', // Replace with your own app id in standalone app
-        { permissions: ['public_profile', 'email'] }
-      );
+          '1841427549503210', // Replace with your own app id in standalone app
+          { permissions: ['public_profile', 'email'] }
+        );
 
       switch (type) {
         case 'success': {
