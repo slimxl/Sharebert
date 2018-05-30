@@ -102,9 +102,16 @@ class Deals extends Component {
                     />
                 </TouchableWithoutFeedback>
                 <WebView
+                    ref={'webview'}
                     source={{ uri: 'https://sharebert.com/shop/deals/' }}
                     style={{ marginTop: 15 }}
                     renderLoading={this.renderLoadingView} startInLoadingState={true}
+                    onNavigationStateChange={(event) => {
+                        if (event.url !== 'https://sharebert.com/shop/deals/') {
+                            this.refs['webview'].stopLoading();
+                            Linking.openURL(event.url);
+                        }
+                    }}
                 />
 
             </View >
@@ -132,8 +139,8 @@ const styles = StyleSheet.create({
     imageload: {
         width: 128,
         height: 128,
-        marginTop: Dimensions.get('window').width/2,
-        
+        marginTop: Dimensions.get('window').width / 2,
+
     },
     giveawaycenterview: {
         justifyContent: 'center',
