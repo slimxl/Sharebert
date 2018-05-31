@@ -26,6 +26,8 @@ var userPoints = 0;
 var userID = 0;
 var uri2 = '';
 var refresh = false;
+var likes = [];
+
 // screen sizing
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -44,6 +46,7 @@ class Search extends Component {
         userID = this.props.navigation.state.params.id;
         userPoints = this.props.navigation.state.params.points;
         uri2 = this.props.navigation.state.params.uri;
+        likes = this.props.navigation.state.params.like;
         this.state = {
             inputValue: 'Search',
             trendinglist: [],
@@ -139,13 +142,17 @@ class Search extends Component {
         })
     }
     resetTo(route) {
+        //console.log(likes);
+    
         this.props.navigation.push(route, {
-            id: userID,
-            points: userPoints,
-            uri: uri2,
-            updateData: this.updateData,
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+          like: likes,
+          updateData: this.updateData,
+          clearLikes: this.clearLikes,
         })
-    }
+      }
     onSubmitEdit = () => {
         Keyboard.dismiss();
         if (this.state.inputValue === '' || this.state.inputValue === null) {

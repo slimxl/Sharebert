@@ -1308,11 +1308,7 @@ class Explore extends Component {
   }
   resetTo(route) {
     //console.log(likes);
-    if(userID===0&&route==='Likes')
-    {
-      Alert.alert('Sign In!',"Please Sign In to Enable Likes!");
-      return;
-    }
+
     this.props.navigation.push(route, {
       id: userID,
       points: userPoints,
