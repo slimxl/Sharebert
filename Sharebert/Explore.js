@@ -632,7 +632,6 @@ class Explore extends Component {
         .then(responseData => {
           var test = responseData['Points'];
           userPoints = test;
-
           this.forceUpdate();
         })
         .done();

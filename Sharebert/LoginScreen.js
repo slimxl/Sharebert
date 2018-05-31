@@ -457,34 +457,20 @@ class LoginScreen extends Component {
         )
           .then(() => {
             fetch(
-              'https://sharebert.com/s/RetrievePointsWeb.php?uemail=' +
+              'https://sharebert.com/s/RetrievePointsWeb2.php?uemail=' +
               userEmail2,
               { method: 'GET' }
             )
               .then(response => response.json())
               .then(responseData => {
-                var test = responseData['Points'];
-                userPoints = test;
+                userID = responseData[0]['id'];
+                userPoints = responseData[0]['Points'];
+                this.saveFile();
+                this.onSubmitEdit('Login');
               })
               .done();
           })
           .done();
-
-
-        fetch(
-          'https://sharebert.com/s/GetIDfromEmail.php?uemail=' +
-          userEmail2,
-          { method: 'GET' }
-        )
-          .then(response2 => response2.json())
-          .then(responseData2 => {
-            var test = responseData2['id'];
-            userID = test;
-            this.saveFile();
-            this.onSubmitEdit('Login');
-          })
-          .done();
-
 
       }
       else {
