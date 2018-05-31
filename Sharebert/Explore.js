@@ -657,10 +657,14 @@ class Explore extends Component {
   };
 
   clearLikes = () => {
-    Firebase.database().ref('users/' + userID + "/likes").set({
+    if(userID!==0)
+    {
+      Firebase.database().ref('users/' + userID + "/likes").set({
 
-    });
-    this.getOldLikes();
+      });
+      this.getOldLikes();
+    }
+
   }
 
   printURL = () => {
@@ -1004,23 +1008,27 @@ class Explore extends Component {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
 
         var newTitle = sanitize(this.state.dataset[this.state.cardNum - 1].Title);
-        Firebase.database().ref('users/' + userID + '/likes/').push({
-          ASIN: sanitize(this.state.dataset[this.state.cardNum - 1].ASIN),
-          ImageURL: this.state.dataset[this.state.cardNum - 1].ImageURL,
-          Retailer: this.state.dataset[this.state.cardNum - 1].Retailer,
-          Title: newTitle,
-          URL: this.state.dataset[this.state.cardNum - 1].URL
-        });
-
-        //likes.push(this.state.dataset[this.state.cardNum - 1]);
-        //this.saveLike();
-        this.notificationLike.show({
-          title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
-          message: 'Saved to your likes list!',
-          icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
-          onPress: () => this.resetTo('Likes')
-        });
-        this.getOldLikes();
+        if(userID!==0)
+        {
+          Firebase.database().ref('users/' + userID + '/likes/').push({
+            ASIN: sanitize(this.state.dataset[this.state.cardNum - 1].ASIN),
+            ImageURL: this.state.dataset[this.state.cardNum - 1].ImageURL,
+            Retailer: this.state.dataset[this.state.cardNum - 1].Retailer,
+            Title: newTitle,
+            URL: this.state.dataset[this.state.cardNum - 1].URL
+          });
+  
+          //likes.push(this.state.dataset[this.state.cardNum - 1]);
+          //this.saveLike();
+          this.notificationLike.show({
+            title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
+            message: 'Saved to your likes list!',
+            icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
+            onPress: () => this.resetTo('Likes')
+          });
+          this.getOldLikes();
+        }
+       
 
       }
 
@@ -1299,7 +1307,12 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
-    console.log(likes);
+    //console.log(likes);
+    if(userID===0&&route==='Likes')
+    {
+      Alert.alert('Sign In!',"Please Sign In to Enable Likes!");
+      return;
+    }
     this.props.navigation.push(route, {
       id: userID,
       points: userPoints,
