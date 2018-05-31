@@ -8,6 +8,7 @@ import LoadingView from 'rn-loading-view';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Notification from 'react-native-in-app-notification';
 import ImageSlider from 'react-native-image-slider';
+import Firebase from './Firebase';
 import {
   StyleSheet,
   AsyncStorage,
@@ -97,6 +98,7 @@ class Explore extends Component {
     }
     uri2 = this.props.navigation.state.params.uri;
     this.getOldLikes();
+
     this.state = {
       cards: ['1', '2', '3'],
       isOpen: false,
@@ -286,7 +288,6 @@ class Explore extends Component {
       randomPROFILEIMAGE.push(imgUrl);
     }
     this.grabRandoLikes();
-
   }
 
   _getItemLayout = (data, index) => {
@@ -994,14 +995,26 @@ class Explore extends Component {
       'https://i.imgur.com/qnHscIM.png' || this.state.url !== 'https://i.imgur.com/JaG8ovv.gif'
     ) {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
-        likes.push(this.state.dataset[this.state.cardNum - 1]);
-        this.saveLike();
+
+        var newTitle = sanitize(this.state.dataset[this.state.cardNum - 1].Title);
+        Firebase.database().ref('users/' + userID + '/likes/').push({
+          ASIN: sanitize(this.state.dataset[this.state.cardNum - 1].ASIN),
+          ImageURL: this.state.dataset[this.state.cardNum - 1].ImageURL,
+          Retailer: this.state.dataset[this.state.cardNum - 1].Retailer,
+          Title: newTitle,
+          URL: this.state.dataset[this.state.cardNum - 1].URL
+        });
+
+        //likes.push(this.state.dataset[this.state.cardNum - 1]);
+        //this.saveLike();
         this.notificationLike.show({
           title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
           message: 'Saved to your likes list!',
           icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
           onPress: () => this.resetTo('Likes')
         });
+       this.getOldLikes();
+        
       }
 
 
@@ -1081,8 +1094,41 @@ class Explore extends Component {
     }
 
   }
+
+
+  getOldLikes = () => {
+    var res;
+    try {
+      if (userID !== 0 || userID !== undefined) {
+        var ref = Firebase.database().ref('users/' + userID + "/likes/");
+        ref.once('value')
+          .then(function (snapshot) {
+            if (snapshot.val() !== null) {
+              var obj = snapshot.val();
+              res = Object.keys(obj)
+                // iterate over them and generate the array
+                .map(function (k) {
+                  // generate the array element 
+                  return obj[k];
+                });
+              if (res !== null || res !== undefined) {
+
+                likes = res.reverse();
+                
+              }
+            }
+          });
+      }
+
+      //this.forceUpdate();
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
   saveLike = async () => {
     try {
+
 
       if (userID !== undefined || userID !== 0) {
         await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
@@ -1091,36 +1137,13 @@ class Explore extends Component {
         await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
       }
       const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+
     } catch (error) {
       // Error saving data
       Alert.alert("Error saving likes!");
     }
 
   }
-
-  getOldLikes = async (type) => {
-    try {
-      var likesave;
-      if (userID !== undefined) {
-        likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
-      }
-      else {
-        likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
-      }
-      if (likesave !== null) {
-        // We have data!!
-
-        likes = JSON.parse(likesave);
-      }
-      else {
-      }
-      //this.forceUpdate();
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
-
-
   onSubmitEdit = () => {
     console.log('Search was refreshed');
     Keyboard.dismiss();
@@ -1265,10 +1288,12 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
+    console.log(likes);
     this.props.navigation.push(route, {
       id: userID,
       points: userPoints,
       uri: uri2,
+      like: likes,
       updateData: this.updateData
     })
   }
@@ -2375,6 +2400,13 @@ async function register() {
 
 
 };
+function sanitize(text) {
+  text = text.replace(/\./g, '');
+  text = text.replace(/\#/g, '');
+  text = text.replace(/\$/g, '');
+  text = text.replace(/[\[\]']+/g, '')
+  return text;
+}
 function trunc(text) {
   if (text.includes('   ')) {
     text = text.substr(0, text.indexOf('   '));

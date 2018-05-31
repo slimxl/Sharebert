@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import Notification from 'react-native-in-app-notification';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import Firebase from './Firebase';
 
 import { Constants, Font } from 'expo';
 const backAction = NavigationActions.back({
@@ -33,6 +34,7 @@ class Likes extends Component {
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
+    like = this.props.navigation.state.params.like;
     uri = this.props.navigation.state.params.uri;
     if (userPoints === undefined || userID === undefined) {
       userPoints = 0;
@@ -42,9 +44,11 @@ class Likes extends Component {
       isOpen: false,
       selectedItem: 'Likes',
       showAlert: false,
+      like: [],
       userID: userID,
     };
-    this.getFile();
+    //this.getFile();
+
     try {
       if (userID != 0) {
         fetch(
@@ -188,29 +192,54 @@ class Likes extends Component {
   //   );
   // }
 
-  getFile = async (type) => {
-    try {
-      var likesave;
-      if (userID !== undefined) {
-        likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
-      }
-      else {
-        likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
-      }
-      if (likesave !== null) {
-        // We have data!!
-        like2 = JSON.parse(likesave);
-        like = like2.filter(function (n) { return n });
-        like = like.reverse();
-      }
-      else {
-        like = null;
-      }
-      this.forceUpdate();
-    } catch (error) {
-      // Error retrieving data
-    }
-  }
+  // getFile = async() => {
+  //   // try {
+  //   //   var likesave;
+  //   //   if (userID !== undefined) {
+  //   //     likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+  //   //   }
+  //   //   else {
+  //   //     likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
+  //   //   }
+  //   //   if (likesave !== null) {
+  //   //     // We have data!!
+  //   //     like2 = JSON.parse(likesave);
+  //   //     like = like2.filter(function (n) { return n });
+  //   //     like = like.reverse();
+  //   //   }
+  //   //   else {
+  //   //     like = null;
+  //   //   }
+  //   //   this.forceUpdate();
+  //   // } catch (error) {
+  //   //   // Error retrieving data
+  //   // }
+  //   var res;
+  //   if (userID !== 0 || userID !== undefined) {
+  //     var ref = Firebase.database().ref('users/' + userID + "/likes/");
+  //     ref.once('value')
+  //       .then(function (snapshot) {
+  //         if (snapshot.val() !== null) {
+  //           var obj = snapshot.val();
+  //           res = Object.keys(obj)
+  //             // iterate over them and generate the array
+  //             .map(function (k) {
+  //               // generate the array element 
+  //               return obj[k];
+  //             });
+  //             if (res !== null || res !== undefined) {
+  //               // We have data!!
+  //               //likes = JSON.parse(likesave);
+  //               like = res;
+  //               //console.log(JSON.stringify(likes));
+  //               this.forceUpdate();
+  //             }
+  //         }
+  //       });
+  //       console.log("res"+res);
+        
+  //   }
+  // }
 
   openURL = item => {
     try {
@@ -233,7 +262,7 @@ class Likes extends Component {
   };
 
   showEmptyListView = () => {
-
+    //console.log(this.state.like);
     return (
 
       <TouchableWithoutFeedback

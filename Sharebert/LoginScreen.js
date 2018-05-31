@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import { Google, Facebook, AuthSession, Font } from 'expo';
 import { Analytics, PageHit } from 'expo-analytics';
+import  Firebase from './Firebase';
+
+
 var doubleclick = false;
 var lastlogged = true;
 var userEmail2 = '';
@@ -28,6 +31,8 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.getData();
+ 
+    console.disableYellowBox = true;
     Font.loadAsync({
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
       'MontserratBold': require('./assets/fonts/MontserratBold.otf'),
@@ -40,7 +45,7 @@ class LoginScreen extends Component {
     analytics.hit(new PageHit('IsItWorking'))
       .then(() => {
         console.log("success");
-        console.log(analytics)
+        //console.log(analytics)
       })
       .catch(e => console.log(e.message));
   }
@@ -75,7 +80,30 @@ class LoginScreen extends Component {
         id: userID,
         points: userPoints,
         uri: uri2,
+        email: userEmail2,
       });
+      if (userID !== '0') {
+        // Firebase.database().ref('users/' + userID).once('value', (snapshot) => {
+        //   if(snapshot.val()=== null)
+        //     {
+        //       Firebase.database().ref('users/' + userID).push({
+        //         User_Email: userEmail2,
+        //         User_Name: name2,
+        //       });
+        //     }
+        // });
+        var ref = Firebase.database().ref('users/'+userID);
+        ref.once('value')
+          .then(function(snapshot){
+            if(snapshot.val()===null)
+            {
+              Firebase.database().ref('users/' + userID).set({
+                User_Email: userEmail2,
+                User_Name: name2,
+              });
+            }
+          });
+      }
     }
   }
   _handleFinalGoogleLogin = async () => {
@@ -278,17 +306,17 @@ class LoginScreen extends Component {
 
   componentWillMount() {
     AsyncStorage.getItem('@MySuperStore:name').then((namesaved) => {
-      console.log(namesaved);
+      //console.log(namesaved);
 
     });
   };
 
   getData = async () => {
     const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
-    console.log(namesaved);
+    //console.log(namesaved);
     if (namesaved !== null && namesaved !== undefined && namesaved !== "") {
       // We have data!!
-      console.log(namesaved);
+      //console.log(namesaved);
       name2 = namesaved;
       const emailsaved = await AsyncStorage.getItem('@MySuperStore:email');
       userEmail2 = emailsaved;
@@ -305,10 +333,10 @@ class LoginScreen extends Component {
   getFile = async (type) => {
     try {
       const namesaved = await AsyncStorage.getItem('@MySuperStore:name');
-      console.log(namesaved);
+      //console.log(namesaved);
       if (namesaved !== null && namesaved !== undefined && namesaved !== "") {
         // We have data!!
-        console.log(namesaved);
+        //console.log(namesaved);
         name2 = namesaved;
         const emailsaved = await AsyncStorage.getItem('@MySuperStore:email');
         userEmail2 = emailsaved;
@@ -372,9 +400,9 @@ class LoginScreen extends Component {
         type,
         token,
       } = await Facebook.logInWithReadPermissionsAsync(
-          '1841427549503210', // Replace with your own app id in standalone app
-          { permissions: ['public_profile', 'email'] }
-        );
+        '1841427549503210', // Replace with your own app id in standalone app
+        { permissions: ['public_profile', 'email'] }
+      );
 
       switch (type) {
         case 'success': {
