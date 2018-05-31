@@ -45,10 +45,12 @@ class Shipping extends Component {
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
     this.fetchData();
+    this.checkLikesData();
     this.state = {
       isOpen: false,
       selectedItem: 'Shipping',
       userPoints: userPoints,
+      likessaved: false,
       name: '',
       phone: '',
       email: '',
@@ -78,7 +80,14 @@ class Shipping extends Component {
       this.props.navigation.navigate('Explore');
     }
   };
-
+  checkLikesData = async () => {
+    const value = await AsyncStorage.getItem('@MySuperStore:Likes' + userID)
+    if (value !== undefined) {
+      this.setState({
+        likessaved: true
+      })
+    }
+  }
   fetchData = () => {
     if (userID != 0) {
       fetch(
@@ -432,6 +441,8 @@ class Shipping extends Component {
                   />}
               </TouchableOpacity>
 
+              {
+              this.state.likessaved ?
               <TouchableOpacity onPress={() => {
                 // this.props.navigation.navigate('Main', 
                 // {
@@ -448,6 +459,9 @@ class Shipping extends Component {
                   Upload Likes To DATABASE
                   </Text>
               </TouchableOpacity>
+              :
+              <View/>
+              }
 
               {/* <TouchableOpacity onPress={() => {
                 this.clearFile2();

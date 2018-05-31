@@ -48,6 +48,7 @@ var randomPROFILEIMAGE = []; //TO BE REMOVED
 var animationBool = false;
 var emptycard = true;
 var likes = [];
+var likes3 = [];
 var RandomQ = Math.floor(Math.random() * 15) + 0;
 
 var questionBank = ["What's your favorite movie?",
@@ -656,8 +657,7 @@ class Explore extends Component {
   };
 
   clearLikes = () => {
-    if(userID!==0)
-    {
+    if (userID !== 0) {
       Firebase.database().ref('users/' + userID + "/likes").set({
 
       });
@@ -670,17 +670,21 @@ class Explore extends Component {
 
     const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
     var like2 = JSON.parse(likesave);
-    for(var i = 0;i<like2.length;i++)
-    {
-      Firebase.database().ref('users/' + userID + '/likes/').push({
-        ASIN: sanitize(like2[i].ASIN),
-        ImageURL: like2[i].ImageURL,
-        Retailer: like2[i].Retailer,
-        Title: sanitize(like2[i].Title),
-        URL: like2[i].URL
-      });
+    console.log(like2);
+    if (like2 !== undefined || like2 !== null) {
+      for (var i = 0; i < like2.length; i++) {
+        Firebase.database().ref('users/' + userID + '/likes/').push({
+          ASIN: sanitize(like2[i].ASIN),
+          ImageURL: like2[i].ImageURL,
+          Retailer: like2[i].Retailer,
+          Title: sanitize(like2[i].Title),
+          URL: like2[i].URL
+        });
+      }
+      this.getOldLikes();
     }
-    this.getOldLikes();
+
+
   }
   printURL = () => {
     Alert.alert('TEST', this.state.url);
@@ -1023,8 +1027,7 @@ class Explore extends Component {
       if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
 
         var newTitle = sanitize(this.state.dataset[this.state.cardNum - 1].Title);
-        if(userID!==0)
-        {
+        if (userID !== 0) {
           Firebase.database().ref('users/' + userID + '/likes/').push({
             ASIN: sanitize(this.state.dataset[this.state.cardNum - 1].ASIN),
             ImageURL: this.state.dataset[this.state.cardNum - 1].ImageURL,
@@ -1032,9 +1035,9 @@ class Explore extends Component {
             Title: newTitle,
             URL: this.state.dataset[this.state.cardNum - 1].URL
           });
-  
-          //likes.push(this.state.dataset[this.state.cardNum - 1]);
-          //this.saveLike();
+
+          likes3.push(this.state.dataset[this.state.cardNum - 1]);
+          this.saveLike();
           this.notificationLike.show({
             title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
             message: 'Saved to your likes list!',
@@ -1043,7 +1046,7 @@ class Explore extends Component {
           });
           this.getOldLikes();
         }
-       
+
 
       }
 
@@ -1147,8 +1150,7 @@ class Explore extends Component {
 
               }
             }
-            else
-            {
+            else {
               likes = [];
             }
           });
@@ -1163,12 +1165,11 @@ class Explore extends Component {
   saveLike = async () => {
     try {
 
-
       if (userID !== undefined || userID !== 0) {
-        await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes));
+        await AsyncStorage.setItem('@MySuperStore:Likes' + userID, JSON.stringify(likes3));
       }
       else {
-        await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes));
+        await AsyncStorage.setItem('@MySuperStore:Likes', JSON.stringify(likes3));
       }
       const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
 
