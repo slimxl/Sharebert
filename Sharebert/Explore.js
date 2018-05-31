@@ -656,7 +656,8 @@ class Explore extends Component {
     this.forceUpdate();
   };
 
-  clearLikes = () => {
+  clearLikes = async() => {
+    await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
     if (userID !== 0) {
       Firebase.database().ref('users/' + userID + "/likes").set({
 
@@ -682,6 +683,7 @@ class Explore extends Component {
         });
       }
       this.getOldLikes();
+      await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
     }
 
 
@@ -1036,8 +1038,8 @@ class Explore extends Component {
             URL: this.state.dataset[this.state.cardNum - 1].URL
           });
 
-          likes3.push(this.state.dataset[this.state.cardNum - 1]);
-          this.saveLike();
+          //likes3.push(this.state.dataset[this.state.cardNum - 1]);
+          //this.saveLike();
           this.notificationLike.show({
             title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
             message: 'Saved to your likes list!',
@@ -1130,6 +1132,9 @@ class Explore extends Component {
 
 
   getOldLikes = () => {
+
+    this.saveLikesto();
+
     var res;
     try {
       if (userID !== 0 || userID !== undefined) {
