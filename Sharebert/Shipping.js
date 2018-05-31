@@ -18,6 +18,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
+import Firebase from './Firebase';
 
 import { Constants } from 'expo';
 const { width } = 10;
@@ -197,11 +198,12 @@ class Shipping extends Component {
   }
 
   clearLikes = async () => {
-    await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
-    Alert.alert("Likes Cleared!");
-    const value = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
-    console.log('likes' + value);
-    this.forceUpdate();
+    // await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
+    // Alert.alert("Likes Cleared!");
+    // const value = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+    // console.log('likes' + value);
+    // this.forceUpdate();
+    this.props.navigation.state.params.clearLikes();
   };
   resetTo(route) {
     this.props.navigation.pop(0)

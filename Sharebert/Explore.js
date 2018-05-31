@@ -656,6 +656,13 @@ class Explore extends Component {
     this.forceUpdate();
   };
 
+  clearLikes = () => {
+    Firebase.database().ref('users/' + userID + "/likes").set({
+
+    });
+    this.getOldLikes();
+  }
+
   printURL = () => {
     Alert.alert('TEST', this.state.url);
   };
@@ -1013,8 +1020,8 @@ class Explore extends Component {
           icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
           onPress: () => this.resetTo('Likes')
         });
-       this.getOldLikes();
-        
+        this.getOldLikes();
+
       }
 
 
@@ -1114,8 +1121,12 @@ class Explore extends Component {
               if (res !== null || res !== undefined) {
 
                 likes = res.reverse();
-                
+
               }
+            }
+            else
+            {
+              likes = [];
             }
           });
       }
@@ -1294,7 +1305,8 @@ class Explore extends Component {
       points: userPoints,
       uri: uri2,
       like: likes,
-      updateData: this.updateData
+      updateData: this.updateData,
+      clearLikes: this.clearLikes,
     })
   }
 
