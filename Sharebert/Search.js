@@ -129,7 +129,7 @@ class Search extends Component {
         userPoints = points;
         this.setState({
             userPoints: userPoints,
-          });
+        });
         //some other stuff
     };
     _onPress(item) {
@@ -143,16 +143,18 @@ class Search extends Component {
     }
     resetTo(route) {
         //console.log(likes);
-    
+
         this.props.navigation.push(route, {
-          id: userID,
-          points: userPoints,
-          uri: uri2,
-          like: likes,
-          updateData: this.updateData,
-          clearLikes: this.clearLikes,
+            id: userID,
+            points: userPoints,
+            uri: uri2,
+            like: likes,
+            updateData: this.updateData,
+            clearLikes: this.clearLikes,
+            saveLikesto: this.saveLikesto,
+
         })
-      }
+    }
     onSubmitEdit = () => {
         Keyboard.dismiss();
         if (this.state.inputValue === '' || this.state.inputValue === null) {

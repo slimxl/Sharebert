@@ -666,6 +666,22 @@ class Explore extends Component {
 
   }
 
+  saveLikesto = async () => {
+
+    const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+    var like2 = JSON.parse(likesave);
+    for(var i = 0;i<like2.length;i++)
+    {
+      Firebase.database().ref('users/' + userID + '/likes/').push({
+        ASIN: sanitize(like2[i].ASIN),
+        ImageURL: like2[i].ImageURL,
+        Retailer: like2[i].Retailer,
+        Title: sanitize(like2[i].Title),
+        URL: like2[i].URL
+      });
+    }
+    this.getOldLikes();
+  }
   printURL = () => {
     Alert.alert('TEST', this.state.url);
   };
@@ -1315,6 +1331,7 @@ class Explore extends Component {
       like: likes,
       updateData: this.updateData,
       clearLikes: this.clearLikes,
+      saveLikesto: this.saveLikesto,
     })
   }
 
