@@ -10,6 +10,7 @@ import {
   Image,
   WebView,
   Platform,
+  VirtualizedList,
   Linking,
   Dimensions,
   StyleSheet,
@@ -217,7 +218,7 @@ class Rewards extends Component {
     }
 
   }
-  showEmptyListView = () => {
+  _showEmptyListView = () => {
 
     return (
       <View style={styles.card}>
@@ -232,7 +233,7 @@ class Rewards extends Component {
     )
   };
 
-  renderHeader = () => {
+  _renderHeader = () => {
     return (
       <View style={styles.giveawaycenterview}>
         <Image
@@ -268,7 +269,7 @@ class Rewards extends Component {
       </View>
     );
   };
-
+  _keyExtractor = (item, index) => index;
   _renderItem = data => {
     const item = data.item;
     return (
@@ -425,12 +426,12 @@ class Rewards extends Component {
             source={require('./like_background.png')}
             style={{ width: '100%', height: '100%' }}>
             <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
-              <OptimizedFlatList backgroundColor={'transparent'}
+              <FlatList backgroundColor={'transparent'}
                 style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
                 data={this.state.rewards}
-                keyExtractor={(item, index) => index}
-                ListEmptyComponent={this.showEmptyListView()}
-                ListHeaderComponent={() => this.renderHeader()}
+                keyExtractor={this._keyExtractor}
+                ListEmptyComponent={this._showEmptyListView}
+                ListHeaderComponent={this._renderHeader}
                 renderItem={this._renderItem}
               />
             </View>

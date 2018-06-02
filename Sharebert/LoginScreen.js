@@ -74,14 +74,6 @@ class LoginScreen extends Component {
       });
     }
     else {
-      doubleclick = false;
-      //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
-      this.props.navigation.navigate('Explore', {
-        id: userID,
-        points: userPoints,
-        uri: uri2,
-        email: userEmail2,
-      });
       if (userID !== '0') {
         // Firebase.database().ref('users/' + userID).once('value', (snapshot) => {
         //   if(snapshot.val()=== null)
@@ -95,6 +87,7 @@ class LoginScreen extends Component {
         var ref = Firebase.database().ref('users/'+userID);
         ref.once('value')
           .then(function(snapshot){
+            console.log(snapshot.val());
             if(snapshot.val()===null)
             {
               Firebase.database().ref('users/' + userID).set({
@@ -104,6 +97,15 @@ class LoginScreen extends Component {
             }
           });
       }
+      doubleclick = false;
+      //Alert.alert(name2,'Points: '+userPoints +' Email: '+userEmail2);
+      this.props.navigation.navigate('Explore', {
+        id: userID,
+        points: userPoints,
+        uri: uri2,
+        email: userEmail2,
+      });
+      
     }
   }
   _handleFinalGoogleLogin = async () => {

@@ -640,6 +640,8 @@ class Explore extends Component {
     catch (error) {
       console.error(error);
     }
+
+    
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
@@ -656,7 +658,7 @@ class Explore extends Component {
     this.forceUpdate();
   };
 
-  clearLikes = async() => {
+  clearLikes = async () => {
     await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
     if (userID !== 0) {
       Firebase.database().ref('users/' + userID + "/likes").set({
@@ -2434,6 +2436,11 @@ async function register() {
 
   const token = await Expo.Notifications.getExpoPushTokenAsync();
   console.log(status, token)
+  if (userID !== 0) {
+    Firebase.database().ref('users/' + userID + "/token").set({
+      token: token,
+    });
+  }
   try {
     fetch('https://sharebert.com/s/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
   }
