@@ -641,7 +641,7 @@ class Explore extends Component {
       console.error(error);
     }
 
-    
+
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
@@ -670,22 +670,24 @@ class Explore extends Component {
   }
 
   saveLikesto = async () => {
-
-    const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
-    var like2 = JSON.parse(likesave);
-    console.log(like2);
-    if (like2 !== undefined || like2 !== null) {
-      for (var i = 0; i < like2.length; i++) {
-        Firebase.database().ref('users/' + userID + '/likes/').push({
-          ASIN: sanitize(like2[i].ASIN),
-          ImageURL: like2[i].ImageURL,
-          Retailer: like2[i].Retailer,
-          Title: sanitize(like2[i].Title),
-          URL: like2[i].URL
-        });
+    if (userID !== 0) {
+      const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
+      var like2 = JSON.parse(likesave);
+      console.log(like2);
+      if (like2 !== undefined || like2 !== null) {
+        for (var i = 0; i < like2.length; i++) {
+          Firebase.database().ref('users/' + userID + '/likes/').push({
+            ASIN: sanitize(like2[i].ASIN),
+            ImageURL: like2[i].ImageURL,
+            Retailer: like2[i].Retailer,
+            Title: sanitize(like2[i].Title),
+            URL: like2[i].URL
+          });
+        }
+        this.getOldLikes();
+        await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
       }
-      this.getOldLikes();
-      await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
+
     }
 
 
@@ -2436,11 +2438,11 @@ async function register() {
 
   const token = await Expo.Notifications.getExpoPushTokenAsync();
   console.log(status, token)
-  if (userID !== 0) {
-    Firebase.database().ref('users/' + userID + "/token").set({
-      token: token,
-    });
-  }
+  // if (userID !== 0) {
+  //   Firebase.database().ref('users/' + userID + "/token").set({
+  //     token: token,
+  //   });
+  // }
   try {
     fetch('https://sharebert.com/s/SendToken.php?token=' + token + '&ui=' + userID, { method: 'GET' })
   }
