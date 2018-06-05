@@ -681,10 +681,19 @@ const styles = StyleSheet.create({
     }),
   },
   text: {
+    width: 200,
     textAlign: 'left',
-    fontSize: 12,
+    fontSize: 30,
     marginTop: 40,
-    marginLeft: 110,
+    marginLeft: Dimensions.get('window').width * .5 - 200,
+    backgroundColor: 'transparent',
+  },
+  text2: {
+    width: 200,
+    textAlign: 'left',
+    fontSize: 30,
+    marginTop: 60,
+    marginLeft: Dimensions.get('window').width * .5 - 200,
     backgroundColor: 'transparent',
   },
   likesviewscroll: {
