@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   StyleSheet, View, Text, Alert,
-  TouchableWithoutFeedback, Image, Platform, Dimensions, FlatList
+  TouchableWithoutFeedback, Image, Platform, Dimensions, FlatList, ScrollView
 } from 'react-native';
 import { Constants } from 'expo';
 import { NavigationActions } from 'react-navigation';
@@ -604,13 +604,19 @@ export default class Game extends React.Component {
           />
         </TouchableWithoutFeedback>
         {(showScores == true) ?
-
+          <View>
+            <Text style = {styles.text3}>
+            Daily Scores
+            </Text>
+          <ScrollView style = {styles.scrollview}>
           <FlatList backgroundColor={'transparent'}
             style={styles.likesviewscroll}
             data={this.state.HS}
             keyExtractor={(item, index) => index}
             renderItem={this._renderItem}
           />
+          </ScrollView>
+          </View>
           :
           <View>
           </View>
@@ -623,20 +629,24 @@ export default class Game extends React.Component {
               onPress={() => {
                 this.sendScore();
               }}>
+              <View style = {styles.send}>
               <Text
-                style={styles.text}>
+                style={styles.text2}>
                 Send Score
             </Text>
+            </View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback
               onPress={() => {
                 this.reset();
               }}>
+              <View style = {styles.retry}>
               <Text
-                style={styles.text}>
+                style={styles.text2}>
                 Retry
             </Text>
+            </View>
             </TouchableWithoutFeedback>
           </View>
           :
@@ -651,9 +661,9 @@ export default class Game extends React.Component {
     const item = data.item;
     var imageURL2 = ""
     try {
-      var scoretext = item.User + " " + item.Score;
+      var scoretext = item.User + ": " + item.Score;
       return (
-        <View >
+        <View style = {styles.score}>
           <Text numberOfLines={2} style={styles.text}>{scoretext}</Text>
         </View>
       );
@@ -681,19 +691,41 @@ const styles = StyleSheet.create({
     }),
   },
   text: {
-    width: 200,
+    width: 400,
     textAlign: 'left',
     fontSize: 30,
-    marginTop: 40,
-    marginLeft: Dimensions.get('window').width * .5 - 200,
     backgroundColor: 'transparent',
   },
   text2: {
     width: 200,
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 30,
-    marginTop: 60,
-    marginLeft: Dimensions.get('window').width * .5 - 200,
+    backgroundColor: 'transparent',
+  },
+  text3: {
+    width: 200,
+    textAlign: 'center',
+    marginTop: 150,
+    fontSize: 30,
+    marginLeft: Dimensions.get('window').width * .5-100,
+    backgroundColor: 'transparent',
+  },
+  send: {
+    marginTop: -120,
+    marginLeft: Dimensions.get('window').width * .5-100,
+    width: 200,
+    backgroundColor: 'transparent',
+  },
+  retry: {
+    marginTop: -160,
+    marginLeft: Dimensions.get('window').width * .5-100,
+    width: 200,
+    backgroundColor: 'transparent',
+  },
+  score: {
+    marginTop: 0,
+    marginLeft: Dimensions.get('window').width * .5-135,
+    width: 400,
     backgroundColor: 'transparent',
   },
   likesviewscroll: {
@@ -707,6 +739,14 @@ const styles = StyleSheet.create({
         height: '80%',
       },
     }),
+  },
+  scrollview: {
+    backgroundColor: 'rgba(242, 198, 242, 0.6)',
+    width: Dimensions.get('window').width * 0.8,
+    height: Dimensions.get('window').height * 0.4,
+    marginLeft: Dimensions.get('window').width * 0.1,
+    marginTop: Dimensions.get('window').height * 0.1,
+    marginBottom: Dimensions.get('window').height * 0.25,
   },
   hamburger: {
     ...Platform.select({
