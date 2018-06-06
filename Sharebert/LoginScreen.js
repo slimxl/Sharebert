@@ -87,7 +87,6 @@ class LoginScreen extends Component {
         var ref = Firebase.database().ref('users/'+userID);
         ref.once('value')
           .then(function(snapshot){
-            console.log(snapshot.val());
             if(snapshot.val()===null)
             {
               Firebase.database().ref('users/' + userID).set({

@@ -32,7 +32,7 @@ import {
   WebView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { Constants } from 'expo';
+import { Constants,Notifications } from 'expo';
 //import { uri2 } from './LoginScreen';
 var userPoints = 0;
 var userID = 0;
@@ -111,6 +111,7 @@ class Explore extends Component {
       userPoints: userPoints,
       frontTitle: '',
       disable: true,
+      notification: [],
       isSwipingBack: false,
       cardIndex: 0,
       showAlert: false,
@@ -283,12 +284,6 @@ class Explore extends Component {
 
       this.checkUpdatePoints();
     }
-    for (var i = 0; i < 25; i++) {
-      var RandomNumber = Math.floor(Math.random() * (10000 - 5)) + 4;
-      imgUrl = "http://graph.facebook.com/v2.5/" + RandomNumber + "/picture?height=200&height=200";
-      randomPROFILEIMAGE.push(imgUrl);
-    }
-    this.grabRandoLikes();
   }
 
   _getItemLayout = (data, index) => {
@@ -379,7 +374,43 @@ class Explore extends Component {
 
   componentWillMount() {
     register();
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
+
+  _handleNotification = (notification) => {
+    this.setState({notification: notification});
+    console.log(notification.data.data['ASIN']);
+    if(notification.data.data['ASIN']!== undefined)
+    {
+      fetch('https://sharebert.com/s/SearchASIN.php?ASIN='+notification.data.data['ASIN'], { method: 'GET' })
+            .then(response => response.json())
+            .then(responseData => {
+              var data2 = [];
+                var obj = {};
+                obj['ASIN'] = responseData[0]['ASIN'];
+                obj['Title'] = responseData[0]['Title'];
+                obj['URL'] = responseData[0]['URL'];
+                obj['ImageURL'] = responseData[0]['ImageURL'];
+                obj['Retailer'] = responseData[0]['Website'];
+                data2.push(obj);
+              console.log(data2);
+              toofast = false;
+              search = false;
+              emptycard=false;
+              this.setState({
+                cardNum: 0,
+                dataset: data2,
+                url: data2.ImageURL,
+                title: data2.Title,
+                category: '',
+                disable: false,
+                cat: false,
+              });
+            })
+            .done();
+    }
+    
+  };
   showAlert = () => {
     this.setState({
       showAlert: true
@@ -1030,7 +1061,30 @@ class Explore extends Component {
       this.state.url !==
       'https://i.imgur.com/qnHscIM.png' || this.state.url !== 'https://i.imgur.com/JaG8ovv.gif'
     ) {
-      if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
+      if(this.state.dataset.length===1)
+      {
+        var newTitle = sanitize(this.state.dataset[0].Title);
+        if (userID !== 0) {
+          Firebase.database().ref('users/' + userID + '/likes/').push({
+            ASIN: sanitize(this.state.dataset[0].ASIN),
+            ImageURL: this.state.dataset[0].ImageURL,
+            Retailer: this.state.dataset[0].Retailer,
+            Title: newTitle,
+            URL: this.state.dataset[0].URL
+          });
+
+          //likes3.push(this.state.dataset[this.state.cardNum - 1]);
+          //this.saveLike();
+          this.notificationLike.show({
+            title: trunc(this.state.dataset[0].Title),
+            message: 'Saved to your likes list!',
+            icon: { uri: this.state.dataset[0].ImageURL },
+            onPress: () => this.resetTo('Likes')
+          });
+          this.getOldLikes();
+        }
+      }
+      else if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
 
         var newTitle = sanitize(this.state.dataset[this.state.cardNum - 1].Title);
         if (userID !== 0) {
