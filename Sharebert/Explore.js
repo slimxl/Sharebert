@@ -33,7 +33,7 @@ import {
   WebView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { Constants,Notifications } from 'expo';
+import { Constants, Notifications } from 'expo';
 //import { uri2 } from './LoginScreen';
 var userPoints = 0;
 var userID = 0;
@@ -91,7 +91,9 @@ class Explore extends Component {
     super(props);
     //console.log(this.props.navigation.state.params);
     console.disableYellowBox = true;
+
     userID = this.props.navigation.state.params.id;
+
     try {
       userPoints = this.props.navigation.state.params.points;
     }
@@ -99,6 +101,12 @@ class Explore extends Component {
       userPoints = 0;
     }
     uri2 = this.props.navigation.state.params.uri;
+    // if (this.props.screenProps) {
+    //   console.log("GOT NOTIF ON STARTUP");
+    //   this.getLikes();
+    //   this.resetTo("Likes");
+
+    // }
     this.getOldLikes();
 
     this.state = {
@@ -286,6 +294,8 @@ class Explore extends Component {
 
       this.checkUpdatePoints();
     }
+
+
   }
 
   _getItemLayout = (data, index) => {
@@ -388,13 +398,12 @@ class Explore extends Component {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
     }
-    this.setState({appState: nextAppState});
+    this.setState({ appState: nextAppState });
   }
 
   _handleNotification = (notification) => {
-    this.setState({notification: notification});
-    if(this.state.appState.match(/inactive|background/))
-    {
+    this.setState({ notification: notification });
+    if (this.state.appState.match(/inactive|background/)) {
       this.resetTo('Likes');
     }
     // console.log(notification.data.data['ASIN']);
@@ -427,7 +436,7 @@ class Explore extends Component {
     //         })
     //         .done();
     // }
-    
+
   };
   showAlert = () => {
     this.setState({
@@ -1079,8 +1088,7 @@ class Explore extends Component {
       this.state.url !==
       'https://i.imgur.com/qnHscIM.png' || this.state.url !== 'https://i.imgur.com/JaG8ovv.gif'
     ) {
-      if(this.state.dataset.length===1)
-      {
+      if (this.state.dataset.length === 1) {
         var newTitle = sanitize(this.state.dataset[0].Title);
         if (userID !== 0) {
           Firebase.database().ref('users/' + userID + '/likes/').push({
@@ -1205,7 +1213,40 @@ class Explore extends Component {
     }
 
   }
+  getLikes =  () => {
+    var res;
+    try {
+      if (userID !== 0 || userID !== undefined) {
+        var ref = Firebase.database().ref('users/' + userID + "/likes/");
+         ref.once('value')
+          .then(function (snapshot) {
+            if (snapshot.val() !== null) {
+              var obj = snapshot.val();
+              res = Object.keys(obj)
+                // iterate over them and generate the array
+                .map(function (k) {
+                  // generate the array element 
+                  return obj[k];
+                });
+              if (res !== null || res !== undefined) {
 
+                likes = res.reverse();
+
+              }
+            }
+            else {
+              likes = [];
+            }
+          });
+
+      }
+
+      //this.forceUpdate();
+    } catch (error) {
+      // Error retrieving data
+    }
+
+  };
 
   getOldLikes = () => {
 
@@ -1235,12 +1276,15 @@ class Explore extends Component {
               likes = [];
             }
           });
+
       }
 
       //this.forceUpdate();
     } catch (error) {
       // Error retrieving data
     }
+
+
   };
 
   saveLike = async () => {
@@ -1404,7 +1448,7 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
-    //console.log(likes);
+    console.log(likes);
 
     this.props.navigation.push(route, {
       id: userID,

@@ -31,7 +31,7 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.getData();
- 
+
     console.disableYellowBox = true;
     Font.loadAsync({
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
@@ -103,6 +103,7 @@ class LoginScreen extends Component {
         points: userPoints,
         uri: uri2,
         email: userEmail2,
+        notification: this.props.screenProps,
       });
       
     }

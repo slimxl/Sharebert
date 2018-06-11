@@ -12,10 +12,21 @@ import Deals from './Deals';
 import Grocery from './Grocery';
 import Main from './Main';
 
+var notif = false;
 export default class App extends React.Component {
-  
+  constructor(props)
+  {
+    super(props);
+    if(props.exp.notification!==undefined)
+    {
+      notif = true;
+    }
+   
+  }
   render() {
-    return <AppNavigator />;
+    
+    
+    return <AppNavigator screenProps={notif}/>;
   }
 }
 
@@ -23,6 +34,7 @@ const AppNavigator = StackNavigator(
   {
     LoginScreen: {
       screen: LoginScreen,
+      screenProps: {a: true },
       navigationOptions: ({ navigation }) => ({
         header: false,
         gesturesEnabled: false,
