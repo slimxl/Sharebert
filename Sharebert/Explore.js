@@ -29,6 +29,7 @@ import {
   TextInput,
   Dimensions,
   FlatList,
+  AppState,
   WebView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -114,6 +115,7 @@ class Explore extends Component {
       notification: [],
       isSwipingBack: false,
       cardIndex: 0,
+      appState: AppState.currentState,
       showAlert: false,
       cardNum: 0,
       cat: false,
@@ -371,44 +373,60 @@ class Explore extends Component {
       .done();
   }
 
-
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
   componentWillMount() {
     register();
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!')
+    }
+    this.setState({appState: nextAppState});
+  }
+
   _handleNotification = (notification) => {
     this.setState({notification: notification});
-    console.log(notification.data.data['ASIN']);
-    if(notification.data.data['ASIN']!== undefined)
+    if(this.state.appState.match(/inactive|background/))
     {
-      fetch('https://sharebert.com/s/SearchASIN.php?ASIN='+notification.data.data['ASIN'], { method: 'GET' })
-            .then(response => response.json())
-            .then(responseData => {
-              var data2 = [];
-                var obj = {};
-                obj['ASIN'] = responseData[0]['ASIN'];
-                obj['Title'] = responseData[0]['Title'];
-                obj['URL'] = responseData[0]['URL'];
-                obj['ImageURL'] = responseData[0]['ImageURL'];
-                obj['Retailer'] = responseData[0]['Website'];
-                data2.push(obj);
-              console.log(data2);
-              toofast = false;
-              search = false;
-              emptycard=false;
-              this.setState({
-                cardNum: 0,
-                dataset: data2,
-                url: data2.ImageURL,
-                title: data2.Title,
-                category: '',
-                disable: false,
-                cat: false,
-              });
-            })
-            .done();
+      this.resetTo('Likes');
     }
+    // console.log(notification.data.data['ASIN']);
+    // if(notification.data.data['ASIN']!== undefined)
+    // {
+    //   fetch('https://sharebert.com/s/SearchASIN.php?ASIN='+notification.data.data['ASIN'], { method: 'GET' })
+    //         .then(response => response.json())
+    //         .then(responseData => {
+    //           var data2 = [];
+    //             var obj = {};
+    //             obj['ASIN'] = responseData[0]['ASIN'];
+    //             obj['Title'] = responseData[0]['Title'];
+    //             obj['URL'] = responseData[0]['URL'];
+    //             obj['ImageURL'] = responseData[0]['ImageURL'];
+    //             obj['Retailer'] = responseData[0]['Website'];
+    //             data2.push(obj);
+    //           console.log(data2);
+    //           toofast = false;
+    //           search = false;
+    //           emptycard=false;
+    //           this.setState({
+    //             cardNum: 0,
+    //             dataset: data2,
+    //             url: data2.ImageURL,
+    //             title: data2.Title,
+    //             category: '',
+    //             disable: false,
+    //             cat: false,
+    //           });
+    //         })
+    //         .done();
+    // }
     
   };
   showAlert = () => {
