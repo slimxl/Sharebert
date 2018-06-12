@@ -1097,10 +1097,17 @@ class Explore extends Component {
 
           //likes3.push(this.state.dataset[this.state.cardNum - 1]);
           //this.saveLike();
+          var imageURL2 = this.state.dataset[0].ImageURL;
+          if (this.state.dataset[0].ImageURL.includes('tillys')) {
+
+            imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
+  
+  
+          }
           this.notificationLike.show({
             title: trunc(this.state.dataset[0].Title),
             message: 'Saved to your likes list!',
-            icon: { uri: this.state.dataset[0].ImageURL },
+            icon: { uri: imageURL2 },
             onPress: () => this.resetTo('Likes')
           });
           this.getOldLikes();
@@ -1120,10 +1127,17 @@ class Explore extends Component {
 
           //likes3.push(this.state.dataset[this.state.cardNum - 1]);
           //this.saveLike();
+          var imageURL2 = this.state.dataset[this.state.cardNum - 1].ImageURL
+          if (this.state.dataset[this.state.cardNum - 1].ImageURL.includes('tillys')) {
+
+            imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
+  
+  
+          }
           this.notificationLike.show({
             title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
             message: 'Saved to your likes list!',
-            icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
+            icon: { uri: imageURL2 },
             onPress: () => this.resetTo('Likes')
           });
           this.getOldLikes();
