@@ -101,14 +101,9 @@ class Explore extends Component {
       userPoints = 0;
     }
     uri2 = this.props.navigation.state.params.uri;
-    // if (this.props.screenProps) {
-    //   console.log("GOT NOTIF ON STARTUP");
-    //   this.getLikes();
-    //   this.resetTo("Likes");
-
-    // }
+    console.log(props);
+    
     this.getOldLikes();
-
     this.state = {
       cards: ['1', '2', '3'],
       isOpen: false,
@@ -295,7 +290,7 @@ class Explore extends Component {
       this.checkUpdatePoints();
     }
 
-
+    
   }
 
   _getItemLayout = (data, index) => {
@@ -381,10 +376,12 @@ class Explore extends Component {
         //console.log(this.state.trendData);
       })
       .done();
+     
   }
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
+    
   }
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
@@ -731,7 +728,6 @@ class Explore extends Component {
     if (userID !== 0) {
       const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
       var like2 = JSON.parse(likesave);
-      console.log(like2);
       if (like2 !== undefined || like2 !== null) {
         for (var i = 0; i < like2.length; i++) {
           Firebase.database().ref('users/' + userID + '/likes/').push({
@@ -1257,7 +1253,7 @@ class Explore extends Component {
       if (userID !== 0 || userID !== undefined) {
         var ref = Firebase.database().ref('users/' + userID + "/likes/");
         ref.once('value')
-          .then(function (snapshot) {
+          .then(snapshot=>{ 
             if (snapshot.val() !== null) {
               var obj = snapshot.val();
               res = Object.keys(obj)
@@ -1269,7 +1265,10 @@ class Explore extends Component {
               if (res !== null || res !== undefined) {
 
                 likes = res.reverse();
-
+                if (this.props.screenProps) {
+                  console.log("GOT NOTIF ON STARTUP");
+                  this.resetTo("Likes");
+                }
               }
             }
             else {
@@ -1283,8 +1282,7 @@ class Explore extends Component {
     } catch (error) {
       // Error retrieving data
     }
-
-
+    
   };
 
   saveLike = async () => {
@@ -1448,8 +1446,7 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
-    console.log(likes);
-
+    
     this.props.navigation.push(route, {
       id: userID,
       points: userPoints,

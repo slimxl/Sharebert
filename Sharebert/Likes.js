@@ -35,6 +35,7 @@ class Likes extends Component {
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
     like = this.props.navigation.state.params.like;
+    console.log(like);
     uri = this.props.navigation.state.params.uri;
     if (userPoints === undefined || userID === undefined) {
       userPoints = 0;
@@ -48,7 +49,6 @@ class Likes extends Component {
       userID: userID,
     };
     //this.getFile();
-    this.getLikes();
     try {
       if (userID != 0) {
         fetch(

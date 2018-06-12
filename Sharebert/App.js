@@ -17,6 +17,7 @@ export default class App extends React.Component {
   constructor(props)
   {
     super(props);
+    console.log(props.exp.notification)
     if(props.exp.notification!==undefined)
     {
       notif = true;
@@ -24,7 +25,6 @@ export default class App extends React.Component {
    
   }
   render() {
-    
     
     return <AppNavigator screenProps={notif}/>;
   }
