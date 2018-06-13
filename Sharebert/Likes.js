@@ -35,6 +35,7 @@ class Likes extends Component {
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
     like = this.props.navigation.state.params.like;
+    console.log(like);
     uri = this.props.navigation.state.params.uri;
     if (userPoints === undefined || userID === undefined) {
       userPoints = 0;
@@ -48,7 +49,6 @@ class Likes extends Component {
       userID: userID,
     };
     //this.getFile();
-
     try {
       if (userID != 0) {
         fetch(
@@ -64,24 +64,12 @@ class Likes extends Component {
           })
           .done();
       }
-    }catch(error)
-    {
+    } catch (error) {
       Alert.alert(error);
     }
-   
+    
   }
 
-  onMenuItemSelected = item => {
-    this.setState({
-      isOpen: false,
-      selectedItem: item,
-    });
-    if (item === 'Likes') {
-      this.props.navigation.navigate('Likes');
-    } else if (item === 'Explore') {
-      this.props.navigation.navigate('Explore');
-    }
-  };
   showAlert = () => {
     this.setState({
       showAlert: true
@@ -96,7 +84,39 @@ class Likes extends Component {
     this.forceUpdate();
 
   };
+  getLikes = () => {
+    var res;
+    try {
+      if (userID !== 0 || userID !== undefined) {
+        var ref = Firebase.database().ref('users/' + userID + "/likes/");
+         ref.once('value')
+          .then(function (snapshot) {
+            if (snapshot.val() !== null) {
+              var obj = snapshot.val();
+              res = Object.keys(obj)
+                // iterate over them and generate the array
+                .map(function (k) {
+                  // generate the array element 
+                  return obj[k];
+                });
+              if (res !== null || res !== undefined) {
 
+                like = res.reverse();
+                console.log("got likes");
+              }
+            }
+            else {
+              likes = [];
+            }
+          });
+
+      }
+      //this.forceUpdate();
+    } catch (error) {
+      // Error retrieving data
+    }
+
+  };
   shareURL(item) {
     try {
       Share.share(
@@ -173,73 +193,6 @@ class Likes extends Component {
       console.error(error);
     }
   }
-
-  // _onPress(item) {
-  //   Alert.alert(
-  //     'Buy Or Share',
-  //     item.Title,
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       { text: 'Share', onPress: () => this.shareURL(item) },
-  //       { text: 'Buy', onPress: () => { Linking.openURL(item.URL); } },
-
-  //     ],
-  //     { cancelable: false }
-  //   );
-  // }
-
-  // getFile = async() => {
-  //   // try {
-  //   //   var likesave;
-  //   //   if (userID !== undefined) {
-  //   //     likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
-  //   //   }
-  //   //   else {
-  //   //     likesave = await AsyncStorage.getItem('@MySuperStore:Likes');
-  //   //   }
-  //   //   if (likesave !== null) {
-  //   //     // We have data!!
-  //   //     like2 = JSON.parse(likesave);
-  //   //     like = like2.filter(function (n) { return n });
-  //   //     like = like.reverse();
-  //   //   }
-  //   //   else {
-  //   //     like = null;
-  //   //   }
-  //   //   this.forceUpdate();
-  //   // } catch (error) {
-  //   //   // Error retrieving data
-  //   // }
-  //   var res;
-  //   if (userID !== 0 || userID !== undefined) {
-  //     var ref = Firebase.database().ref('users/' + userID + "/likes/");
-  //     ref.once('value')
-  //       .then(function (snapshot) {
-  //         if (snapshot.val() !== null) {
-  //           var obj = snapshot.val();
-  //           res = Object.keys(obj)
-  //             // iterate over them and generate the array
-  //             .map(function (k) {
-  //               // generate the array element 
-  //               return obj[k];
-  //             });
-  //             if (res !== null || res !== undefined) {
-  //               // We have data!!
-  //               //likes = JSON.parse(likesave);
-  //               like = res;
-  //               //console.log(JSON.stringify(likes));
-  //               this.forceUpdate();
-  //             }
-  //         }
-  //       });
-  //       console.log("res"+res);
-        
-  //   }
-  // }
 
   openURL = item => {
     try {
@@ -351,7 +304,7 @@ class Likes extends Component {
     const { showAlert } = this.state;
     return (
       <View style={styles.container}>
-              <Image style={styles.dividerTop}
+        <Image style={styles.dividerTop}
           source={require('./assets/likesbg.png')}
         />
         <TouchableWithoutFeedback
@@ -363,7 +316,7 @@ class Likes extends Component {
             // });
             this.props.navigation.goBack();
             this.props.navigation.state.params.updateData(userPoints);
-            
+
           }}
         >
           <View>
@@ -682,7 +635,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         marginTop: -65,
-        marginLeft: Dimensions.get('window').width *.5 - 75,
+        marginLeft: Dimensions.get('window').width * .5 - 75,
         backgroundColor: 'transparent',
         padding: 20,
         marginBottom: 30,
@@ -692,7 +645,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         marginTop: 10,
-        left: (Dimensions.get('window').width *.5) - 75,
+        left: (Dimensions.get('window').width * .5) - 75,
         backgroundColor: 'transparent',
         flexDirection: 'row',
       },

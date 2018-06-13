@@ -29,10 +29,11 @@ import {
   TextInput,
   Dimensions,
   FlatList,
+  AppState,
   WebView,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { Constants,Notifications } from 'expo';
+import { Constants, Notifications } from 'expo';
 //import { uri2 } from './LoginScreen';
 var userPoints = 0;
 var userID = 0;
@@ -90,7 +91,9 @@ class Explore extends Component {
     super(props);
     //console.log(this.props.navigation.state.params);
     console.disableYellowBox = true;
+
     userID = this.props.navigation.state.params.id;
+
     try {
       userPoints = this.props.navigation.state.params.points;
     }
@@ -98,8 +101,9 @@ class Explore extends Component {
       userPoints = 0;
     }
     uri2 = this.props.navigation.state.params.uri;
+    console.log(props);
+    
     this.getOldLikes();
-
     this.state = {
       cards: ['1', '2', '3'],
       isOpen: false,
@@ -114,6 +118,7 @@ class Explore extends Component {
       notification: [],
       isSwipingBack: false,
       cardIndex: 0,
+      appState: AppState.currentState,
       showAlert: false,
       cardNum: 0,
       cat: false,
@@ -284,6 +289,8 @@ class Explore extends Component {
 
       this.checkUpdatePoints();
     }
+
+    
   }
 
   _getItemLayout = (data, index) => {
@@ -369,47 +376,64 @@ class Explore extends Component {
         //console.log(this.state.trendData);
       })
       .done();
+     
   }
 
-
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    
+  }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
   componentWillMount() {
     register();
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
-  _handleNotification = (notification) => {
-    this.setState({notification: notification});
-    console.log(notification.data.data['ASIN']);
-    if(notification.data.data['ASIN']!== undefined)
-    {
-      fetch('https://sharebert.com/s/SearchASIN.php?ASIN='+notification.data.data['ASIN'], { method: 'GET' })
-            .then(response => response.json())
-            .then(responseData => {
-              var data2 = [];
-                var obj = {};
-                obj['ASIN'] = responseData[0]['ASIN'];
-                obj['Title'] = responseData[0]['Title'];
-                obj['URL'] = responseData[0]['URL'];
-                obj['ImageURL'] = responseData[0]['ImageURL'];
-                obj['Retailer'] = responseData[0]['Website'];
-                data2.push(obj);
-              console.log(data2);
-              toofast = false;
-              search = false;
-              emptycard=false;
-              this.setState({
-                cardNum: 0,
-                dataset: data2,
-                url: data2.ImageURL,
-                title: data2.Title,
-                category: '',
-                disable: false,
-                cat: false,
-              });
-            })
-            .done();
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!')
     }
-    
+    this.setState({ appState: nextAppState });
+  }
+
+  _handleNotification = (notification) => {
+    this.setState({ notification: notification });
+    if (this.state.appState.match(/inactive|background/)) {
+      this.resetTo('Likes');
+    }
+    // console.log(notification.data.data['ASIN']);
+    // if(notification.data.data['ASIN']!== undefined)
+    // {
+    //   fetch('https://sharebert.com/s/SearchASIN.php?ASIN='+notification.data.data['ASIN'], { method: 'GET' })
+    //         .then(response => response.json())
+    //         .then(responseData => {
+    //           var data2 = [];
+    //             var obj = {};
+    //             obj['ASIN'] = responseData[0]['ASIN'];
+    //             obj['Title'] = responseData[0]['Title'];
+    //             obj['URL'] = responseData[0]['URL'];
+    //             obj['ImageURL'] = responseData[0]['ImageURL'];
+    //             obj['Retailer'] = responseData[0]['Website'];
+    //             data2.push(obj);
+    //           console.log(data2);
+    //           toofast = false;
+    //           search = false;
+    //           emptycard=false;
+    //           this.setState({
+    //             cardNum: 0,
+    //             dataset: data2,
+    //             url: data2.ImageURL,
+    //             title: data2.Title,
+    //             category: '',
+    //             disable: false,
+    //             cat: false,
+    //           });
+    //         })
+    //         .done();
+    // }
+
   };
   showAlert = () => {
     this.setState({
@@ -704,7 +728,6 @@ class Explore extends Component {
     if (userID !== 0) {
       const likesave = await AsyncStorage.getItem('@MySuperStore:Likes' + userID);
       var like2 = JSON.parse(likesave);
-      console.log(like2);
       if (like2 !== undefined || like2 !== null) {
         for (var i = 0; i < like2.length; i++) {
           Firebase.database().ref('users/' + userID + '/likes/').push({
@@ -1061,8 +1084,7 @@ class Explore extends Component {
       this.state.url !==
       'https://i.imgur.com/qnHscIM.png' || this.state.url !== 'https://i.imgur.com/JaG8ovv.gif'
     ) {
-      if(this.state.dataset.length===1)
-      {
+      if (this.state.dataset.length === 1) {
         var newTitle = sanitize(this.state.dataset[0].Title);
         if (userID !== 0) {
           Firebase.database().ref('users/' + userID + '/likes/').push({
@@ -1075,10 +1097,17 @@ class Explore extends Component {
 
           //likes3.push(this.state.dataset[this.state.cardNum - 1]);
           //this.saveLike();
+          var imageURL2 = this.state.dataset[0].ImageURL;
+          if (this.state.dataset[0].ImageURL.includes('tillys')) {
+
+            imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
+  
+  
+          }
           this.notificationLike.show({
             title: trunc(this.state.dataset[0].Title),
             message: 'Saved to your likes list!',
-            icon: { uri: this.state.dataset[0].ImageURL },
+            icon: { uri: imageURL2 },
             onPress: () => this.resetTo('Likes')
           });
           this.getOldLikes();
@@ -1098,10 +1127,17 @@ class Explore extends Component {
 
           //likes3.push(this.state.dataset[this.state.cardNum - 1]);
           //this.saveLike();
+          var imageURL2 = this.state.dataset[this.state.cardNum - 1].ImageURL
+          if (this.state.dataset[this.state.cardNum - 1].ImageURL.includes('tillys')) {
+
+            imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
+  
+  
+          }
           this.notificationLike.show({
             title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
             message: 'Saved to your likes list!',
-            icon: { uri: this.state.dataset[this.state.cardNum - 1].ImageURL },
+            icon: { uri: imageURL2 },
             onPress: () => this.resetTo('Likes')
           });
           this.getOldLikes();
@@ -1187,17 +1223,12 @@ class Explore extends Component {
     }
 
   }
-
-
-  getOldLikes = () => {
-
-    this.saveLikesto();
-
+  getLikes =  () => {
     var res;
     try {
       if (userID !== 0 || userID !== undefined) {
         var ref = Firebase.database().ref('users/' + userID + "/likes/");
-        ref.once('value')
+         ref.once('value')
           .then(function (snapshot) {
             if (snapshot.val() !== null) {
               var obj = snapshot.val();
@@ -1217,12 +1248,55 @@ class Explore extends Component {
               likes = [];
             }
           });
+
       }
 
       //this.forceUpdate();
     } catch (error) {
       // Error retrieving data
     }
+
+  };
+
+  getOldLikes = () => {
+
+    this.saveLikesto();
+
+    var res;
+    try {
+      if (userID !== 0 || userID !== undefined) {
+        var ref = Firebase.database().ref('users/' + userID + "/likes/");
+        ref.once('value')
+          .then(snapshot=>{ 
+            if (snapshot.val() !== null) {
+              var obj = snapshot.val();
+              res = Object.keys(obj)
+                // iterate over them and generate the array
+                .map(function (k) {
+                  // generate the array element 
+                  return obj[k];
+                });
+              if (res !== null || res !== undefined) {
+
+                likes = res.reverse();
+                if (this.props.screenProps) {
+                  console.log("GOT NOTIF ON STARTUP");
+                  this.resetTo("Likes");
+                }
+              }
+            }
+            else {
+              likes = [];
+            }
+          });
+
+      }
+
+      //this.forceUpdate();
+    } catch (error) {
+      // Error retrieving data
+    }
+    
   };
 
   saveLike = async () => {
@@ -1386,8 +1460,7 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
-    //console.log(likes);
-
+    
     this.props.navigation.push(route, {
       id: userID,
       points: userPoints,
