@@ -171,9 +171,8 @@ class Scores extends Component {
 
                 <TouchableWithoutFeedback
                     onPress={() =>
-                        this.props.navigate('Main', {
+                        this.props.navigation.navigate('Main', {
                             id: userID,
-                            points: userPoints,
                         })
                     }>
                         <View style={{
