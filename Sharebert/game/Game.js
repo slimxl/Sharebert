@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Constants } from 'expo';
 import { NavigationActions } from 'react-navigation';
+
 import Files from './Files';
 import * as THREE from 'three'; // 0.88.0
 import Expo from 'expo';
@@ -31,11 +32,15 @@ var uri2;
 var ScoreSend = false;
 var retry = false;
 var showScores = false;
+var navigator;
+var that;
 
 export default class Game extends React.Component {
-  constructor(){
-    super();
+  constructor(props) {
+    super(props);
     console.disableYellowBox = true;
+    userID = this.props.state.params.id;
+    that = this.props;
   }
   scale = 1;
   pipes = new Group();
@@ -47,12 +52,12 @@ export default class Game extends React.Component {
   gameStarted = false;
   gameOver = false;
   velocity = 0;
-  
+
   state = {
     score: 'Get Ready!',
     HS: [],
   };
-  
+
   componentWillMount() {
     THREE.suppressExpoWarnings(true);
     /// Audio is currently broken in snack :/
@@ -232,8 +237,8 @@ export default class Game extends React.Component {
   };
 
   spawnCoin = async (openPos) => {
-    
-    let coinY = Math.floor(Math.random() * -49) -50  //INSERT RANDOM NUMBER HERE
+
+    let coinY = Math.floor(Math.random() * -49) - 50  //INSERT RANDOM NUMBER HERE
 
     console.log(coinY);
     let coinKey = 'bottom';
@@ -385,25 +390,37 @@ export default class Game extends React.Component {
       //if (ScoreSend) {
       //  this.sendScore();
 
+      this.props.navigate('Scores', 
+      {
+        id: userID,
+        points: userPoints,
+        userScore: this.state.score,
 
-      fetch('https://sharebert.com/s/Checkscore.php', { method: 'GET' })
-        .then(response => response.json())
-        .then(responseData => {
-          var data2 = []
-          for (var i = 0; i < responseData.length; i++) {
-            var obj = {};
+      });
 
-            obj['User'] = responseData[i]['User_Name'];
-            obj['Score'] = responseData[i]['DailyScore'];
-            data2.push(obj);
-          }
-          //var reversed = data2.reverse(); 
-          this.setState({
-            HS: data2,
-          })
-        })
-        .done();
-      showScores = true;
+      //that.navigation.push('Scores', {
+      //  id: userID,
+      //  points: userPoints,
+      //});
+
+       fetch('https://sharebert.com/s/Checkscore.php', { method: 'GET' })
+         .then(response => response.json())
+         .then(responseData => {
+           var data2 = []
+           for (var i = 0; i < responseData.length; i++) {
+             var obj = {};
+   
+             obj['User'] = responseData[i]['User_Name'];
+             obj['Score'] = responseData[i]['DailyScore'];
+             data2.push(obj);
+           }
+           //var reversed = data2.reverse(); 
+           this.setState({
+             HS: data2,
+           })
+         })
+         .done();
+       showScores = true;
     }
   };
 
@@ -583,6 +600,7 @@ export default class Game extends React.Component {
     //@(Evan Bacon) This is a dope SpriteView based on SpriteKit that surfaces touches, render, and setup!
     return (
       <View style={styles.container}>
+      
         <SpriteView
           touchDown={() => this.tap()}
           touchMoved={() => { }}
@@ -603,51 +621,11 @@ export default class Game extends React.Component {
             source={require('../assets/arrow_w.png')}
           />
         </TouchableWithoutFeedback>
-        {(showScores == true) ?
-          <View>
-            <Text style = {styles.text3}>
-            Daily Scores
-            </Text>
-          <ScrollView style = {styles.scrollview}>
-          <FlatList backgroundColor={'transparent'}
-            style={styles.likesviewscroll}
-            data={this.state.HS}
-            keyExtractor={(item, index) => index}
-            renderItem={this._renderItem}
-          />
-          </ScrollView>
-          </View>
-          :
-          <View>
-          </View>
-        }
 
         {(this.gameOver == true)
           ?
           <View>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                this.sendScore();
-              }}>
-              <View style = {styles.send}>
-              <Text
-                style={styles.text2}>
-                Send Score
-            </Text>
-            </View>
-            </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback
-              onPress={() => {
-                this.reset();
-              }}>
-              <View style = {styles.retry}>
-              <Text
-                style={styles.text2}>
-                Retry
-            </Text>
-            </View>
-            </TouchableWithoutFeedback>
           </View>
           :
           <View>
@@ -663,7 +641,7 @@ export default class Game extends React.Component {
     try {
       var scoretext = item.User + ": " + item.Score;
       return (
-        <View style = {styles.score}>
+        <View style={styles.score}>
           <Text numberOfLines={2} style={styles.text}>{scoretext}</Text>
         </View>
       );
@@ -698,6 +676,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     width: 200,
+    height: 150,
     textAlign: 'center',
     fontSize: 30,
     backgroundColor: 'transparent',
@@ -707,24 +686,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 150,
     fontSize: 30,
-    marginLeft: Dimensions.get('window').width * .5-100,
+    marginLeft: Dimensions.get('window').width * .5 - 100,
     backgroundColor: 'transparent',
   },
   send: {
-    marginTop: -120,
-    marginLeft: Dimensions.get('window').width * .5-100,
+    marginTop: 150,
+    marginLeft: Dimensions.get('window').width * .5 - 100,
+    height: 150,
     width: 200,
     backgroundColor: 'transparent',
   },
   retry: {
-    marginTop: -160,
-    marginLeft: Dimensions.get('window').width * .5-100,
+    marginLeft: Dimensions.get('window').width * .5 - 100,
     width: 200,
     backgroundColor: 'transparent',
   },
   score: {
-    marginTop: 0,
-    marginLeft: Dimensions.get('window').width * .5-135,
+    marginTop: 100,
+    marginLeft: Dimensions.get('window').width * .5 - 135,
     width: 400,
     backgroundColor: 'transparent',
   },

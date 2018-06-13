@@ -10,6 +10,8 @@ import Travel from './Travel';
 import Search from './Search';
 import Deals from './Deals';
 import Grocery from './Grocery';
+import Scores from './Scores';
+import Game from './game/Game';
 import Main from './Main';
 
 export default class App extends React.Component {
@@ -87,8 +89,22 @@ const AppNavigator = StackNavigator(
         gesturesEnabled: true,
       }),
     },
+    Scores: {
+      screen: Scores,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
     Main: {
       screen: Main,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
+    Game: {
+      screen: Game,
       navigationOptions: ({ navigation }) => ({
         header: true,
         gesturesEnabled: true,
