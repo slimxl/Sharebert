@@ -47,6 +47,7 @@ var search = false;
 var searchterm = '';
 var randomPROFILEIMAGE = []; //TO BE REMOVED
 var animationBool = false;
+var goBack = true;
 var emptycard = true;
 var likes = [];
 var likes3 = [];
@@ -1281,7 +1282,11 @@ class Explore extends Component {
                 likes = res.reverse();
                 if (this.props.screenProps) {
                   console.log("GOT NOTIF ON STARTUP");
-                  this.resetTo("Likes");
+                  if(goBack)
+                  {
+                    goBack = false;
+                    this.resetTo("Likes");
+                  }
                 }
               }
             }
@@ -1466,6 +1471,7 @@ class Explore extends Component {
       points: userPoints,
       uri: uri2,
       like: likes,
+      notification: false,
       updateData: this.updateData,
       clearLikes: this.clearLikes,
       saveLikesto: this.saveLikesto,
