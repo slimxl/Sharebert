@@ -45,7 +45,7 @@ class Likes extends Component {
       isOpen: false,
       selectedItem: 'Likes',
       showAlert: false,
-      like: [],
+      like: like,
       userID: userID,
     };
     //this.getFile();
@@ -224,6 +224,7 @@ class Likes extends Component {
             id: userID,
             points: userPoints,
             uri: uri2,
+            notification: false,
           })
         }}
       >
@@ -313,6 +314,7 @@ class Likes extends Component {
             //   id: userID,
             //   points: userPoints,
             //   uri: uri,
+            //   notification: false,
             // });
             this.props.navigation.goBack();
             this.props.navigation.state.params.updateData(userPoints);
