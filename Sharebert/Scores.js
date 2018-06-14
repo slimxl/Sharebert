@@ -89,6 +89,7 @@ class Scores extends Component {
             +userID,
             { method: 'GET' }
         ).done();
+        console.log(uri2);
         this.props.navigation.navigate('Explore', {
             id: userID,
             points: userPoints,

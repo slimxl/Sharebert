@@ -43,6 +43,7 @@ export default class Game extends React.Component {
     console.disableYellowBox = true;
     userID = this.props.state.params.id;
     uri2 = this.props.state.params.uri;
+    console.log(props);
     that = this.props;
     try {
       userPoints = this.props.state.params.points;
