@@ -41,6 +41,7 @@ export default class Game extends React.Component {
     console.disableYellowBox = true;
     userID = this.props.state.params.id;
     that = this.props;
+    doublejumpint = 0;
   }
   scale = 1;
   pipes = new Group();
@@ -52,7 +53,6 @@ export default class Game extends React.Component {
   gameStarted = false;
   gameOver = false;
   velocity = 0;
-
   state = {
     score: 'Get Ready!',
     HS: [],
@@ -389,6 +389,7 @@ export default class Game extends React.Component {
       //}
       //if (ScoreSend) {
       //  this.sendScore();
+      this.reset();
 
       this.props.navigate('Scores', 
       {

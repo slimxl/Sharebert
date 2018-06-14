@@ -173,6 +173,7 @@ class Scores extends Component {
                     onPress={() =>
                         this.props.navigation.navigate('Main', {
                             id: userID,
+                            points: userPoints,
                         })
                     }>
                         <View style={{
