@@ -89,10 +89,11 @@ class Scores extends Component {
             +userID,
             { method: 'GET' }
         ).done();
-
         this.props.navigation.navigate('Explore', {
             id: userID,
-        })
+            points: userPoints,
+            uri: uri2,
+          });
     };
 
     getScores = () => {
@@ -171,9 +172,10 @@ class Scores extends Component {
 
                 <TouchableWithoutFeedback
                     onPress={() =>
-                        this.props.navigation.navigate('Main', {
+                        this.props.navigation.push('Main', {
                             id: userID,
                             points: userPoints,
+                            uri: uri2,
                         })
                     }>
                         <View style={{
