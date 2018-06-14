@@ -34,13 +34,22 @@ var retry = false;
 var showScores = false;
 var navigator;
 var that;
-
+var userPoints;
+var uri2;
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
+    doublejumpint = 0;
     console.disableYellowBox = true;
     userID = this.props.state.params.id;
+    uri2 = this.props.state.params.uri;
     that = this.props;
+    try {
+      userPoints = this.props.state.params.points;
+    }
+    catch (error) {
+      userPoints = 0;
+    }
   }
   scale = 1;
   pipes = new Group();
@@ -127,7 +136,6 @@ export default class Game extends React.Component {
     });
     this.scene.add(this.player);
 
-    console.log(this.props.state.id);
   };
 
   setupGround = async () => {
@@ -365,6 +373,12 @@ export default class Game extends React.Component {
       if (doublejumpint < MAXJUMPS) {
         this.velocity = FLAP;
         doublejumpint += 1;
+        console.log("JUMP IS: "+doublejumpint);
+        console.log("MAXJUMP IS: "+MAXJUMPS);
+      }
+      else
+      {
+        console.log('CANT JUMP!');
       }
 
       //this.audio.wing();
@@ -395,7 +409,7 @@ export default class Game extends React.Component {
         id: userID,
         points: userPoints,
         userScore: this.state.score,
-
+        uri: uri2,
       });
 
       //that.navigation.push('Scores', {
@@ -443,7 +457,8 @@ export default class Game extends React.Component {
   reset = () => {
     this.gameStarted = false;
     this.gameOver = false;
-    this.resetJump();
+    console.log('RESET GAME');
+    doublejumpint = 0;
     this.setState({ score: 'Get Ready!' });
     showScores = false;
     reset = false;

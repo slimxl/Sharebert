@@ -437,6 +437,7 @@ class Shipping extends Component {
                 {
                   id: userID,
                   points: userPoints,
+                  uri: uri2,
                 });
               }}
               style={{
