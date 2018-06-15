@@ -20,14 +20,12 @@ import {
 } from 'react-native';
 
 import { Constants } from 'expo';
-const backAction = NavigationActions.back({
-    key: null
-});
+
 var userPoints = 0;
 var userID = 0;
 var uri2 = '';
 var score = 0;
-
+var sentToday = false;
 // screen sizing
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -48,6 +46,10 @@ class Scores extends Component {
         uri2 = this.props.navigation.state.params.uri;
         likes = this.props.navigation.state.params.like;
         score = this.props.navigation.state.params.userScore;
+        if(score>0&&userID!=0)
+        {
+            this.sendScore();
+        }
         this.state = {
             inputValue: 'Search',
             trendinglist: [],
@@ -84,17 +86,19 @@ class Scores extends Component {
         console.log("ID: " + userID);
 
         fetch(
-            'https://sharebert.com/s/SetDailyScore.php?score=' + score +
+            'https://sharebert.com/s/SetDailyScore2.php?score=' + score +
             '&ui=' +
             +userID,
-            { method: 'GET' }
-        ).done();
-        console.log(uri2);
-        this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-            uri: uri2,
-          });
+            { method: 'GET' })
+            .then(()=>{
+                this.getScores();
+            }).done();
+        // console.log(uri2);
+        // this.props.navigation.navigate('Explore', {
+        //     id: userID,
+        //     points: userPoints,
+        //     uri: uri2,
+        // });
     };
 
     getScores = () => {
@@ -106,6 +110,10 @@ class Scores extends Component {
                     var obj = {};
 
                     obj['User'] = responseData[i]['User_Name'];
+                    obj['id'] = responseData[i]['id'];
+                    if (obj['id'] == userID) {
+                        sentToday = true;
+                    }
                     obj['Score'] = responseData[i]['DailyScore'];
                     data2.push(obj);
                 }
@@ -113,6 +121,7 @@ class Scores extends Component {
                 this.setState({
                     HS: data2,
                 })
+                this.forceUpdate();
             })
             .done();
     }
@@ -132,7 +141,20 @@ class Scores extends Component {
                     style={styles.button}
                     source={require('./assets/icons/logoicon.png')}
                 />
-
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        this.props.navigation.navigate('Explore', {
+                            id: userID,
+                            points: userPoints,
+                            uri: uri2,
+                        });
+                    }}>
+                    <Image
+                        style={styles.hamburger}
+                        resizeMode='contain'
+                        source={require('./assets/arrow_w.png')}
+                    />
+                </TouchableWithoutFeedback>
                 <Text style={styles.title}>
                     Daily Highscores
                 </Text>
@@ -154,41 +176,47 @@ class Scores extends Component {
                             renderItem={this._renderItem}
                         />
                     </View>
+                    {/* {sentToday ?
+
+                        <View />
+
+                        :
+                        <TouchableWithoutFeedback
+                            onPress={() =>
+                                this.sendScore()
+
+                            }>
+                            <View style={{
+                                position: 'absolute',
+                                bottom: 150,
+                                left: Dimensions.get('window').width * .5 - 50,
+                            }}>
+                                <Text style={styles.title2}>
+                                    Send Score
+                            </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    } */}
+
 
                     <TouchableWithoutFeedback
-                    onPress={() =>
-                        this.sendScore()
-
-                    }>
+                        onPress={() =>
+                            this.props.navigation.push('Main', {
+                                id: userID,
+                                points: userPoints,
+                                uri: uri2,
+                            })
+                        }>
                         <View style={{
-                        position: 'absolute',
-                        bottom: 150,
-                        left: Dimensions.get('window').width * .5 - 50,
-                    }}>
-                        <Text style={styles.title2}>
-                            Send Score
+                            position: 'absolute',
+                            bottom: 100,
+                            left: Dimensions.get('window').width * .5 - 50,
+                        }}>
+                            <Text style={styles.title2}>
+                                Retry
                             </Text>
-                    </View>
-                </TouchableWithoutFeedback>
-
-                <TouchableWithoutFeedback
-                    onPress={() =>
-                        this.props.navigation.push('Main', {
-                            id: userID,
-                            points: userPoints,
-                            uri: uri2,
-                        })
-                    }>
-                        <View style={{
-                        position: 'absolute',
-                        bottom: 100,
-                        left: Dimensions.get('window').width * .5 - 50,
-                    }}>
-                        <Text style={styles.title2}>
-                            Retry
-                            </Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
 
                 </ImageBackground>
             </View>
@@ -251,24 +279,24 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     dividerTop:
-        {
-            ...Platform.select({
-                ios: {
-                    width: Dimensions.get('window').width,
-                    position: "absolute",
-                    top: -25,
-                    height: 100,
-                    backgroundColor: 'transparent',
-                },
-                android: {
-                    width: Dimensions.get('window').width,
-                    position: "absolute",
-                    top: 0,
-                    height: 100,
-                    backgroundColor: 'transparent',
-                },
-            }),
-        },
+    {
+        ...Platform.select({
+            ios: {
+                width: Dimensions.get('window').width,
+                position: "absolute",
+                top: -25,
+                height: 100,
+                backgroundColor: 'transparent',
+            },
+            android: {
+                width: Dimensions.get('window').width,
+                position: "absolute",
+                top: 0,
+                height: 100,
+                backgroundColor: 'transparent',
+            },
+        }),
+    },
     header: {
         ...Platform.select({
             ios: {
