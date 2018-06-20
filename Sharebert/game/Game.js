@@ -111,7 +111,7 @@ export default class Game extends React.Component {
   /// Sprites
   setupPlayer = async () => {
     const size = {
-      width: 16 * this.scale,
+      width: 20 * this.scale,
       height: 26 * this.scale,
     };
 
