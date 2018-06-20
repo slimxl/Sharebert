@@ -1,6 +1,6 @@
 export default {
   sprites: {
-    bg: require('../assets/sprites/bg3.png'),
+    bg: require('../assets/sprites/bg6.png'),
     bird: require('../assets/sprites/bird4.png'),
     ground: require('../assets/sprites/ground3.png'),
     pipe_bottom: require('../assets/sprites/pipe_bottom2.png'),
