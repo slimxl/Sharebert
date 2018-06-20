@@ -43,7 +43,7 @@ export default class Game extends React.Component {
     console.disableYellowBox = true;
     userID = this.props.state.params.id;
     uri2 = this.props.state.params.uri;
-    console.log(props);
+    //console.log(props);
     that = this.props;
     try {
       userPoints = this.props.state.params.points;
@@ -111,7 +111,7 @@ export default class Game extends React.Component {
   /// Sprites
   setupPlayer = async () => {
     const size = {
-      width: 26 * this.scale,
+      width: 16 * this.scale,
       height: 26 * this.scale,
     };
 
@@ -142,7 +142,7 @@ export default class Game extends React.Component {
   setupGround = async () => {
     const { scene } = this;
     const size = {
-      width: scene.size.width,
+      width: scene.size.width+6.9,
       height: scene.size.width * 0.333333333,
     };
     this.groundNode = new Group();
@@ -249,7 +249,7 @@ export default class Game extends React.Component {
 
     let coinY = Math.floor(Math.random() * -49) - 50  //INSERT RANDOM NUMBER HERE
 
-    console.log(coinY);
+    //console.log(coinY);
     let coinKey = 'bottom';
     let coin;
 
@@ -374,12 +374,12 @@ export default class Game extends React.Component {
       if (doublejumpint < MAXJUMPS) {
         this.velocity = FLAP;
         doublejumpint += 1;
-        console.log("JUMP IS: "+doublejumpint);
-        console.log("MAXJUMP IS: "+MAXJUMPS);
+        //console.log("JUMP IS: "+doublejumpint);
+        //console.log("MAXJUMP IS: "+MAXJUMPS);
       }
       else
       {
-        console.log('CANT JUMP!');
+       // console.log('CANT JUMP!');
       }
 
       //this.audio.wing();

@@ -891,6 +891,30 @@ class Explore extends Component {
           console.error(error);
         }
 
+        try {
+          if (Math.floor(Math.random() * (250 - 1) + 1) <= 100 && userID != 0) {
+            Alert.alert(
+              'Heres a chance to earn more points! ', "",
+              [
+                {
+                  text: 'Skip',
+                  onPress: () => { },
+                  style: 'cancel',
+                },
+                {
+                  text: 'Play',
+                  onPress: () => {
+                    this.resetTo('Main');
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
+          }
+        } catch (error) {
+          console.error(error);
+        }
+
       }
 
 
