@@ -641,7 +641,7 @@ class Explore extends Component {
                       this.notification.show({
                         title: 'You earned 5 points!',
                         message: 'Share another product to earn more!',
-                        icon: { uri: 'https://i.imgur.com/DIi2glo.png' },
+                        icon: { uri: 'https://i.imgur.com/ITg9EvJ.png' },
                         onPress: () => this.showAlert(),
                       });
                     }
