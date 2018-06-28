@@ -641,7 +641,7 @@ class Explore extends Component {
                       this.notification.show({
                         title: 'You earned 5 points!',
                         message: 'Share another product to earn more!',
-                        icon: { uri: 'https://i.imgur.com/xW6iH48.png' },
+                        icon: { uri: 'https://i.imgur.com/DIi2glo.png' },
                         onPress: () => this.showAlert(),
                       });
                     }
@@ -1886,7 +1886,7 @@ class Explore extends Component {
                 ?
                 <Notification
                   ref={(ref) => { this.notification = ref; }}
-                  backgroundColour='#ff2eff'
+                  backgroundColour='#1288f5'
                 />
                 :
                 <View />
