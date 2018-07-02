@@ -146,7 +146,6 @@ class Shipping extends Component {
 
   goBack = () => {
     this.props.navigation.goBack();
-    this.props.navigation.params.resetExplore();
 
   };
   saveForm = () => {
@@ -212,7 +211,6 @@ class Shipping extends Component {
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.goBack();
-            this.props.navigation.params.resetExplore();
           }}>
 
           <Image style={styles.header} />
@@ -231,7 +229,6 @@ class Shipping extends Component {
         <TouchableWithoutFeedback
           onPress={() => {
             this.props.navigation.goBack();
-            this.props.navigation.params.resetExplore();
 
           }}>
           <Image

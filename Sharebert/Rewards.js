@@ -392,7 +392,7 @@ class Rewards extends Component {
             onPress={() => {
               this.props.navigation.goBack();
               this.props.navigation.state.params.updateData(userPoints);
-              this.props.navigation.state.params.resetExplore();
+
             }}>
 
             <Image style={styles.header} />
@@ -412,7 +412,7 @@ class Rewards extends Component {
             onPress={() => {
               this.props.navigation.goBack();
               this.props.navigation.state.params.updateData(userPoints);
-              this.props.navigation.state.params.resetExplore();
+
             }}>
             <Image
               style={styles.hamburger}

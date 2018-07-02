@@ -226,7 +226,6 @@ class Search extends Component {
                         // })
                         this.props.navigation.goBack();
                         this.props.navigation.state.params.updateData(userPoints);
-                        this.props.navigation.state.params.resetExplore();
                     }}>
                     <Image
                         style={styles.hamburger}

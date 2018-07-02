@@ -318,7 +318,7 @@ class Likes extends Component {
             // });
             this.props.navigation.goBack();
             this.props.navigation.state.params.updateData(userPoints);
-            this.props.navigation.state.params.resetExplore();
+
 
           }}
         >
@@ -343,7 +343,6 @@ class Likes extends Component {
             //this.props.navigation.dispatch(backAction); //navigate to explore
             this.props.navigation.goBack();
             this.props.navigation.state.params.updateData(userPoints);
-            this.props.navigation.state.params.resetExplore();
             // this.props.navigation.navigate('Explore', {
             //   id: userID,
             //   points: userPoints,
