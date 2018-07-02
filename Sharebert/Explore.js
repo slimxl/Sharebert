@@ -1736,6 +1736,7 @@ class Explore extends Component {
     console.log('Reset to ' + route);
     secondcard = true;
     emptycard = false;
+    this.forceUpdate();
     this.props.navigation.navigate(route, {
       id: userID,
       points: userPoints,
