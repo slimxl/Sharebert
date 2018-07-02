@@ -772,9 +772,15 @@ class Explore extends Component {
   };
   goSearch = (term) => {
     searchterm = term;
+    this.setState({
+      url: 'https://i.imgur.com/JaG8ovv.gif',
+    })
     this.onSubmitEdit();
   }
   goBrand = (brand) => {
+    this.setState({
+      url: 'https://i.imgur.com/JaG8ovv.gif',
+    })
     this.onSubmitEditBrands(brand);
   }
   clearLikes = async () => {
