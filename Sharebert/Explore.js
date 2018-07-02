@@ -106,7 +106,7 @@ class Explore extends Component {
     }
     uri2 = this.props.navigation.state.params.uri;
     console.log(props);
-    
+
     this.getOldLikes();
     this.state = {
       cards: ['1', '2', '3'],
@@ -139,7 +139,7 @@ class Explore extends Component {
       testDat: [],
     };
 
-
+    this.getSearches();
 
     //console.log(userPoints);
     if (userPoints > 100) {
@@ -170,21 +170,8 @@ class Explore extends Component {
           toofast = false;
           search = false;
           data2 = shuffle(data2);
-          var data3 = [];
-          var obj = {};
-          
-          obj['Term'] = "snax";
-          obj['Count'] = 25;
-          obj['ImageUrl'] = "https://opensource.google.com/assets/static/images/home/blog/blog_image_1.jpg";
-      
-          data3.push(obj);
-      
-          obj['Term'] = "snax2";
-          obj['Count'] = 255;
-          obj['ImageUrl'] = "https://opensource.google.com/assets/static/images/home/blog/blog_image_1.jpg";
-      
-          data3.push(obj);
-      
+
+
           this.setState({
             cardNum: this.state.cardNum,
             url: data2[this.state.cardNum].ImageURL,
@@ -192,7 +179,6 @@ class Explore extends Component {
             disable: false,
             dataset: data2,
             cat: false,
-            testDat: data3,
           });
         })
         .done();
@@ -314,9 +300,27 @@ class Explore extends Component {
       this.checkUpdatePoints();
     }
 
-    
-  }
 
+  }
+  getSearches = () => {
+    fetch('http://biosystematic-addit.000webhostapp.com/s/GetSearch.php', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = [];
+        for (var i = 0; i < Object.keys(responseData).length; i++) {
+          var obj = {};
+          obj['Term'] = responseData[i]['Term'];
+          obj['ImageUrl'] = responseData[i]['ImageUrl'];
+          data2.push(obj);
+        }
+
+        this.setState({
+          testDat: data2,
+        });
+        this.forceUpdate();
+      })
+      .done();
+  }
   _getItemLayout = (data, index) => {
     const productHeight = PRODUCT_ITEM_HEIGHT + PRODUCT_ITEM_MARGIN;
     return {
@@ -332,6 +336,7 @@ class Explore extends Component {
 
   _renderItem = data => {
     const item = data.item;
+
     return (
       <View style={styles.item}>
         <TouchableOpacity onPress={() => {
@@ -400,12 +405,12 @@ class Explore extends Component {
         //console.log(this.state.trendData);
       })
       .done();
-     
+
   }
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    
+
   }
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
@@ -1149,8 +1154,8 @@ class Explore extends Component {
           if (this.state.dataset[0].ImageURL.includes('tillys')) {
 
             imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
-  
-  
+
+
           }
           this.notificationLike.show({
             title: trunc(this.state.dataset[0].Title),
@@ -1179,8 +1184,8 @@ class Explore extends Component {
           if (this.state.dataset[this.state.cardNum - 1].ImageURL.includes('tillys')) {
 
             imageURL2 = imageURL2.substring(0, imageURL2.indexOf('?'));
-  
-  
+
+
           }
           this.notificationLike.show({
             title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
@@ -1271,12 +1276,12 @@ class Explore extends Component {
     }
 
   }
-  getLikes =  () => {
+  getLikes = () => {
     var res;
     try {
       if (userID !== 0 || userID !== undefined) {
         var ref = Firebase.database().ref('users/' + userID + "/likes/");
-         ref.once('value')
+        ref.once('value')
           .then(function (snapshot) {
             if (snapshot.val() !== null) {
               var obj = snapshot.val();
@@ -1315,7 +1320,7 @@ class Explore extends Component {
       if (userID !== 0 || userID !== undefined) {
         var ref = Firebase.database().ref('users/' + userID + "/likes/");
         ref.once('value')
-          .then(snapshot=>{ 
+          .then(snapshot => {
             if (snapshot.val() !== null) {
               var obj = snapshot.val();
               res = Object.keys(obj)
@@ -1329,8 +1334,7 @@ class Explore extends Component {
                 likes = res.reverse();
                 if (this.props.screenProps) {
                   console.log("GOT NOTIF ON STARTUP");
-                  if(goBack)
-                  {
+                  if (goBack) {
                     goBack = false;
                     this.resetTo("Likes");
                   }
@@ -1348,7 +1352,7 @@ class Explore extends Component {
     } catch (error) {
       // Error retrieving data
     }
-    
+
   };
 
   saveLike = async () => {
@@ -1500,105 +1504,110 @@ class Explore extends Component {
 
   _renderItem2 = data => {
     const item = data.item;
+    console.log(item);
     return (
-      <TouchableOpacity onPress={() => this.catGrab(item.Term)}>
-      <Image
-        style={styles.catbar}
-        source={{
-          uri: item.ImageURL,
-        }}
-      />
-    </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={() => this.catGrab(item.Term)}>
+          <Image
+            style={styles.catbars}
+            source={{
+              uri: item.ImageUrl,
+            }}
+          />
+        </TouchableOpacity>
+        <Text style={{flex:1}}>
+          {item.Term}
+        </Text>
+      </View>
     );
   }
   _keyExtractor = (item, index) => index;
-  _renderFooter = () =>
-  {
-    return(
-    <View style={{flex: 1, flexDirection: 'row'}}
-    >
-    <TouchableOpacity onPress={() => this.props.navigation.push('Brands', {
-      id: userID,
-      points: userPoints,
-      uri: uri2,
-    })}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/brands.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/travel.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('groceries')}>
-      <Image
-        style={styles.catbar}
-        source={require('./assets/Category/groceries.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.props.navigation.push('Deals', {
-      id: userID,
-      points: userPoints,
-      uri: uri2,
-    })}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/deals_v2.png')}
-      />
+  _renderFooter = () => {
+    return (
+      <View style={{ flex: 1, flexDirection: 'row' }}
+      >
+        <TouchableOpacity onPress={() => this.props.navigation.push('Brands', {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+        })}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/brands.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('Travel')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/travel.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('groceries')}>
+          <Image
+            style={styles.catbar}
+            source={require('./assets/Category/groceries.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.push('Deals', {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+        })}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/deals_v2.png')}
+          />
 
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('womens')}>
-      <Image
-        style={styles.catbar}
-        source={require('./assets/Category/womens.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('men')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/mens.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('girls')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/girls.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('boys')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/boys.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('baby')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/baby.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('pet')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/pet.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('gift')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/gifts.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => this.catGrab('All')}>
-      <Image
-        style={styles.catbars}
-        source={require('./assets/Category/random.png')}
-      />
-    </TouchableOpacity>
-    </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('womens')}>
+          <Image
+            style={styles.catbar}
+            source={require('./assets/Category/womens.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('men')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/mens.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('girls')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/girls.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('boys')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/boys.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('baby')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/baby.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('pet')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/pet.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('gift')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/gifts.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.catGrab('All')}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/random.png')}
+          />
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -1616,7 +1625,7 @@ class Explore extends Component {
     animationBool = false;
   }
   resetTo(route) {
-    
+
     this.props.navigation.push(route, {
       id: userID,
       points: userPoints,
@@ -1816,7 +1825,7 @@ class Explore extends Component {
                 backgroundColor={'white'}
                 style={styles.scrollbar}
                 data={this.state.testDat}
-                keyExtractor={this._keyExtractor}
+                keyExtractor={(item, index) => index}
                 ListFooterComponent={this._renderFooter}
                 renderItem={this._renderItem2}
               />
@@ -2023,17 +2032,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   listContainer:
-    {
-      backgroundColor: 'transparent',
-      height: deviceHeight - 300,
-      marginTop: -70,
-    },
+  {
+    backgroundColor: 'transparent',
+    height: deviceHeight - 300,
+    marginTop: -70,
+  },
   listContainer2:
-    {
-      backgroundColor: 'transparent',
-      height: deviceHeight,
-      marginTop: 10,
-    },
+  {
+    backgroundColor: 'transparent',
+    height: deviceHeight,
+    marginTop: 10,
+  },
 
   text2: {
     ...Platform.select({
@@ -2058,15 +2067,15 @@ const styles = StyleSheet.create({
 
   },
   heart:
-    {
-      width: Dimensions.get('window').width,
-      height: 30,
-      paddingTop: 30,
-      marginTop: 60,
-      marginBottom: 26,
-      backgroundColor: 'transparent',
+  {
+    width: Dimensions.get('window').width,
+    height: 30,
+    paddingTop: 30,
+    marginTop: 60,
+    marginBottom: 26,
+    backgroundColor: 'transparent',
 
-    },
+  },
   title: {
     fontFamily: "Montserrat",
     fontSize: 18,
@@ -2080,15 +2089,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   title2:
-    {
-      fontFamily: "Montserrat",
-      fontSize: 12,
-      textAlign: 'center',
-      marginTop: 0,
-      marginBottom: 0,
-      paddingBottom: 6,
-      backgroundColor: 'transparent',
-    },
+  {
+    fontFamily: "Montserrat",
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 0,
+    marginBottom: 0,
+    paddingBottom: 6,
+    backgroundColor: 'transparent',
+  },
   pointsText: {
     ...Platform.select({
       ios: {
@@ -2139,36 +2148,36 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   inputQuestion:
-    {
-      marginTop: Dimensions.get('window').height / 8,
-      //fontFamily: "Montserrat",
-      textAlign: 'center',
-      fontSize: 18,
-      fontStyle: 'normal',
-      fontWeight: '100',
-      backgroundColor: 'transparent',
-    },
+  {
+    marginTop: Dimensions.get('window').height / 8,
+    //fontFamily: "Montserrat",
+    textAlign: 'center',
+    fontSize: 18,
+    fontStyle: 'normal',
+    fontWeight: '100',
+    backgroundColor: 'transparent',
+  },
   inputQuestion2:
-    {
-      marginTop: Dimensions.get('window').height / 30,
-      textAlign: 'center',
-      fontStyle: 'italic',
-      color: '#A9A9A9',
-      marginLeft: Dimensions.get('window').width / 4,
-      width: Dimensions.get('window').width / 2,
-      ...Platform.select({
-        ios: {
-          borderBottomWidth: 2,
-          borderBottomColor: 'black',
-        },
-        android: {
-          borderBottomWidth: 2,
-          borderBottomColor: 'black',
-        }
+  {
+    marginTop: Dimensions.get('window').height / 30,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    color: '#A9A9A9',
+    marginLeft: Dimensions.get('window').width / 4,
+    width: Dimensions.get('window').width / 2,
+    ...Platform.select({
+      ios: {
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+      },
+      android: {
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
       }
-      ),
+    }
+    ),
 
-    },
+  },
   retail: {
     textAlign: 'center',
     fontSize: 12,
@@ -2212,28 +2221,28 @@ const styles = StyleSheet.create({
 
       },
       android:
-        {
-          fontFamily: 'MontserratBoldItalic',
-          width: Dimensions.get('window').width,
-          height: 30,
-          width: '100%',
-          position: 'absolute',
-          textAlign: 'center',
-          fontSize: 20,
-          marginLeft: Dimensions.get('window').width / 20,
-          marginTop: 20,
-          marginBottom: -40,
-          color: '#ffffff',
+      {
+        fontFamily: 'MontserratBoldItalic',
+        width: Dimensions.get('window').width,
+        height: 30,
+        width: '100%',
+        position: 'absolute',
+        textAlign: 'center',
+        fontSize: 20,
+        marginLeft: Dimensions.get('window').width / 20,
+        marginTop: 20,
+        marginBottom: -40,
+        color: '#ffffff',
 
-        }
+      }
     }),
 
   },
   TrendText2:
-    {
-      marginTop: 10,
-      marginBottom: '30%',
-    },
+  {
+    marginTop: 10,
+    marginBottom: '30%',
+  },
   Trend1: {
     width: Dimensions.get('window').width / 4,
     height: Dimensions.get('window').height / 4,
@@ -2385,16 +2394,16 @@ const styles = StyleSheet.create({
 
   },
   exploreBut:
-    {
-      height: 25,
-      width: 25,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      marginLeft: Dimensions.get('window').width / 16,
-      marginBottom: 5,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    marginLeft: Dimensions.get('window').width / 16,
+    marginBottom: 5,
+    backgroundColor: 'transparent',
+  },
   hamburger: {
 
     width: 25,
@@ -2405,16 +2414,16 @@ const styles = StyleSheet.create({
 
   },
   likesBut:
-    {
-      height: 25,
-      width: 25,
-      marginLeft: Dimensions.get('window').width / 3.3,
-      marginBottom: 5,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    marginLeft: Dimensions.get('window').width / 3.3,
+    marginBottom: 5,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'transparent',
+  },
   footerRewards: {
     position: "absolute",
     bottom: 0,
@@ -2422,16 +2431,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   rewardsBut:
-    {
-      height: 25,
-      width: 25,
-      marginRight: Dimensions.get('window').width / 3.3,
-      marginBottom: 5,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    marginRight: Dimensions.get('window').width / 3.3,
+    marginBottom: 5,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
   footerProfile: {
     position: "absolute",
     bottom: 0,
@@ -2439,17 +2448,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   profileBut:
-    {
-      height: 25,
-      width: 25,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      marginRight: Dimensions.get('window').width / 16,
-      marginBottom: 5,
-      borderRadius: 12,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    marginRight: Dimensions.get('window').width / 16,
+    marginBottom: 5,
+    borderRadius: 12,
+    backgroundColor: 'transparent',
+  },
   header: {
     ...Platform.select({
       ios: {
@@ -2472,18 +2481,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#1288f5',
   },
   footerItem3:
-    {
-      bottom: Dimensions.get('window').height * .09,
+  {
+    bottom: Dimensions.get('window').height * .09,
 
-      height: 75,
-    },
+    height: 75,
+  },
   footerItem4:
-    {
-      position: 'absolute',
-      bottom: Dimensions.get('window').height * .09,
+  {
+    position: 'absolute',
+    bottom: Dimensions.get('window').height * .09,
 
-      height: 75,
-    },
+    height: 75,
+  },
   footerItem: {
     position: 'absolute',
     bottom: Dimensions.get('window').height * .25,
