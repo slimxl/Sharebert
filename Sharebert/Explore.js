@@ -87,11 +87,14 @@ const PRODUCT_ITEM_HEIGHT = 175;
 const PRODUCT_ITEM_OFFSET = 5;
 const PRODUCT_ITEM_MARGIN = PRODUCT_ITEM_OFFSET * 2;
 
+
+
 class Explore extends Component {
   constructor(props) {
     super(props);
     //console.log(this.props.navigation.state.params);
     console.disableYellowBox = true;
+
 
     userID = this.props.navigation.state.params.id;
 
@@ -133,7 +136,11 @@ class Explore extends Component {
       inputValue: 'My Answer!',
       color: "#ff2eff",
       trendData: [],
+      testDat: [],
     };
+
+
+
     //console.log(userPoints);
     if (userPoints > 100) {
       tutorial = false;
@@ -163,6 +170,21 @@ class Explore extends Component {
           toofast = false;
           search = false;
           data2 = shuffle(data2);
+          var data3 = [];
+          var obj = {};
+          
+          obj['Term'] = "snax";
+          obj['Count'] = 25;
+          obj['ImageUrl'] = "https://opensource.google.com/assets/static/images/home/blog/blog_image_1.jpg";
+      
+          data3.push(obj);
+      
+          obj['Term'] = "snax2";
+          obj['Count'] = 255;
+          obj['ImageUrl'] = "https://opensource.google.com/assets/static/images/home/blog/blog_image_1.jpg";
+      
+          data3.push(obj);
+      
           this.setState({
             cardNum: this.state.cardNum,
             url: data2[this.state.cardNum].ImageURL,
@@ -170,6 +192,7 @@ class Explore extends Component {
             disable: false,
             dataset: data2,
             cat: false,
+            testDat: data3,
           });
         })
         .done();
@@ -1475,6 +1498,110 @@ class Explore extends Component {
     this.setState({ inputValue });
   };
 
+  _renderItem2 = data => {
+    const item = data.item;
+    return (
+      <TouchableOpacity onPress={() => this.catGrab(item.Term)}>
+      <Image
+        style={styles.catbar}
+        source={{
+          uri: item.ImageURL,
+        }}
+      />
+    </TouchableOpacity>
+    );
+  }
+  _keyExtractor = (item, index) => index;
+  _renderFooter = () =>
+  {
+    return(
+    <View style={{flex: 1, flexDirection: 'row'}}
+    >
+    <TouchableOpacity onPress={() => this.props.navigation.push('Brands', {
+      id: userID,
+      points: userPoints,
+      uri: uri2,
+    })}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/brands.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('Travel')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/travel.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('groceries')}>
+      <Image
+        style={styles.catbar}
+        source={require('./assets/Category/groceries.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.props.navigation.push('Deals', {
+      id: userID,
+      points: userPoints,
+      uri: uri2,
+    })}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/deals_v2.png')}
+      />
+
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('womens')}>
+      <Image
+        style={styles.catbar}
+        source={require('./assets/Category/womens.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('men')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/mens.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('girls')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/girls.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('boys')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/boys.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('baby')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/baby.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('pet')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/pet.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('gift')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/gifts.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.catGrab('All')}>
+      <Image
+        style={styles.catbars}
+        source={require('./assets/Category/random.png')}
+      />
+    </TouchableOpacity>
+    </View>
+    )
+  }
+
   getNewUser = () => {
     var RandomNumber = Math.floor(Math.random() * 18) + 1;
     if (randoUsersLikes.length > 0 && this.refs.animatedTextref) {
@@ -1682,95 +1809,17 @@ class Explore extends Component {
             </TouchableWithoutFeedback>
 
             <View>
-              <ScrollView
+              <FlatList
                 horizontal={true}
-                showsHorizontalScrollIndicator={false}
+                showsHorizontalScrollIndicator={true}
                 indicatorStyle={'black'}
                 backgroundColor={'white'}
                 style={styles.scrollbar}
-              >
-                <TouchableOpacity onPress={() => this.props.navigation.push('Brands', {
-                  id: userID,
-                  points: userPoints,
-                  uri: uri2,
-                })}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/brands.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('Travel')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/travel.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('groceries')}>
-                  <Image
-                    style={styles.catbar}
-                    source={require('./assets/Category/groceries.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.push('Deals', {
-                  id: userID,
-                  points: userPoints,
-                  uri: uri2,
-                })}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/deals_v2.png')}
-                  />
-
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('womens')}>
-                  <Image
-                    style={styles.catbar}
-                    source={require('./assets/Category/womens.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('men')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/mens.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('girls')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/girls.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('boys')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/boys.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('baby')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/baby.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('pet')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/pet.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('gift')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/gifts.png')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.catGrab('All')}>
-                  <Image
-                    style={styles.catbars}
-                    source={require('./assets/Category/random.png')}
-                  />
-                </TouchableOpacity>
-              </ScrollView>
+                data={this.state.testDat}
+                keyExtractor={this._keyExtractor}
+                ListFooterComponent={this._renderFooter}
+                renderItem={this._renderItem2}
+              />
             </View>
 
 
@@ -2070,11 +2119,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: -5,
-        height: 75,
+        height: 77,
       },
       android: {
         marginTop: -5,
-        height: 75,
+        height: 77,
+        width: '100%',
       },
     }),
   },
