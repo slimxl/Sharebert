@@ -332,6 +332,29 @@ class Explore extends Component {
   _renderItem = data => {
     const item = data.item;
 
+    // if (item.term == 'VIDEO') {
+    //   return (
+    //     <View style={styles.item}>
+    //       <View style={{ height: '100%',borderRadius:40 }}>
+    //         <WebView
+    //           style={styles.listContainer3}
+    //           javaScriptEnabled={true}
+    //           automaticallyAdjustContentInsets={true}
+    //           fullScreen={true}
+    //           scrollEnabled={false}
+    //           domStorageEnabled={true}
+    //           allowsInlineMediaPlayback={true}
+    //           mediaPlaybackRequiresUserAction={false}
+    //           //source={{ html: '<html><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" /><iframe src="http://www.youtube.com/embed/videoseries?list=PLDAt_4uwQO2LJnZZ7ZKQpEZBqWxYVZu_x&html5=1&rel=0&autoplay=1&showinfo=0&controls=0" frameborder="0" allow="autoplay" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="100%" width="100%"></iframe></html>'}} 
+    //           source={{ uri: 'http://www.youtube.com/embed/videoseries?list=PL6iEoxtSeBGYuh7IdQ-C-SYr25LV7S8NU&html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&fullscreen=1' }}
+    //         //source = {{uri:'https://www.youtube.com/embed/L4dz3gSuR8E?html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&playlist=L4dz3gSuR8E'}}
+    //         //source={{ uri: 'https://sharebert.com/videos/' }}
+    //         />
+    //       </View>
+    //     </View>
+    //   );
+    // }
+    // else
     return (
       <View style={styles.item}>
         <TouchableOpacity onPress={() => {
@@ -1396,7 +1419,7 @@ class Explore extends Component {
         //var count = responseData['Amazon'][0][7];
         //datasize = count;
         //searchcount = datasize;
-        console.log("API COUNT: "+Object.keys(responseData['Amazon']).length);
+        console.log("API COUNT: " + Object.keys(responseData['Amazon']).length);
         for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
           var obj = {};
           obj['ASIN'] = responseData['Amazon'][i][0];
@@ -1439,7 +1462,7 @@ class Explore extends Component {
             }
             count = Object.keys(responseData2['Others']).length;
             catcount += count;
-            console.log('CatCount: '+catcount);
+            console.log('CatCount: ' + catcount);
             if (count != 0) {
               for (var i = 0; i < count; i++) {
                 var obj2 = {};
@@ -1457,7 +1480,7 @@ class Explore extends Component {
               searchcount = datasize;
               emptycard = false;
               data2 = shuffle(data2);
-              console.log("total:"+data2.length);
+              console.log("total:" + data2.length);
               this.setState({
                 cardNum: 0,
                 dataset: data2,
@@ -1506,12 +1529,12 @@ class Explore extends Component {
     var newSize = 12;
     var marginTop = 4;
     if (item.Term.length > baseSize) {
-       var diff = baseSize/(item.Term.length);
-       newSize = diff*baseSize;
-       marginTop = 6
+      var diff = baseSize / (item.Term.length);
+      newSize = diff * baseSize;
+      marginTop = 6
     }
-    const fontSize = Math.min(baseSize,newSize);
-    console.log(item.Term+'-Fontsize: '+fontSize+" -length:"+item.Term.length);
+    const fontSize = Math.min(baseSize, newSize);
+    console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
     return (
       <View>
         <TouchableOpacity onPress={() => {
@@ -1858,20 +1881,34 @@ class Explore extends Component {
               />
             </View>
 
-
+            {emptycard
+              ?
+              <View style={styles.TrendText2}>
+                <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
+                <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
+              </View>
+              :
+              <View />
+            }
             {emptycard ?
-              <WebView
-                style={styles.listContainer3}
-                javaScriptEnabled={true}
-                fullScreen={true}
-                domStorageEnabled={true}
-                allowsInlineMediaPlayback={true}
-                mediaPlaybackRequiresUserAction={false}
-                //source={{ html: '<html><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" /><iframe src="http://www.youtube.com/embed/videoseries?list=PLDAt_4uwQO2LJnZZ7ZKQpEZBqWxYVZu_x&html5=1&rel=0&autoplay=1&showinfo=0&controls=0" frameborder="0" allow="autoplay" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="100%" width="100%"></iframe></html>'}} 
-                //source={{ uri: 'http://www.youtube.com/embed/videoseries?list=PL6iEoxtSeBGYuh7IdQ-C-SYr25LV7S8NU&html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&fullscreen=1' }}
-                //source = {{uri:'https://www.youtube.com/embed/L4dz3gSuR8E?html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&playlist=L4dz3gSuR8E'}}
-                source={{ uri: 'https://sharebert.com/videos/' }}
-              />
+              <View style={{ marginTop: -60, height: '80%',width:deviceWidth }}>
+                <WebView
+                  style={styles.listContainer3}
+                  javaScriptEnabled={true}
+                  automaticallyAdjustContentInsets={true}
+                  fullScreen={false}
+                  scalesPageToFit={true}
+                  scrollEnabled={false}
+                  domStorageEnabled={true}
+                  allowsInlineMediaPlayback={true}
+                  mediaPlaybackRequiresUserAction={false}
+                  //source={{ html: '<html><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" /><iframe src="http://www.youtube.com/embed/videoseries?list=PLDAt_4uwQO2LJnZZ7ZKQpEZBqWxYVZu_x&html5=1&rel=0&autoplay=1&showinfo=0&controls=0" frameborder="0" allow="autoplay" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="100%" width="100%"></iframe></html>'}} 
+                  //source={{ uri: 'http://www.youtube.com/embed/videoseries?list=PL6iEoxtSeBGYuh7IdQ-C-SYr25LV7S8NU&html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&fullscreen=1' }}
+                  //source = {{uri:'https://www.youtube.com/embed/L4dz3gSuR8E?html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&playlist=L4dz3gSuR8E'}}
+                  //source={{ uri: 'https://sharebert.com/videos/' }}
+                  source={{ uri: 'https://sharebert.com/media/test4.html' }}
+                />
+              </View>
               :
               <View />}
 
@@ -2090,8 +2127,8 @@ const styles = StyleSheet.create({
   listContainer3:
   {
     backgroundColor: 'transparent',
-    height: 100,
-    width: '100%',
+    height: '70%',
+    width: deviceWidth,
     marginTop: 10,
   },
 
@@ -2638,12 +2675,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   catbars2: {
-    width: 38,
-    height: 38,
-    borderRadius: 150,
+    width: 40,
+    height: 40,
+    marginRight:2,
+    borderRadius: 120,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor: 'transparent',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   catbars3: {
     width: 45,
