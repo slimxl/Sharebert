@@ -67,18 +67,6 @@ class Shipping extends Component {
     }
   }
 
-  onMenuItemSelected = item => {
-    this.setState({
-      isOpen: false,
-      selectedItem: item,
-    });
-    if (item === 'Shipping') {
-      this.props.navigation.navigate('Shipping');
-    } else if (item === 'Explore') {
-      this.props.navigation.navigate('Explore');
-    }
-  };
-
   fetchData = () => {
     if (userID != 0) {
       fetch(
@@ -157,7 +145,7 @@ class Shipping extends Component {
   }
 
   goBack = () => {
-    this.props.navigation.pop();
+    this.props.navigation.goBack();
   };
   saveForm = () => {
     if (this.state.email === '') {
@@ -182,11 +170,7 @@ class Shipping extends Component {
   };
 
   clearFile = () => {
-    this.props.navigation.push('LoginScreen', {
-      loggedbool2: false,
-      id: 0,
-      points: 0,
-    });
+    this.props.navigation.popToTop();
   }
   clearFile2 = () => {
     this.props.navigation.push('Main', {

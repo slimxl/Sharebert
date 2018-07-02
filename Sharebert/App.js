@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigator,NavigationActions } from 'react-navigation'; // 1.0.3
+import { StackNavigator,NavigationActions } from 'react-navigation'; 
 import Explore from './Explore';
 import LoginScreen from './LoginScreen';
 import Shipping from './Shipping';

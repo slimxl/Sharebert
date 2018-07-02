@@ -86,13 +86,10 @@ class Search extends Component {
         return (
             <View style={styles.item}>
                 <TouchableOpacity onPress={() => {
-                    this.props.navigation.navigate('Explore', {
-                        id: userID,
-                        points: userPoints,
-                        uri: uri2,
-                        search: item.term,
-                        brand: null,
-                    });
+                    console.log('REPLACE?');
+                    this.props.navigation.goBack();
+                    this.props.navigation.state.params.goSearch(item.term);
+
                 }}>
                     {!item.image_url
                         ? <View style={styles.itemImage}>
@@ -133,23 +130,19 @@ class Search extends Component {
         //some other stuff
     };
     _onPress(item) {
-        this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-            uri: uri2,
-            search: item.Term,
-            brand: null,
-        })
+        console.log('RESET>?');
+        this.props.navigation.goBack();
+        this.props.navigation.state.params.goSearch(item.term);
     }
     resetTo(route) {
         //console.log(likes);
-
-        this.props.navigation.push(route, {
+        this.props.navigation.navigate(route, {
             id: userID,
             points: userPoints,
             uri: uri2,
             like: likes,
             updateData: this.updateData,
+            goSearch: this.goSearch,
             clearLikes: this.clearLikes,
             saveLikesto: this.saveLikesto,
 
@@ -161,12 +154,8 @@ class Search extends Component {
             Alert.alert("Empty Search! Try again!")
             return;
         }
-        this.props.navigation.navigate('Explore', {
-            id: userID,
-            points: userPoints,
-            uri: uri2,
-            search: this.state.inputValue
-        })
+        this.props.navigation.goBack();
+        this.props.navigation.state.params.goSearch(this.state.inputValue);
     };
 
     _handleTextChange = inputValue => {
@@ -496,27 +485,27 @@ const styles = StyleSheet.create({
     },
 
     exploreBut:
-        {
-            height: 25,
-            width: 25,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            marginLeft: Dimensions.get('window').width / 16,
-            marginBottom: 5,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        marginLeft: Dimensions.get('window').width / 16,
+        marginBottom: 5,
+        backgroundColor: 'transparent',
+    },
     likesBut:
-        {
-            height: 25,
-            width: 25,
-            marginLeft: Dimensions.get('window').width / 3.3,
-            marginBottom: 5,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        marginLeft: Dimensions.get('window').width / 3.3,
+        marginBottom: 5,
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'transparent',
+    },
     footerRewards: {
         position: "absolute",
         bottom: 0,
@@ -524,16 +513,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     rewardsBut:
-        {
-            height: 25,
-            width: 25,
-            marginRight: Dimensions.get('window').width / 3.3,
-            marginBottom: 5,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        marginRight: Dimensions.get('window').width / 3.3,
+        marginBottom: 5,
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        backgroundColor: 'transparent',
+    },
     footerProfile: {
         position: "absolute",
         bottom: 0,
@@ -541,22 +530,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     profileBut:
-        {
-            height: 25,
-            width: 25,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            marginRight: Dimensions.get('window').width / 16,
-            marginBottom: 5,
-            borderRadius: 12,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        marginRight: Dimensions.get('window').width / 16,
+        marginBottom: 5,
+        borderRadius: 12,
+        backgroundColor: 'transparent',
+    },
     TrendText2:
-        {
-            marginTop: 10,
-            marginBottom: '30%',
-        },
+    {
+        marginTop: 10,
+        marginBottom: '30%',
+    },
     TrendText: {
         ...Platform.select({
             ios: {
@@ -574,20 +563,20 @@ const styles = StyleSheet.create({
 
             },
             android:
-                {
-                    fontFamily: 'MontserratBoldItalic',
-                    width: Dimensions.get('window').width,
-                    height: 30,
-                    width: '100%',
-                    position: 'absolute',
-                    textAlign: 'center',
-                    fontSize: 20,
-                    marginLeft: Dimensions.get('window').width / 20,
-                    marginTop: 20,
-                    marginBottom: -40,
-                    color: '#ffffff',
+            {
+                fontFamily: 'MontserratBoldItalic',
+                width: Dimensions.get('window').width,
+                height: 30,
+                width: '100%',
+                position: 'absolute',
+                textAlign: 'center',
+                fontSize: 20,
+                marginLeft: Dimensions.get('window').width / 20,
+                marginTop: 20,
+                marginBottom: -40,
+                color: '#ffffff',
 
-                }
+            }
         }),
     },
     footer: {

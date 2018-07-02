@@ -48,6 +48,7 @@ var randomPROFILEIMAGE = []; //TO BE REMOVED
 var animationBool = false;
 var goBack = true;
 var emptycard = true;
+var secondcard = false;
 var likes = [];
 var likes3 = [];
 var RandomQ = Math.floor(Math.random() * 15) + 0;
@@ -105,8 +106,8 @@ class Explore extends Component {
     }
     uri2 = this.props.navigation.state.params.uri;
     uri2 = uri2.replace('http://', 'https://');
-    console.log(uri2 + " URI2 check this-----------------------------------------------------");
-    console.log(props);
+    //console.log(uri2 + " URI2 check this-----------------------------------------------------");
+    //console.log(props);
 
     this.getOldLikes();
     this.state = {
@@ -150,6 +151,7 @@ class Explore extends Component {
 
     if (this.props.navigation.state.params.brands != undefined) {
       emptycard = false;
+      secondcard = false;
       console.log('Grabbed brands - New Explore');
       brand = this.props.navigation.state.params.brands;
       fetch('https://sharebert.com/s/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
@@ -225,6 +227,8 @@ class Explore extends Component {
               // }
               // else {
               emptycard = false;
+              secondcard = false;
+
               var count = Object.keys(responseData2['Amazon']).length;
               if (count != 0) {
                 for (var i = 0; i < count; i++) {
@@ -254,6 +258,8 @@ class Explore extends Component {
                 datasize = data2.length;
                 searchcount = datasize;
                 emptycard = false;
+                secondcard = false;
+
                 if (userID != 0) {
                   fetch(
                     'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
@@ -263,7 +269,7 @@ class Explore extends Component {
                   ).done();
                 }
                 data2 = shuffle(data2);
-                console.log(data2.length);
+                //console.log(data2.length);
                 this.setState({
                   cardNum: 0,
                   dataset: data2,
@@ -362,6 +368,8 @@ class Explore extends Component {
         <TouchableOpacity onPress={() => {
           searchterm = item.term;
           emptycard = false;
+          secondcard = false;
+
           this.setState({
             url: 'https://i.imgur.com/JaG8ovv.gif'
           })
@@ -390,7 +398,7 @@ class Explore extends Component {
   };
 
   grabFrontPage = () => {
-    console.log('refresh trending');
+    // console.log('refresh trending');
     fetch('https://sharebert.com/s/Frontpage2.php', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
@@ -762,7 +770,13 @@ class Explore extends Component {
     userPoints = points;
     this.forceUpdate();
   };
-
+  goSearch = (term) => {
+    searchterm = term;
+    this.onSubmitEdit();
+  }
+  goBrand = (brand) => {
+    this.onSubmitEditBrands(brand);
+  }
   clearLikes = async () => {
     await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
     if (userID !== 0) {
@@ -981,6 +995,8 @@ class Explore extends Component {
 
 
     emptycard = false;
+    secondcard = false;
+
     brand = '';
     if (category === 'Travel') {
       //console.log(category);
@@ -1449,6 +1465,8 @@ class Explore extends Component {
             // }
             // else {
             emptycard = false;
+            secondcard = false;
+
             var count = Object.keys(responseData2['Amazon']).length;
             var catcount = count;
             if (count != 0) {
@@ -1481,6 +1499,16 @@ class Explore extends Component {
               datasize = data2.length;
               searchcount = datasize;
               emptycard = false;
+              secondcard = false;
+
+              if (userID != 0) {
+                fetch(
+                  'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
+                  searchterm +
+                  '&imageurl=' + data2[0].ImageURL,
+                  { method: 'GET' }
+                ).done();
+              }
               data2 = shuffle(data2);
               console.log("total:" + data2.length);
               this.setState({
@@ -1505,7 +1533,44 @@ class Explore extends Component {
         //}
       }).done();
   };
+  onSubmitEditBrands = (brands) => {
+    emptycard = false;
+    secondcard = false;
 
+    console.log('Grabbed brands - New Explore');
+    brand = brands;
+    fetch('https://sharebert.com/s/Brands.php?brand=' + brand + '&page=10', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = [];
+        for (var i = 0; i < Object.keys(responseData).length; i++) {
+          var obj = {};
+          obj['ASIN'] = responseData[i]['ASIN'];
+          obj['Title'] = responseData[i]['Title'];
+          obj['URL'] = responseData[i]['URL'];
+          obj['ImageURL'] = responseData[i]['ImageURL'];
+          obj['Retailer'] = responseData[i]['Website'];
+          if (brand === 'Amazon') {
+            obj['Retailer'] = 'Amazon';
+          }
+          data2.push(obj);
+        }
+        toofast = false;
+        search = false;
+        data2 = shuffle(data2);
+
+
+        this.setState({
+          cardNum: this.state.cardNum,
+          url: data2[this.state.cardNum].ImageURL,
+          title: data2[this.state.cardNum].Title,
+          disable: false,
+          dataset: data2,
+          cat: false,
+        });
+      })
+      .done();
+  }
   showEmptyListView = () => {
 
     return (
@@ -1536,14 +1601,16 @@ class Explore extends Component {
       marginTop = 6
     }
     const fontSize = Math.min(baseSize, newSize);
-    console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
-    console.log(item.ImageUrl + " Image Url from Search");
-    
+    //console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
+    //console.log(item.ImageUrl + " Image Url from Search");
+
     return (
       <View>
         <TouchableOpacity onPress={() => {
           searchterm = item.Term;
           emptycard = false;
+          secondcard = false;
+
           this.setState({
             url: 'https://i.imgur.com/JaG8ovv.gif'
           })
@@ -1580,7 +1647,7 @@ class Explore extends Component {
     return (
       <View style={{ flex: 1, flexDirection: 'row' }}
       >
-        <TouchableOpacity onPress={() => this.props.navigation.push('Brands', {
+        <TouchableOpacity onPress={() => this.resetTo('Brands', {
           id: userID,
           points: userPoints,
           uri: uri2,
@@ -1602,7 +1669,7 @@ class Explore extends Component {
             source={require('./assets/Category/groceries.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.push('Deals', {
+        <TouchableOpacity onPress={() => this.resetTo('Deals', {
           id: userID,
           points: userPoints,
           uri: uri2,
@@ -1665,28 +1732,19 @@ class Explore extends Component {
     )
   }
 
-  getNewUser = () => {
-    var RandomNumber = Math.floor(Math.random() * 18) + 1;
-    if (randoUsersLikes.length > 0 && this.refs.animatedTextref) {
-      this.setState({
-        showAlert: false,
-        UserStringLike: randoUsersLikes[RandomNumber].User_Name + " liked " + randoUsersLikes[RandomNumber].Title,
-        randomPROFILEIMAGEstring: randomPROFILEIMAGE[RandomNumber],
-      });
-      console.log(this.state.randomPROFILEIMAGEstring);
-    }
-    console.log(this.state.UserStringLike);
-    animationBool = false;
-  }
   resetTo(route) {
-
-    this.props.navigation.push(route, {
+    console.log('Reset to ' + route);
+    secondcard = true;
+    emptycard = false;
+    this.props.navigation.navigate(route, {
       id: userID,
       points: userPoints,
       uri: uri2,
       like: likes,
       notification: false,
       updateData: this.updateData,
+      goSearch: this.goSearch,
+      goBrand: this.goBrand,
       clearLikes: this.clearLikes,
       saveLikesto: this.saveLikesto,
     })
@@ -1885,7 +1943,7 @@ class Explore extends Component {
               />
             </View>
 
-            {emptycard
+            {emptycard || secondcard
               ?
               <View style={styles.TrendText2}>
                 <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
@@ -1895,7 +1953,7 @@ class Explore extends Component {
               <View />
             }
             {emptycard ?
-              <View style={{ marginTop: -60, height: '80%',width:deviceWidth }}>
+              <View style={{ marginTop: -60, height: '80%', width: deviceWidth }}>
                 <WebView
                   style={styles.listContainer3}
                   javaScriptEnabled={true}
@@ -1916,18 +1974,7 @@ class Explore extends Component {
               :
               <View />}
 
-
-
-            {/* {emptycard
-              ?
-              <View style={styles.TrendText2}>
-                <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
-                <Text style={styles.TrendText}>{this.state.frontTitle}</Text>
-              </View>
-              :
-              <View />
-            }
-            {emptycard
+            {secondcard
               ?
               <View style={styles.listContainer}>
                 <FlatList
@@ -1947,7 +1994,7 @@ class Explore extends Component {
               </View>
               :
               <View />
-            } */}
+            }
 
 
             {
@@ -2681,7 +2728,7 @@ const styles = StyleSheet.create({
   catbars2: {
     width: 40,
     height: 40,
-    marginRight:2,
+    marginRight: 2,
     borderRadius: 120,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor: 'transparent',

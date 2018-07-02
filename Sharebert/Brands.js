@@ -488,12 +488,8 @@ class Brands extends Component {
       <View style={styles.item}>
       <TouchableOpacity onPress={() => 
               {
-                this.props.navigation.navigate('Explore', {
-                  id: userID,
-                  points: userPoints,
-                  brands: item.title,
-                  uri: uri2,
-                })
+                this.props.navigation.goBack();
+                this.props.navigation.state.params.goBrand(item.title)
               }}>
         {!item.image_url
           ? <View style={styles.itemImage}>
