@@ -25,7 +25,7 @@ var stype;
 var suser;
 const analytics = new Analytics('UA-118973857-1', { debug: true });
 var uri2 =
-  'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
+  'https://sharebert.com/media/blank.png';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ class LoginScreen extends Component {
       userEmail2 = '';
       userPoints = 0;
       uri2 =
-        'https://www.thesourcepartnership.com/wp-content/uploads/2017/05/facebook-default-no-profile-pic-300x300.jpg';
+        'https://sharebert.com/media/blank.png';
 
       this.props.navigation.navigate('Explore', {
         id: userID,
