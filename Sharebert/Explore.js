@@ -104,6 +104,8 @@ class Explore extends Component {
       userPoints = 0;
     }
     uri2 = this.props.navigation.state.params.uri;
+    uri2 = uri2.replace('http://', 'https://');
+    console.log(uri2 + " URI2 check this-----------------------------------------------------");
     console.log(props);
 
     this.getOldLikes();
@@ -1535,6 +1537,8 @@ class Explore extends Component {
     }
     const fontSize = Math.min(baseSize, newSize);
     console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
+    console.log(item.ImageUrl + " Image Url from Search");
+    
     return (
       <View>
         <TouchableOpacity onPress={() => {
@@ -1546,7 +1550,7 @@ class Explore extends Component {
           this.onSubmitEdit();
         }}>
           <View style={styles.catbars3}>
-            <Image
+            <Image2
               style={styles.catbars2}
               source={{
                 uri: item.ImageUrl,
@@ -1992,9 +1996,9 @@ class Explore extends Component {
 
               <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
                 onPress={() => this.resetTo('Shipping')}>
-                <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+                <Image2 style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
-                </Image>
+                </Image2>
               </TouchableWithoutFeedback>
             </View>
             <AwesomeAlert
@@ -2681,7 +2685,7 @@ const styles = StyleSheet.create({
     borderRadius: 120,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor: 'transparent',
-    resizeMode: 'cover',
+    //resizeMode: 'cover',
   },
   catbars3: {
     width: 45,
