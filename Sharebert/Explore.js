@@ -783,6 +783,10 @@ class Explore extends Component {
     })
     this.onSubmitEditBrands(brand);
   }
+  resetExplore = () => {
+    emptycard = false;
+    secondcard = false;
+  }
   clearLikes = async () => {
     await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
     if (userID !== 0) {
@@ -1752,6 +1756,7 @@ class Explore extends Component {
       updateData: this.updateData,
       goSearch: this.goSearch,
       goBrand: this.goBrand,
+      resetExplore: this.resetExplore,
       clearLikes: this.clearLikes,
       saveLikesto: this.saveLikesto,
     })
