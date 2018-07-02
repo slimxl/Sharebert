@@ -1505,12 +1505,12 @@ class Explore extends Component {
       <View>
         <TouchableOpacity onPress={() => this.catGrab(item.Term)}>
           <Image
-            style={styles.catbars}
+            style={styles.catbars2}
             source={{
               uri: item.ImageUrl,
             }}
           />
-          <Text style={styles.catbars}>
+          <Text style={styles.catbartext}>
             {item.Term}
           </Text>
         </TouchableOpacity>
@@ -2583,7 +2583,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     resizeMode: 'contain',
   },
-
+  catbars2: {
+    width: 50,
+    height: 50,
+    marginLeft: 13,
+    marginRight: 13,
+    marginTop: 5,
+    borderRadius:1000,
+    borderWidth: 0.5,
+    borderColor: '#1288f5',
+    //backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    backgroundColor: 'transparent',
+    resizeMode: 'contain',
+  },
+  catbars3: {
+    width: 50,
+    height: 50,
+    borderRadius: 150/2,
+    backgroundColor: '#00BCD4'
+  },
+  catbartext:
+  {
+    textAlign: 'center',
+  },
   label: {
     width: 50,
     height: 25,
