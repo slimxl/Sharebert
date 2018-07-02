@@ -32,7 +32,6 @@ import {
   AppState,
   WebView,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import { Constants, Notifications } from 'expo';
 //import { uri2 } from './LoginScreen';
 var userPoints = 0;
@@ -257,7 +256,7 @@ class Explore extends Component {
                   fetch(
                     'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
                     searchterm +
-                    '&imageurl='+data2[0].ImageURL,
+                    '&imageurl=' + data2[0].ImageURL,
                     { method: 'GET' }
                   ).done();
                 }
@@ -419,6 +418,7 @@ class Explore extends Component {
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
+      this.forceUpdate();
     }
     this.setState({ appState: nextAppState });
   }
@@ -1384,7 +1384,7 @@ class Explore extends Component {
     )
       .then(response => response.json())
       .then(responseData => {
-        console.log(Object.keys(responseData['Amazon']).length);
+        //console.log(Object.keys(responseData['Amazon']).length);
         // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
         //   Alert.alert("No Results Found");
         //   emptycard = true;
@@ -1396,7 +1396,7 @@ class Explore extends Component {
         //var count = responseData['Amazon'][0][7];
         //datasize = count;
         //searchcount = datasize;
-        console.log(searchcount);
+        console.log("API COUNT: "+Object.keys(responseData['Amazon']).length);
         for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
           var obj = {};
           obj['ASIN'] = responseData['Amazon'][i][0];
@@ -1416,7 +1416,6 @@ class Explore extends Component {
         )
           .then(response2 => response2.json())
           .then(responseData2 => {
-            console.log(Object.keys(responseData2['Amazon']).length);
             // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
             //   Alert.alert("No Results Found");
             //   emptycard = true;
@@ -1426,6 +1425,7 @@ class Explore extends Component {
             // else {
             emptycard = false;
             var count = Object.keys(responseData2['Amazon']).length;
+            var catcount = count;
             if (count != 0) {
               for (var i = 0; i < count; i++) {
                 var obj = {};
@@ -1438,6 +1438,8 @@ class Explore extends Component {
               }
             }
             count = Object.keys(responseData2['Others']).length;
+            catcount += count;
+            console.log('CatCount: '+catcount);
             if (count != 0) {
               for (var i = 0; i < count; i++) {
                 var obj2 = {};
@@ -1455,7 +1457,7 @@ class Explore extends Component {
               searchcount = datasize;
               emptycard = false;
               data2 = shuffle(data2);
-              console.log(data2.length);
+              console.log("total:"+data2.length);
               this.setState({
                 cardNum: 0,
                 dataset: data2,
@@ -1500,18 +1502,46 @@ class Explore extends Component {
 
   _renderItem2 = data => {
     const item = data.item;
-    console.log(item);
+    const baseSize = 12
+    var newSize = 12;
+    var marginTop = 4;
+    if (item.Term.length > baseSize) {
+       var diff = baseSize/(item.Term.length);
+       newSize = diff*baseSize;
+       marginTop = 6
+    }
+    const fontSize = Math.min(baseSize,newSize);
+    console.log(item.Term+'-Fontsize: '+fontSize+" -length:"+item.Term.length);
     return (
       <View>
-        <TouchableOpacity onPress={() => this.catGrab(item.Term)}>
-          <Image
-            style={styles.catbars2}
-            source={{
-              uri: item.ImageUrl,
-            }}
-          />
-          <Text style={styles.catbartext}>
-            {item.Term}
+        <TouchableOpacity onPress={() => {
+          searchterm = item.Term;
+          emptycard = false;
+          this.setState({
+            url: 'https://i.imgur.com/JaG8ovv.gif'
+          })
+          this.onSubmitEdit();
+        }}>
+          <View style={styles.catbars3}>
+            <Image
+              style={styles.catbars2}
+              source={{
+                uri: item.ImageUrl,
+              }}
+            />
+
+          </View>
+          <Text style={{
+            marginTop: marginTop,
+            textAlign: 'center',
+            opacity: .69,
+            fontSize: fontSize,
+            fontFamily: "Montserrat",
+          }}
+            adjustsFontSizeToFit={true}
+            numberOfLines={1}>
+
+            {item.Term.toUpperCase()}
           </Text>
         </TouchableOpacity>
 
@@ -1829,8 +1859,25 @@ class Explore extends Component {
             </View>
 
 
+            {emptycard ?
+              <WebView
+                style={styles.listContainer3}
+                javaScriptEnabled={true}
+                fullScreen={true}
+                domStorageEnabled={true}
+                allowsInlineMediaPlayback={true}
+                mediaPlaybackRequiresUserAction={false}
+                //source={{ html: '<html><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" /><iframe src="http://www.youtube.com/embed/videoseries?list=PLDAt_4uwQO2LJnZZ7ZKQpEZBqWxYVZu_x&html5=1&rel=0&autoplay=1&showinfo=0&controls=0" frameborder="0" allow="autoplay" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="100%" width="100%"></iframe></html>'}} 
+                //source={{ uri: 'http://www.youtube.com/embed/videoseries?list=PL6iEoxtSeBGYuh7IdQ-C-SYr25LV7S8NU&html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&fullscreen=1' }}
+                //source = {{uri:'https://www.youtube.com/embed/L4dz3gSuR8E?html5=1&rel=0&autoplay=1&showinfo=0&controls=0&loop=1&playlist=L4dz3gSuR8E'}}
+                source={{ uri: 'https://sharebert.com/videos/' }}
+              />
+              :
+              <View />}
 
-            {emptycard
+
+
+            {/* {emptycard
               ?
               <View style={styles.TrendText2}>
                 <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
@@ -1859,7 +1906,7 @@ class Explore extends Component {
               </View>
               :
               <View />
-            }
+            } */}
 
 
             {
@@ -2038,6 +2085,13 @@ const styles = StyleSheet.create({
   {
     backgroundColor: 'transparent',
     height: deviceHeight,
+    marginTop: 10,
+  },
+  listContainer3:
+  {
+    backgroundColor: 'transparent',
+    height: 100,
+    width: '100%',
     marginTop: 10,
   },
 
@@ -2584,27 +2638,31 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   catbars2: {
-    width: 50,
-    height: 50,
-    marginLeft: 13,
-    marginRight: 13,
-    marginTop: 5,
-    borderRadius:1000,
-    borderWidth: 0.5,
-    borderColor: '#1288f5',
+    width: 38,
+    height: 38,
+    borderRadius: 150,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor: 'transparent',
     resizeMode: 'contain',
   },
   catbars3: {
-    width: 50,
-    height: 50,
-    borderRadius: 150/2,
-    backgroundColor: '#00BCD4'
+    width: 45,
+    height: 45,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 13,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: '#1288f5',
+    //backgroundColor: '#fff'
   },
   catbartext:
   {
+    marginTop: 4,
     textAlign: 'center',
+    opacity: .69,
+    fontSize: 12,
+    fontFamily: "Montserrat",
   },
   label: {
     width: 50,
