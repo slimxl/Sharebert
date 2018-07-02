@@ -184,8 +184,8 @@ class Explore extends Component {
         .done();
     }
     else if (this.props.navigation.state.params.search != undefined) {
-      console.log('Grabbed Search - New Explore');
 
+      console.log('Grabbed Search - New Explore');
       searchterm = this.props.navigation.state.params.search;
       fetch(
         'https://sharebert.com/s/APISEARCH.php?keyword=' +
@@ -195,19 +195,7 @@ class Explore extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          //console.log(Object.keys(responseData['Amazon']).length);
-          // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
-          //   Alert.alert("No Results Found");
-          //   emptycard = true;
-          //   this.grabFrontPage();
-          //   return;
-          // }
-          //else {
           var data2 = [];
-          //var count = responseData['Amazon'][0][7];
-          //datasize = count;
-          //searchcount = datasize;
-          //console.log(searchcount);
           for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
             var obj = {};
             obj['ASIN'] = responseData['Amazon'][i][0];
@@ -265,6 +253,14 @@ class Explore extends Component {
                 datasize = data2.length;
                 searchcount = datasize;
                 emptycard = false;
+                if (userID != 0) {
+                  fetch(
+                    'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
+                    searchterm +
+                    '&imageurl='+data2[0].ImageURL,
+                    { method: 'GET' }
+                  ).done();
+                }
                 data2 = shuffle(data2);
                 console.log(data2.length);
                 this.setState({
@@ -1514,10 +1510,11 @@ class Explore extends Component {
               uri: item.ImageUrl,
             }}
           />
+          <Text style={styles.catbars}>
+            {item.Term}
+          </Text>
         </TouchableOpacity>
-        <Text style={{flex:1}}>
-          {item.Term}
-        </Text>
+
       </View>
     );
   }
