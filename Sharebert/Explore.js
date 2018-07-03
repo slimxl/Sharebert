@@ -694,7 +694,7 @@ class Explore extends Component {
                     userPoints = responseData2['Points'];
 
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
-                    if (Platform.OS === 'android') {
+                    if (Platform.OS === 'android'||Platform.OS === 'ios') {
                       this.notification.show({
                         title: 'You earned 5 points!',
                         message: 'Share another product to earn more!',
@@ -1200,6 +1200,7 @@ class Explore extends Component {
 
 
           }
+          console.log(trunc(this.state.dataset[0].Title));
           this.notificationLike.show({
             title: trunc(this.state.dataset[0].Title),
             message: 'Saved to your likes list!',
@@ -1210,8 +1211,8 @@ class Explore extends Component {
         }
       }
       else if (this.state.dataset[this.state.cardNum - 1].Title !== null) {
-
         var newTitle = sanitize(this.state.dataset[this.state.cardNum - 1].Title);
+        console.log(trunc(this.state.dataset[this.state.cardNum - 1].Title));
         if (userID !== 0) {
           Firebase.database().ref('users/' + userID + '/likes/').push({
             ASIN: sanitize(this.state.dataset[this.state.cardNum - 1].ASIN),
@@ -1230,7 +1231,7 @@ class Explore extends Component {
 
 
           }
-          this.notificationLike.show({
+          this.notification.show({
             title: trunc(this.state.dataset[this.state.cardNum - 1].Title),
             message: 'Saved to your likes list!',
             icon: { uri: imageURL2 },
@@ -2081,7 +2082,7 @@ class Explore extends Component {
                 this.hideAlert();
               }}
             />
-            {
+            {/* {
               (Platform.OS === 'android')
                 ?
                 <Notification
@@ -2090,7 +2091,11 @@ class Explore extends Component {
                 />
                 :
                 <View />
-            }
+            } */}
+            <Notification
+                  ref={(ref) => { this.notification = ref; }}
+                  backgroundColour='#1288f5'
+                />
             <Notification
               ref={(ref) => { this.notificationLike = ref; }}
               closeInterval={2000}
