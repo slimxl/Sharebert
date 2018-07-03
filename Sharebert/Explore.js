@@ -408,8 +408,8 @@ class Explore extends Component {
     } else {
       if (status.error) {
         console.log(`FATAL PLAYER ERROR: ${status.error}`);
-        emptycard = false;
-        secondcard = true;
+        this._advanceIndex(true);
+        this._updatePlaybackInstanceForIndex(true);
         this.forceUpdate();
       }
     }
@@ -1746,7 +1746,7 @@ class Explore extends Component {
       var diff = baseSize / (item.Term.length);
       newSize = diff * baseSize;
       marginTop = 6
-      marginLeftText = 3
+      marginLeftText = -2
     }
     const fontSize = Math.min(baseSize, newSize);
     //console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
@@ -2140,7 +2140,7 @@ class Explore extends Component {
                         height: '90%',
                       },
                     ]}
-                    resizeMode={'cover'}
+                    resizeMode={'stretch'}
                     onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
                     useNativeControls={this.state.useNativeControls}
                   />
