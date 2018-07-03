@@ -32,44 +32,21 @@ import {
   AppState,
   WebView,
 } from 'react-native';
-import { Constants, Notifications } from 'expo';
-//import { uri2 } from './LoginScreen';
+import { Constants, Notifications, Video } from 'expo';
 var userPoints = 0;
 var userID = 0;
-var animationz = false;
 var toofast = false;
 var datasize = 0;
-var searchcount = 0;
 var refresh = false;
 var brand = '';
 var search = false;
 var searchterm = '';
 var randomPROFILEIMAGE = []; //TO BE REMOVED
-var animationBool = false;
 var goBack = true;
 var emptycard = true;
 var secondcard = false;
 var likes = [];
 var likes3 = [];
-var RandomQ = Math.floor(Math.random() * 15) + 0;
-
-var questionBank = ["What's your favorite movie?",
-  "What's your favorite TV show?",
-  "What do you want to be when you grow up?",
-  "What's the best game you've played recently?",
-  "What football team are you rooting for?",
-  "What's your favorite hockey team?",
-  "Who do you want to win the world series?",
-  "What's your favorite color?",
-  "What type of phone do you have?",
-  "What's your favorite hobby?",
-  "What's your favorite book?",
-  "Who's your favorite political candidate?",
-  "Who's your favorite celebrity?",
-  "Who's your favorite TV star?",
-  "What's something you need in your life?",
-  "What video game console do you play?",
-  "Who's your favorite artist?"]
 var uri2 = '';
 var randoUsersLikes = [];
 var tutorial = true;
@@ -87,12 +64,53 @@ const PRODUCT_ITEM_HEIGHT = 175;
 const PRODUCT_ITEM_OFFSET = 5;
 const PRODUCT_ITEM_MARGIN = PRODUCT_ITEM_OFFSET * 2;
 
+class PlaylistItem {
+  constructor(name, uri, isVideo) {
+    this.name = name;
+    this.uri = uri;
+    this.isVideo = isVideo;
+  }
+}
+
+const PLAYLIST = [
+  new PlaylistItem(
+    '',
+    'https://sharebert.com/media/test1.mp4',
+    true
+  ),
+  new PlaylistItem(
+    '',
+    'https://sharebert.com/media/test2.mp4',
+    true
+  ),
+  new PlaylistItem(
+    '',
+    'https://sharebert.com/media/test3.mp4',
+    true
+  ),
+  new PlaylistItem(
+    "",
+    'https://sharebert.com/media/test4.mp4',
+    true
+  ),
+  new PlaylistItem(
+    '',
+    'https://sharebert.com/media/test5.mp4',
+    true
+  ),
+];
+const LOOPING_TYPE_ALL = 0;
+const LOOPING_TYPE_ONE = 1;
+const FONT_SIZE = 14;
+const VIDEO_CONTAINER_HEIGHT = deviceHeight * 2.0 / 5.0 - FONT_SIZE * 2;
 
 
 class Explore extends Component {
   constructor(props) {
     super(props);
-    //console.log(this.props.navigation.state.params);
+    this.index = 0;
+    this.playbackInstance = null;
+
     console.disableYellowBox = true;
 
 
@@ -111,6 +129,14 @@ class Explore extends Component {
 
     this.getOldLikes();
     this.state = {
+      loopingType: LOOPING_TYPE_ALL,
+      muted: false,
+      volume: 1.0,
+      rate: 1.0,
+      videoWidth: deviceWidth,
+      videoHeight: VIDEO_CONTAINER_HEIGHT,
+      useNativeControls: false,
+      fullscreen: false,
       cards: ['1', '2', '3'],
       isOpen: false,
       randomPROFILEIMAGEstring: 'http://www.lowisko.online-pl.com/index_html_files/0.png',
@@ -139,6 +165,11 @@ class Explore extends Component {
       color: "#ff2eff",
       trendData: [],
       testDat: [],
+      playlist: [
+        { src: 'https://sharebert.com/media/test3.mp4', name: 'dancers' },
+        { src: 'https://sharebert.com/media/test4.mp4', name: 'portfolio' },
+        { src: 'https://sharebert.com/media/test5.mp4', name: 'toys' }
+      ]
     };
 
     this.getSearches();
@@ -305,6 +336,96 @@ class Explore extends Component {
 
 
   }
+
+  async _loadNewPlaybackInstance(playing) {
+    if (this.playbackInstance != null) {
+      await this.playbackInstance.unloadAsync();
+      this.playbackInstance.setOnPlaybackStatusUpdate(null);
+      this.playbackInstance = null;
+    }
+
+    const source = { uri: PLAYLIST[this.index].uri };
+    const initialStatus = {
+      shouldPlay: playing,
+      rate: this.state.rate,
+      volume: this.state.volume,
+      isMuted: this.state.muted,
+      isLooping: this.state.loopingType === LOOPING_TYPE_ONE,
+    };
+
+    this._video.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate);
+    await this._video.loadAsync(source, initialStatus);
+    this.playbackInstance = this._video;
+
+    this._updateScreenForLoading(false);
+  }
+
+  _mountVideo = component => {
+    this._video = component;
+    this._loadNewPlaybackInstance(true);
+  };
+
+  _updateScreenForLoading(isLoading) {
+    if (isLoading) {
+      this.setState({
+        showVideo: false,
+        isPlaying: false,
+        isLoading: true,
+      });
+    } else {
+      this.setState({
+        playbackInstanceName: PLAYLIST[this.index].name,
+        showVideo: PLAYLIST[this.index].isVideo,
+        isLoading: false,
+      });
+    }
+  }
+  _onMutePressed = () => {
+    if (this.playbackInstance != null) {
+      this.playbackInstance.setIsMutedAsync(!this.state.muted);
+    }
+  };
+  _onPlaybackStatusUpdate = status => {
+    if (status.isLoaded) {
+      this.setState({
+        playbackInstancePosition: status.positionMillis,
+        playbackInstanceDuration: status.durationMillis,
+        shouldPlay: status.shouldPlay,
+        isPlaying: status.isPlaying,
+        isBuffering: status.isBuffering,
+        rate: status.rate,
+        muted: status.isMuted,
+        volume: status.volume,
+        loopingType: status.isLooping ? LOOPING_TYPE_ONE : LOOPING_TYPE_ALL,
+        shouldCorrectPitch: status.shouldCorrectPitch,
+      });
+      if (status.didJustFinish && !status.isLooping) {
+        this._advanceIndex(true);
+        this._updatePlaybackInstanceForIndex(true);
+      }
+    } else {
+      if (status.error) {
+        console.log(`FATAL PLAYER ERROR: ${status.error}`);
+      }
+    }
+  };
+
+
+  _advanceIndex(forward) {
+    this.index = (this.index + (forward ? 1 : PLAYLIST.length - 1)) % PLAYLIST.length;
+  }
+
+  async _updatePlaybackInstanceForIndex(playing) {
+    this._updateScreenForLoading(true);
+
+    this.setState({
+      videoWidth: deviceWidth,
+      videoHeight: VIDEO_CONTAINER_HEIGHT,
+    });
+
+    this._loadNewPlaybackInstance(playing);
+  }
+
   getSearches = () => {
     fetch('http://biosystematic-addit.000webhostapp.com/s/GetSearch.php', { method: 'GET' })
       .then(response => response.json())
@@ -332,7 +453,20 @@ class Explore extends Component {
       index,
     };
   };
-
+  videoUpdated(playbackStatus) {
+    if (playbackStatus['didJustFinish']) {
+      this.playNext();
+    }
+  }
+  playNext() {
+    // playNext() method takes the first item in the this.state.playlist array and moves it to the back
+    console.log('video did just finish');
+    let playlist = this.state.playlist;
+    let temp = playlist[0];
+    playlist.shift();
+    playlist.push(temp);
+    this.setState({ playlist, })
+  }
   _keyExtractor = item => {
     return item.code_group;
   };
@@ -694,7 +828,7 @@ class Explore extends Component {
                     userPoints = responseData2['Points'];
 
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
-                    if (Platform.OS === 'android'||Platform.OS === 'ios') {
+                    if (Platform.OS === 'android' || Platform.OS === 'ios') {
                       this.notification.show({
                         title: 'You earned 5 points!',
                         message: 'Share another product to earn more!',
@@ -1602,10 +1736,12 @@ class Explore extends Component {
     const baseSize = 12
     var newSize = 12;
     var marginTop = 4;
+    var marginLeftText = 0;
     if (item.Term.length > baseSize) {
       var diff = baseSize / (item.Term.length);
       newSize = diff * baseSize;
       marginTop = 6
+      marginLeftText = 3
     }
     const fontSize = Math.min(baseSize, newSize);
     //console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
@@ -1617,7 +1753,6 @@ class Explore extends Component {
           searchterm = item.Term;
           emptycard = false;
           secondcard = false;
-
           this.setState({
             url: 'https://i.imgur.com/JaG8ovv.gif'
           })
@@ -1626,6 +1761,7 @@ class Explore extends Component {
           <View style={styles.catbars3}>
             <Image2
               style={styles.catbars2}
+              imageStyle={{ borderRadius: 22, overflow: 'hidden' }}
               source={{
                 uri: item.ImageUrl,
               }}
@@ -1634,6 +1770,7 @@ class Explore extends Component {
           </View>
           <Text style={{
             marginTop: marginTop,
+            marginLeft: marginLeftText,
             textAlign: 'center',
             opacity: .69,
             fontSize: fontSize,
@@ -1741,8 +1878,7 @@ class Explore extends Component {
 
   resetTo(route) {
     console.log('Reset to ' + route);
-    if(emptycard==true)
-    {
+    if (emptycard == true) {
       secondcard = true;
     }
     emptycard = false;
@@ -1954,7 +2090,7 @@ class Explore extends Component {
               />
             </View>
 
-            {emptycard || secondcard
+            {secondcard
               ?
               <View style={styles.TrendText2}>
                 <Image style={{ width: Dimensions.get('window').width, height: 50, marginTop: 10, marginBottom: -110 }} resizeMode={"contain"} source={require('./assets/title_header.png')} />
@@ -1963,7 +2099,7 @@ class Explore extends Component {
               :
               <View />
             }
-            {emptycard ?
+            {/* {emptycard ?
               <View style={{ marginTop: -60, height: '80%', width: deviceWidth }}>
                 <WebView
                   style={styles.listContainer3}
@@ -1983,7 +2119,31 @@ class Explore extends Component {
                 />
               </View>
               :
-              <View />}
+            <View />} //video*/}
+
+            {emptycard ?
+              <View style={styles.videoContainer}>
+                <TouchableOpacity
+                  onPress={this._onMutePressed}>
+                  <Video
+                    ref={this._mountVideo}
+                    style={[
+                      styles.video,
+                      {
+                        opacity: 1.0,
+                        width: '100%',
+                        height: '100%',
+                      },
+                    ]}
+                    resizeMode={'cover'}
+                    onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
+                    useNativeControls={this.state.useNativeControls}
+                  />
+                </TouchableOpacity>
+              </View>
+              :
+              <View />
+            }
 
             {secondcard
               ?
@@ -2054,9 +2214,9 @@ class Explore extends Component {
 
               <TouchableWithoutFeedback style={styles.footerProfile} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
                 onPress={() => this.resetTo('Shipping')}>
-                <Image2 style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
+                <Image style={styles.profileBut} resizeMode={"contain"} source={{ uri: uri2 }}>
 
-                </Image2>
+                </Image>
               </TouchableWithoutFeedback>
             </View>
             <AwesomeAlert
@@ -2093,9 +2253,9 @@ class Explore extends Component {
                 <View />
             } */}
             <Notification
-                  ref={(ref) => { this.notification = ref; }}
-                  backgroundColour='#1288f5'
-                />
+              ref={(ref) => { this.notification = ref; }}
+              backgroundColour='#1288f5'
+            />
             <Notification
               ref={(ref) => { this.notificationLike = ref; }}
               closeInterval={2000}
@@ -2161,6 +2321,12 @@ const styles = StyleSheet.create({
   },
   swiper: {
     paddingTop: Constants.statusBarHeight,
+  },
+  videoContainer: {
+    height: '100%',
+  },
+  video: {
+    maxWidth: deviceWidth,
   },
   card: {
     flex: 0.9,
@@ -2741,10 +2907,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   catbars2: {
-    width: 40,
-    height: 40,
-    marginRight: 2,
-    borderRadius: 120,
+    width: 35,
+    height: 35,
+    marginLeft: 3,
+    marginTop: 3,
+    borderRadius: 100,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor: 'transparent',
     //resizeMode: 'cover',

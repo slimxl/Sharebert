@@ -13,6 +13,7 @@ import Grocery from './Grocery';
 import Scores from './Scores';
 import Game from './game/Game';
 import Main from './Main';
+import VideoTest from './VideoTest';
 
 var notif = false;
 export default class App extends React.Component {
@@ -44,6 +45,13 @@ const AppNavigator = StackNavigator(
     },
     Shipping: {
       screen: Shipping,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
+    VideoTest: {
+      screen: VideoTest,
       navigationOptions: ({ navigation }) => ({
         header: true,
         gesturesEnabled: true,
