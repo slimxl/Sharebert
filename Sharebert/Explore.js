@@ -2139,10 +2139,11 @@ class Explore extends Component {
                       {
                         opacity: 1.0,
                         width: '100%',
-                        height: '90%',
+                        height: '100%',
+                        marginTop:150,
                       },
                     ]}
-                    resizeMode={'stretch'}
+                    resizeMode={'cover'}
                     onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
                     useNativeControls={this.state.useNativeControls}
                   />
@@ -2330,8 +2331,10 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   videoContainer: {
-    height: '100%',
+    height: '85%',
+    marginTop: -150,
   },
+
   video: {
     maxWidth: deviceWidth,
   },
