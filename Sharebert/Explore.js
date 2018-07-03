@@ -408,8 +408,10 @@ class Explore extends Component {
     } else {
       if (status.error) {
         console.log(`FATAL PLAYER ERROR: ${status.error}`);
-        this._advanceIndex(true);
-        this._updatePlaybackInstanceForIndex(true);
+        // this._advanceIndex(true);
+        // this._updatePlaybackInstanceForIndex(true);
+        emptycard = false;
+        secondcard = true;
         this.forceUpdate();
       }
     }
