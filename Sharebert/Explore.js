@@ -408,6 +408,9 @@ class Explore extends Component {
     } else {
       if (status.error) {
         console.log(`FATAL PLAYER ERROR: ${status.error}`);
+        emptycard = false;
+        secondcard = true;
+        this.forceUpdate();
       }
     }
   };
@@ -2137,7 +2140,7 @@ class Explore extends Component {
                         height: '90%',
                       },
                     ]}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                     onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
                     useNativeControls={this.state.useNativeControls}
                   />
