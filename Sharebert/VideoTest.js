@@ -131,6 +131,7 @@ class VideoTest extends React.Component {
         } else {
             if (status.error) {
                 console.log(`FATAL PLAYER ERROR: ${status.error}`);
+                
             }
         }
     };

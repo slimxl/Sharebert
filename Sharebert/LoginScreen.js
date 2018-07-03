@@ -12,26 +12,33 @@ import {
 } from 'react-native';
 import { Google, Facebook, AuthSession, Font } from 'expo';
 import { Analytics, PageHit } from 'expo-analytics';
-import  Firebase from './Firebase';
+import Firebase from './Firebase';
 
-
+class PlaylistItem {
+  constructor(name, uri, isVideo) {
+    this.name = name;
+    this.uri = uri;
+    this.isVideo = isVideo;
+  }
+}
 var doubleclick = false;
 var lastlogged = true;
 var userEmail2 = '';
 var userID = 0;
+var PLAYLIST = [];
 var name2 = 'Not Logged In';
 var userPoints = 0;
 var stype;
 var suser;
 const analytics = new Analytics('UA-118973857-1', { debug: true });
 var uri2 =
-  'https://sharebert.com/media/blank.png';
+  'https://sharebert.com/medias/blank.png';
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.getData();
-
+    this.grabPlaylistItems();
     console.disableYellowBox = true;
     Font.loadAsync({
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
@@ -61,12 +68,13 @@ class LoginScreen extends Component {
       userEmail2 = '';
       userPoints = 0;
       uri2 =
-        'https://sharebert.com/media/blank.png';
+        'https://sharebert.com/medias/blank.png';
 
       this.props.navigation.navigate('Explore', {
         id: userID,
         points: userPoints,
         uri: uri2,
+        PLAYLIST: PLAYLIST
         //this.props.navigation.navigate('Main', {
         //  id: 0,
         //  points: 0,
@@ -84,11 +92,10 @@ class LoginScreen extends Component {
         //       });
         //     }
         // });
-        var ref = Firebase.database().ref('users/'+userID);
+        var ref = Firebase.database().ref('users/' + userID);
         ref.once('value')
-          .then(function(snapshot){
-            if(snapshot.val()===null)
-            {
+          .then(function (snapshot) {
+            if (snapshot.val() === null) {
               Firebase.database().ref('users/' + userID).set({
                 User_Email: userEmail2,
                 User_Name: name2,
@@ -104,8 +111,9 @@ class LoginScreen extends Component {
         uri: uri2,
         email: userEmail2,
         notification: this.props.screenProps,
+        PLAYLIST: PLAYLIST
       });
-      
+
     }
   }
   _handleFinalGoogleLogin = async () => {
@@ -371,7 +379,22 @@ class LoginScreen extends Component {
       lastlogged = false;
     }
   }
+  grabPlaylistItems = () => {
+    try {
+      fetch('https://sharebert.com/grabdirect.php', {method: 'GET'})
+      .then(response => response.json())
+        .then(responseData => {
+          //console.log(responseData[0]);
+          for (var i = 0; i < responseData.length; i++) {
+            PLAYLIST.push(new PlaylistItem('','https://sharebert.com/medias/'+responseData[i],true));
+          }
+          //console.log(PLAYLIST);
+        })
+        .done();
+    } catch (error) {
 
+    }
+  }
   checkUpdatePoints = () => {
     try {
       fetch(

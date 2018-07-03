@@ -71,34 +71,34 @@ class PlaylistItem {
     this.isVideo = isVideo;
   }
 }
-
-const PLAYLIST = [
-  new PlaylistItem(
-    '',
-    'https://sharebert.com/media/test1.mp4',
-    true
-  ),
-  new PlaylistItem(
-    '',
-    'https://sharebert.com/media/test2.mp4',
-    true
-  ),
-  new PlaylistItem(
-    '',
-    'https://sharebert.com/media/test3.mp4',
-    true
-  ),
-  new PlaylistItem(
-    "",
-    'https://sharebert.com/media/test4.mp4',
-    true
-  ),
-  new PlaylistItem(
-    '',
-    'https://sharebert.com/media/test5.mp4',
-    true
-  ),
-];
+var PLAYLIST = [];
+// const PLAYLIST = [
+//   new PlaylistItem(
+//     '',
+//     'https://sharebert.com/medias/test1.mp4',
+//     true
+//   ),
+//   new PlaylistItem(
+//     '',
+//     'https://sharebert.com/medias/test2.mp4',
+//     true
+//   ),
+//   new PlaylistItem(
+//     '',
+//     'https://sharebert.com/medias/test3.mp4',
+//     true
+//   ),
+//   new PlaylistItem(
+//     "",
+//     'https://sharebert.com/medias/test4.mp4',
+//     true
+//   ),
+//   new PlaylistItem(
+//     '',
+//     'https://sharebert.com/media/test5.mp4',
+//     true
+//   ),
+// ];
 const LOOPING_TYPE_ALL = 0;
 const LOOPING_TYPE_ONE = 1;
 const FONT_SIZE = 14;
@@ -108,12 +108,14 @@ const VIDEO_CONTAINER_HEIGHT = deviceHeight * 2.0 / 5.0 - FONT_SIZE * 2;
 class Explore extends Component {
   constructor(props) {
     super(props);
+    emptycard = true;
+    secondcard = false;
     this.index = 0;
     this.playbackInstance = null;
-
+    
     console.disableYellowBox = true;
 
-
+    PLAYLIST = this.props.navigation.state.params.PLAYLIST;
     userID = this.props.navigation.state.params.id;
 
     try {
@@ -2132,10 +2134,10 @@ class Explore extends Component {
                       {
                         opacity: 1.0,
                         width: '100%',
-                        height: '100%',
+                        height: '90%',
                       },
                     ]}
-                    resizeMode={'cover'}
+                    resizeMode={'contain'}
                     onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
                     useNativeControls={this.state.useNativeControls}
                   />
@@ -2169,7 +2171,7 @@ class Explore extends Component {
 
 
             {
-              emptycard
+              emptycard || secondcard
                 ?
                 <View style={{ overflow: "visible", position: 'absolute', bottom: 0 }}>
                   <TouchableOpacity style={styles.footerItem3} onPress={this.shareURL}>
