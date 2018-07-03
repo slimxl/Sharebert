@@ -112,7 +112,7 @@ class Explore extends Component {
     secondcard = false;
     this.index = 0;
     this.playbackInstance = null;
-    
+
     console.disableYellowBox = true;
 
     PLAYLIST = this.props.navigation.state.params.PLAYLIST;
@@ -2138,9 +2138,9 @@ class Explore extends Component {
                       styles.video,
                       {
                         opacity: 1.0,
-                        width: '100%',
+                        width: '75%',
                         height: '100%',
-                        marginTop:150,
+
                       },
                     ]}
                     resizeMode={'cover'}
@@ -2331,8 +2331,8 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   videoContainer: {
-    height: '85%',
-    marginTop: -150,
+    height: '100%',
+    width: '140%',
   },
 
   video: {
