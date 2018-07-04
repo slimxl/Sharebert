@@ -125,7 +125,10 @@ class Explore extends Component {
       userPoints = 0;
     }
     uri2 = this.props.navigation.state.params.uri;
-    uri2 = uri2.replace('http://', 'https://');
+    if (uri2 == undefined || uri2 == null) {
+      uri2 = 'https://sharebert.com/medias/blank.png'
+    }
+
     //console.log(uri2 + " URI2 check this-----------------------------------------------------");
     //console.log(props);
 
@@ -1101,29 +1104,29 @@ class Explore extends Component {
           console.error(error);
         }
 
-        try {
-          if (Math.floor(Math.random() * (250 - 1) + 1) <= 100 && userID != 0) {
-            Alert.alert(
-              'Heres a chance to earn more points! ', "",
-              [
-                {
-                  text: 'Skip',
-                  onPress: () => { },
-                  style: 'cancel',
-                },
-                {
-                  text: 'Play',
-                  onPress: () => {
-                    this.resetTo('Main');
-                  },
-                },
-              ],
-              { cancelable: false }
-            );
-          }
-        } catch (error) {
-          console.error(error);
-        }
+        // try {
+        //   if (Math.floor(Math.random() * (250 - 1) + 1) <= 100 && userID != 0) {
+        //     Alert.alert(
+        //       'Heres a chance to earn more points! ', "",
+        //       [
+        //         {
+        //           text: 'Skip',
+        //           onPress: () => { },
+        //           style: 'cancel',
+        //         },
+        //         {
+        //           text: 'Play',
+        //           onPress: () => {
+        //             this.resetTo('Main');
+        //           },
+        //         },
+        //       ],
+        //       { cancelable: false }
+        //     );
+        //   }
+        // } catch (error) {
+        //   console.error(error);
+        // }
 
       }
 
@@ -1808,6 +1811,17 @@ class Explore extends Component {
             source={require('./assets/Category/brands.png')}
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.resetTo('Deals', {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+        })}>
+          <Image
+            style={styles.catbars}
+            source={require('./assets/Category/deals_v2.png')}
+          />
+
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => this.catGrab('Travel')}>
           <Image
             style={styles.catbars}
@@ -1820,17 +1834,7 @@ class Explore extends Component {
             source={require('./assets/Category/groceries.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.resetTo('Deals', {
-          id: userID,
-          points: userPoints,
-          uri: uri2,
-        })}>
-          <Image
-            style={styles.catbars}
-            source={require('./assets/Category/deals_v2.png')}
-          />
 
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => this.catGrab('womens')}>
           <Image
             style={styles.catbar}
