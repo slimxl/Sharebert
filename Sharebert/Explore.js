@@ -1758,7 +1758,7 @@ class Explore extends Component {
     //console.log(item.ImageUrl + " Image Url from Search");
 
     return (
-      <View>
+      <View style={{marginTop: -5,}}>
         <TouchableOpacity onPress={() => {
           searchterm = item.Term;
           emptycard = false;
@@ -1799,8 +1799,10 @@ class Explore extends Component {
   _keyExtractor = (item, index) => index;
   _renderFooter = () => {
     return (
-      <View style={{ flex: 1, flexDirection: 'row' }}
+      <View style={{ flex: 1, flexDirection: 'row', marginTop: -5, }}
       >
+        <View style={styles.div}/>
+
         <TouchableOpacity onPress={() => this.resetTo('Brands', {
           id: userID,
           points: userPoints,
@@ -2510,6 +2512,13 @@ const styles = StyleSheet.create({
       }
     }
     ),
+
+  },
+  div:{
+    backgroundColor: 'gray',
+    width: 1,
+    height: 50,
+    marginTop: 15,
 
   },
   retail: {
