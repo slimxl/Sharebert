@@ -430,6 +430,7 @@ class Rewards extends Component {
               <FlatList backgroundColor={'transparent'}
                 style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
                 data={this.state.rewards}
+                removeClippedSubviews={true}
                 keyExtractor={this._keyExtractor}
                 ListEmptyComponent={this._showEmptyListView}
                 ListHeaderComponent={this._renderHeader}
