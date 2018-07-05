@@ -135,7 +135,7 @@ class Explore extends Component {
     this.getOldLikes();
     this.state = {
       loopingType: LOOPING_TYPE_ALL,
-      muted: false,
+      muted: true,
       volume: 1.0,
       rate: 1.0,
       videoWidth: deviceWidth,
