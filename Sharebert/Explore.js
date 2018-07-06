@@ -1958,7 +1958,7 @@ class Explore extends Component {
       else {
         const config = {
           velocityThreshold: 0.1,
-          directionalOffsetThreshold: 60
+          directionalOffsetThreshold: 100
         };
         return (
           <ImageBackground
