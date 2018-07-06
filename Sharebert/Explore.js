@@ -5,6 +5,7 @@ import Image2 from 'react-native-image-progress';
 import ProgressBar from 'react-native-progress/Bar';
 import Menu from './Menu';
 import LoadingView from 'rn-loading-view';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Notification from 'react-native-in-app-notification';
 import ImageSlider from 'react-native-image-slider';
@@ -1318,6 +1319,14 @@ class Explore extends Component {
       this.swiper.swipeRight();
     }
   };
+  onSwipeRight(gestureState) {
+    this._advanceIndex(true);
+    this._updatePlaybackInstanceForIndex(true);
+  }
+  onSwipeLeft(gestureState) {
+    this._advanceIndex(false);
+    this._updatePlaybackInstanceForIndex(true);
+  }
 
   onSwipedRight = () => {
     if (
@@ -1758,7 +1767,7 @@ class Explore extends Component {
     //console.log(item.ImageUrl + " Image Url from Search");
 
     return (
-      <View style={{marginTop: -5,}}>
+      <View style={{ marginTop: -5, }}>
         <TouchableOpacity onPress={() => {
           searchterm = item.Term;
           emptycard = false;
@@ -1801,7 +1810,7 @@ class Explore extends Component {
     return (
       <View style={{ flex: 1, flexDirection: 'row', marginTop: -5, }}
       >
-        <View style={styles.div}/>
+        <View style={styles.div} />
 
         <TouchableOpacity onPress={() => this.resetTo('Brands', {
           id: userID,
@@ -1947,6 +1956,10 @@ class Explore extends Component {
         );
       }
       else {
+        const config = {
+          velocityThreshold: 0.3,
+          directionalOffsetThreshold: 80
+        };
         return (
           <ImageBackground
             source={require('./like_background.png')}
@@ -2136,24 +2149,33 @@ class Explore extends Component {
 
             {emptycard ?
               <View style={styles.videoContainer}>
-                <TouchableOpacity
-                  onPress={this._onMutePressed}>
-                  <Video
-                    ref={this._mountVideo}
-                    style={[
-                      styles.video,
-                      {
-                        opacity: 1.0,
-                        width: '75%',
-                        height: '100%',
+                <GestureRecognizer
+                  onSwipeRight={(state) => this.onSwipeRight(state)}
+                  onSwipeLeft={(state) => this.onSwipeLeft(state)}
+                  config={config}
+                >
+                  <TouchableOpacity
+                    onPress={this._onMutePressed}>
+                    <Video
+                      ref={this._mountVideo}
+                      style={[
+                        styles.video,
+                        {
+                          opacity: 1.0,
+                          width: '75%',
+                          height: '100%',
 
-                      },
-                    ]}
-                    resizeMode={'cover'}
-                    onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
-                    useNativeControls={this.state.useNativeControls}
-                  />
-                </TouchableOpacity>
+                        },
+                      ]}
+                      resizeMode={'cover'}
+                      onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
+                      useNativeControls={this.state.useNativeControls}
+                    />
+                  </TouchableOpacity>
+
+                </GestureRecognizer>
+
+
               </View>
               :
               <View />
@@ -2514,7 +2536,7 @@ const styles = StyleSheet.create({
     ),
 
   },
-  div:{
+  div: {
     backgroundColor: 'gray',
     width: 1,
     height: 50,
