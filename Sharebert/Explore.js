@@ -710,6 +710,7 @@ class Explore extends Component {
       this.state.url ===
       'https://i.imgur.com/JaG8ovv.gif'
     ) {
+
       return (
         <View style={styles.card}>
 
@@ -1400,6 +1401,43 @@ class Explore extends Component {
     }
   };
 
+  onSwipedBottom = () => {
+    var retailer = 0;
+    if (this.state.dataset.length === 1) {
+      if (this.state.dataset[0].Retailer === 'Amazon') {
+        retailer = 1;
+      }
+      fetch(
+        'https://sharebert.com/s/ReportProduct.php?asin=' +
+        this.state.dataset[0].ASIN +
+        '&retailer=' + retailer,
+        { method: 'GET' }
+      )
+        .then(() => {
+          console.log("Retailer:"+retailer);
+          console.log("ASIN:" + this.state.dataset[0].ASIN);
+          console.log("Title:" + this.state.dataset[0].Title);
+        })
+    }
+    else {
+      if (this.state.dataset[this.state.cardNum - 1].Retailer === 'Amazon') {
+        retailer = 1;
+      }
+      fetch(
+        'https://sharebert.com/s/ReportProduct.php?asin=' +
+        this.state.dataset[this.state.cardNum - 1].ASIN +
+        '&retailer=' + retailer,
+        { method: 'GET' }
+      )
+        .then(() => {
+          console.log("Retailer:"+retailer);
+          console.log("ASIN:" + this.state.dataset[this.state.cardNum - 1].ASIN);
+          console.log("Title:" + this.state.dataset[this.state.cardNum - 1].Title);
+        })
+    }
+
+  };
+
   shareApp() {
     try {
       Share.share(
@@ -1977,6 +2015,7 @@ class Explore extends Component {
               disableLeftSwipe={this.state.disable}
               disableRightSwipe={this.state.disable}
               onSwipedRight={this.onSwipedRight}
+              onSwipedBottom={this.onSwipedBottom}
               infinite={true}
               cards={this.state.cards}
               cardIndex={this.state.cardIndex}
