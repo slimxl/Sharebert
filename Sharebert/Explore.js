@@ -1836,7 +1836,7 @@ class Explore extends Component {
             adjustsFontSizeToFit={true}
             numberOfLines={1}>
 
-            {item.Term.toUpperCase()}
+            {'#' + item.Term.toUpperCase()}
           </Text>
         </TouchableOpacity>
 
