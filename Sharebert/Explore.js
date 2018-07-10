@@ -1610,6 +1610,8 @@ class Explore extends Component {
   onSubmitEdit = () => {
     console.log('Search was refreshed');
     Keyboard.dismiss();
+    secondcard = false;
+    try{
     if (searchterm === undefined || searchterm === ' ' || searchterm === '') {
       Alert.alert("Empty Search!", 'Try Again!');
       return;
@@ -1730,6 +1732,20 @@ class Explore extends Component {
           }).done();
         //}
       }).done();
+    }
+    catch(error)
+    {
+      console.log(error);
+      this.setState({
+        cardNum: 0,
+        dataset: data2,
+        url: data2[this.state.cardNum].ImageURL,
+        title: data2[this.state.cardNum].Title,
+        disable: false,
+        category: 'All',
+        cat: false,
+      });
+    }
   };
   onSubmitEditBrands = (brands) => {
     emptycard = false;
