@@ -385,10 +385,11 @@ class LoginScreen extends Component {
       .then(response => response.json())
         .then(responseData => {
           //console.log(responseData[0]);
-          for (var i = 0; i < responseData.length; i++) {
+          console.log(Object.keys(responseData).length);
+          for (var i = 0; i < Object.keys(responseData).length; i++) {
             PLAYLIST.push(new PlaylistItem('','https://sharebert.com/medias/'+responseData[i],true));
           }
-          //console.log(PLAYLIST);
+          console.log(PLAYLIST);
         })
         .done();
     } catch (error) {
