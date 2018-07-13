@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoginScreen from './LoginScreen';
 import { NavigationActions } from 'react-navigation';
+import Dialog from "react-native-dialog";
 import {
   View,
   AsyncStorage,
@@ -46,7 +47,9 @@ class Shipping extends Component {
     uri2 = this.props.navigation.state.params.uri;
     this.fetchData();
     this.state = {
+      dialogVisible: false,
       isOpen: false,
+      inputValue: "Referral Code",
       selectedItem: 'Shipping',
       userPoints: userPoints,
       name: '',
@@ -117,7 +120,22 @@ class Shipping extends Component {
 
 
   };
+  showDialog = () => {
+    this.setState({ dialogVisible: true });
+  };
 
+  handleCancel = () => {
+    this.setState({ dialogVisible: false });
+  };
+  handleSend = () =>{
+    fetch(
+      'https://sharebert.com/s/SetReferral.php?uid=' +
+      userID +
+      '&referral=' + this.state.inputValue,
+      { method: 'GET' }
+    ).done();
+    this.handleCancel();
+  }
   sendData = () => {
     fetch(
       'https://sharebert.com/s/ShipSend2.php?uid=' +
@@ -182,6 +200,9 @@ class Shipping extends Component {
     });
   }
 
+  _handleTextChange = inputValue => {
+    this.setState({ inputValue });
+  };
   clearLikes = async () => {
     // await AsyncStorage.removeItem('@MySuperStore:Likes' + userID);
     // Alert.alert("Likes Cleared!");
@@ -207,41 +228,41 @@ class Shipping extends Component {
           source={require('./like_background.png')}
           style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, position: 'absolute', top: 0 }}>
           <View style={{ width: '100%', height: Dimensions.get('window').height }}>
-          <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.goBack();
-          }}>
+            <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}>
 
-          <Image style={styles.header} />
-          <Text style={styles.text3}>
-            {userPoints + '\n'}
-          </Text>
-          <Text style={styles.pointsText}>
-            Points
+              <Image style={styles.header} />
+              <Text style={styles.text3}>
+                {userPoints + '\n'}
               </Text>
-        </TouchableOpacity>
-        <Image
-          resizeMode="contain"
-          style={styles.button}
-          source={require('./assets/icons/logoicon.png')}
-        />
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.props.navigation.goBack();
+              <Text style={styles.pointsText}>
+                Points
+              </Text>
+            </TouchableOpacity>
+            <Image
+              resizeMode="contain"
+              style={styles.button}
+              source={require('./assets/icons/logoicon.png')}
+            />
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.props.navigation.goBack();
 
-          }}>
-          <Image
-            style={styles.hamburger}
-            resizeMode='contain'
-            source={require('./assets/arrow_w.png')}
-          />
-        </TouchableWithoutFeedback>
-        <Text style={styles.title}>
-          My Profile
+              }}>
+              <Image
+                style={styles.hamburger}
+                resizeMode='contain'
+                source={require('./assets/arrow_w.png')}
+              />
+            </TouchableWithoutFeedback>
+            <Text style={styles.title}>
+              My Profile
         </Text>
             <ScrollView
-              style={{ marginTop: 20, backgroundColor: 'transparent',}}
+              style={{ marginTop: 20, backgroundColor: 'transparent', }}
               vertical={true}>
               <Text style={styles.paragraph}>
                 Name:
@@ -282,7 +303,7 @@ class Shipping extends Component {
                   user.City = text;
                   this.setState({ city: text })
                 }}
-              placeholderTextColor={'#01284e'}
+                placeholderTextColor={'#01284e'}
                 style={styles.textField}
               />
               <Text style={styles.paragraphS}>
@@ -363,11 +384,11 @@ class Shipping extends Component {
                 placeholderTextColor={'#01284e'}
                 style={styles.textField}
               />
-              <TouchableOpacity onPress={this.saveForm} 
-              style={{
-                width: 100, height: 75, 
-                marginLeft: (Dimensions.get('window').width * .5) - 50
-              }}>
+              <TouchableOpacity onPress={this.saveForm}
+                style={{
+                  width: 100, height: 75,
+                  marginLeft: (Dimensions.get('window').width * .5) - 50
+                }}>
                 <Image
                   resizeMode="contain"
                   style={styles.button2}
@@ -375,10 +396,10 @@ class Shipping extends Component {
                 />
               </TouchableOpacity>
               <TouchableOpacity style={{
-                width: 250, height: 50, 
+                width: 250, height: 50,
                 marginLeft: (Dimensions.get('window').width * .5) - 125
               }}
-              onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
+                onPress={() => { Linking.openURL('https://sharebert.com/privacy-policy/'); }}>
                 <Image
                   resizeMode="contain"
                   style={styles.button3}
@@ -387,10 +408,10 @@ class Shipping extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={this.clearLikes}
-              style={{
-                width: 250, height: 50, 
-                marginLeft: (Dimensions.get('window').width * .5) - 125,
-              }}>
+                style={{
+                  width: 250, height: 50,
+                  marginLeft: (Dimensions.get('window').width * .5) - 125,
+                }}>
                 <Image
                   resizeMode="contain"
                   style={styles.button3}
@@ -401,10 +422,10 @@ class Shipping extends Component {
               <TouchableOpacity onPress={() => {
                 this.clearFile();
               }}
-              style={{
-                width: 250, height: 50, 
-                marginLeft: (Dimensions.get('window').width * .5) - 125
-              }}>
+                style={{
+                  width: 250, height: 50,
+                  marginLeft: (Dimensions.get('window').width * .5) - 125
+                }}>
                 {!loggedbool
                   ? <Image
                     resizeMode="contain"
@@ -434,8 +455,39 @@ class Shipping extends Component {
                     Super secret game button
                   </Text>
               </TouchableOpacity> */}
+              <TouchableOpacity onPress={this.showDialog}
+                style={{
+                  width: 250, height: 50,
+                  marginLeft: (Dimensions.get('window').width * .5) - 125
+                }}>
+                <Text style={{ backgroundColor: 'white' }}>
+                  Set Referral
+                  </Text>
+              </TouchableOpacity>
 
-               {/* <TouchableOpacity onPress={() => {
+              <View>
+                <Dialog.Container
+                  visible={this.state.dialogVisible}
+                >
+                  <Dialog.Title>Referral</Dialog.Title>
+                  <Dialog.Description>
+                    Type or Paste in Referral Code
+                  </Dialog.Description>
+                  <Dialog.Input
+                    onFocus={() => {
+                      this.setState({
+                        inputValue: "",
+                      });
+                    }} 
+                    onChangeText={this._handleTextChange}
+                    value={this.state.inputValue}>
+
+                  </Dialog.Input>
+                  <Dialog.Button label="Cancel" onPress={this.handleCancel} />
+                  <Dialog.Button label="Okay" onPress={this.handleSend} />
+                </Dialog.Container>
+              </View>
+              {/* <TouchableOpacity onPress={() => {
                 this.clearFile2();
               }}
               style={{
@@ -451,11 +503,11 @@ class Shipping extends Component {
 
             </ScrollView>
             <Text style={styles.text}>
-          We take privacy seriously.{"\n"}
-          We'll never sell or trade your data.
+              We take privacy seriously.{"\n"}
+              We'll never sell or trade your data.
           </Text>
           </View>
-          
+
         </ImageBackground>
       </View>
     );
@@ -515,7 +567,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         marginTop: -65,
-        marginLeft: Dimensions.get('window').width *.5 - 75,
+        marginLeft: Dimensions.get('window').width * .5 - 75,
         backgroundColor: 'transparent',
         padding: 20,
         marginBottom: 30,
@@ -525,7 +577,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         marginTop: 10,
-        left: (Dimensions.get('window').width *.5) - 75,
+        left: (Dimensions.get('window').width * .5) - 75,
         backgroundColor: 'transparent',
         flexDirection: 'row',
       },
@@ -591,19 +643,19 @@ const styles = StyleSheet.create({
         height: 44,
         padding: 8,
         marginTop: -42,
-        marginLeft: 100,    
+        marginLeft: 100,
         borderRadius: 8
       },
       android: {
         fontSize: 20,
         right: 10,
-        color: '#01284e',        
+        color: '#01284e',
         backgroundColor: 'transparent',
         width: Dimensions.get('window').width - 100,
         height: 44,
         padding: 8,
         marginTop: -42,
-        marginLeft: 100,    
+        marginLeft: 100,
         borderRadius: 8
       },
     }),
@@ -620,19 +672,19 @@ const styles = StyleSheet.create({
         height: 44,
         padding: 8,
         marginTop: 108,
-        marginLeft: 100,    
+        marginLeft: 100,
         borderRadius: 8
       },
       android: {
         fontSize: 20,
         right: 10,
-        color: '#01284e',        
+        color: '#01284e',
         backgroundColor: 'transparent',
         width: Dimensions.get('window').width - 100,
         height: 44,
         padding: 8,
         marginTop: -42,
-        marginLeft: 100,    
+        marginLeft: 100,
         borderRadius: 8
       },
     }),
@@ -664,69 +716,69 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     ...Platform.select({
-    ios: {
-      color: '#01284e',
-      marginBottom: 10,
-      marginTop: 10,
-      marginLeft: 15,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'left',
-    },
-    android: {
+      ios: {
+        color: '#01284e',
+        marginBottom: 10,
+        marginTop: 10,
+        marginLeft: 15,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'left',
+      },
+      android: {
         color: '#f310a0',
-      marginBottom: 10,
-      marginTop: 10,
-      marginLeft: 15,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'left',
-    },
-  }),
-},
-paragraphS: {
-  ...Platform.select({
-  ios: {
-    color: '#01284e',
-    marginBottom: 10,
-    marginTop: 85,
-    marginLeft: 15,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'left',
+        marginBottom: 10,
+        marginTop: 10,
+        marginLeft: 15,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'left',
+      },
+    }),
   },
-  android: {
-    color: '#f310a0',
-    marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 15,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'left',
+  paragraphS: {
+    ...Platform.select({
+      ios: {
+        color: '#01284e',
+        marginBottom: 10,
+        marginTop: 85,
+        marginLeft: 15,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'left',
+      },
+      android: {
+        color: '#f310a0',
+        marginBottom: 10,
+        marginTop: 10,
+        marginLeft: 15,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'left',
+      },
+    }),
   },
-}),
-},
   paragraphZ: {
     ...Platform.select({
-    ios: {
-      color: '#01284e',
-      marginBottom: 10,
-      marginTop: 165,
-      marginLeft: 15,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'left',
-    },
-    android: {
-      color: '#f310a0',
-      marginBottom: 10,
-      marginTop: 10,
-      marginLeft: 15,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'left',
-    },
-  }),
+      ios: {
+        color: '#01284e',
+        marginBottom: 10,
+        marginTop: 165,
+        marginLeft: 15,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'left',
+      },
+      android: {
+        color: '#f310a0',
+        marginBottom: 10,
+        marginTop: 10,
+        marginLeft: 15,
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'left',
+      },
+    }),
   },
   paragraph2: {
     margin: 24,
@@ -760,51 +812,51 @@ paragraphS: {
 
   },
   pointsText: {
-      ...Platform.select({
-        ios: {
-          marginRight: 10,
-          marginTop: -17,
-          textAlign: 'right',
-          fontSize: 15,
-          color: 'white',
-          fontWeight: 'bold',
-          backgroundColor: 'transparent',
-          marginBottom: 30,
-        },
-        android: {
-          marginRight: 10,
-          marginTop: -7,
-          marginBottom: 20,
-          textAlign: 'right',
-          fontSize: 15,
-          color: 'white',
-          fontWeight: 'bold',
-          backgroundColor: 'transparent',
-        },
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -17,
+        textAlign: 'right',
+        fontSize: 15,
+        color: 'white',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+        marginBottom: 30,
+      },
+      android: {
+        marginRight: 10,
+        marginTop: -7,
+        marginBottom: 20,
+        textAlign: 'right',
+        fontSize: 15,
+        color: 'white',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+      },
     }),
   },
   exploreBut:
-    {
-      height: 25,
-      width: 25,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      marginLeft: Dimensions.get('window').width / 16,
-      marginBottom: 5,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    marginLeft: Dimensions.get('window').width / 16,
+    marginBottom: 5,
+    backgroundColor: 'transparent',
+  },
   likesBut:
-    {
-      height: 25,
-      width: 25,
-      marginLeft: Dimensions.get('window').width / 3.3,
-      marginBottom: 5,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    marginLeft: Dimensions.get('window').width / 3.3,
+    marginBottom: 5,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'transparent',
+  },
   footerRewards: {
     position: "absolute",
     bottom: 0,
@@ -812,16 +864,16 @@ paragraphS: {
     backgroundColor: 'transparent',
   },
   rewardsBut:
-    {
-      height: 25,
-      width: 25,
-      marginRight: Dimensions.get('window').width / 3.3,
-      marginBottom: 5,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    marginRight: Dimensions.get('window').width / 3.3,
+    marginBottom: 5,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
   footerProfile: {
     position: "absolute",
     bottom: 0,
@@ -829,17 +881,17 @@ paragraphS: {
     backgroundColor: 'transparent',
   },
   profileBut:
-    {
-      height: 25,
-      width: 25,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      marginRight: Dimensions.get('window').width / 16,
-      marginBottom: 5,
-      borderRadius: 12,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    marginRight: Dimensions.get('window').width / 16,
+    marginBottom: 5,
+    borderRadius: 12,
+    backgroundColor: 'transparent',
+  },
 
   footer: {
     height: 40,
@@ -883,7 +935,7 @@ paragraphS: {
     fontSize: 12,
     color: '#ec47ff',
     backgroundColor: 'transparent',
-    marginBottom:35,
+    marginBottom: 35,
   },
   image: {
     width,
