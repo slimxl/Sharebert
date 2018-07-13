@@ -438,7 +438,7 @@ class Explore extends Component {
   }
 
   getSearches = () => {
-    fetch('http://biosystematic-addit.000webhostapp.com/s/GetSearch.php', { method: 'GET' })
+    fetch('https://sharebert.com/s/GetSearch.php', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
         var data2 = [];
