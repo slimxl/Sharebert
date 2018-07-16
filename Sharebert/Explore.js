@@ -9,6 +9,7 @@ import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Notification from 'react-native-in-app-notification';
 import ImageSlider from 'react-native-image-slider';
+import * as Animatable from 'react-native-animatable';
 import Firebase from './Firebase';
 import {
   StyleSheet,
@@ -51,6 +52,7 @@ var likes3 = [];
 var uri2 = '';
 var randoUsersLikes = [];
 var tutorial = true;
+var gotPoints = false;
 
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -153,6 +155,7 @@ class Explore extends Component {
       userPoints: userPoints,
       frontTitle: '',
       disable: true,
+      fontSize: 12,
       notification: [],
       isSwipingBack: false,
       cardIndex: 0,
@@ -438,7 +441,7 @@ class Explore extends Component {
   }
 
   getSearches = () => {
-    fetch('https://sharebert.com/s/GetSearch.php', { method: 'GET' })
+    fetch('http://biosystematic-addit.000webhostapp.com/s/GetSearch.php', { method: 'GET' })
       .then(response => response.json())
       .then(responseData => {
         var data2 = [];
@@ -596,6 +599,11 @@ class Explore extends Component {
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
+      if(gotPoints)
+      {
+        gotPoints = false;
+        this.bounce();
+      }
       this.forceUpdate();
     }
     this.setState({ appState: nextAppState });
@@ -840,18 +848,19 @@ class Explore extends Component {
                     userPoints = responseData2['Points'];
 
                     //Alert.alert('POINTS OBTAINED', "Thanks for Sharing!");
-                    if (Platform.OS === 'android' || Platform.OS === 'ios') {
-                      this.notification.show({
-                        title: 'You earned 5 points!',
-                        message: 'Share another product to earn more!',
-                        icon: { uri: 'https://i.imgur.com/ITg9EvJ.png' },
-                        onPress: () => this.showAlert(),
-                      });
-                    }
-                    else {
-                      this.showAlert();
-                    }
-                    this.forceUpdate();
+                    // if (Platform.OS === 'android' || Platform.OS === 'ios') {
+                    //   this.notification.show({
+                    //     title: 'You earned 5 points!',
+                    //     message: 'Share another product to earn more!',
+                    //     icon: { uri: 'https://i.imgur.com/ITg9EvJ.png' },
+                    //     onPress: () => this.showAlert(),
+                    //   });
+                    // }
+                    // else {
+                    //   this.showAlert();
+                    // }
+                    this.bounce();
+                    gotPoints = true;
 
                   }
                 })
@@ -1093,11 +1102,12 @@ class Explore extends Component {
               .then(response2 => response2.json())
               .then(responseData2 => {
                 if (responseData2['Points'] != userPoints) {
-                  Alert.alert('You earned 5 points!', "Keep swiping to earn more!");
+                  //Alert.alert('You earned 5 points!', "Keep swiping to earn more!");
 
                   userPoints = responseData2['Points'];
 
                   this.forceUpdate();
+                  this.bounce();
                 }
               })
               .done();
@@ -1328,7 +1338,10 @@ class Explore extends Component {
     this._advanceIndex(false);
     this._updatePlaybackInstanceForIndex(true);
   }
-
+  onSwipedLeft = () =>{
+    // this.bounce();
+    // console.log('bounce left');
+  }
   onSwipedRight = () => {
     if (
       this.state.url !==
@@ -1414,7 +1427,7 @@ class Explore extends Component {
         { method: 'GET' }
       )
         .then(() => {
-          console.log("Retailer:"+retailer);
+          console.log("Retailer:" + retailer);
           console.log("ASIN:" + this.state.dataset[0].ASIN);
           console.log("Title:" + this.state.dataset[0].Title);
         })
@@ -1430,7 +1443,7 @@ class Explore extends Component {
         { method: 'GET' }
       )
         .then(() => {
-          console.log("Retailer:"+retailer);
+          console.log("Retailer:" + retailer);
           console.log("ASIN:" + this.state.dataset[this.state.cardNum - 1].ASIN);
           console.log("Title:" + this.state.dataset[this.state.cardNum - 1].Title);
         })
@@ -1485,8 +1498,11 @@ class Explore extends Component {
 
                     userPoints = responseData2['Points'];
 
-                    Alert.alert('You earned 35 points!', "Share the app weekly to earn more!");
+                    //Alert.alert('You earned 35 points!', "Share the app weekly to earn more!");
+                    this.bounce();
+                    gotPoints = true;
                     this.forceUpdate();
+
                   }
                 })
                 .done();
@@ -1611,130 +1627,129 @@ class Explore extends Component {
     console.log('Search was refreshed');
     Keyboard.dismiss();
     secondcard = false;
-    try{
-    if (searchterm === undefined || searchterm === ' ' || searchterm === '') {
-      Alert.alert("Empty Search!", 'Try Again!');
-      return;
-    }
-    console.log(searchterm);
-    fetch(
-      'https://sharebert.com/s/APISEARCH.php?keyword=' +
-      searchterm +
-      '&page=1',
-      { method: 'GET' }
-    )
-      .then(response => response.json())
-      .then(responseData => {
-        //console.log(Object.keys(responseData['Amazon']).length);
-        // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
-        //   Alert.alert("No Results Found");
-        //   emptycard = true;
-        //   this.grabFrontPage();
-        //   return;
-        // }
-        //else {
-        var data2 = [];
-        //var count = responseData['Amazon'][0][7];
-        //datasize = count;
-        //searchcount = datasize;
-        console.log("API COUNT: " + Object.keys(responseData['Amazon']).length);
-        for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
-          var obj = {};
-          obj['ASIN'] = responseData['Amazon'][i][0];
-          obj['Title'] = responseData['Amazon'][i][1];
-          obj['URL'] = responseData['Amazon'][i][3];
-          obj['ImageURL'] = responseData['Amazon'][i][4];
-          obj['Retailer'] = 'Amazon';
-          data2.push(obj);
-        }
-        search = true;
+    try {
+      if (searchterm === undefined || searchterm === ' ' || searchterm === '') {
+        Alert.alert("Empty Search!", 'Try Again!');
+        return;
+      }
+      console.log(searchterm);
+      fetch(
+        'https://sharebert.com/s/APISEARCH.php?keyword=' +
+        searchterm +
+        '&page=1',
+        { method: 'GET' }
+      )
+        .then(response => response.json())
+        .then(responseData => {
+          //console.log(Object.keys(responseData['Amazon']).length);
+          // if (Object.keys(responseData['Amazon']).length === undefined || Object.keys(responseData['Amazon']).length === 0) {
+          //   Alert.alert("No Results Found");
+          //   emptycard = true;
+          //   this.grabFrontPage();
+          //   return;
+          // }
+          //else {
+          var data2 = [];
+          //var count = responseData['Amazon'][0][7];
+          //datasize = count;
+          //searchcount = datasize;
+          console.log("API COUNT: " + Object.keys(responseData['Amazon']).length);
+          for (var i = 0; i < Object.keys(responseData['Amazon']).length; i++) {
+            var obj = {};
+            obj['ASIN'] = responseData['Amazon'][i][0];
+            obj['Title'] = responseData['Amazon'][i][1];
+            obj['URL'] = responseData['Amazon'][i][3];
+            obj['ImageURL'] = responseData['Amazon'][i][4];
+            obj['Retailer'] = 'Amazon';
+            data2.push(obj);
+          }
+          search = true;
 
-        fetch(
-          'https://sharebert.com/s/search.php?cat=' +
-          searchterm +
-          '&page=10',
-          { method: 'GET' }
-        )
-          .then(response2 => response2.json())
-          .then(responseData2 => {
-            // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
-            //   Alert.alert("No Results Found");
-            //   emptycard = true;
-            //   this.grabFrontPage();
-            //   return;
-            // }
-            // else {
-            emptycard = false;
-            secondcard = false;
-
-            var count = Object.keys(responseData2['Amazon']).length;
-            var catcount = count;
-            if (count != 0) {
-              for (var i = 0; i < count; i++) {
-                var obj = {};
-                obj['ASIN'] = responseData2['Amazon'][i]['ASIN'];
-                obj['Title'] = responseData2['Amazon'][i]['Title'];
-                obj['URL'] = responseData2['Amazon'][i]['URL'];
-                obj['ImageURL'] = responseData2['Amazon'][i]['ImageURL'];
-                obj['Retailer'] = 'Amazon';
-                data2.push(obj);
-              }
-            }
-            count = Object.keys(responseData2['Others']).length;
-            catcount += count;
-            console.log('CatCount: ' + catcount);
-            if (count != 0) {
-              for (var i = 0; i < count; i++) {
-                var obj2 = {};
-                obj2['ASIN'] = responseData2['Others'][i]['ASIN'];
-                obj2['Title'] = responseData2['Others'][i]['Title'];
-                obj2['URL'] = responseData2['Others'][i]['URL'];
-                obj2['ImageURL'] = responseData2['Others'][i]['ImageURL'];
-                obj2['Retailer'] = responseData2['Others'][i]['Website'];
-                data2.push(obj2);
-              }
-            }
-            if (data2.length > 0) {
-              search = true;
-              datasize = data2.length;
-              searchcount = datasize;
+          fetch(
+            'https://sharebert.com/s/search.php?cat=' +
+            searchterm +
+            '&page=10',
+            { method: 'GET' }
+          )
+            .then(response2 => response2.json())
+            .then(responseData2 => {
+              // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
+              //   Alert.alert("No Results Found");
+              //   emptycard = true;
+              //   this.grabFrontPage();
+              //   return;
+              // }
+              // else {
               emptycard = false;
               secondcard = false;
 
-              if (userID != 0) {
-                fetch(
-                  'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
-                  searchterm +
-                  '&imageurl=' + data2[0].ImageURL,
-                  { method: 'GET' }
-                ).done();
+              var count = Object.keys(responseData2['Amazon']).length;
+              var catcount = count;
+              if (count != 0) {
+                for (var i = 0; i < count; i++) {
+                  var obj = {};
+                  obj['ASIN'] = responseData2['Amazon'][i]['ASIN'];
+                  obj['Title'] = responseData2['Amazon'][i]['Title'];
+                  obj['URL'] = responseData2['Amazon'][i]['URL'];
+                  obj['ImageURL'] = responseData2['Amazon'][i]['ImageURL'];
+                  obj['Retailer'] = 'Amazon';
+                  data2.push(obj);
+                }
               }
-              data2 = shuffle(data2);
-              console.log("total:" + data2.length);
-              this.setState({
-                cardNum: 0,
-                dataset: data2,
-                url: data2[this.state.cardNum].ImageURL,
-                title: data2[this.state.cardNum].Title,
-                disable: false,
-                category: 'All',
-                cat: false,
-              });
-            }
-            else {
-              Alert.alert("No Results Found!", 'Try Again!');
-              emptycard = true;
-              this.grabFrontPage();
-              return;
-            }
+              count = Object.keys(responseData2['Others']).length;
+              catcount += count;
+              console.log('CatCount: ' + catcount);
+              if (count != 0) {
+                for (var i = 0; i < count; i++) {
+                  var obj2 = {};
+                  obj2['ASIN'] = responseData2['Others'][i]['ASIN'];
+                  obj2['Title'] = responseData2['Others'][i]['Title'];
+                  obj2['URL'] = responseData2['Others'][i]['URL'];
+                  obj2['ImageURL'] = responseData2['Others'][i]['ImageURL'];
+                  obj2['Retailer'] = responseData2['Others'][i]['Website'];
+                  data2.push(obj2);
+                }
+              }
+              if (data2.length > 0) {
+                search = true;
+                datasize = data2.length;
+                searchcount = datasize;
+                emptycard = false;
+                secondcard = false;
+
+                if (userID != 0) {
+                  fetch(
+                    'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
+                    searchterm +
+                    '&imageurl=' + data2[0].ImageURL,
+                    { method: 'GET' }
+                  ).done();
+                }
+                data2 = shuffle(data2);
+                console.log("total:" + data2.length);
+                this.setState({
+                  cardNum: 0,
+                  dataset: data2,
+                  url: data2[this.state.cardNum].ImageURL,
+                  title: data2[this.state.cardNum].Title,
+                  disable: false,
+                  category: 'All',
+                  cat: false,
+                });
+              }
+              else {
+                Alert.alert("No Results Found!", 'Try Again!');
+                emptycard = true;
+                this.grabFrontPage();
+                return;
+              }
 
 
-          }).done();
-        //}
-      }).done();
+            }).done();
+          //}
+        }).done();
     }
-    catch(error)
-    {
+    catch (error) {
       console.log(error);
       this.setState({
         cardNum: 0,
@@ -1973,6 +1988,13 @@ class Explore extends Component {
     })
   }
 
+  handleViewRef = ref => this.view = ref;
+
+  bounce = () => {
+    this.view.bounce(3000).
+      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+  }
+
   render() {
     const { showAlert } = this.state;
     const images = [
@@ -2031,6 +2053,7 @@ class Explore extends Component {
               disableLeftSwipe={this.state.disable}
               disableRightSwipe={this.state.disable}
               onSwipedRight={this.onSwipedRight}
+              onSwipedLeft={this.onSwipedLeft}
               onSwipedBottom={this.onSwipedBottom}
               infinite={true}
               cards={this.state.cards}
@@ -2140,9 +2163,12 @@ class Explore extends Component {
               />
             </TouchableWithoutFeedback>
 
-            <Text style={styles.text2}>
+            {/* <Text style={styles.text2}>
               {userPoints + '\n'}
-            </Text>
+            </Text> */}
+            <Animatable.View onPress={this.bounce} ref={this.handleViewRef}>
+              <Text style={styles.text2}>{userPoints}</Text>
+            </Animatable.View>
             <Text style={styles.pointsText}>
               Points
                 </Text>
