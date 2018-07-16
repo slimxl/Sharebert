@@ -1825,12 +1825,12 @@ class Explore extends Component {
     var newSize = 12;
     var marginTop = 4;
     var marginLeftText = 0;
-    if (item.Term.length > baseSize) {
-      var diff = baseSize / (item.Term.length);
-      newSize = diff * baseSize;
-      marginTop = 6
-      marginLeftText = -2
-    }
+    //if (item.Term.length > baseSize) {
+    //  var diff = baseSize / (item.Term.length);
+    //  newSize = diff * baseSize;
+    //  marginTop = 6
+    //  marginLeftText = 15
+    //}
     const fontSize = Math.min(baseSize, newSize);
     //console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
     //console.log(item.ImageUrl + " Image Url from Search");
@@ -1846,9 +1846,41 @@ class Explore extends Component {
           })
           this.onSubmitEdit();
         }}>
-          <View style={styles.catbars3}>
+          <View style={{
+                ...Platform.select({
+                  ios: {
+                    width: 45,
+                    height: 45,
+                    marginLeft: item.Term.length > 20 ? 30 + item.Term.length * 2 : 30,
+                    marginRight: item.Term.length > 20 ? 0 : 30,
+                    marginTop: 13,
+                    borderRadius: 100,
+                    borderWidth: 2,
+                    borderColor: '#1288f5',
+                    //backgroundColor: '#fff'
+                  },
+                  android: {
+                    width: 45,
+                    height: 45,
+                    marginLeft: item.Term.length > 20 ? 30 + item.Term.length * 2 : 30,
+                    marginRight: item.Term.length > 20 ? 0 : 30,
+                    marginTop: 13,
+                    borderRadius: 100,
+                    borderWidth: 2,
+                    borderColor: '#1288f5',
+                    //backgroundColor: '#fff'
+                  },
+                })
+          }}>
             <Image2
-              style={styles.catbars2}
+              style={{    
+                width: 35,
+                height: 35,
+                marginLeft: 3,
+                marginTop: 3,
+                borderRadius: 100,
+                backgroundColor: 'transparent',
+              }}
               imageStyle={{ borderRadius: 22, overflow: 'hidden' }}
               source={{
                 uri: item.ImageUrl,
@@ -1861,7 +1893,7 @@ class Explore extends Component {
             marginLeft: marginLeftText,
             textAlign: 'center',
             opacity: .69,
-            fontSize: fontSize,
+            fontSize: 12,
             fontFamily: "Montserrat",
           }}
             adjustsFontSizeToFit={true}
@@ -2157,18 +2189,20 @@ class Explore extends Component {
               onPress={this.shareApp}
               style={styles.button}>
               <Image
-                resizeMode='contain'
-                style={styles.button}
+                resizeMode='cover'
+                style={styles.button4}
                 source={require('./assets/headercream.png')}
               />
             </TouchableWithoutFeedback>
 
-            {/* <Text style={styles.text2}>
+             {/*<Text style={styles.text2}>
               {userPoints + '\n'}
-            </Text> */}
+            </Text>
+            */}
             <Animatable.View onPress={this.bounce} ref={this.handleViewRef}>
-              <Text style={styles.text2}>{userPoints}</Text>
+              <Text style={styles.text3}>{userPoints}</Text>
             </Animatable.View>
+            
             <Text style={styles.pointsText}>
               Points
                 </Text>
@@ -2505,6 +2539,28 @@ const styles = StyleSheet.create({
     }),
 
   },
+  text3: {
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginTop: -45,
+        textAlign: 'right',
+        fontSize: 15,
+        color: 'white',
+        backgroundColor: 'transparent',
+      },
+      android: {
+        marginRight: 10,
+        marginTop: 0,
+        textAlign: 'right',
+        fontSize: 15,
+        color: 'white',
+        backgroundColor: 'transparent',
+
+      },
+    }),
+
+  },
   heart:
   {
     width: Dimensions.get('window').width,
@@ -2783,6 +2839,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     padding: 20,
     marginBottom: 20,
+  },
+  button4: {
+    ...Platform.select({
+      ios: {
+
+        marginTop: -40,
+        width: '100%',
+        height: 60,
+        //marginLeft: Dimensions.get('window').width / 2.6,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        position: 'absolute',
+        width: '100%',
+        marginTop: -1,
+        //marginLeft: (Dimensions.get('window').width * .5) - 45,
+        height: 50,
+        flexDirection: 'row',
+      },
+    }),
   },
   search2: {
     ...Platform.select({
