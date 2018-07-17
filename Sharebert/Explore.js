@@ -1851,8 +1851,8 @@ class Explore extends Component {
                   ios: {
                     width: 45,
                     height: 45,
-                    marginLeft: item.Term.length > 20 ? 30 + item.Term.length * 2 : 30,
-                    marginRight: item.Term.length > 20 ? 0 : 30,
+                    marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                    marginRight: item.Term.length > 14 ? 0 : 30,
                     marginTop: 13,
                     borderRadius: 100,
                     borderWidth: 2,
@@ -1862,8 +1862,8 @@ class Explore extends Component {
                   android: {
                     width: 45,
                     height: 45,
-                    marginLeft: item.Term.length > 20 ? 30 + item.Term.length * 2 : 30,
-                    marginRight: item.Term.length > 20 ? 0 : 30,
+                    marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                    marginRight: item.Term.length > 14 ? 0 : 30,
                     marginTop: 13,
                     borderRadius: 100,
                     borderWidth: 2,
@@ -2678,6 +2678,7 @@ const styles = StyleSheet.create({
     width: 1,
     height: 50,
     marginTop: 15,
+    marginLeft: 15
 
   },
   retail: {
