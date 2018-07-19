@@ -302,7 +302,7 @@ class Explore extends Component {
 
                 if (userID != 0) {
                   fetch(
-                    'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
+                    'https://sharebert.com/s/SendSearch.php?term=' +
                     searchterm +
                     '&imageurl=' + data2[0].ImageURL,
                     { method: 'GET' }
@@ -599,8 +599,7 @@ class Explore extends Component {
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
-      if(gotPoints)
-      {
+      if (gotPoints) {
         gotPoints = false;
         this.bounce();
       }
@@ -1338,7 +1337,7 @@ class Explore extends Component {
     this._advanceIndex(false);
     this._updatePlaybackInstanceForIndex(true);
   }
-  onSwipedLeft = () =>{
+  onSwipedLeft = () => {
     // this.bounce();
     // console.log('bounce left');
   }
@@ -1719,7 +1718,7 @@ class Explore extends Component {
 
                 if (userID != 0) {
                   fetch(
-                    'http://biosystematic-addit.000webhostapp.com/s/SendSearch.php?term=' +
+                    'https://sharebert.com/s/SendSearch.php?term=' +
                     searchterm +
                     '&imageurl=' + data2[0].ImageURL,
                     { method: 'GET' }
@@ -1834,77 +1833,145 @@ class Explore extends Component {
     const fontSize = Math.min(baseSize, newSize);
     //console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
     //console.log(item.ImageUrl + " Image Url from Search");
-
-    return (
-      <View style={{ marginTop: -5, }}>
-        <TouchableOpacity onPress={() => {
-          searchterm = item.Term;
-          emptycard = false;
-          secondcard = false;
-          this.setState({
-            url: 'https://i.imgur.com/JaG8ovv.gif'
-          })
-          this.onSubmitEdit();
-        }}>
-          <View style={{
-                ...Platform.select({
-                  ios: {
-                    width: 45,
-                    height: 45,
-                    marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
-                    marginRight: item.Term.length > 14 ? 0 : 30,
-                    marginTop: 13,
-                    borderRadius: 100,
-                    borderWidth: 2,
-                    borderColor: '#1288f5',
-                    //backgroundColor: '#fff'
-                  },
-                  android: {
-                    width: 45,
-                    height: 45,
-                    marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
-                    marginRight: item.Term.length > 14 ? 0 : 30,
-                    marginTop: 13,
-                    borderRadius: 100,
-                    borderWidth: 2,
-                    borderColor: '#1288f5',
-                    //backgroundColor: '#fff'
-                  },
-                })
+    if (item.Term == 'sharebert'||item.Term == 'magicwillychen') {
+      return (
+        <View style={{ marginTop: -5, }}>
+          <TouchableOpacity onPress={() => {
+            Linking.openURL('https://www.rageon.com/a/users/sharebert?aff=Hu8F');
           }}>
-            <Image2
-              style={{    
-                width: 35,
-                height: 35,
-                marginLeft: 3,
-                marginTop: 3,
-                borderRadius: 100,
-                backgroundColor: 'transparent',
-              }}
-              imageStyle={{ borderRadius: 22, overflow: 'hidden' }}
-              source={{
-                uri: item.ImageUrl,
-              }}
-            />
+            <View style={{
+                  ...Platform.select({
+                    ios: {
+                      width: 45,
+                      height: 45,
+                      marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                      marginRight: item.Term.length > 14 ? 0 : 30,
+                      marginTop: 13,
+                      borderRadius: 100,
+                      borderWidth: 2,
+                      borderColor: '#1288f5',
+                      //backgroundColor: '#fff'
+                    },
+                    android: {
+                      width: 45,
+                      height: 45,
+                      marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                      marginRight: item.Term.length > 14 ? 0 : 30,
+                      marginTop: 13,
+                      borderRadius: 100,
+                      borderWidth: 2,
+                      borderColor: '#1288f5',
+                      //backgroundColor: '#fff'
+                    },
+                  })
+            }}>
+              <Image2
+                style={{    
+                  width: 35,
+                  height: 35,
+                  marginLeft: 3,
+                  marginTop: 3,
+                  borderRadius: 100,
+                  backgroundColor: 'transparent',
+                }}
+                imageStyle={{ borderRadius: 22, overflow: 'hidden' }}
+                source={{
+                  uri: item.ImageUrl,
+                }}
+              />
+  
+            </View>
+            <Text style={{
+              marginTop: marginTop,
+              marginLeft: marginLeftText,
+              textAlign: 'center',
+              opacity: .69,
+              fontSize: 12,
+              fontFamily: "Montserrat",
+            }}
+              adjustsFontSizeToFit={true}
+              numberOfLines={1}>
+  
+              {'#' + item.Term.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+  
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={{ marginTop: -5, }}>
+          <TouchableOpacity onPress={() => {
+            searchterm = item.Term;
+            emptycard = false;
+            secondcard = false;
+            this.setState({
+              url: 'https://i.imgur.com/JaG8ovv.gif'
+            })
+            this.onSubmitEdit();
+          }}>
+            <View style={{
+              ...Platform.select({
+                ios: {
+                  width: 45,
+                  height: 45,
+                  marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                  marginRight: item.Term.length > 14 ? 0 : 30,
+                  marginTop: 13,
+                  borderRadius: 100,
+                  borderWidth: 2,
+                  borderColor: '#1288f5',
+                  //backgroundColor: '#fff'
+                },
+                android: {
+                  width: 45,
+                  height: 45,
+                  marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                  marginRight: item.Term.length > 14 ? 0 : 30,
+                  marginTop: 13,
+                  borderRadius: 100,
+                  borderWidth: 2,
+                  borderColor: '#1288f5',
+                  //backgroundColor: '#fff'
+                },
+              })
+            }}>
+              <Image2
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginLeft: 3,
+                  marginTop: 3,
+                  borderRadius: 100,
+                  backgroundColor: 'transparent',
+                }}
+                imageStyle={{ borderRadius: 22, overflow: 'hidden' }}
+                source={{
+                  uri: item.ImageUrl,
+                }}
+              />
 
-          </View>
-          <Text style={{
-            marginTop: marginTop,
-            marginLeft: marginLeftText,
-            textAlign: 'center',
-            opacity: .69,
-            fontSize: 12,
-            fontFamily: "Montserrat",
-          }}
-            adjustsFontSizeToFit={true}
-            numberOfLines={1}>
+            </View>
+            <Text style={{
+              marginTop: marginTop,
+              marginLeft: marginLeftText,
+              textAlign: 'center',
+              opacity: .69,
+              fontSize: 12,
+              fontFamily: "Montserrat",
+            }}
+              adjustsFontSizeToFit={true}
+              numberOfLines={1}>
 
-            {'#' + item.Term.toUpperCase()}
-          </Text>
-        </TouchableOpacity>
+              {'#' + item.Term.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
 
-      </View>
-    );
+        </View>
+      );
+    }
+
   }
   _keyExtractor = (item, index) => index;
   _renderFooter = () => {
@@ -2195,14 +2262,14 @@ class Explore extends Component {
               />
             </TouchableWithoutFeedback>
 
-             {/*<Text style={styles.text2}>
+            {/*<Text style={styles.text2}>
               {userPoints + '\n'}
             </Text>
             */}
             <Animatable.View onPress={this.bounce} ref={this.handleViewRef}>
               <Text style={styles.text3}>{userPoints}</Text>
             </Animatable.View>
-            
+
             <Text style={styles.pointsText}>
               Points
                 </Text>
