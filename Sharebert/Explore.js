@@ -2088,10 +2088,43 @@ class Explore extends Component {
   }
 
   handleViewRef = ref => this.view = ref;
+  handleViewRef2 = ref => this.view2 = ref;
+  handleTextref = ref =>this.text22 = ref;
 
   bounce = () => {
+    this.bounceinout();
     this.view.bounce(3000).
       then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+  }
+  bounceinout = () => {
+    this.text22.setNativeProps({
+      style:{
+      marginLeft:deviceWidth/2,
+      marginTop:deviceHeight/2,
+      opacity: 1,
+      fontSize:60,
+      color: '#1288f5',
+      textShadowColor: 'white',
+      }
+    });
+    if (Platform.OS === 'ios')
+    {
+      this.view2.bounceIn(1500).
+      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(()=>{
+        this.view2.bounceOut(1500).
+      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+      });  
+    }
+    else
+    {
+      this.view2.bounceIn(4000).
+      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(()=>{
+        this.view2.bounceOut(4000).
+      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+      });
+    }
+    
+      
   }
 
   render() {
@@ -2269,7 +2302,7 @@ class Explore extends Component {
             <Animatable.View onPress={this.bounce} ref={this.handleViewRef}>
               <Text style={styles.text3}>{userPoints}</Text>
             </Animatable.View>
-
+            
             <Text style={styles.pointsText}>
               Points
                 </Text>
@@ -2297,6 +2330,12 @@ class Explore extends Component {
                 renderItem={this._renderItem2}
               />
             </View>
+
+
+            <Animatable.View onPress={this.bounceinout} ref={this.handleViewRef2}>
+              <Text ref={this.handleTextref}style={styles.hidden}>+5</Text>
+            </Animatable.View>
+
 
             {secondcard
               ?
@@ -2583,7 +2622,10 @@ const styles = StyleSheet.create({
     width: deviceWidth,
     marginTop: 10,
   },
-
+  hidden:{
+    opacity:0,
+    fontSize:0,
+  },
   text2: {
     ...Platform.select({
       ios: {
