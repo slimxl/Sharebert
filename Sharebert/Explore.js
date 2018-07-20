@@ -2093,7 +2093,7 @@ class Explore extends Component {
 
   bounce = () => {
     this.bounceinout();
-    this.view.bounce(3000).
+    this.view.rubberBand(3000).
       then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
   }
   bounceinout = () => {
@@ -2108,20 +2108,15 @@ class Explore extends Component {
       }
     });
     if (Platform.OS === 'ios')
-    {
-      this.view2.bounceIn(1500).
-      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(()=>{
+    { 
         this.view2.bounceOut(1500).
       then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
-      });  
+ 
     }
     else
     {
-      this.view2.bounceIn(4000).
-      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(()=>{
-        this.view2.bounceOut(4000).
+      this.view2.bounceOut(4000).
       then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
-      });
     }
     
       
