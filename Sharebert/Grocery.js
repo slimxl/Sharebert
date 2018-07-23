@@ -45,113 +45,32 @@ class Grocery extends Component {
     this.state = {
       userPoints: userPoints,
       userID: userID,
+      groceryArr: [],
     };
-
-
-    var Brand1 = {};
-    Brand1['Term'] = 'amazonfresh';
-    Brand1['title'] = 'Amazon Fresh';
-    Brand1['link'] = 'https://amzn.to/2F1coZe';
-    Brand1['image_url'] = require('./assets/grocery/amazonfresh.jpg');
-
-    var Brand2 = {};
-    Brand2['Term'] = 'bbqbox';
-    Brand2['title'] = 'BBQ Box';
-    Brand2['link'] = 'https://www.shareasale.com/r.cfm?b=925691&u=1404632&m=68335';
-    Brand2['image_url'] = require('./assets/grocery/bbqbox.jpg');
-
-    var Brand3 = {};
-    Brand3['Term'] = 'craft beer club';
-    Brand3['title'] = 'Craft Beer Club';
-    Brand3['link'] = 'https://www.shareasale.com/r.cfm?b=278781&u=1404632&m=30876';
-    Brand3['image_url'] = require('./assets/grocery/craftbeerclub.jpg');
-
-    var Brand4 = {};
-    Brand4['Term'] = 'foodstirs';
-    Brand4['title'] = 'Foodstirs';
-    Brand4['link'] = 'https://click.linksynergy.com/fs-bin/click?id=MIcOmftyarA&offerid=568140.62&type=3&subid=0';
-    Brand4['image_url'] = require('./assets/grocery/foodstirs.jpg');
-
-    var Brand5 = {};
-    Brand5['Term'] = 'fossilfarms';
-    Brand5['title'] = 'Fossil Farms';
-    Brand5['link'] = 'https://www.shareasale.com/r.cfm?b=80824&u=1404632&m=12637';
-    Brand5['image_url'] = require('./assets/grocery/fossilfarms.jpg');
-
-    var Brand6 = {};
-    Brand6['Term'] = 'goldmedalwineclub';
-    Brand6['title'] = 'Gold Medal Wine Club';
-    Brand6['link'] = 'https://www.shareasale.com/r.cfm?b=194707&u=1404632&m=24293';
-    Brand6['image_url'] = require('./assets/grocery/goldmedalwineclub.jpg');
-
-    var Brand7 = {};
-    Brand7['Term'] = 'hellofresh';
-    Brand7['title'] = 'Hello Fresh';
-    Brand7['link'] = 'http://www.jdoqocy.com/click-8331277-11802340';
-    Brand7['image_url'] = require('./assets/grocery/hellofresh.jpg');
-
-    var Brand8 = {};
-    Brand8['Term'] = 'houseofglunz';
-    Brand8['title'] = 'House of Glunz';
-    Brand8['link'] = 'https://www.shareasale.com/r.cfm?b=953933&u=1404632&m=69358';
-    Brand8['image_url'] = require('./assets/grocery/houseofglunz.jpg');
-
-    var Brand9 = {};
-    Brand9['Term'] = 'urthbox';
-    Brand9['title'] = 'Urthbox';
-    Brand9['link'] =  'https://www.shareasale.com/r.cfm?b=491113&u=1404632&m=47975';
-    Brand9['image_url'] = require('./assets/grocery/urthbox.jpg');
-
-    var Brand10 = {};
-    Brand10['Term'] = 'veestro';
-    Brand10['title'] = 'Veestro';
-    Brand10['link'] = 'https://www.shareasale.com/r.cfm?b=517341&u=1404632&m=49480';
-    Brand10['image_url'] = require('./assets/grocery/veestro.jpg');
-
-    var Brand11 = {};
-    Brand11['Term'] = 'winc';
-    Brand11['title'] = 'winc';
-    Brand11['link'] = 'https://www.shareasale.com/r.cfm?b=792888&u=1404632&m=62347';
-    Brand11['image_url'] = require('./assets/grocery/winc.jpg');
-
-    var Brand12 = {};
-    Brand12['Term'] = 'winecrasher';
-    Brand12['title'] = 'Winecrasher';
-    Brand12['link'] = 'https://www.shareasale.com/r.cfm?b=865646&u=1404632&m=65843';
-    Brand12['image_url'] = require('./assets/grocery/winecrasher.jpg');
-
-    var Brand13 = {};
-    Brand13['Term'] = 'wineofthemonthclub';
-    Brand13['title'] = 'Wine of the Month Club';
-    Brand13['link'] = 'https://www.shareasale.com/r.cfm?b=486942&u=1404632&m=47747';
-    Brand13['image_url'] = require('./assets/grocery/wineofthemonthclub.jpg');
-
-    var Brand14 = {};
-    Brand14['Term'] = 'wiredforwine';
-    Brand14['title'] = 'Wired for Wine';
-    Brand14['link'] = 'https://www.shareasale.com/r.cfm?b=211020&u=1404632&m=25630';
-    Brand14['image_url'] = require('./assets/grocery/wiredforwine.jpg');
-
+    this.getGrocery();
     
-    if(brandArr.length<1)
-    {
-      brandArr.push(Brand1);
-      brandArr.push(Brand2);
-      brandArr.push(Brand3);
-      brandArr.push(Brand4);
-      brandArr.push(Brand5);
-      brandArr.push(Brand6);
-      brandArr.push(Brand7);
-      brandArr.push(Brand8);
-      brandArr.push(Brand9);
-      brandArr.push(Brand10);
-      brandArr.push(Brand11);
-      brandArr.push(Brand12);
-      brandArr.push(Brand13);
-      brandArr.push(Brand14);
-    }
-    
-    
+  }
+
+  getGrocery = () => {
+    fetch('https://sharebert.com/s/GetGrocery.php', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = [];
+        for (var i = 0; i < Object.keys(responseData).length; i++) {
+          var obj = {};
+         
+          obj['Title'] = responseData[i]['Title'];
+          obj['ImageURL'] = responseData[i]['ImageURL'];
+          obj['URL'] = responseData[i]['URL'];
+          data2.push(obj);
+        }
+        console.log(data2);
+        this.setState({
+          groceryArr: data2,
+        });
+        this.forceUpdate();
+      })
+      .done();
   }
 
   _getItemLayout = (data, index) => {
@@ -162,9 +81,9 @@ class Grocery extends Component {
       index,
     };
   };
-  openURL = (Brand) => {
+  openURL = (link) => {
     try {
-      Linking.openURL(Brand);
+      Linking.openURL(link);
     } catch (error) {
       console.error(error);
     }
@@ -173,33 +92,29 @@ class Grocery extends Component {
     return item.code_group;
   };
 
-  
-  _onPress(item) {
-
-  }
 
   _renderItem = data => {
     const item = data.item;
     return (
       <View style={styles.item}>
-      <TouchableOpacity onPress={() => 
-              {
-                //console.log(item.link);
-                this.openURL(item.link);
-              }}>
-        {!item.image_url
-          ? <View style={styles.itemImage}>
+        <TouchableOpacity onPress={() => {
+          Linking.openURL(item.URL)
+        }}>
+          {!item.ImageURL
+            ? <View style={styles.itemImage}>
               <Text>No image</Text>
             </View>
-          : <Image
-              source={item.image_url}
+            : <Image
+              source={{
+                uri: item.ImageURL,
+              }}
               resizeMode={'contain'}
               style={styles.itemImage}
             />}
         </TouchableOpacity>
-            
+
         <Text numberOfLines={3} style={styles.itemTitle}>
-          {item.title}
+          {item.Title}
         </Text>
       </View>
     );
@@ -236,7 +151,7 @@ class Grocery extends Component {
         </Text>
         <FlatList
           style={styles.listContainer}
-          data={brandArr}
+          data={this.state.groceryArr}
           keyExtractor={(item, index) => index}
           renderItem={this._renderItem}
           getItemLayout={this._getItemLayout}
