@@ -1833,40 +1833,40 @@ class Explore extends Component {
     const fontSize = Math.min(baseSize, newSize);
     //console.log(item.Term + '-Fontsize: ' + fontSize + " -length:" + item.Term.length);
     //console.log(item.ImageUrl + " Image Url from Search");
-    if (item.Term == 'sharebert'||item.Term == 'magicwillychen') {
+    if (item.Term == 'sharebert' || item.Term == 'magicwillychen') {
       return (
         <View style={{ marginTop: -5, }}>
           <TouchableOpacity onPress={() => {
             Linking.openURL('https://www.rageon.com/a/users/sharebert?aff=Hu8F');
           }}>
             <View style={{
-                  ...Platform.select({
-                    ios: {
-                      width: 45,
-                      height: 45,
-                      marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
-                      marginRight: item.Term.length > 14 ? 0 : 30,
-                      marginTop: 13,
-                      borderRadius: 100,
-                      borderWidth: 2,
-                      borderColor: '#1288f5',
-                      //backgroundColor: '#fff'
-                    },
-                    android: {
-                      width: 45,
-                      height: 45,
-                      marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
-                      marginRight: item.Term.length > 14 ? 0 : 30,
-                      marginTop: 13,
-                      borderRadius: 100,
-                      borderWidth: 2,
-                      borderColor: '#1288f5',
-                      //backgroundColor: '#fff'
-                    },
-                  })
+              ...Platform.select({
+                ios: {
+                  width: 45,
+                  height: 45,
+                  marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                  marginRight: item.Term.length > 14 ? 0 : 30,
+                  marginTop: 13,
+                  borderRadius: 100,
+                  borderWidth: 2,
+                  borderColor: '#1288f5',
+                  //backgroundColor: '#fff'
+                },
+                android: {
+                  width: 45,
+                  height: 45,
+                  marginLeft: item.Term.length > 14 ? 30 + item.Term.length * 1.1 : 30,
+                  marginRight: item.Term.length > 14 ? 0 : 30,
+                  marginTop: 13,
+                  borderRadius: 100,
+                  borderWidth: 2,
+                  borderColor: '#1288f5',
+                  //backgroundColor: '#fff'
+                },
+              })
             }}>
               <Image2
-                style={{    
+                style={{
                   width: 35,
                   height: 35,
                   marginLeft: 3,
@@ -1879,7 +1879,7 @@ class Explore extends Component {
                   uri: item.ImageUrl,
                 }}
               />
-  
+
             </View>
             <Text style={{
               marginTop: marginTop,
@@ -1891,11 +1891,11 @@ class Explore extends Component {
             }}
               adjustsFontSizeToFit={true}
               numberOfLines={1}>
-  
+
               {'#' + item.Term.toUpperCase()}
             </Text>
           </TouchableOpacity>
-  
+
         </View>
       );
     }
@@ -2007,6 +2007,16 @@ class Explore extends Component {
             source={require('./assets/Category/travel.png')}
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.resetTo('Tickets', {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+        })}>
+          <Image
+            style={styles.catbars}
+            source={{ uri: 'https://png.icons8.com/metro/1600/ticket.png' }}
+          />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => this.catGrab('groceries')}>
           <Image
             style={styles.catbar}
@@ -2089,7 +2099,7 @@ class Explore extends Component {
 
   handleViewRef = ref => this.view = ref;
   handleViewRef2 = ref => this.view2 = ref;
-  handleTextref = ref =>this.text22 = ref;
+  handleTextref = ref => this.text22 = ref;
 
   bounce = () => {
     this.bounceinout();
@@ -2098,33 +2108,31 @@ class Explore extends Component {
   }
   bounceinout = () => {
     this.text22.setNativeProps({
-      style:{
-      marginLeft:deviceWidth/2,
-      marginTop:deviceHeight/2,
-      opacity: 1,
-      fontSize:60,
-      color: '#1288f5',
-      textShadowColor: 'white',
+      style: {
+        marginLeft: deviceWidth / 2,
+        marginTop: deviceHeight / 2,
+        opacity: 1,
+        fontSize: 60,
+        color: '#1288f5',
+        textShadowColor: 'white',
       }
     });
-    if (Platform.OS === 'ios')
-    {
+    if (Platform.OS === 'ios') {
       this.view2.fadeInUp(1500).
-      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(()=>{
-        this.view2.fadeOutUpBig(1500).
-      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
-      });  
+        then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(() => {
+          this.view2.fadeOutUpBig(1500).
+            then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+        });
     }
-    else
-    {
+    else {
       this.view2.fadeInUp(4000).
-      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(()=>{
-        this.view2.fadeOutUpBig(4000).
-      then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
-      });
+        then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled')).then(() => {
+          this.view2.fadeOutUpBig(4000).
+            then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+        });
     }
-    
-      
+
+
   }
 
   render() {
@@ -2302,7 +2310,7 @@ class Explore extends Component {
             <Animatable.View onPress={this.bounce} ref={this.handleViewRef}>
               <Text style={styles.text3}>{userPoints}</Text>
             </Animatable.View>
-            
+
             <Text style={styles.pointsText}>
               Points
                 </Text>
@@ -2333,7 +2341,7 @@ class Explore extends Component {
 
 
             <Animatable.View onPress={this.bounceinout} ref={this.handleViewRef2}>
-              <Text ref={this.handleTextref}style={styles.hidden}>+5</Text>
+              <Text ref={this.handleTextref} style={styles.hidden}>+5</Text>
             </Animatable.View>
 
 
@@ -2622,9 +2630,9 @@ const styles = StyleSheet.create({
     width: deviceWidth,
     marginTop: 10,
   },
-  hidden:{
-    opacity:0,
-    fontSize:0,
+  hidden: {
+    opacity: 0,
+    fontSize: 0,
   },
   text2: {
     ...Platform.select({

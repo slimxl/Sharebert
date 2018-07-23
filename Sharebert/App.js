@@ -11,6 +11,7 @@ import Search from './Search';
 import Deals from './Deals';
 import Grocery from './Grocery';
 import Scores from './Scores';
+import Tickets from './Tickets';
 import Game from './game/Game';
 import Main from './Main';
 import VideoTest from './VideoTest';
@@ -90,6 +91,13 @@ const AppNavigator = StackNavigator(
     },
     Grocery: {
       screen: Grocery,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
+    Tickets: {
+      screen: Tickets,
       navigationOptions: ({ navigation }) => ({
         header: true,
         gesturesEnabled: true,
