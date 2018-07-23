@@ -170,7 +170,7 @@ class Rewards extends Component {
     else if (this.state.DailyGiveaway === false) {
 
       Alert.alert(
-        'Unlocking the daily giveaway only costs 10 points',
+        'Unlocking the weekly giveaway only costs 10 points',
         'Are you ready?',
         [
           {
