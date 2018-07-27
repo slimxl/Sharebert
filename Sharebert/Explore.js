@@ -1453,7 +1453,7 @@ class Explore extends Component {
   shareApp() {
     try {
       var message = 'Look at this : \n' +
-      'bit.ly/DLSHRBRT';
+      'http://bit.ly/SHBRTSA';
       var message2 = 'Check this out!';
 
       if(userID!=0)
@@ -1465,7 +1465,7 @@ class Explore extends Component {
           ...Platform.select({
             ios: {
               message: message,
-              url: 'bit.ly/DLSHRBRT',
+             
             },
             android: {
               message: message,
@@ -1482,7 +1482,7 @@ class Explore extends Component {
             android: {
               // Android only:
               dialogTitle: 'Share : ' +
-                'bit.ly/DLSHRBRT',
+                'http://bit.ly/SHBRTSA',
             },
           }),
         }
