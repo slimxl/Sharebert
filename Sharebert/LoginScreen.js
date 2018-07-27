@@ -13,6 +13,8 @@ import {
 import { Google, Facebook, AuthSession, Font } from 'expo';
 import { Analytics, PageHit } from 'expo-analytics';
 import Firebase from './Firebase';
+import Dialog from "react-native-dialog";
+
 
 class PlaylistItem {
   constructor(name, uri, isVideo) {
@@ -40,6 +42,13 @@ class LoginScreen extends Component {
     this.getData();
     this.grabPlaylistItems();
     console.disableYellowBox = true;
+    this.state = {
+      Email: "Email",
+      Password: "Password",
+      CheckPass: "Confirm Password",
+      dialogVisible: false,
+      MyName: "Name",
+    }
     Font.loadAsync({
       'Montserrat': require('./assets/fonts/Montserrat.otf'),
       'MontserratBold': require('./assets/fonts/MontserratBold.otf'),
@@ -60,6 +69,52 @@ class LoginScreen extends Component {
   debugAnalyticmsg = () => {
     Alert.alert('DEBUG', JSON.stringify(analytics, null, 4));
   };
+  _handleTextChangeEmail = Email => {
+    this.setState({ Email });
+  };
+  _handleTextChangePass = Password => {
+    this.setState({ Password });
+  };
+  _handleTextChangeCPass = CheckPass => {
+    this.setState({ CheckPass });
+  };
+  _handleTextChangeName = MyName => {
+    this.setState({ MyName });
+  };
+  showDialog = () => {
+    this.setState({ dialogVisible: true });
+  };
+  handleCancel = () => {
+    this.setState({ dialogVisible: false });
+  };
+  handleSend = () => {
+    if (this.state.Password == this.state.CheckPass) {
+      fetch(
+        'https://sharebert.com/s/SetNewUser.php?email=' + this.state.Email + '&name=' + this.state.MyName + '&pw=' + this.state.Password,
+        { method: 'GET' }
+      ).then(response => response.json())
+        .then(responseData => {
+          console.log(responseData[0]['id'] + "-----------------------------------------------------------------------------------");
+          this.setState({
+            userID: responseData[0],
+          })
+          uri2 =
+          'https://sharebert.com/medias/blank.png';
+          userEmail2 = this.state.Email;
+          name2 = this.state.MyName;
+        }).done();
+      if (userID != 0) {
+        this.handleCancel();
+        this.onSubmitEdit("user");
+      }
+      else {
+        Alert.alert("Email is in use");
+      }
+    }
+    else {
+      Alert.alert("Passwords don't match");
+    }
+  }
 
   onSubmitEdit(location) {
     if (location === 'later') {
@@ -69,17 +124,6 @@ class LoginScreen extends Component {
       userPoints = 0;
       uri2 =
         'https://sharebert.com/medias/blank.png';
-
-      this.props.navigation.navigate('Explore', {
-        id: userID,
-        points: userPoints,
-        uri: uri2,
-        PLAYLIST: PLAYLIST
-        //this.props.navigation.navigate('Main', {
-        //  id: 0,
-        //  points: 0,
-        //  uri: uri2,
-      });
     }
     else {
       if (userID !== '0') {
@@ -381,13 +425,13 @@ class LoginScreen extends Component {
   }
   grabPlaylistItems = () => {
     try {
-      fetch('https://sharebert.com/grabdirect.php', {method: 'GET'})
-      .then(response => response.json())
+      fetch('https://sharebert.com/grabdirect.php', { method: 'GET' })
+        .then(response => response.json())
         .then(responseData => {
           //console.log(responseData[0]);
           console.log(Object.keys(responseData).length);
           for (var i = 0; i < Object.keys(responseData).length; i++) {
-            PLAYLIST.push(new PlaylistItem('','https://sharebert.com/medias/'+responseData[i],true));
+            PLAYLIST.push(new PlaylistItem('', 'https://sharebert.com/medias/' + responseData[i], true));
           }
           console.log(PLAYLIST);
         })
@@ -426,9 +470,9 @@ class LoginScreen extends Component {
         type,
         token,
       } = await Facebook.logInWithReadPermissionsAsync(
-        '1841427549503210', // Replace with your own app id in standalone app
-        { permissions: ['public_profile', 'email'] }
-      );
+          '1841427549503210', // Replace with your own app id in standalone app
+          { permissions: ['public_profile', 'email'] }
+        );
 
       switch (type) {
         case 'success': {
@@ -537,7 +581,7 @@ class LoginScreen extends Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.onSubmitEdit('later')}
+            onPress={() => this.showDialog()}
             style={styles.later}>
             <Image
               resizeMode="contain"
@@ -545,10 +589,57 @@ class LoginScreen extends Component {
               source={require('./later.png')}
             />
           </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => this.debugAnalyticmsg()}
             style={styles.debugButton}>
           </TouchableOpacity>
+        </View>
+        <View>
+          <Dialog.Container
+            visible={this.state.dialogVisible}
+          >
+            <Dialog.Title>Create Sharebert Account</Dialog.Title>
+
+            <Dialog.Input
+              onFocus={() => {
+                this.setState({
+                  Email: "",
+                });
+              }}
+              onChangeText={this._handleTextChangeEmail}
+              value={this.state.Email}>
+            </Dialog.Input>
+            <Dialog.Input
+              onFocus={() => {
+                this.setState({
+                  MyName: "",
+                });
+              }}
+              onChangeText={this._handleTextChangeName}
+              value={this.state.MyName}>
+            </Dialog.Input>
+            <Dialog.Input
+              onFocus={() => {
+                this.setState({
+                  Password: "",
+                });
+              }}
+              onChangeText={this._handleTextChangePass}
+              value={this.state.Password}>
+            </Dialog.Input>
+            <Dialog.Input
+              onFocus={() => {
+                this.setState({
+                  CheckPass: "",
+                });
+              }}
+              onChangeText={this._handleTextChangeCPass}
+              value={this.state.CheckPass}>
+            </Dialog.Input>
+            <Dialog.Button label="Cancel" onPress={this.handleCancel} />
+            <Dialog.Button label="Okay" onPress={this.handleSend} />
+          </Dialog.Container>
         </View>
       </View>
     );
