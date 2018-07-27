@@ -167,25 +167,9 @@ class Shipping extends Component {
 
   };
   saveForm = () => {
-    if (this.state.email === '') {
-      Alert.alert('No Email!', 'Try Again!');
-      return;
-    }
     if (userID != 0) {
-      Alert.alert("User Data Confirmation",
-        + user.Name + " \n"
-        + user.Phone + " \n"
-        + user.Address + " \n"
-        + user.State + " \n"
-        + user.Zip + " \n",
-        [
-          { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-          { text: 'OK', onPress: () => this.sendData() },
-        ],
-        { cancelable: false });
+      Alert.alert("Saved!");
     }
-
-
   };
 
   clearFile = () => {
