@@ -128,14 +128,34 @@ class Shipping extends Component {
     this.setState({ dialogVisible: false });
   };
   handleSend = () =>{
+    if(userID!=0)
+    {
+      fetch(
+        'https://sharebert.com/s/SetReferral.php?uid=' +
+        userID +
+        '&referral=' + this.state.inputValue,
+        { method: 'GET' }
+      ).done();
+      this.handleCancel();
+    }
+    else
+    {
+      this.handleCancel();
+      Alert.alert('Please Sign In First');
+    }
+  }
+
+  handleSend2 = () =>{
     fetch(
-      'https://sharebert.com/s/SetReferral.php?uid=' +
-      userID +
-      '&referral=' + this.state.inputValue,
+      'https://sharebert.com/s/SetNewUser.php?email=ksss@gmail.com&name=Eric%20Lam2&pw=test1234',
       { method: 'GET' }
-    ).done();
+    ).then(response => response.json())
+    .then(responseData => {
+      console.log(responseData[0]);
+    }).done();
     this.handleCancel();
   }
+
   sendData = () => {
     fetch(
       'https://sharebert.com/s/ShipSend2.php?uid=' +
