@@ -68,7 +68,7 @@ class Deals extends Component {
                 <Image
                     resizeMode="contain"
                     style={styles.imageload}
-
+                    renderLoading={this.renderLoadingView} startInLoadingState={true}
                     source={require('./assets/loading4.gif')}
                 />
             </View>
@@ -105,7 +105,7 @@ class Deals extends Component {
                     ref={'webview'}
                     source={{ uri: 'https://sharebert.com/shop/deals/' }}
                     style={{ marginTop: 15 }}
-                    renderLoading={this.renderLoadingView} startInLoadingState={true}
+                    
                     onNavigationStateChange={(event) => {
                         if (event.url !== 'https://sharebert.com/shop/deals/') {
                             this.refs['webview'].stopLoading();
