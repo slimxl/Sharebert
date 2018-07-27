@@ -1452,15 +1452,23 @@ class Explore extends Component {
 
   shareApp() {
     try {
+      var message = 'Look at this : \n' +
+      'bit.ly/DLSHRBRT';
+      var message2 = 'Check this out!';
+
+      if(userID!=0)
+      {
+        message += '\nType Referral Code: '+userID+' \ninside profile for points!';
+      }
       Share.share(
         {
           ...Platform.select({
             ios: {
-              url: 'https://sharebert.com/download',
+              message: message,
+              url: 'bit.ly/DLSHRBRT',
             },
             android: {
-              message: 'Look at this : \n' +
-                'https://sharebert.com/download',
+              message: message,
             },
           }),
           title: 'Wow, did you see that?',
@@ -1474,7 +1482,7 @@ class Explore extends Component {
             android: {
               // Android only:
               dialogTitle: 'Share : ' +
-                'https://sharebert.com/download',
+                'bit.ly/DLSHRBRT',
             },
           }),
         }
@@ -2007,7 +2015,7 @@ class Explore extends Component {
             source={require('./assets/Category/travel.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.resetTo('Tickets', {
+        {/* <TouchableOpacity onPress={() => this.resetTo('Tickets', {
           id: userID,
           points: userPoints,
           uri: uri2,
@@ -2016,7 +2024,7 @@ class Explore extends Component {
             style={styles.catbars}
             source={{ uri: 'https://png.icons8.com/metro/1600/ticket.png' }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={() => this.catGrab('groceries')}>
           <Image
             style={styles.catbar}

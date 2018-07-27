@@ -455,14 +455,16 @@ class Shipping extends Component {
                     Super secret game button
                   </Text>
               </TouchableOpacity> */}
-              {/* <TouchableOpacity onPress={this.showDialog}
+              <TouchableOpacity onPress={this.showDialog}
                 style={{
                   width: 250, height: 50,
                   marginLeft: (Dimensions.get('window').width * .5) - 125
                 }}>
-                <Text style={{ backgroundColor: 'white' }}>
-                  Set Referral
-                  </Text>
+                <Image
+                    resizeMode="contain"
+                    style={styles.button3}
+                    source={require('./assets/icons/referral_code.png')}
+                  />
               </TouchableOpacity>
 
               <View>
@@ -486,7 +488,7 @@ class Shipping extends Component {
                   <Dialog.Button label="Cancel" onPress={this.handleCancel} />
                   <Dialog.Button label="Okay" onPress={this.handleSend} />
                 </Dialog.Container>
-              </View> */}
+              </View>
               {/* <TouchableOpacity onPress={() => {
                 this.clearFile2();
               }}
