@@ -140,7 +140,6 @@ class Shipping extends Component {
     }
     else
     {
-      this.handleCancel();
       Alert.alert('Please Sign In First');
     }
   }
