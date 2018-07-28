@@ -2015,16 +2015,16 @@ class Explore extends Component {
             source={require('./assets/Category/travel.png')}
           />
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => this.resetTo('Tickets', {
+        <TouchableOpacity onPress={() => this.resetTo('Tickets', {
           id: userID,
           points: userPoints,
           uri: uri2,
         })}>
           <Image
             style={styles.catbars}
-            source={{ uri: 'https://png.icons8.com/metro/1600/ticket.png' }}
+            source={require('./assets/Category/tickets.png')}
           />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => this.catGrab('groceries')}>
           <Image
             style={styles.catbar}

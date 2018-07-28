@@ -94,22 +94,21 @@ class LoginScreen extends Component {
         { method: 'GET' }
       ).then(response => response.json())
         .then(responseData => {
-          console.log(responseData[0]['id'] + "-----------------------------------------------------------------------------------");
-          this.setState({
-            userID: responseData[0],
-          })
+          //console.log(responseData[0]['id'] + "-----------------------------------------------------------------------------------");
+          userID = responseData[0]['id'];
           uri2 =
           'https://sharebert.com/medias/blank.png';
           userEmail2 = this.state.Email;
           name2 = this.state.MyName;
+          if (userID != 0) {
+            this.handleCancel();
+            this.onSubmitEdit("user");
+          }
+          else {
+            Alert.alert("Email is in use");
+          }
         }).done();
-      if (userID != 0) {
-        this.handleCancel();
-        this.onSubmitEdit("user");
-      }
-      else {
-        Alert.alert("Email is in use");
-      }
+      
     }
     else {
       Alert.alert("Passwords don't match");
@@ -127,6 +126,7 @@ class LoginScreen extends Component {
     }
     else {
       if (userID !== '0') {
+  
         // Firebase.database().ref('users/' + userID).once('value', (snapshot) => {
         //   if(snapshot.val()=== null)
         //     {
@@ -582,11 +582,20 @@ class LoginScreen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.showDialog()}
-            style={styles.later}>
+            style={styles.sblogin}>
             <Image
               resizeMode="contain"
-              style={styles.button4}
-              source={require('./later.png')}
+              style={styles.createbutton2}
+              source={require('./assets/sharebertlogin.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.showDialog()}
+            style={styles.createacc}>
+            <Image
+              resizeMode="contain"
+              style={styles.createbutton}
+              source={require('./assets/createaccount.png')}
             />
           </TouchableOpacity>
 
@@ -665,9 +674,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  later: {
+  sblogin: {
     position: "absolute",
     bottom: 50,
+    width: 250,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  createacc: {
+    position: "absolute",
+    bottom: 10,
     width: 250,
     height: 50,
     justifyContent: 'center',
@@ -697,6 +715,24 @@ const styles = StyleSheet.create({
   button2: {
     flex: 1,
     width: 250,
+    height: 25,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  createbutton: {
+    flex: 1,
+    width: 240,
+    height: 25,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  createbutton2: {
+    flex: 1,
+    width: 240,
     height: 25,
     flexDirection: 'column',
     justifyContent: 'center',
