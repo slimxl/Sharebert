@@ -47,6 +47,7 @@ class LoginScreen extends Component {
       Password: "Password",
       CheckPass: "Confirm Password",
       dialogVisible: false,
+      dialogVisible2: false,
       MyName: "Name",
     }
     Font.loadAsync({
@@ -84,8 +85,14 @@ class LoginScreen extends Component {
   showDialog = () => {
     this.setState({ dialogVisible: true });
   };
+  showDialog2 = () => {
+    this.setState({ dialogVisible2: true });
+  }
+  handleCancel2 = () => {
+    this.setState({ dialogVisible2: false, Email: "Email", Password: "Password" });
+  }
   handleCancel = () => {
-    this.setState({ dialogVisible: false });
+    this.setState({ dialogVisible: false, Email: "Email", Password: "Password", CheckPass: "Confirm Password", MyName: "Name" });
   };
   handleSend = () => {
     if (this.state.Password == this.state.CheckPass) {
@@ -97,7 +104,7 @@ class LoginScreen extends Component {
           //console.log(responseData[0]['id'] + "-----------------------------------------------------------------------------------");
           userID = responseData[0]['id'];
           uri2 =
-          'https://sharebert.com/medias/blank.png';
+            'https://sharebert.com/medias/blank.png';
           userEmail2 = this.state.Email;
           name2 = this.state.MyName;
           if (userID != 0) {
@@ -108,11 +115,32 @@ class LoginScreen extends Component {
             Alert.alert("Email is in use");
           }
         }).done();
-      
+
     }
     else {
       Alert.alert("Passwords don't match");
     }
+  }
+
+  handleSBLogin = () => {
+    fetch(
+      'https://sharebert.com/s/GetSBLogin.php?email=' + this.state.Email + '&pw=' + this.state.Password,
+      { method: 'GET' }
+    ).then(response => response.json())
+      .then(responseData => {
+        userID = responseData[0]['id'];
+        uri2 =
+          'https://sharebert.com/medias/blank.png';
+        userEmail2 = this.state.Email;
+        name2 = this.state.MyName;
+        if (userID != 0) {
+          this.handleCancel2();
+          this.onSubmitEdit("user");
+        }
+        else {
+          Alert.alert("Email/Password does not match");
+        }
+      }).done();
   }
 
   onSubmitEdit(location) {
@@ -126,7 +154,7 @@ class LoginScreen extends Component {
     }
     else {
       if (userID !== '0') {
-  
+
         // Firebase.database().ref('users/' + userID).once('value', (snapshot) => {
         //   if(snapshot.val()=== null)
         //     {
@@ -581,7 +609,7 @@ class LoginScreen extends Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.showDialog()}
+            onPress={() => this.showDialog2()}
             style={styles.sblogin}>
             <Image
               resizeMode="contain"
@@ -628,26 +656,94 @@ class LoginScreen extends Component {
               onChangeText={this._handleTextChangeName}
               value={this.state.MyName}>
             </Dialog.Input>
-            <Dialog.Input
-              onFocus={() => {
-                this.setState({
-                  Password: "",
-                });
-              }}
-              onChangeText={this._handleTextChangePass}
-              value={this.state.Password}>
-            </Dialog.Input>
-            <Dialog.Input
-              onFocus={() => {
-                this.setState({
-                  CheckPass: "",
-                });
-              }}
-              onChangeText={this._handleTextChangeCPass}
-              value={this.state.CheckPass}>
-            </Dialog.Input>
+            {this.state.Password == "Password"
+              ?
+              <Dialog.Input
+                onFocus={() => {
+                  this.setState({
+                    Password: "",
+                  });
+                }}
+                onChangeText={this._handleTextChangePass}
+                value={this.state.Password}>
+              </Dialog.Input>
+              :
+              <Dialog.Input secureTextEntry={true}
+                onFocus={() => {
+                  this.setState({
+                    Password: "",
+                  });
+                }}
+                onChangeText={this._handleTextChangePass}
+                value={this.state.Password}>
+              </Dialog.Input>
+            }
+
+            {this.state.CheckPass == "Confirm Password"
+              ?
+              <Dialog.Input
+                onFocus={() => {
+                  this.setState({
+                    CheckPass: "",
+                  });
+                }}
+                onChangeText={this._handleTextChangeCPass}
+                value={this.state.CheckPass}>
+              </Dialog.Input>
+              :
+              <Dialog.Input secureTextEntry={true}
+                onFocus={() => {
+                  this.setState({
+                    CheckPass: "",
+                  });
+                }}
+                onChangeText={this._handleTextChangeCPass}
+                value={this.state.CheckPass}>
+              </Dialog.Input>
+            }
             <Dialog.Button label="Cancel" onPress={this.handleCancel} />
             <Dialog.Button label="Okay" onPress={this.handleSend} />
+          </Dialog.Container>
+        </View>
+        <View>
+          <Dialog.Container
+            visible={this.state.dialogVisible2}
+          >
+            <Dialog.Title>Login with Sharebert</Dialog.Title>
+
+            <Dialog.Input
+              onFocus={() => {
+                this.setState({
+                  Email: "",
+                });
+              }}
+              onChangeText={this._handleTextChangeEmail}
+              value={this.state.Email}>
+            </Dialog.Input>
+            {this.state.Password == "Password"
+              ?
+              <Dialog.Input
+                onFocus={() => {
+                  this.setState({
+                    Password: "",
+                  });
+                }}
+                onChangeText={this._handleTextChangePass}
+                value={this.state.Password}>
+              </Dialog.Input>
+              :
+              <Dialog.Input secureTextEntry={true}
+                onFocus={() => {
+                  this.setState({
+                    Password: "",
+                  });
+                }}
+                onChangeText={this._handleTextChangePass}
+                value={this.state.Password}>
+              </Dialog.Input>
+            }
+            <Dialog.Button label="Cancel" onPress={this.handleCancel} />
+            <Dialog.Button label="Okay" onPress={this.handleSBLogin} />
           </Dialog.Container>
         </View>
       </View>
