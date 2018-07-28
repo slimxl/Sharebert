@@ -742,7 +742,7 @@ class LoginScreen extends Component {
                 value={this.state.Password}>
               </Dialog.Input>
             }
-            <Dialog.Button label="Cancel" onPress={this.handleCancel} />
+            <Dialog.Button label="Cancel" onPress={this.handleCancel2} />
             <Dialog.Button label="Okay" onPress={this.handleSBLogin} />
           </Dialog.Container>
         </View>
