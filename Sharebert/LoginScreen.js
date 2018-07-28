@@ -151,6 +151,17 @@ class LoginScreen extends Component {
       userPoints = 0;
       uri2 =
         'https://sharebert.com/medias/blank.png';
+
+        this.props.navigation.navigate('Explore', {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+          PLAYLIST: PLAYLIST
+          //this.props.navigation.navigate('Main', {
+          //  id: 0,
+          //  points: 0,
+          //  uri: uri2,
+        });
     }
     else {
       if (userID !== '0') {
@@ -608,7 +619,18 @@ class LoginScreen extends Component {
               source={require('./facebook_login_btn.png')}
             />
           </TouchableOpacity>
+
           <TouchableOpacity
+            onPress={() => this.onSubmitEdit('later')}
+            style={styles.later}>
+            <Image
+              resizeMode="contain"
+              style={styles.button4}
+              source={require('./later.png')}
+            />
+          </TouchableOpacity>
+
+          {/* <TouchableOpacity
             onPress={() => this.showDialog2()}
             style={styles.sblogin}>
             <Image
@@ -625,14 +647,14 @@ class LoginScreen extends Component {
               style={styles.createbutton}
               source={require('./assets/createaccount.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             onPress={() => this.debugAnalyticmsg()}
             style={styles.debugButton}>
           </TouchableOpacity>
         </View>
-        <View>
+        {/* <View>
           <Dialog.Container
             visible={this.state.dialogVisible}
           >
@@ -745,7 +767,7 @@ class LoginScreen extends Component {
             <Dialog.Button label="Cancel" onPress={this.handleCancel2} />
             <Dialog.Button label="Okay" onPress={this.handleSBLogin} />
           </Dialog.Container>
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -766,6 +788,15 @@ const styles = StyleSheet.create({
     bottom: 100,
     width: 250,
     height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  later: {
+    position: "absolute",
+    bottom: 50,
+    width: 250,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
