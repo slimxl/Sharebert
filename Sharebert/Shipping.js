@@ -186,11 +186,18 @@ class Shipping extends Component {
     this.props.navigation.goBack();
 
   };
-  saveForm = () => {
+  _saveForm = () => {
     if (userID != 0) {
+      this.sendData();
       Alert.alert("Saved!");
     }
   };
+  get saveForm() {
+    return this._saveForm;
+  }
+  set saveForm(value) {
+    this._saveForm = value;
+  }
 
   clearFile = () => {
     this.props.navigation.popToTop();
