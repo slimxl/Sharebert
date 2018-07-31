@@ -2469,6 +2469,7 @@ class Explore extends Component {
                 >
                   <TouchableOpacity
                     onPress={this._onMutePressed}>
+                    
                     <Video
                       ref={this._mountVideo}
                       style={[
@@ -2485,6 +2486,8 @@ class Explore extends Component {
                       useNativeControls={this.state.useNativeControls}
                     />
                   </TouchableOpacity>
+                  <Text style={styles.toggleMute}>Tap to Toggle Sound</Text>
+                  
 
                 </GestureRecognizer>
 
@@ -3348,6 +3351,17 @@ const styles = StyleSheet.create({
   labelShort: {
     width: 78,
     height: 25,
+  },
+
+  toggleMute: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    width: 200,
+    height: 200,
+    textAlign: 'center',
+    marginLeft: Dimensions.get('window').width/2 - 100,
+    marginTop: -260,
   },
 
   itemImage: {
