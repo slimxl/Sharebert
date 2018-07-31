@@ -827,7 +827,40 @@ class Explore extends Component {
           }),
         }
       ).then(({ action, activityType }) => {
-
+        try{
+          
+          var retailer = 0;
+          if (this.state.dataset[this.state.cardNum].Retailer === 'Amazon') {
+            retailer = 1;
+          }
+          fetch(
+            'https://sharebert.com/s/Shares.php?asin=' +
+            this.state.dataset[this.state.cardNum].ASIN +
+            '&title='+this.state.dataset[this.state.cardNum].Title+
+            '&retailer=' + retailer +
+            '&uid=' + userID+
+            '&url=' + this.state.dataset[this.state.cardNum].URL+
+            '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL,
+    
+            { method: 'GET' }
+          )
+            .then(() => {
+              console.log("Retailer:" + retailer);
+              console.log("ASIN:" + this.state.dataset[this.state.cardNum].ASIN);
+              console.log("Title:" + this.state.dataset[this.state.cardNum].Title);
+              console.log("URL:" + this.state.dataset[this.state.cardNum].URL);
+              console.log("ImageURL:" + this.state.dataset[this.state.cardNum].ImageURL);
+              console.log('https://sharebert.com/s/Clicks.php?asin=' +
+              this.state.dataset[this.state.cardNum].ASIN +
+              '&title='+this.state.dataset[this.state.cardNum].Title,
+              '&retailer=' + retailer +
+              '&uid=' + userID+
+              '&url=' + this.state.dataset[this.state.cardNum].URL+
+              '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL);
+            });
+        } catch (error) {
+          console.error(error);
+        }
         if (action === Share.dismissedAction) {
           Alert.alert("Hey!", "Don't Forget, You Get Points for Sharing Products!");
         }
@@ -983,6 +1016,36 @@ class Explore extends Component {
     }
     try {
       Linking.openURL(this.state.dataset[this.state.cardNum].URL);
+
+      var retailer = 0;
+      if (this.state.dataset[this.state.cardNum].Retailer === 'Amazon') {
+        retailer = 1;
+      }
+      fetch(
+        'https://sharebert.com/s/Clicks.php?asin=' +
+        this.state.dataset[this.state.cardNum].ASIN +
+        '&title='+this.state.dataset[this.state.cardNum].Title+
+        '&retailer=' + retailer +
+        '&uid=' + userID+
+        '&url=' + this.state.dataset[this.state.cardNum].URL+
+        '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL,
+
+        { method: 'GET' }
+      )
+        .then(() => {
+          console.log("Retailer:" + retailer);
+          console.log("ASIN:" + this.state.dataset[this.state.cardNum].ASIN);
+          console.log("Title:" + this.state.dataset[this.state.cardNum].Title);
+          console.log("URL:" + this.state.dataset[this.state.cardNum].URL);
+          console.log("ImageURL:" + this.state.dataset[this.state.cardNum].ImageURL);
+          console.log('https://sharebert.com/s/Clicks.php?asin=' +
+          this.state.dataset[this.state.cardNum].ASIN +
+          '&title='+this.state.dataset[this.state.cardNum].Title,
+          '&retailer=' + retailer +
+          '&uid=' + userID+
+          '&url=' + this.state.dataset[this.state.cardNum].URL+
+          '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -1433,9 +1496,9 @@ class Explore extends Component {
             console.log("ASIN:" + this.state.dataset[0].ASIN);
             console.log("Title:" + this.state.dataset[0].Title);
             console.log('https://sharebert.com/s/ReportProduct2.php?asin=' +
-            this.state.dataset[0].ASIN +
-            '&retailer=' + retailer +
-            '&uid=' + userID);
+              this.state.dataset[0].ASIN +
+              '&retailer=' + retailer +
+              '&uid=' + userID);
           })
       }
       else {
@@ -1445,7 +1508,7 @@ class Explore extends Component {
         fetch(
           'https://sharebert.com/s/ReportProduct2.php?asin=' +
           this.state.dataset[this.state.cardNum - 1].ASIN +
-          '&retailer=' + retailer+
+          '&retailer=' + retailer +
           '&uid=' + userID,
           { method: 'GET' }
         )
@@ -1454,9 +1517,9 @@ class Explore extends Component {
             console.log("ASIN:" + this.state.dataset[this.state.cardNum - 1].ASIN);
             console.log("Title:" + this.state.dataset[this.state.cardNum - 1].Title);
             console.log('https://sharebert.com/s/ReportProduct2.php?asin=' +
-            this.state.dataset[this.state.cardNum - 1].ASIN +
-            '&retailer=' + retailer +
-            '&uid=' + userID);
+              this.state.dataset[this.state.cardNum - 1].ASIN +
+              '&retailer=' + retailer +
+              '&uid=' + userID);
           })
       }
     }
