@@ -1415,57 +1415,70 @@ class Explore extends Component {
 
   onSwipedBottom = () => {
     var retailer = 0;
-    if (this.state.dataset.length === 1) {
-      if (this.state.dataset[0].Retailer === 'Amazon') {
-        retailer = 1;
+    if (userID != 0) {
+      if (this.state.dataset.length === 1) {
+        if (this.state.dataset[0].Retailer === 'Amazon') {
+          retailer = 1;
+        }
+        fetch(
+          'https://sharebert.com/s/ReportProduct2.php?asin=' +
+          this.state.dataset[0].ASIN +
+          '&retailer=' + retailer +
+          '&uid=' + userID,
+
+          { method: 'GET' }
+        )
+          .then(() => {
+            console.log("Retailer:" + retailer);
+            console.log("ASIN:" + this.state.dataset[0].ASIN);
+            console.log("Title:" + this.state.dataset[0].Title);
+            console.log('https://sharebert.com/s/ReportProduct2.php?asin=' +
+            this.state.dataset[0].ASIN +
+            '&retailer=' + retailer +
+            '&uid=' + userID);
+          })
       }
-      fetch(
-        'https://sharebert.com/s/ReportProduct.php?asin=' +
-        this.state.dataset[0].ASIN +
-        '&retailer=' + retailer,
-        { method: 'GET' }
-      )
-        .then(() => {
-          console.log("Retailer:" + retailer);
-          console.log("ASIN:" + this.state.dataset[0].ASIN);
-          console.log("Title:" + this.state.dataset[0].Title);
-        })
-    }
-    else {
-      if (this.state.dataset[this.state.cardNum - 1].Retailer === 'Amazon') {
-        retailer = 1;
+      else {
+        if (this.state.dataset[this.state.cardNum - 1].Retailer === 'Amazon') {
+          retailer = 1;
+        }
+        fetch(
+          'https://sharebert.com/s/ReportProduct2.php?asin=' +
+          this.state.dataset[this.state.cardNum - 1].ASIN +
+          '&retailer=' + retailer+
+          '&uid=' + userID,
+          { method: 'GET' }
+        )
+          .then(() => {
+            console.log("Retailer:" + retailer);
+            console.log("ASIN:" + this.state.dataset[this.state.cardNum - 1].ASIN);
+            console.log("Title:" + this.state.dataset[this.state.cardNum - 1].Title);
+            console.log('https://sharebert.com/s/ReportProduct2.php?asin=' +
+            this.state.dataset[this.state.cardNum - 1].ASIN +
+            '&retailer=' + retailer +
+            '&uid=' + userID);
+          })
       }
-      fetch(
-        'https://sharebert.com/s/ReportProduct.php?asin=' +
-        this.state.dataset[this.state.cardNum - 1].ASIN +
-        '&retailer=' + retailer,
-        { method: 'GET' }
-      )
-        .then(() => {
-          console.log("Retailer:" + retailer);
-          console.log("ASIN:" + this.state.dataset[this.state.cardNum - 1].ASIN);
-          console.log("Title:" + this.state.dataset[this.state.cardNum - 1].Title);
-        })
     }
+
 
   };
 
   shareApp() {
     try {
       var message = 'Look at this : \n' +
-      'http://bit.ly/SHBRTSA';
+        'http://bit.ly/SHBRTSA';
       var message2 = 'Check this out!';
 
-      if(userID!=0)
-      {
-        message += '\nType Referral Code: '+userID+' \ninside profile for points!';
+      if (userID != 0) {
+        message += '\nType Referral Code: ' + userID + ' \ninside profile for points!';
       }
       Share.share(
         {
           ...Platform.select({
             ios: {
               message: message,
-             
+
             },
             android: {
               message: message,
