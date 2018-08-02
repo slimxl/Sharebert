@@ -2074,12 +2074,27 @@ class Explore extends Component {
 
   }
   _keyExtractor = (item, index) => index;
+  _returnHeader = () =>{
+    return(
+      <View style={{ flex: 1, flexDirection: 'row', marginTop: -5, }}
+      >
+      <Image
+          style={styles.catbarsicon}
+          source={require('./assets/Category/Trend_Vert.png')}
+        />
+      </View>
+    );
+  }
   _renderFooter = () => {
     return (
       <View style={{ flex: 1, flexDirection: 'row', marginTop: -5, }}
       >
         <View style={styles.div} />
 
+        <Image
+          style={styles.catbarsicon}
+          source={require('./assets/Category/Cat_Vert.png')}
+        />
         <TouchableOpacity onPress={() => this.resetTo('Brands', {
           id: userID,
           points: userPoints,
@@ -2435,6 +2450,7 @@ class Explore extends Component {
                 data={this.state.testDat}
                 keyExtractor={(item, index) => index}
                 ListFooterComponent={this._renderFooter}
+                ListHeaderComponent={this._returnHeader}
                 renderItem={this._renderItem2}
               />
             </View>
@@ -2910,7 +2926,7 @@ const styles = StyleSheet.create({
     width: 1,
     height: 50,
     marginTop: 15,
-    marginLeft: 15
+    marginLeft: 20
 
   },
   retail: {
@@ -3336,6 +3352,16 @@ const styles = StyleSheet.create({
     height: 60,
     marginLeft: 13,
     marginRight: 13,
+    marginTop: 13,
+    //backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    backgroundColor: 'transparent',
+    resizeMode: 'contain',
+  },
+  catbarsicon: {
+    width: 60,
+    height: 60,
+    marginLeft: -20,
+    marginRight: -10,
     marginTop: 13,
     //backgroundColor: 'rgba(52, 52, 52, 0.8)',
     backgroundColor: 'transparent',
