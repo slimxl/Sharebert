@@ -2524,14 +2524,14 @@ class Explore extends Component {
                   {
                     this.state.muted ?
                       <View>
-                        <TouchableOpacity style={{ width: 50, height: 50, marginTop: -720, marginLeft: 5 }} onPress={this._onMutePressed}>
-                          <Image style={{ width: 50, height: 50, }} resizeMode={"contain"} source={require('./assets/mute.png')} />
+                        <TouchableOpacity style={{ width: 30, height: 30, marginTop: -720, marginLeft: 5 }} onPress={this._onMutePressed}>
+                          <Image style={{ width: 30, height: 30, }} resizeMode={"contain"} source={require('./assets/mute.png')} />
                         </TouchableOpacity>
                       </View>
                       :
                       <View>
-                        <TouchableOpacity style={{ width: 50, height: 50, marginTop: -720, marginLeft: 10 }} onPress={this._onMutePressed}>
-                          <Image style={{ width: 50, height: 50, }} resizeMode={"contain"} source={require('./assets/unmute.png')} />
+                        <TouchableOpacity style={{ width: 30, height: 30, marginTop: -720, marginLeft: 10 }} onPress={this._onMutePressed}>
+                          <Image style={{ width: 30, height: 30, }} resizeMode={"contain"} source={require('./assets/unmute.png')} />
                         </TouchableOpacity>
                       </View>
 
