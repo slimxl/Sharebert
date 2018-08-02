@@ -390,6 +390,7 @@ class Explore extends Component {
   _onVideoPressed = () => {
     //console.log('test');
     console.log(PLAYLIST[this.index].term);
+    this.playbackInstance.setIsMutedAsync(true);
     if (ValidURL(PLAYLIST[this.index].term)) {
       Linking.openURL(PLAYLIST[this.index].term);
     }
