@@ -12,6 +12,7 @@ import Deals from './Deals';
 import Grocery from './Grocery';
 import Scores from './Scores';
 import Tickets from './Tickets';
+import Influencers from './Influencers';
 import Game from './game/Game';
 import Main from './Main';
 import VideoTest from './VideoTest';
@@ -84,6 +85,13 @@ const AppNavigator = StackNavigator(
     },
     Travel: {
       screen: Travel,
+      navigationOptions: ({ navigation }) => ({
+        header: true,
+        gesturesEnabled: true,
+      }),
+    },
+    Influencers: {
+      screen: Influencers,
       navigationOptions: ({ navigation }) => ({
         header: true,
         gesturesEnabled: true,

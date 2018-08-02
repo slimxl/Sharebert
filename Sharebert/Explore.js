@@ -315,7 +315,8 @@ class Explore extends Component {
               }
               else {
                 Alert.alert("No Results Found!", 'Try Again!');
-                emptycard = true;
+                emptycard = false;
+                secondcard = true;
                 this.grabFrontPage();
                 return;
               }
