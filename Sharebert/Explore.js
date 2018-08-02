@@ -2075,11 +2075,11 @@ class Explore extends Component {
 
   }
   _keyExtractor = (item, index) => index;
-  _returnHeader = () =>{
-    return(
+  _returnHeader = () => {
+    return (
       <View style={{ flex: 1, flexDirection: 'row', marginTop: -5, }}
       >
-      <Image
+        <Image
           style={styles.catbarsicon}
           source={require('./assets/Category/Trend_Vert.png')}
         />
@@ -2524,13 +2524,13 @@ class Explore extends Component {
                   {
                     this.state.muted ?
                       <View>
-                        <TouchableOpacity style={{ width: 30, height: 30, marginTop: -720, marginLeft: 5 }} onPress={this._onMutePressed}>
+                        <TouchableOpacity style={styles.togMuteOff} onPress={this._onMutePressed}>
                           <Image style={{ width: 30, height: 30, }} resizeMode={"contain"} source={require('./assets/mute.png')} />
                         </TouchableOpacity>
                       </View>
                       :
                       <View>
-                        <TouchableOpacity style={{ width: 30, height: 30, marginTop: -720, marginLeft: 10 }} onPress={this._onMutePressed}>
+                        <TouchableOpacity style={styles.togMuteOn} onPress={this._onMutePressed}>
                           <Image style={{ width: 30, height: 30, }} resizeMode={"contain"} source={require('./assets/unmute.png')} />
                         </TouchableOpacity>
                       </View>
@@ -3170,7 +3170,7 @@ const styles = StyleSheet.create({
     height: 25,
     width: 25,
     position: "absolute",
-    bottom: 0,
+    bottom: 8,
     left: 0,
     marginLeft: Dimensions.get('window').width / 16,
     marginBottom: 5,
@@ -3192,7 +3192,7 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width / 3.3,
     marginBottom: 5,
     position: "absolute",
-    bottom: 0,
+    bottom: 8,
     left: 0,
     backgroundColor: 'transparent',
   },
@@ -3209,7 +3209,7 @@ const styles = StyleSheet.create({
     marginRight: Dimensions.get('window').width / 3.3,
     marginBottom: 5,
     position: "absolute",
-    bottom: 0,
+    bottom: 8,
     right: 0,
     backgroundColor: 'transparent',
   },
@@ -3224,7 +3224,7 @@ const styles = StyleSheet.create({
     height: 25,
     width: 25,
     position: "absolute",
-    bottom: 0,
+    bottom: 8,
     right: 0,
     marginRight: Dimensions.get('window').width / 16,
     marginBottom: 5,
@@ -3246,7 +3246,7 @@ const styles = StyleSheet.create({
     }),
   },
   footer: {
-    height: 40,
+    height: 50,
     width: '100%',
     position: "absolute",
     bottom: 0,
@@ -3407,7 +3407,32 @@ const styles = StyleSheet.create({
     width: 78,
     height: 25,
   },
-
+  togMuteOn: {
+    ...Platform.select({
+      ios: {
+        marginTop: -680,
+      },
+      android: {
+        marginTop: -700,
+      },
+    }),
+    width: 30,
+    height: 30,
+    marginLeft: 10
+  },
+  togMuteOff: {
+    ...Platform.select({
+      ios: {
+        marginTop: -680,
+      },
+      android: {
+        marginTop: -700,
+      },
+    }),
+    width: 30,
+    height: 30,
+    marginLeft: 5
+  },
   toggleMute: {
     fontSize: 30,
     fontWeight: 'bold',
@@ -3416,7 +3441,7 @@ const styles = StyleSheet.create({
     height: 200,
     textAlign: 'center',
     marginLeft: Dimensions.get('window').width / 2 - 100,
-    marginTop: -260,
+    marginTop: -220,
   },
 
   itemImage: {
