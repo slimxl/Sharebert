@@ -2413,7 +2413,7 @@ class Explore extends Component {
               onPress={this.shareApp}
               style={styles.button}>
               <Image
-                resizeMode='cover'
+                resizeMode='contain'
                 style={styles.button4}
                 source={require('./assets/headercream.png')}
               />
@@ -2846,7 +2846,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginRight: 10,
-        marginTop: -20,
+        marginTop: -30,
         textAlign: 'right',
         fontSize: 15,
         marginBottom: 13,
@@ -2871,11 +2871,11 @@ const styles = StyleSheet.create({
   scrollbar: {
     ...Platform.select({
       ios: {
-        marginTop: -5,
+        marginTop: 5,
         height: 77,
       },
       android: {
-        marginTop: -5,
+        marginTop: 5,
         height: 77,
         width: '100%',
       },

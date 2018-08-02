@@ -231,6 +231,7 @@ class Search extends Component {
             <View style={styles.container}>
 
                 <Image
+                    resizeMode='contain'
                     source={require('./assets/searchheader.png')}
                     style={styles.header} />
 
@@ -393,7 +394,7 @@ const styles = StyleSheet.create({
             },
             android: {
                 position: 'absolute',
-                marginTop: 8,
+                marginTop: 12,
                 marginLeft: -5,
                 height: 25,
                 width: 70,
@@ -490,7 +491,7 @@ const styles = StyleSheet.create({
     },
     header: {
         width: '100%',
-        height: 40,
+        height: 50,
         backgroundColor: '#dee6ee',
         marginTop: 0,
     },
@@ -683,7 +684,7 @@ const styles = StyleSheet.create({
             },
             android: {
                 position: 'absolute',
-                marginTop: 10,
+                marginTop: 15,
                 marginLeft: 60,
                 height: 20,
                 width: 20,
