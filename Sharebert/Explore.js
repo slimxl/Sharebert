@@ -336,8 +336,7 @@ class Explore extends Component {
       this.checkUpdatePoints();
     }
 
-    if(PLAYLIST.length==0)
-    {
+    if (PLAYLIST.length == 0) {
       emptycard = false;
       secondcard = true;
       console.log('true');
@@ -2489,6 +2488,7 @@ class Explore extends Component {
                     activeOpacity={0.8}
                     onLongPress={this._onMutePressed}
                     onPress={this._onVideoPressed}>
+
                     <Video
                       ref={this._mountVideo}
                       style={[
@@ -2497,7 +2497,6 @@ class Explore extends Component {
                           opacity: 1.0,
                           width: '75%',
                           height: '100%',
-
                         },
                       ]}
                       resizeMode={'cover'}
@@ -2505,8 +2504,21 @@ class Explore extends Component {
                       useNativeControls={this.state.useNativeControls}
                     />
                   </TouchableOpacity>
-                  <Text style={styles.toggleMute}>Tap to Toggle Sound</Text>
+                  {
+                    this.state.muted ?
+                      <View>
+                        <TouchableOpacity style={{ width: 50, height: 50, marginTop: -720, marginLeft: 5 }} onPress={this._onMutePressed}>
+                          <Image style={{ width: 50, height: 50, }} resizeMode={"contain"} source={require('./assets/mute.png')} />
+                        </TouchableOpacity>
+                      </View>
+                      :
+                      <View>
+                        <TouchableOpacity style={{ width: 50, height: 50, marginTop: -720, marginLeft: 10 }} onPress={this._onMutePressed}>
+                          <Image style={{ width: 50, height: 50, }} resizeMode={"contain"} source={require('./assets/unmute.png')} />
+                        </TouchableOpacity>
+                      </View>
 
+                  }
 
                 </GestureRecognizer>
 
