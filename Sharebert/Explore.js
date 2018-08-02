@@ -2415,7 +2415,7 @@ class Explore extends Component {
               Points
                 </Text>
 
-            <TouchableWithoutFeedback
+            {/* <TouchableWithoutFeedback
               onPress={() => this.resetTo('Search')}
               style={styles.search}>
               <Image
@@ -2423,7 +2423,7 @@ class Explore extends Component {
                 style={styles.search}
                 source={require('./assets/icons/search-icon2.png')}
               />
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
 
             <View>
               <FlatList
@@ -2572,13 +2572,10 @@ class Explore extends Component {
               <Image style={styles.footer} />
 
               <TouchableWithoutFeedback style={styles.footerItem}
-              // onPress={() => this.props.navigation.navigate('Explore', {
-              //   id: userID,
-              //   points: userPoints,
-              // })}
+                onPress={() => this.resetTo('Search')}
               >
                 <Image style={styles.exploreBut} resizeMode={"contain"} hitSlop={{ top: 12, left: 36, bottom: 0, right: 0 }}
-                  source={require('./assets/menu/explore.png')}>
+                  source={require('./assets/icons/search-icon2.png')}>
 
                 </Image>
               </TouchableWithoutFeedback>

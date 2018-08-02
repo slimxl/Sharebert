@@ -44,7 +44,7 @@ class Search extends Component {
     constructor(props) {
         super(props);
         _flatList = null,
-        userID = this.props.navigation.state.params.id;
+            userID = this.props.navigation.state.params.id;
         userPoints = this.props.navigation.state.params.points;
         uri2 = this.props.navigation.state.params.uri;
         likes = this.props.navigation.state.params.like;
@@ -81,23 +81,21 @@ class Search extends Component {
             .done();
 
 
-            // this._setFlatList = flatList => {
-            //     this._flatList = flatList;
-            //     console.log(flatList + "This is the ref passed in");
-            //     console.log(this._flatList + "This is the saved reference");
-            //   };
+        // this._setFlatList = flatList => {
+        //     this._flatList = flatList;
+        //     console.log(flatList + "This is the ref passed in");
+        //     console.log(this._flatList + "This is the saved reference");
+        //   };
 
-              this.showBars = () =>
-              {
-                  //console.log(this._flatList + "This is the ref being used");
-                  if(this.refs.flatlist)
-                  {
-                    this.refs.flatlist.flashScrollIndicators();
-                  }
-              }
+        this.showBars = () => {
+            //console.log(this._flatList + "This is the ref being used");
+            if (this.refs.flatlist) {
+                this.refs.flatlist.flashScrollIndicators();
+            }
+        }
 
-            setInterval(this.showBars, 300);
-              
+        setInterval(this.showBars, 300);
+
     }
 
     _renderItem = data => {
@@ -314,7 +312,7 @@ class Search extends Component {
 
                 <FlatList
                     //ref={this._setFlatList}
-                    ref = 'flatlist'
+                    ref='flatlist'
                     showsVerticalScrollIndicator={true}
                     style={{
                         marginTop: -55, marginBottom: 60,
@@ -506,27 +504,27 @@ const styles = StyleSheet.create({
     },
 
     exploreBut:
-        {
-            height: 25,
-            width: 25,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            marginLeft: Dimensions.get('window').width / 16,
-            marginBottom: 5,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        marginLeft: Dimensions.get('window').width / 16,
+        marginBottom: 5,
+        backgroundColor: 'transparent',
+    },
     likesBut:
-        {
-            height: 25,
-            width: 25,
-            marginLeft: Dimensions.get('window').width / 3.3,
-            marginBottom: 5,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        marginLeft: Dimensions.get('window').width / 3.3,
+        marginBottom: 5,
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'transparent',
+    },
     footerRewards: {
         position: "absolute",
         bottom: 0,
@@ -534,16 +532,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     rewardsBut:
-        {
-            height: 25,
-            width: 25,
-            marginRight: Dimensions.get('window').width / 3.3,
-            marginBottom: 5,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        marginRight: Dimensions.get('window').width / 3.3,
+        marginBottom: 5,
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        backgroundColor: 'transparent',
+    },
     footerProfile: {
         position: "absolute",
         bottom: 0,
@@ -551,22 +549,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     profileBut:
-        {
-            height: 25,
-            width: 25,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            marginRight: Dimensions.get('window').width / 16,
-            marginBottom: 5,
-            borderRadius: 12,
-            backgroundColor: 'transparent',
-        },
+    {
+        height: 25,
+        width: 25,
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        marginRight: Dimensions.get('window').width / 16,
+        marginBottom: 5,
+        borderRadius: 12,
+        backgroundColor: 'transparent',
+    },
     TrendText2:
-        {
-            marginTop: 10,
-            marginBottom: '30%',
-        },
+    {
+        marginTop: 10,
+        marginBottom: '30%',
+    },
     TrendText: {
         ...Platform.select({
             ios: {
@@ -584,20 +582,20 @@ const styles = StyleSheet.create({
 
             },
             android:
-                {
-                    fontFamily: 'MontserratBoldItalic',
-                    width: Dimensions.get('window').width,
-                    height: 30,
-                    width: '100%',
-                    position: 'absolute',
-                    textAlign: 'center',
-                    fontSize: 20,
-                    marginLeft: Dimensions.get('window').width / 20,
-                    marginTop: 20,
-                    marginBottom: -40,
-                    color: '#ffffff',
+            {
+                fontFamily: 'MontserratBoldItalic',
+                width: Dimensions.get('window').width,
+                height: 30,
+                width: '100%',
+                position: 'absolute',
+                textAlign: 'center',
+                fontSize: 20,
+                marginLeft: Dimensions.get('window').width / 20,
+                marginTop: 20,
+                marginBottom: -40,
+                color: '#ffffff',
 
-                }
+            }
         }),
     },
     footer: {
@@ -656,6 +654,9 @@ const styles = StyleSheet.create({
                 padding: 8,
                 marginTop: -30,
                 marginLeft: 70,
+                fontSize: 30,
+                color:'white',
+
             },
             android: {
                 position: 'absolute',
@@ -663,6 +664,8 @@ const styles = StyleSheet.create({
                 width: Dimensions.get('window').width - 120,
                 marginLeft: 90,
                 textDecorationLine: "none",
+                fontSize: 30,
+                color:'white',
 
             },
         }),
