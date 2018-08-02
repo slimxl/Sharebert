@@ -23,11 +23,20 @@ class PlaylistItem {
     this.isVideo = isVideo;
   }
 }
+class PlaylistItem2 {
+  constructor(name, uri, isVideo,term) {
+    this.name = name;
+    this.uri = uri;
+    this.isVideo = isVideo;
+    this.term = term;
+  }
+}
 var doubleclick = false;
 var lastlogged = true;
 var userEmail2 = '';
 var userID = 0;
 var PLAYLIST = [];
+var PLAYLIST2 = [];
 var name2 = 'Not Logged In';
 var userPoints = 0;
 var stype;
@@ -156,7 +165,7 @@ class LoginScreen extends Component {
           id: userID,
           points: userPoints,
           uri: uri2,
-          PLAYLIST: PLAYLIST
+          PLAYLIST: PLAYLIST2
           //this.props.navigation.navigate('Main', {
           //  id: 0,
           //  points: 0,
@@ -194,7 +203,7 @@ class LoginScreen extends Component {
         uri: uri2,
         email: userEmail2,
         notification: this.props.screenProps,
-        PLAYLIST: PLAYLIST
+        PLAYLIST: PLAYLIST2
       });
 
     }
@@ -472,11 +481,27 @@ class LoginScreen extends Component {
           for (var i = 0; i < Object.keys(responseData).length; i++) {
             PLAYLIST.push(new PlaylistItem('', 'https://sharebert.com/medias/' + responseData[i], true));
           }
-          console.log(PLAYLIST);
+          //console.log(PLAYLIST);
         })
         .done();
     } catch (error) {
 
+    }
+
+    try {
+      fetch('https://sharebert.com/s/GetVideos.php', { method: 'GET' })
+        .then(response => response.json())
+        .then(responseData => {
+          //console.log(responseData[0]);
+          console.log(Object.keys(responseData).length);
+          for (var i = 0; i < Object.keys(responseData).length; i++) {
+            PLAYLIST2.push(new PlaylistItem2('', responseData[i].URL, true,responseData[i].Term));
+          }
+          console.log(PLAYLIST2);
+        })
+        .done();
+    } catch (error) {
+      console.log(error);
     }
   }
   checkUpdatePoints = () => {

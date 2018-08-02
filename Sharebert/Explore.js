@@ -53,6 +53,7 @@ var uri2 = '';
 var randoUsersLikes = [];
 var tutorial = true;
 var gotPoints = false;
+var curIndex = 0;
 
 const { width, height } = Dimensions.get('window');
 // orientation must fixed
@@ -67,13 +68,6 @@ const PRODUCT_ITEM_HEIGHT = 175;
 const PRODUCT_ITEM_OFFSET = 5;
 const PRODUCT_ITEM_MARGIN = PRODUCT_ITEM_OFFSET * 2;
 
-class PlaylistItem {
-  constructor(name, uri, isVideo) {
-    this.name = name;
-    this.uri = uri;
-    this.isVideo = isVideo;
-  }
-}
 var PLAYLIST = [];
 // const PLAYLIST = [
 //   new PlaylistItem(
@@ -115,7 +109,6 @@ class Explore extends Component {
     secondcard = false;
     this.index = 0;
     this.playbackInstance = null;
-
     console.disableYellowBox = true;
 
     PLAYLIST = this.props.navigation.state.params.PLAYLIST;
@@ -343,7 +336,12 @@ class Explore extends Component {
       this.checkUpdatePoints();
     }
 
-
+    if(PLAYLIST.length==0)
+    {
+      emptycard = false;
+      secondcard = true;
+      console.log('true');
+    }
   }
 
   async _loadNewPlaybackInstance(playing) {
@@ -389,6 +387,24 @@ class Explore extends Component {
       });
     }
   }
+  _onVideoPressed = () => {
+    //console.log('test');
+    console.log(PLAYLIST[this.index].term);
+    if (ValidURL(PLAYLIST[this.index].term)) {
+      Linking.openURL(PLAYLIST[this.index].term);
+    }
+    else {
+      searchterm = PLAYLIST[this.index].term;
+      emptycard = false;
+      secondcard = false;
+
+      this.setState({
+        url: 'https://i.imgur.com/JaG8ovv.gif'
+      })
+      this.onSubmitEdit();
+    }
+
+  };
   _onMutePressed = () => {
     if (this.playbackInstance != null) {
       this.playbackInstance.setIsMutedAsync(!this.state.muted);
@@ -427,6 +443,7 @@ class Explore extends Component {
 
   _advanceIndex(forward) {
     this.index = (this.index + (forward ? 1 : PLAYLIST.length - 1)) % PLAYLIST.length;
+    curIndex = this.index;
   }
 
   async _updatePlaybackInstanceForIndex(playing) {
@@ -827,8 +844,8 @@ class Explore extends Component {
           }),
         }
       ).then(({ action, activityType }) => {
-        try{
-          
+        try {
+
           var retailer = 0;
           if (this.state.dataset[this.state.cardNum].Retailer === 'Amazon') {
             retailer = 1;
@@ -836,12 +853,12 @@ class Explore extends Component {
           fetch(
             'https://sharebert.com/s/Shares.php?asin=' +
             this.state.dataset[this.state.cardNum].ASIN +
-            '&title='+this.state.dataset[this.state.cardNum].Title+
+            '&title=' + this.state.dataset[this.state.cardNum].Title +
             '&retailer=' + retailer +
-            '&uid=' + userID+
-            '&url=' + this.state.dataset[this.state.cardNum].URL+
+            '&uid=' + userID +
+            '&url=' + this.state.dataset[this.state.cardNum].URL +
             '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL,
-    
+
             { method: 'GET' }
           )
             .then(() => {
@@ -851,12 +868,12 @@ class Explore extends Component {
               console.log("URL:" + this.state.dataset[this.state.cardNum].URL);
               console.log("ImageURL:" + this.state.dataset[this.state.cardNum].ImageURL);
               console.log('https://sharebert.com/s/Clicks.php?asin=' +
-              this.state.dataset[this.state.cardNum].ASIN +
-              '&title='+this.state.dataset[this.state.cardNum].Title,
-              '&retailer=' + retailer +
-              '&uid=' + userID+
-              '&url=' + this.state.dataset[this.state.cardNum].URL+
-              '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL);
+                this.state.dataset[this.state.cardNum].ASIN +
+                '&title=' + this.state.dataset[this.state.cardNum].Title,
+                '&retailer=' + retailer +
+                '&uid=' + userID +
+                '&url=' + this.state.dataset[this.state.cardNum].URL +
+                '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL);
             });
         } catch (error) {
           console.error(error);
@@ -1024,10 +1041,10 @@ class Explore extends Component {
       fetch(
         'https://sharebert.com/s/Clicks.php?asin=' +
         this.state.dataset[this.state.cardNum].ASIN +
-        '&title='+this.state.dataset[this.state.cardNum].Title+
+        '&title=' + this.state.dataset[this.state.cardNum].Title +
         '&retailer=' + retailer +
-        '&uid=' + userID+
-        '&url=' + this.state.dataset[this.state.cardNum].URL+
+        '&uid=' + userID +
+        '&url=' + this.state.dataset[this.state.cardNum].URL +
         '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL,
 
         { method: 'GET' }
@@ -1039,12 +1056,12 @@ class Explore extends Component {
           console.log("URL:" + this.state.dataset[this.state.cardNum].URL);
           console.log("ImageURL:" + this.state.dataset[this.state.cardNum].ImageURL);
           console.log('https://sharebert.com/s/Clicks.php?asin=' +
-          this.state.dataset[this.state.cardNum].ASIN +
-          '&title='+this.state.dataset[this.state.cardNum].Title,
-          '&retailer=' + retailer +
-          '&uid=' + userID+
-          '&url=' + this.state.dataset[this.state.cardNum].URL+
-          '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL);
+            this.state.dataset[this.state.cardNum].ASIN +
+            '&title=' + this.state.dataset[this.state.cardNum].Title,
+            '&retailer=' + retailer +
+            '&uid=' + userID +
+            '&url=' + this.state.dataset[this.state.cardNum].URL +
+            '&imageurl=' + this.state.dataset[this.state.cardNum].ImageURL);
         });
     } catch (error) {
       console.error(error);
@@ -2468,8 +2485,10 @@ class Explore extends Component {
                   config={config}
                 >
                   <TouchableOpacity
-                    onPress={this._onMutePressed}>
-                    
+                    //onPress={this._onMutePressed}>
+                    activeOpacity={0.8}
+                    onLongPress={this._onMutePressed}
+                    onPress={this._onVideoPressed}>
                     <Video
                       ref={this._mountVideo}
                       style={[
@@ -2487,7 +2506,7 @@ class Explore extends Component {
                     />
                   </TouchableOpacity>
                   <Text style={styles.toggleMute}>Tap to Toggle Sound</Text>
-                  
+
 
                 </GestureRecognizer>
 
@@ -3360,7 +3379,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     textAlign: 'center',
-    marginLeft: Dimensions.get('window').width/2 - 100,
+    marginLeft: Dimensions.get('window').width / 2 - 100,
     marginTop: -260,
   },
 
@@ -3447,6 +3466,14 @@ function trunc(text) {
   }
 
   return text.length > 30 ? `${text.substr(0, 30)}...` : text;
+}
+function ValidURL(str) {
+  var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+  if (!regex.test(str)) {
+    return false;
+  } else {
+    return true;
+  }
 }
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
