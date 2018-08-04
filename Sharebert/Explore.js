@@ -2497,8 +2497,8 @@ class Explore extends Component {
             {emptycard ?
               <View style={styles.videoContainer}>
                 <GestureRecognizer
-                  onSwipeRight={(state) => this.onSwipeRight(state)}
-                  onSwipeLeft={(state) => this.onSwipeLeft(state)}
+                  onSwipeRight={(state) => this.onSwipeLeft(state)}
+                  onSwipeLeft={(state) => this.onSwipeRight(state)}
                   config={config}
                 >
                   <TouchableOpacity
