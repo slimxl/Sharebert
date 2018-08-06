@@ -36,6 +36,7 @@ import {
 } from 'react-native';
 import { Constants, Notifications, Video } from 'expo';
 var userPoints = 0;
+var top10;
 var userID = 0;
 var toofast = false;
 var datasize = 0;
@@ -129,6 +130,7 @@ class Explore extends Component {
     //console.log(props);
 
     this.getOldLikes();
+    this.getTop10();
     this.state = {
       loopingType: LOOPING_TYPE_ALL,
       muted: true,
@@ -370,6 +372,27 @@ class Explore extends Component {
   _mountVideo = component => {
     this._video = component;
     this._loadNewPlaybackInstance(true);
+  };
+
+  getTop10 = () => {
+    fetch('https://sharebert.com/s/GetTop10.php?', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = []
+        for (var i = 0; i < responseData.length; i++) {
+          var obj = {};
+          //console.log(responseData[i]);
+          obj['User_Name'] = truncName(responseData[i]['User_Name']);
+
+          obj['Points'] = responseData[i]['Points'];
+          //console.log(obj);
+          //if(obj['Cost']!=='100'|| parseInt(obj['Cost'],10)>25000)
+          data2.push(obj);
+        }
+        //var reversed = data2.reverse(); 
+        top10 = data2;
+      })
+      .done();
   };
 
   _updateScreenForLoading(isLoading) {
@@ -2205,6 +2228,7 @@ class Explore extends Component {
       points: userPoints,
       uri: uri2,
       like: likes,
+      top10:top10,
       notification: false,
       updateData: this.updateData,
       goSearch: this.goSearch,
@@ -3528,6 +3552,15 @@ function trunc(text) {
   }
 
   return text.length > 30 ? `${text.substr(0, 30)}...` : text;
+}
+function truncName(text)
+{
+  if(text.includes(' '))
+  {
+    text = text.substr(0,text.indexOf(' ')+2);
+
+  }
+  return text;
 }
 function ValidURL(str) {
   var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;

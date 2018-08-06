@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation'
-import {OptimizedFlatList} from 'react-native-optimized-flatlist'
+import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+import * as Animatable from 'react-native-animatable';
+
 import {
   View,
   Text,
@@ -27,6 +29,7 @@ var currentreward = '';
 var web = false;
 var giveaway = false;
 var userPoints = 0;
+var top10;
 const { width, height } = Dimensions.get('window');
 class Rewards extends Component {
   constructor(props) {
@@ -34,6 +37,7 @@ class Rewards extends Component {
     userID = this.props.navigation.state.params.id;
     userPoints = this.props.navigation.state.params.points;
     uri2 = this.props.navigation.state.params.uri;
+    top10 = this.props.navigation.state.params.top10;
     this.state = {
       isOpen: false,
       DailyGiveaway: false,
@@ -70,7 +74,31 @@ class Rewards extends Component {
       .done();
 
 
+
   }
+
+  getTop10 = () => {
+    fetch('https://sharebert.com/s/GetTop10.php?', { method: 'GET' })
+      .then(response => response.json())
+      .then(responseData => {
+        var data2 = []
+        for (var i = 0; i < responseData.length; i++) {
+          var obj = {};
+          //console.log(responseData[i]);
+          obj['User_Name'] = responseData[i]['User_Name'];
+          obj['Points'] = responseData[i]['Points'];
+          //console.log(obj);
+          //if(obj['Cost']!=='100'|| parseInt(obj['Cost'],10)>25000)
+          data2.push(obj);
+        }
+        //var reversed = data2.reverse(); 
+        this.setState({
+          top10: data2,
+        })
+      })
+      .done();
+  };
+
   _onPress(item) {
     Alert.alert(
       'Claim Prize',
@@ -233,6 +261,45 @@ class Rewards extends Component {
     )
   };
 
+  _returnHeaderTop10 = () => {
+    var top10view = [];
+    var fontSize = 12;
+    var head = '';
+    marginLeft = 0;
+    for (var i = 1; i <= top10.length; i++) {
+      if (i == 1 || i == 2 || i == 3) {
+        fontSize = 20;
+        if (i == 1) {
+          head = '🌟';
+        }
+        else if (i == 2) {
+          head = '✨';
+        }
+        else if (i == 3) {
+          head = '⭐';
+        }
+        marginLeft = -10;
+
+      }
+      else {
+        fontSize = 12;
+        head = '';
+        marginLeft = 0;
+
+      }
+      top10view.push(
+        <View key={i}>
+          <Animatable.Text style={{ textAlign: 'center', fontFamily: "Montserrat", fontSize: fontSize }} delay={i * 700} easting='ease-in' duration={1000} animation="bounceIn">{head}{top10[i - 1]['User_Name']}.</Animatable.Text>
+          {/* <Animatable.View style={styles.div} delay={i * 700} easting='ease-in' duration={1000} animation="bounceIn"/> */}
+        </View>
+      )
+    }
+    return (
+      <View>
+        {top10view}
+      </View>
+    );
+  };
   _renderHeader = () => {
     return (
       <View style={styles.giveawaycenterview}>
@@ -273,20 +340,20 @@ class Rewards extends Component {
   _renderItem = data => {
     const item = data.item;
     return (
-    <TouchableOpacity
-      onPress={() => this._onPress(item)}>
-      <View style={{ backgroundColor: 'transparent' }}>
-        <Text style={styles.text3}>{item.Title}</Text>
-        {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
-        <Image
-          style={styles.image}
-          resizeMode='contain'
-          source={{
-            uri: item.ImageURL,
-          }}
-        />
-      </View>
-    </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => this._onPress(item)}>
+        <View style={{ backgroundColor: 'transparent' }}>
+          <Text style={styles.text3}>{item.Title}</Text>
+          {item.Cost === '100' ? <Text style={styles.text4}>{item.Cost} Points + Shipping</Text> : <Text style={styles.text4}>{item.Cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Points</Text>}
+          <Image
+            style={styles.image}
+            resizeMode='contain'
+            source={{
+              uri: item.ImageURL,
+            }}
+          />
+        </View>
+      </TouchableOpacity>
     );
   }
   render() {
@@ -336,54 +403,55 @@ class Rewards extends Component {
         </View>
       );
     }
-    else if (giveaway) {
-      return (
-        <View style={styles.container}>
-          <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
+    // else if (giveaway) {
+    //   return (
+    //     <View style={styles.container}>
+    //       <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
 
-          <TouchableOpacity
-            onPress={() => {
-              giveaway = false;
+    //       <TouchableOpacity
+    //         onPress={() => {
+    //           giveaway = false;
 
-              this.forceUpdate();
+    //           this.forceUpdate();
 
-            }}>
+    //         }}>
 
-            <Image style={styles.header} />
-            <Text style={styles.text2}>
-              {userPoints + '\n'}
-            </Text>
-            <Text style={styles.pointsText}>
-              Points
-                </Text>
-          </TouchableOpacity>
-          <Image
-            resizeMode="contain"
-            style={styles.button}
-            source={require('./assets/icons/logoicon.png')}
-          />
-          <TouchableWithoutFeedback
-            onPress={() => {
-              giveaway = false;
-              this.forceUpdate();
-            }}>
-            <Image
-              style={styles.hamburger}
-              resizeMode='contain'
-              source={require('./assets/arrow_w.png')}
-            />
-          </TouchableWithoutFeedback>
-          <Text style={styles.title}>
-            Sharebert Rewards
-          </Text>
-          <WebView
-            source={{ uri: 'https://sharebert.com/shop/dailygiveaway' }}
-            style={{ marginTop: 15 }}
-          />
-        </View>
-      );
-    }
+    //         <Image style={styles.header} />
+    //         <Text style={styles.text2}>
+    //           {userPoints + '\n'}
+    //         </Text>
+    //         <Text style={styles.pointsText}>
+    //           Points
+    //             </Text>
+    //       </TouchableOpacity>
+    //       <Image
+    //         resizeMode="contain"
+    //         style={styles.button}
+    //         source={require('./assets/icons/logoicon.png')}
+    //       />
+    //       <TouchableWithoutFeedback
+    //         onPress={() => {
+    //           giveaway = false;
+    //           this.forceUpdate();
+    //         }}>
+    //         <Image
+    //           style={styles.hamburger}
+    //           resizeMode='contain'
+    //           source={require('./assets/arrow_w.png')}
+    //         />
+    //       </TouchableWithoutFeedback>
+    //       <Text style={styles.title}>
+    //         Sharebert Rewards
+    //       </Text>
+    //       <WebView
+    //         source={{ uri: 'https://sharebert.com/shop/dailygiveaway' }}
+    //         style={{ marginTop: 15 }}
+    //       />
+    //     </View>
+    //   );
+    // }
     else {
+
       return (
         <View style={styles.container}>
           <Image style={styles.dividerTop} source={require('./assets/likesbg.png')} />
@@ -427,13 +495,30 @@ class Rewards extends Component {
             source={require('./like_background.png')}
             style={{ width: '100%', height: '100%' }}>
             <View style={{ width: '100%', height: Dimensions.get('window').height - 130 }}>
+
+              {/* {
+                <Animatable.View>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={1000} animation="bounceIn">1.{top10[0]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={2000} animation="bounceIn">2.{top10[1]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={3000} animation="bounceIn">3.{top10[2]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={4000} animation="bounceIn">4.{top10[3]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={5000} animation="bounceIn">5.{top10[4]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={6000} animation="bounceIn">6.{top10[5]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={7000} animation="bounceIn">7.{top10[6]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={8000} animation="bounceIn">8.{top10[7]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={9000} animation="bounceIn">9.{top10[8]['User_Name']}</Animatable.Text>
+                  <Animatable.Text style={{ textAlign: 'center' }} delay={10000} animation="bounceIn">10.{top10[9]['User_Name']}</Animatable.Text>
+                </Animatable.View>
+
+              } */}
+
               <FlatList backgroundColor={'transparent'}
                 style={{ width: '100%', height: Dimensions.get('window').height - 130, }}
                 data={this.state.rewards}
                 removeClippedSubviews={true}
                 keyExtractor={this._keyExtractor}
                 ListEmptyComponent={this._showEmptyListView}
-                ListHeaderComponent={this._renderHeader}
+                ListHeaderComponent={this._returnHeaderTop10}
                 renderItem={this._renderItem}
               />
             </View>
@@ -448,21 +533,21 @@ class Rewards extends Component {
 class RewardItem extends React.PureComponent {
   render() {
     return (
-        <View 
-                style={{
-                  paddingVertical: 10,
-                }}>
-                  <TouchableOpacity onPress={() => null}>
-                    <Text 
-                      style={{
-                        color: '#000', 
-                        height: 40,
-                        justifyContent: 'center'
-                      }}>
-                      {this.props.produto.descricao}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+      <View
+        style={{
+          paddingVertical: 10,
+        }}>
+        <TouchableOpacity onPress={() => null}>
+          <Text
+            style={{
+              color: '#000',
+              height: 40,
+              justifyContent: 'center'
+            }}>
+            {this.props.produto.descricao}
+          </Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 }
@@ -578,28 +663,28 @@ const styles = StyleSheet.create({
 
   },
   heart:
-    {
-      ...Platform.select({
-        ios: {
-          width: Dimensions.get('window').width,
-          height: 30,
-          paddingTop: 20,
-          marginTop: 10,
-          marginBottom: 26,
-          backgroundColor: 'transparent',
-        },
-        android: {
-          width: Dimensions.get('window').width,
-          height: 30,
-          paddingTop: 20,
-          marginTop: 10,
-          marginBottom: 20,
-          backgroundColor: 'white',
-        },
-      }),
+  {
+    ...Platform.select({
+      ios: {
+        width: Dimensions.get('window').width,
+        height: 30,
+        paddingTop: 20,
+        marginTop: 10,
+        marginBottom: 26,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        width: Dimensions.get('window').width,
+        height: 30,
+        paddingTop: 20,
+        marginTop: 10,
+        marginBottom: 20,
+        backgroundColor: 'white',
+      },
+    }),
 
 
-    },
+  },
   bg: {
     position: 'absolute',
     top: 0,
@@ -608,46 +693,52 @@ const styles = StyleSheet.create({
     right: 0,
   },
   divider:
-    {
-      width: Dimensions.get('window').width - 30,
-      height: 2,
-      marginLeft: 15,
-      marginTop: 5,
-      backgroundColor: '#dee6ee',
-    },
+  {
+    width: Dimensions.get('window').width - 30,
+    height: 2,
+    marginLeft: 15,
+    marginTop: 5,
+    backgroundColor: '#dee6ee',
+  },
+  div: {
+    backgroundColor: 'gray',
+    width: 100,
+    height: 1,
+
+  },
   shareBut:
-    {
-      width: 40,
-      height: 40,
-      marginLeft: Dimensions.get('window').width / 1.2,
-      marginTop: -25,
-    },
+  {
+    width: 40,
+    height: 40,
+    marginLeft: Dimensions.get('window').width / 1.2,
+    marginTop: -25,
+  },
   buyBut:
-    {
-      width: 40,
-      height: 40,
-      marginLeft: Dimensions.get('window').width / 1.43,
-      marginTop: -40,
-    },
+  {
+    width: 40,
+    height: 40,
+    marginLeft: Dimensions.get('window').width / 1.43,
+    marginTop: -40,
+  },
   dividerTop:
-    {
-      ...Platform.select({
-        ios: {
-          width: Dimensions.get('window').width,
-          position: "absolute",
-          top: -25,
-          height: 100,
-          backgroundColor: 'transparent',
-        },
-        android: {
-          width: Dimensions.get('window').width,
-          position: "absolute",
-          top: 0,
-          height: 100,
-          backgroundColor: 'transparent',
-        },
-      }),
-    },
+  {
+    ...Platform.select({
+      ios: {
+        width: Dimensions.get('window').width,
+        position: "absolute",
+        top: -25,
+        height: 100,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        width: Dimensions.get('window').width,
+        position: "absolute",
+        top: 0,
+        height: 100,
+        backgroundColor: 'transparent',
+      },
+    }),
+  },
   title: {
     ...Platform.select({
       ios: {
@@ -763,27 +854,27 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width / 3,
   },
   exploreBut:
-    {
-      height: 25,
-      width: 25,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      marginLeft: Dimensions.get('window').width / 16,
-      marginBottom: 5,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    marginLeft: Dimensions.get('window').width / 16,
+    marginBottom: 5,
+    backgroundColor: 'transparent',
+  },
   likesBut:
-    {
-      height: 25,
-      width: 25,
-      marginLeft: Dimensions.get('window').width / 3.3,
-      marginBottom: 5,
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    marginLeft: Dimensions.get('window').width / 3.3,
+    marginBottom: 5,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'transparent',
+  },
   footerRewards: {
     position: "absolute",
     bottom: 0,
@@ -791,16 +882,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   rewardsBut:
-    {
-      height: 25,
-      width: 25,
-      marginRight: Dimensions.get('window').width / 3.3,
-      marginBottom: 5,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    marginRight: Dimensions.get('window').width / 3.3,
+    marginBottom: 5,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+  },
   footerProfile: {
     position: "absolute",
     bottom: 0,
@@ -808,17 +899,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   profileBut:
-    {
-      height: 25,
-      width: 25,
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      marginRight: Dimensions.get('window').width / 16,
-      marginBottom: 5,
-      borderRadius: 12,
-      backgroundColor: 'transparent',
-    },
+  {
+    height: 25,
+    width: 25,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    marginRight: Dimensions.get('window').width / 16,
+    marginBottom: 5,
+    borderRadius: 12,
+    backgroundColor: 'transparent',
+  },
 
   footer: {
     height: 40,
@@ -849,26 +940,26 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('window').width / 4.1,
   },
   headertext:
-    {
-      ...Platform.select({
-        ios: {
-          textAlign: 'center',
-          fontFamily: 'Montserrat',
-          fontSize: 17,
-          marginTop: -32,
-          marginLeft: 140,
-          backgroundColor: 'transparent',
-        },
-        android: {
-          textAlign: 'center',
-          fontFamily: 'Montserrat',
-          fontSize: 17,
-          marginTop: -32,
-          marginLeft: 140,
-          backgroundColor: 'transparent',
-        },
-      }),
+  {
+    ...Platform.select({
+      ios: {
+        textAlign: 'center',
+        fontFamily: 'Montserrat',
+        fontSize: 17,
+        marginTop: -32,
+        marginLeft: 140,
+        backgroundColor: 'transparent',
+      },
+      android: {
+        textAlign: 'center',
+        fontFamily: 'Montserrat',
+        fontSize: 17,
+        marginTop: -32,
+        marginLeft: 140,
+        backgroundColor: 'transparent',
+      },
+    }),
 
-    },
+  },
 });
 export default Rewards;
