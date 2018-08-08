@@ -289,7 +289,7 @@ class Rewards extends Component {
       }
       top10view.push(
         <View key={i}>
-          <Animatable.Text style={{ textAlign: 'center', fontFamily: "Montserrat", fontSize: fontSize }} delay={i * 700} easting='ease-in' duration={1000} animation="bounceIn">{head}{top10[i - 1]['User_Name']}.</Animatable.Text>
+          <Animatable.Text style={{ textAlign: 'center', fontFamily: "Montserrat", fontSize: fontSize }} delay={i * 800} easting='ease-in' duration={900} animation="bounceIn">{head}{top10[i - 1]['User_Name']}.</Animatable.Text>
           {/* <Animatable.View style={styles.div} delay={i * 700} easting='ease-in' duration={1000} animation="bounceIn"/> */}
         </View>
       )

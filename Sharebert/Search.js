@@ -22,6 +22,7 @@ import { Constants } from 'expo';
 const backAction = NavigationActions.back({
     key: null
 });
+var top10;
 var userPoints = 0;
 var userID = 0;
 var uri2 = '';
@@ -48,6 +49,7 @@ class Search extends Component {
         userPoints = this.props.navigation.state.params.points;
         uri2 = this.props.navigation.state.params.uri;
         likes = this.props.navigation.state.params.like;
+        top10 = this.props.navigation.state.params.top10;
         this.state = {
             inputValue: 'Search',
             trendinglist: [],
@@ -161,6 +163,7 @@ class Search extends Component {
             goSearch: this.goSearch,
             clearLikes: this.clearLikes,
             saveLikesto: this.saveLikesto,
+            top10:top10,
 
         })
     }
