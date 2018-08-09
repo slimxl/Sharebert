@@ -68,13 +68,14 @@ class Influencers extends Component {
                 var data2 = [];
                 for (var i = 0; i < Object.keys(responseData).length; i++) {
 
-                    if (responseData[i].URL != null) {
+                    if (responseData[i].URL != null||responseData[i].URL=="") {
                         data2.push(new InfluencerObj(responseData[i].Title, responseData[i].URL, true, responseData[i].Term, responseData[i].ImageURL));
                     }
                     else {
                         data2.push(new InfluencerObj(responseData[i].Title, null, false, responseData[i].Term, responseData[i].ImageURL));
                     }
                 }
+                console.log(data2);
                 //console.log(data2);
                 this.setState({
                     influencersArr: data2,
@@ -120,7 +121,7 @@ class Influencers extends Component {
                     }
                     else {
                         this.props.navigation.goBack();
-                        this.props.navigation.state.params.goSearch(item.Term);
+                        this.props.navigation.state.params.goSearch2(item.Term);
                     }
                 }}>
                     {!item.ImageURL

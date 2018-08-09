@@ -1005,6 +1005,13 @@ class Explore extends Component {
     })
     this.onSubmitEdit();
   }
+  goSearch2 = (term) => {
+    searchterm = term;
+    this.setState({
+      url: 'https://i.imgur.com/JaG8ovv.gif',
+    })
+    this.onSubmitEdit2();
+  }
   goBrand = (brand) => {
     this.setState({
       url: 'https://i.imgur.com/JaG8ovv.gif',
@@ -1886,6 +1893,101 @@ class Explore extends Component {
       });
     }
   };
+  onSubmitEdit2 = () => {
+    console.log('Search was refreshed');
+    Keyboard.dismiss();
+    secondcard = false;
+    try {
+      if (searchterm === undefined || searchterm === ' ' || searchterm === '') {
+        Alert.alert("Empty Search!", 'Try Again!');
+        return;
+      }
+      console.log(searchterm);
+      search = true;
+
+      fetch(
+        'https://sharebert.com/s/search2.php?cat=' +
+        searchterm +
+        '&page=10',
+        { method: 'GET' }
+      )
+        .then(response2 => response2.json())
+        .then(responseData2 => {
+          // if (Object.keys(responseData['Amazon']).length === undefined||Object.keys(responseData['Amazon']).length===0) {
+          //   Alert.alert("No Results Found");
+          //   emptycard = true;
+          //   this.grabFrontPage();
+          //   return;
+          // }
+          // else {
+          emptycard = false;
+          secondcard = false;
+        var data2 =[];
+         var count = Object.keys(responseData2).length;
+         console.log(responseData2);
+          if (count != 0) {
+            for (var i = 0; i < Object.keys(responseData2).length; i++) {
+              var obj2 = {};
+              obj2['ASIN'] = responseData2[i]['ASIN'];
+              obj2['Title'] = responseData2[i]['Title'];
+              obj2['URL'] = responseData2[i]['URL'];
+              obj2['ImageURL'] = responseData2[i]['ImageURL'];
+              obj2['Retailer'] = responseData2[i]['Website'];
+              data2.push(obj2);
+            }
+          }
+          if (data2.length > 0) {
+            search = true;
+            datasize = data2.length;
+            searchcount = datasize;
+            emptycard = false;
+            secondcard = false;
+
+            if (userID != 0) {
+              fetch(
+                'https://sharebert.com/s/SendSearch.php?term=' +
+                searchterm +
+                '&imageurl=' + data2[0].ImageURL,
+                { method: 'GET' }
+              ).done();
+            }
+            data2 = shuffle(data2);
+            console.log("total:" + data2.length);
+            this.setState({
+              cardNum: 0,
+              dataset: data2,
+              url: data2[this.state.cardNum].ImageURL,
+              title: data2[this.state.cardNum].Title,
+              disable: false,
+              category: 'All',
+              cat: false,
+            });
+          }
+          else {
+            Alert.alert("No Results Found!", 'Try Again!');
+            secondcard = true;
+            this.grabFrontPage();
+            return;
+          }
+
+
+        }).done();
+      //}
+    }
+    catch (error) {
+      console.log(error);
+      this.setState({
+        cardNum: 0,
+        dataset: data2,
+        url: data2[this.state.cardNum].ImageURL,
+        title: data2[this.state.cardNum].Title,
+        disable: false,
+        category: 'All',
+        cat: false,
+      });
+    }
+  };
+
   onSubmitEditBrands = (brands) => {
     emptycard = false;
     secondcard = false;
@@ -2244,6 +2346,7 @@ class Explore extends Component {
       updateData: this.updateData,
       goSearch: this.goSearch,
       goBrand: this.goBrand,
+      goSearch2: this.goSearch2,
       clearLikes: this.clearLikes,
       saveLikesto: this.saveLikesto,
     })
