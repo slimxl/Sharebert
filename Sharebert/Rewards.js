@@ -262,6 +262,7 @@ class Rewards extends Component {
   };
 
   _returnHeaderTop10 = () => {
+
     var top10view = [];
     var fontSize = 12;
     var head = '';
@@ -295,7 +296,12 @@ class Rewards extends Component {
       )
     }
     return (
-      <View>
+      <View style={styles.giveawaycenterview}>
+        <Image
+          style={styles.giveawaycenter}
+          resizeMode='contain'
+          source={require('./assets/leaderboard.png')}
+        />
         {top10view}
       </View>
     );
@@ -620,9 +626,10 @@ const styles = StyleSheet.create({
   giveawaycenter: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
-    width: '80%',
-    marginTop: 5,
+    height: 80,
+    width: '50%',
+    marginTop: -20,
+    marginBottom:-10,
   },
   giveawaycenter2: {
     justifyContent: 'center',
