@@ -2141,6 +2141,17 @@ class Explore extends Component {
           />
 
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.resetTo('Influencers', {
+          id: userID,
+          points: userPoints,
+          uri: uri2,
+        })}>
+          <Image
+            style={styles.partnercat}
+            source={require('./assets/Category/partners_cat.png')}
+          />
+
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => this.catGrab('Travel')}>
           <Image
             style={styles.catbars}
@@ -2228,7 +2239,7 @@ class Explore extends Component {
       points: userPoints,
       uri: uri2,
       like: likes,
-      top10:top10,
+      top10: top10,
       notification: false,
       updateData: this.updateData,
       goSearch: this.goSearch,
@@ -3383,6 +3394,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     resizeMode: 'contain',
   },
+  partnercat: {
+    width: 60,
+    height: 65,
+    marginLeft: 13,
+    marginRight: 13,
+    marginTop: 10,
+    //backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    backgroundColor: 'transparent',
+    resizeMode: 'contain',
+  },
   catbarsicon: {
     width: 60,
     height: 60,
@@ -3553,11 +3574,9 @@ function trunc(text) {
 
   return text.length > 30 ? `${text.substr(0, 30)}...` : text;
 }
-function truncName(text)
-{
-  if(text.includes(' '))
-  {
-    text = text.substr(0,text.indexOf(' ')+2);
+function truncName(text) {
+  if (text.includes(' ')) {
+    text = text.substr(0, text.indexOf(' ') + 2);
 
   }
   return text;
