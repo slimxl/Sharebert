@@ -28,6 +28,7 @@ var userID = 0;
 var uri2 = '';
 var refresh = false;
 var likes = [];
+var influencers = [];
 
 // screen sizing
 const { width, height } = Dimensions.get('window');
@@ -59,6 +60,7 @@ class Search extends Component {
         }
         //https://biosystematic-addit.000webhostapp.com/Trending/Trending.php
         this.grabFrontPage();
+        this.getInfluencers();
         fetch(
             'https://sharebert.com/s/Trending.php',
             { method: 'GET' }
@@ -98,6 +100,25 @@ class Search extends Component {
 
         setInterval(this.showBars, 300);
 
+    }
+
+
+    getInfluencers = () => {
+        fetch('https://sharebert.com/s/GetInfluencers.php', { method: 'GET' })
+            .then(response => response.json())
+            .then(responseData => {
+                var data2 = [];
+                for (var i = 0; i < Object.keys(responseData).length; i++) {
+                    var obj = {};
+                    obj['Term'] = responseData[i].Term;
+                    data2.push(obj);
+                }
+
+                //console.log(data2);
+                influencers = data2;
+                console.log(influencers);
+            })
+            .done();
     }
 
     _renderItem = data => {
@@ -163,7 +184,7 @@ class Search extends Component {
             goSearch: this.goSearch,
             clearLikes: this.clearLikes,
             saveLikesto: this.saveLikesto,
-            top10:top10,
+            top10: top10,
 
         })
     }
@@ -174,8 +195,26 @@ class Search extends Component {
             Alert.alert("Empty Search! Try again!")
             return;
         }
-        this.props.navigation.goBack();
-        this.props.navigation.state.params.goSearch(this.state.inputValue);
+        var check = false;
+
+        for (var i = 0; i < influencers.length; i++) {
+            if (influencers[i]['Term'] != null) {
+                if (compareStrings(influencers[i]['Term'], this.state.inputValue, true, false)) {
+                    check = true;
+                }
+            }
+
+        }
+        if (check) {
+            console.log('INFLUENCE TRUE');
+            this.props.navigation.goBack();
+            this.props.navigation.state.params.goSearch2(this.state.inputValue);
+        }
+        else {
+            console.log('INFLUENCE FALSE');
+            this.props.navigation.goBack();
+            this.props.navigation.state.params.goSearch(this.state.inputValue);
+        }
     };
 
     _handleTextChange = inputValue => {
@@ -224,7 +263,7 @@ class Search extends Component {
                     // dataset: data2,
                     // cat: false,
                 });
-                console.log(this.state.trendData);
+
             })
             .done();
     }
@@ -659,7 +698,7 @@ const styles = StyleSheet.create({
                 marginTop: -30,
                 marginLeft: 70,
                 fontSize: 30,
-                color:'white',
+                color: 'white',
 
             },
             android: {
@@ -669,7 +708,7 @@ const styles = StyleSheet.create({
                 marginLeft: 90,
                 textDecorationLine: "none",
                 fontSize: 30,
-                color:'white',
+                color: 'white',
 
             },
         }),
@@ -720,5 +759,19 @@ function shuffle(array) {
     }
 
     return array;
+}
+function compareStrings(string1, string2, ignoreCase, useLocale) {
+    if (ignoreCase) {
+        if (useLocale) {
+            string1 = string1.toLocaleLowerCase();
+            string2 = string2.toLocaleLowerCase();
+        }
+        else {
+            string1 = string1.toLowerCase();
+            string2 = string2.toLowerCase();
+        }
+    }
+
+    return string1 === string2;
 }
 export default Search;
