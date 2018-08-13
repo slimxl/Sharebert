@@ -645,7 +645,7 @@ class LoginScreen extends Component {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/*<TouchableOpacity
             onPress={() => this.onSubmitEdit('later')}
             style={styles.later}>
             <Image
@@ -653,7 +653,7 @@ class LoginScreen extends Component {
               style={styles.button4}
               source={require('./later.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
 
           {/* <TouchableOpacity
             onPress={() => this.showDialog2()}
