@@ -48,6 +48,7 @@ var randomPROFILEIMAGE = []; //TO BE REMOVED
 var goBack = true;
 var emptycard = true;
 var secondcard = false;
+var search2 = false;
 var likes = [];
 var likes3 = [];
 var uri2 = '';
@@ -1000,6 +1001,7 @@ class Explore extends Component {
   };
   goSearch = (term) => {
     searchterm = term;
+    search2 = false;
     this.setState({
       url: 'https://i.imgur.com/JaG8ovv.gif',
     })
@@ -1007,6 +1009,7 @@ class Explore extends Component {
   }
   goSearch2 = (term) => {
     searchterm = term;
+    search2 = true;
     this.setState({
       url: 'https://i.imgur.com/JaG8ovv.gif',
     })
@@ -1143,7 +1146,13 @@ class Explore extends Component {
             .done();
         }
         else if (search === true && (this.state.cardNum + 1 >= this.state.dataset.length)) {
-          this.onSubmitEdit();
+          if (search2 === false) {
+            this.onSubmitEdit();
+          }
+          else
+          {
+            this.onSubmitEdit2();
+          }
         }
         else if (
           this.state.cat &&
@@ -1922,9 +1931,9 @@ class Explore extends Component {
           // else {
           emptycard = false;
           secondcard = false;
-        var data2 =[];
-         var count = Object.keys(responseData2).length;
-         console.log(responseData2);
+          var data2 = [];
+          var count = Object.keys(responseData2).length;
+          console.log(responseData2);
           if (count != 0) {
             for (var i = 0; i < Object.keys(responseData2).length; i++) {
               var obj2 = {};
